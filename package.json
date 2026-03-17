@@ -8,9 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "db:smoke": "node --env-file=example.env.local scripts/mongoose-smoke-test.cjs",
+    "db:infra-smoke": "node --env-file=example.env.local --import tsx scripts/mongoose-infra-smoke.ts"
   },
   "dependencies": {
+    "mongoose": "^8.19.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
@@ -27,6 +30,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "jsdom": "^29.0.0",
+    "tsx": "^4.20.6",
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.0"

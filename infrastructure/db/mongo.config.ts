@@ -1,11 +1,14 @@
 const DEFAULT_CORE_DATABASE_NAME = 'Core';
-import type { MongoConnectionConfig, MongoDatabaseConfig } from './mongo.types';
+
+import type {
+  MongooseConnectionConfig,
+  MongooseDatabaseConfig,
+} from './mongoose.types';
 
 /**
- * Reads and validates the shared MongoDB connection settings.
- * @returns An object containing the MongoDB connection configuration including host, port, credentials, and auth source.
+ * Reads and validates the shared MongoDB settings used by Mongoose.
  */
-export function getMongoConnectionConfig(): MongoConnectionConfig {
+export function getMongooseConnectionConfig(): MongooseConnectionConfig {
   const host = getRequiredEnv('MONGODB_HOST');
   const port = Number.parseInt(getRequiredEnv('MONGODB_PORT'), 10);
   const username = getRequiredEnv('MONGODB_USERNAME');
@@ -28,58 +31,55 @@ export function getMongoConnectionConfig(): MongoConnectionConfig {
 }
 
 /**
- *  @returns Configuration for the shared Core database.
+ * Returns configuration for the shared Core database.
  */
-export function getCoreDatabaseConfig(): MongoDatabaseConfig {
-  return createMongoDatabaseConfig(DEFAULT_CORE_DATABASE_NAME);
+export function getCoreDatabaseConfig(): MongooseDatabaseConfig {
+  return createMongooseDatabaseConfig(DEFAULT_CORE_DATABASE_NAME);
 }
 
 /**
- *  @param tenantDatabaseName - Name of the tenant database to connect to.
- *  @returns Configuration for a tenant database resolved after user login.
+ * Returns configuration for a tenant database resolved after user login.
  */
 export function getTenantDatabaseConfig(
   tenantDatabaseName: string,
-): MongoDatabaseConfig {
+): MongooseDatabaseConfig {
   if (!tenantDatabaseName.trim()) {
     throw new Error('Tenant database name must not be empty.');
   }
 
-  return createMongoDatabaseConfig(tenantDatabaseName);
+  return createMongooseDatabaseConfig(tenantDatabaseName);
 }
 
 /**
- *
- * @param databaseName
- * @returns MongoDatabaseConfig with connection string built from shared connection settings and provided database name.
+ * Returns the server URI without binding the connection to a single database.
  */
-function createMongoDatabaseConfig(databaseName: string): MongoDatabaseConfig {
-  const connection = getMongoConnectionConfig();
+export function getMongooseServerUri(): string {
+  return buildMongooseServerUri(getMongooseConnectionConfig());
+}
+
+function createMongooseDatabaseConfig(
+  databaseName: string,
+): MongooseDatabaseConfig {
+  const connection = getMongooseConnectionConfig();
 
   return {
     ...connection,
     databaseName,
-    connectionString: buildMongoConnectionString({
-      ...connection,
-      databaseName,
-    }),
+    serverUri: buildMongooseServerUri(connection),
   };
 }
 
 /**
- * Builds a MongoDB connection string from the provided configuration.
- * @param config - The MongoDB connection configuration including credentials and database name.
- * @returns A MongoDB connection string.
+ * Builds a MongoDB server URI that Mongoose can reuse with different db names.
  */
-function buildMongoConnectionString(
-  config: MongoConnectionConfig & { databaseName: string },
+function buildMongooseServerUri(
+  config: MongooseConnectionConfig,
 ): string {
   const username = encodeURIComponent(config.username);
   const password = encodeURIComponent(config.password);
-  const databaseName = encodeURIComponent(config.databaseName);
   const authSource = encodeURIComponent(config.authSource);
 
-  return `mongodb://${username}:${password}@${config.host}:${config.port}/${databaseName}?authSource=${authSource}`;
+  return `mongodb://${username}:${password}@${config.host}:${config.port}/?authSource=${authSource}`;
 }
 
 function getRequiredEnv(name: string): string {
