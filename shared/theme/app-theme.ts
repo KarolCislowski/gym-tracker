@@ -11,6 +11,19 @@ export function getAppTheme(mode: AppColorMode) {
     typography: {
       fontFamily: 'var(--font-geist-sans), sans-serif',
     },
+    components: {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            minHeight: 56,
+          },
+          input: {
+            paddingTop: 16.5,
+            paddingBottom: 16.5,
+          },
+        },
+      },
+    },
   });
 
   appTheme = responsiveFontSizes(appTheme);
