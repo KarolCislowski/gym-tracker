@@ -1,4 +1,8 @@
 import Link from 'next/link';
+import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
 
 import {
   getTranslations,
@@ -25,7 +29,15 @@ export function LanguageSwitcher({
   ] as const;
 
   return (
-    <nav className='language-switcher' aria-label='Language switcher'>
+    <Stack
+      direction='row'
+      spacing={1}
+      flexWrap='wrap'
+      useFlexGap
+      alignItems='center'
+      aria-label='Language switcher'
+    >
+      <TranslateRoundedIcon color='action' fontSize='small' />
       {languages.map((language) => {
         const searchParams = new URLSearchParams();
 
@@ -38,19 +50,23 @@ export function LanguageSwitcher({
         searchParams.set('lang', language.code);
 
         return (
-          <Link
-            key={language.code}
-            className={
-              language.code === resolvedLanguage
-                ? 'language-switcher__link language-switcher__link--active'
-                : 'language-switcher__link'
-            }
-            href={`${pathname}?${searchParams.toString()}`}
-          >
-            {language.label}
-          </Link>
+          <Tooltip key={language.code} title={language.label}>
+            <Link href={`${pathname}?${searchParams.toString()}`}>
+              <Chip
+                clickable
+                color={
+                  language.code === resolvedLanguage ? 'primary' : 'default'
+                }
+                label={language.label}
+                size='small'
+                variant={
+                  language.code === resolvedLanguage ? 'filled' : 'outlined'
+                }
+              />
+            </Link>
+          </Tooltip>
         );
       })}
-    </nav>
+    </Stack>
   );
 }

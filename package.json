@@ -14,7 +14,15 @@
     "db:auth-smoke": "node --env-file=example.env.local --import tsx scripts/auth-register-smoke.ts"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.9",
+    "@mui/material-nextjs": "^7.3.9",
+    "@mui/x-date-pickers": "^8.27.2",
     "bcryptjs": "^3.0.3",
+    "dayjs": "^1.11.20",
     "mongoose": "^8.19.2",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
