@@ -3,9 +3,11 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/auth';
 import { loginAction } from '@/features/auth/infrastructure/auth.actions';
-import { getTranslations } from '@/features/i18n/application/i18n.service';
-import { resolveLanguage } from '@/features/i18n/application/i18n.service';
-import { LanguageSwitcher } from '@/features/i18n/ui/language-switcher';
+import {
+  getTranslations,
+  resolveLanguage,
+} from '@/shared/i18n/application/i18n.service';
+import { LanguageSwitcher } from '@/shared/i18n/ui/language-switcher';
 
 interface LoginPageProps {
   searchParams?: Promise<{

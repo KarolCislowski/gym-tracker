@@ -1,11 +1,11 @@
-import { enMessages } from '../infrastructure/messages/en';
-import { plMessages } from '../infrastructure/messages/pl';
-import { svMessages } from '../infrastructure/messages/sv';
 import type {
   SupportedLanguage,
   TranslationDictionary,
   TranslationDictionaryOverrides,
 } from '../domain/i18n.types';
+import { enMessages } from '../infrastructure/messages/en';
+import { plMessages } from '../infrastructure/messages/pl';
+import { svMessages } from '../infrastructure/messages/sv';
 
 const messageCatalog: Record<
   SupportedLanguage,

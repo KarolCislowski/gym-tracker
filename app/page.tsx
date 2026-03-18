@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 import { logoutAction } from '@/features/auth/infrastructure/auth.actions';
-import { getTranslations } from '@/features/i18n/application/i18n.service';
+import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
 export default async function Page() {
   const session = await auth();
