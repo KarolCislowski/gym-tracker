@@ -1,0 +1,44 @@
+import type { TranslationDictionaryOverrides } from '../../domain/i18n.types';
+
+export const plMessages: TranslationDictionaryOverrides = {
+  auth: {
+    homeTitle: 'Strona główna',
+    aboutTitle: 'O aplikacji',
+    signedInAs: 'Zalogowano jako',
+    tenantDatabase: 'Baza tenantowa',
+    profileTitle: 'Profil',
+    profileName: 'Imię i nazwisko',
+    profileEmail: 'Email',
+    settingsTitle: 'Ustawienia',
+    settingsLanguage: 'Język',
+    settingsDarkMode: 'Tryb ciemny',
+    darkModeEnabled: 'Włączony',
+    darkModeDisabled: 'Wyłączony',
+    signOut: 'Wyloguj',
+    signIn: 'Zaloguj się',
+    createAccount: 'Utwórz konto',
+    signInTitle: 'Logowanie',
+    signInDescription:
+      'Użyj adresu email i hasła, aby uzyskać dostęp do swojej przestrzeni tenantowej.',
+    registrationSuccess:
+      'Twoje konto zostało utworzone. Możesz się teraz zalogować.',
+    emailLabel: 'Email',
+    passwordLabel: 'Hasło',
+    signInButton: 'Zaloguj się',
+    newHere: 'Nie masz jeszcze konta?',
+    createAccountLink: 'Utwórz konto',
+    registerTitle: 'Utwórz konto',
+    registerDescription:
+      'Dla Twojego konta zostanie utworzony rekord w Core oraz osobna baza tenantowa.',
+    firstNameLabel: 'Imię',
+    lastNameLabel: 'Nazwisko',
+    languageLabel: 'Język',
+    darkModeLabel: 'Domyślnie włącz tryb ciemny',
+    registerButton: 'Zarejestruj się',
+    alreadyHaveAccount: 'Masz już konto?',
+    signInLink: 'Zaloguj się',
+    languageEnglish: 'Angielski',
+    languagePolish: 'Polski',
+    languageSwedish: 'Szwedzki',
+  },
+};

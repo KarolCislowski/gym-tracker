@@ -8,6 +8,6 @@ export const loginSchema = z.object({
 export const registerSchema = loginSchema.extend({
   firstName: z.string().trim().min(2, 'First name must be at least 2 characters long.'),
   lastName: z.string().trim().min(2, 'Last name must be at least 2 characters long.'),
-  language: z.enum(['en', 'pl']),
+  language: z.enum(['en', 'pl', 'sv']),
   isDarkMode: z.boolean(),
 });

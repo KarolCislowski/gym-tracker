@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/auth';
 import { loginAction } from '@/features/auth/infrastructure/auth.actions';
+import { getTranslations } from '@/features/i18n/application/i18n.service';
 
 interface LoginPageProps {
   searchParams?: Promise<{
@@ -16,6 +17,7 @@ export default async function LoginPage({
 }: LoginPageProps) {
   const session = await auth();
   const params = searchParams ? await searchParams : undefined;
+  const t = getTranslations();
 
   if (session?.user) {
     redirect('/');
@@ -24,24 +26,20 @@ export default async function LoginPage({
   return (
     <main className='auth-shell'>
       <section className='auth-card'>
-        <p className='auth-eyebrow'>Gym Tracker</p>
-        <h1>Sign in</h1>
-        <p className='auth-copy'>
-          Use your email address and password to access your tenant workspace.
-        </p>
+        <p className='auth-eyebrow'>{t.auth.appName}</p>
+        <h1>{t.auth.signInTitle}</h1>
+        <p className='auth-copy'>{t.auth.signInDescription}</p>
         {params?.registered === '1' ? (
-          <p className='auth-success'>
-            Your account has been created. You can sign in now.
-          </p>
+          <p className='auth-success'>{t.auth.registrationSuccess}</p>
         ) : null}
         {params?.error ? <p className='auth-error'>{params.error}</p> : null}
         <form action={loginAction} className='auth-form'>
           <label className='auth-label' htmlFor='email'>
-            Email
+            {t.auth.emailLabel}
           </label>
           <input className='auth-input' id='email' name='email' type='email' required />
           <label className='auth-label' htmlFor='password'>
-            Password
+            {t.auth.passwordLabel}
           </label>
           <input
             className='auth-input'
@@ -52,11 +50,11 @@ export default async function LoginPage({
             required
           />
           <button className='auth-button' type='submit'>
-            Sign in
+            {t.auth.signInButton}
           </button>
         </form>
         <p className='auth-footer'>
-          New here? <Link href='/register'>Create an account</Link>
+          {t.auth.newHere} <Link href='/register'>{t.auth.createAccountLink}</Link>
         </p>
       </section>
     </main>

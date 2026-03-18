@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/auth';
 import { registerAction } from '@/features/auth/infrastructure/auth.actions';
+import { getTranslations } from '@/features/i18n/application/i18n.service';
 
 interface RegisterPageProps {
   searchParams?: Promise<{
@@ -15,6 +16,7 @@ export default async function RegisterPage({
 }: RegisterPageProps) {
   const session = await auth();
   const params = searchParams ? await searchParams : undefined;
+  const t = getTranslations();
 
   if (session?.user) {
     redirect('/');
@@ -23,16 +25,13 @@ export default async function RegisterPage({
   return (
     <main className='auth-shell'>
       <section className='auth-card'>
-        <p className='auth-eyebrow'>Gym Tracker</p>
-        <h1>Create account</h1>
-        <p className='auth-copy'>
-          A Core user record and a dedicated tenant database will be created
-          for your account.
-        </p>
+        <p className='auth-eyebrow'>{t.auth.appName}</p>
+        <h1>{t.auth.registerTitle}</h1>
+        <p className='auth-copy'>{t.auth.registerDescription}</p>
         {params?.error ? <p className='auth-error'>{params.error}</p> : null}
         <form action={registerAction} className='auth-form'>
           <label className='auth-label' htmlFor='firstName'>
-            First name
+            {t.auth.firstNameLabel}
           </label>
           <input
             className='auth-input'
@@ -43,7 +42,7 @@ export default async function RegisterPage({
             required
           />
           <label className='auth-label' htmlFor='lastName'>
-            Last name
+            {t.auth.lastNameLabel}
           </label>
           <input
             className='auth-input'
@@ -54,11 +53,11 @@ export default async function RegisterPage({
             required
           />
           <label className='auth-label' htmlFor='email'>
-            Email
+            {t.auth.emailLabel}
           </label>
           <input className='auth-input' id='email' name='email' type='email' required />
           <label className='auth-label' htmlFor='password'>
-            Password
+            {t.auth.passwordLabel}
           </label>
           <input
             className='auth-input'
@@ -69,22 +68,24 @@ export default async function RegisterPage({
             required
           />
           <label className='auth-label' htmlFor='language'>
-            Language
+            {t.auth.languageLabel}
           </label>
           <select className='auth-input' id='language' name='language' defaultValue='en'>
-            <option value='en'>English</option>
-            <option value='pl'>Polish</option>
+            <option value='en'>{t.auth.languageEnglish}</option>
+            <option value='pl'>{t.auth.languagePolish}</option>
+            <option value='sv'>{t.auth.languageSwedish}</option>
           </select>
           <label className='auth-checkbox'>
             <input id='isDarkMode' name='isDarkMode' type='checkbox' />
-            <span>Enable dark mode by default</span>
+            <span>{t.auth.darkModeLabel}</span>
           </label>
           <button className='auth-button' type='submit'>
-            Register
+            {t.auth.registerButton}
           </button>
         </form>
         <p className='auth-footer'>
-          Already have an account? <Link href='/login'>Sign in</Link>
+          {t.auth.alreadyHaveAccount}{' '}
+          <Link href='/login'>{t.auth.signInLink}</Link>
         </p>
       </section>
     </main>

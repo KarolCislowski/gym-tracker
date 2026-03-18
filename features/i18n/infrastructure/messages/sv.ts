@@ -1,0 +1,43 @@
+import type { TranslationDictionaryOverrides } from '../../domain/i18n.types';
+
+export const svMessages: TranslationDictionaryOverrides = {
+  auth: {
+    homeTitle: 'Hem',
+    aboutTitle: 'Om appen',
+    signedInAs: 'Inloggad som',
+    tenantDatabase: 'Tenantdatabas',
+    profileTitle: 'Profil',
+    profileName: 'Namn',
+    profileEmail: 'E-post',
+    settingsTitle: 'Inställningar',
+    settingsLanguage: 'Språk',
+    settingsDarkMode: 'Mörkt läge',
+    darkModeEnabled: 'Aktiverat',
+    darkModeDisabled: 'Inaktiverat',
+    signOut: 'Logga ut',
+    signIn: 'Logga in',
+    createAccount: 'Skapa konto',
+    signInTitle: 'Logga in',
+    signInDescription:
+      'Använd din e-postadress och ditt lösenord för att komma åt din tenantyta.',
+    registrationSuccess: 'Ditt konto har skapats. Du kan logga in nu.',
+    emailLabel: 'E-post',
+    passwordLabel: 'Lösenord',
+    signInButton: 'Logga in',
+    newHere: 'Ny här?',
+    createAccountLink: 'Skapa ett konto',
+    registerTitle: 'Skapa konto',
+    registerDescription:
+      'Ett Core-användarkonto och en dedikerad tenantdatabas skapas för ditt konto.',
+    firstNameLabel: 'Förnamn',
+    lastNameLabel: 'Efternamn',
+    languageLabel: 'Språk',
+    darkModeLabel: 'Aktivera mörkt läge som standard',
+    registerButton: 'Registrera',
+    alreadyHaveAccount: 'Har du redan ett konto?',
+    signInLink: 'Logga in',
+    languageEnglish: 'Engelska',
+    languagePolish: 'Polska',
+    languageSwedish: 'Svenska',
+  },
+};
