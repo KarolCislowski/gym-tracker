@@ -10,13 +10,17 @@
     "test": "vitest",
     "cy:open": "cypress open",
     "db:smoke": "node --env-file=example.env.local scripts/mongoose-smoke-test.cjs",
-    "db:infra-smoke": "node --env-file=example.env.local --import tsx scripts/mongoose-infra-smoke.ts"
+    "db:infra-smoke": "node --env-file=example.env.local --import tsx scripts/mongoose-infra-smoke.ts",
+    "db:auth-smoke": "node --env-file=example.env.local --import tsx scripts/auth-register-smoke.ts"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "mongoose": "^8.19.2",
     "next": "16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",

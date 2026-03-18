@@ -10,12 +10,12 @@ export async function seedExampleData(): Promise<void> {
 
   const coreUser = await CoreUserModel.create({
     email: 'demo@gymtracker.dev',
-    tenantDatabaseName: 'tenant_demo_user',
+    password: 'placeholder-hash',
+    isActive: true,
+    tenantDbName: 'tenant_demo_user',
   });
 
-  const TenantWorkoutModel = await getTenantWorkoutModel(
-    coreUser.tenantDatabaseName,
-  );
+  const TenantWorkoutModel = await getTenantWorkoutModel(coreUser.tenantDbName);
 
   await TenantWorkoutModel.create({
     userId: coreUser.id,

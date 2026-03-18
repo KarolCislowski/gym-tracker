@@ -1,10 +1,10 @@
 import type { Types } from 'mongoose';
 
-export interface CoreUser {
+export interface TenantProfile {
   _id: Types.ObjectId;
+  userId: string;
   email: string;
-  password: string;
-  isActive: boolean;
-  tenantDbName: string;
+  firstName: string;
+  lastName: string;
   createdAt: Date;
 }

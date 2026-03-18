@@ -14,7 +14,17 @@ const coreUserSchema = new Schema<CoreUser>(
       lowercase: true,
       unique: true,
     },
-    tenantDatabaseName: {
+    password: {
+      type: String,
+      required: true,
+      select: false,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    tenantDbName: {
       type: String,
       required: true,
       trim: true,
@@ -22,8 +32,11 @@ const coreUserSchema = new Schema<CoreUser>(
     },
   },
   {
-    timestamps: true,
-    collection: 'core_users',
+    timestamps: {
+      createdAt: true,
+      updatedAt: false,
+    },
+    collection: 'users',
   },
 );
 

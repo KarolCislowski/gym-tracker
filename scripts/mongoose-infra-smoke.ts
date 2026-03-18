@@ -8,12 +8,12 @@ async function run(): Promise<void> {
 
   const coreUser = await CoreUserModel.create({
     email: `infra-smoke-${Date.now()}@gymtracker.dev`,
-    tenantDatabaseName,
+    password: 'placeholder-hash',
+    isActive: true,
+    tenantDbName: tenantDatabaseName,
   });
 
-  const TenantWorkoutModel = await getTenantWorkoutModel(
-    coreUser.tenantDatabaseName,
-  );
+  const TenantWorkoutModel = await getTenantWorkoutModel(coreUser.tenantDbName);
 
   const tenantWorkout = await TenantWorkoutModel.create({
     userId: coreUser.id,
