@@ -74,6 +74,7 @@ export function RegisterForm({
           type='password'
         />
         <TextField
+          key={`register-language-${activeLanguage}`}
           defaultValue={activeLanguage}
           id='language'
           label={t.languageLabel}
