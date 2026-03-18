@@ -4,10 +4,13 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { registerAction } from '@/features/auth/infrastructure/auth.actions';
 import { getTranslations } from '@/features/i18n/application/i18n.service';
+import { resolveLanguage } from '@/features/i18n/application/i18n.service';
+import { LanguageSwitcher } from '@/features/i18n/ui/language-switcher';
 
 interface RegisterPageProps {
   searchParams?: Promise<{
     error?: string;
+    lang?: string;
   }>;
 }
 
@@ -16,7 +19,8 @@ export default async function RegisterPage({
 }: RegisterPageProps) {
   const session = await auth();
   const params = searchParams ? await searchParams : undefined;
-  const t = getTranslations();
+  const activeLanguage = resolveLanguage(params?.lang);
+  const t = getTranslations(activeLanguage);
 
   if (session?.user) {
     redirect('/');
@@ -25,11 +29,19 @@ export default async function RegisterPage({
   return (
     <main className='auth-shell'>
       <section className='auth-card'>
+        <LanguageSwitcher
+          activeLanguage={activeLanguage}
+          pathname='/register'
+          query={{
+            error: params?.error,
+          }}
+        />
         <p className='auth-eyebrow'>{t.auth.appName}</p>
         <h1>{t.auth.registerTitle}</h1>
         <p className='auth-copy'>{t.auth.registerDescription}</p>
         {params?.error ? <p className='auth-error'>{params.error}</p> : null}
         <form action={registerAction} className='auth-form'>
+          <input name='uiLanguage' type='hidden' value={activeLanguage} />
           <label className='auth-label' htmlFor='firstName'>
             {t.auth.firstNameLabel}
           </label>
@@ -70,7 +82,12 @@ export default async function RegisterPage({
           <label className='auth-label' htmlFor='language'>
             {t.auth.languageLabel}
           </label>
-          <select className='auth-input' id='language' name='language' defaultValue='en'>
+          <select
+            className='auth-input'
+            id='language'
+            name='language'
+            defaultValue={activeLanguage}
+          >
             <option value='en'>{t.auth.languageEnglish}</option>
             <option value='pl'>{t.auth.languagePolish}</option>
             <option value='sv'>{t.auth.languageSwedish}</option>
@@ -85,7 +102,7 @@ export default async function RegisterPage({
         </form>
         <p className='auth-footer'>
           {t.auth.alreadyHaveAccount}{' '}
-          <Link href='/login'>{t.auth.signInLink}</Link>
+          <Link href={`/login?lang=${activeLanguage}`}>{t.auth.signInLink}</Link>
         </p>
       </section>
     </main>

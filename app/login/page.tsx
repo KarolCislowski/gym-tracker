@@ -4,11 +4,14 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { loginAction } from '@/features/auth/infrastructure/auth.actions';
 import { getTranslations } from '@/features/i18n/application/i18n.service';
+import { resolveLanguage } from '@/features/i18n/application/i18n.service';
+import { LanguageSwitcher } from '@/features/i18n/ui/language-switcher';
 
 interface LoginPageProps {
   searchParams?: Promise<{
     error?: string;
     registered?: string;
+    lang?: string;
   }>;
 }
 
@@ -17,7 +20,8 @@ export default async function LoginPage({
 }: LoginPageProps) {
   const session = await auth();
   const params = searchParams ? await searchParams : undefined;
-  const t = getTranslations();
+  const activeLanguage = resolveLanguage(params?.lang);
+  const t = getTranslations(activeLanguage);
 
   if (session?.user) {
     redirect('/');
@@ -26,6 +30,14 @@ export default async function LoginPage({
   return (
     <main className='auth-shell'>
       <section className='auth-card'>
+        <LanguageSwitcher
+          activeLanguage={activeLanguage}
+          pathname='/login'
+          query={{
+            error: params?.error,
+            registered: params?.registered,
+          }}
+        />
         <p className='auth-eyebrow'>{t.auth.appName}</p>
         <h1>{t.auth.signInTitle}</h1>
         <p className='auth-copy'>{t.auth.signInDescription}</p>
@@ -34,6 +46,7 @@ export default async function LoginPage({
         ) : null}
         {params?.error ? <p className='auth-error'>{params.error}</p> : null}
         <form action={loginAction} className='auth-form'>
+          <input name='uiLanguage' type='hidden' value={activeLanguage} />
           <label className='auth-label' htmlFor='email'>
             {t.auth.emailLabel}
           </label>
@@ -54,7 +67,10 @@ export default async function LoginPage({
           </button>
         </form>
         <p className='auth-footer'>
-          {t.auth.newHere} <Link href='/register'>{t.auth.createAccountLink}</Link>
+          {t.auth.newHere}{' '}
+          <Link href={`/register?lang=${activeLanguage}`}>
+            {t.auth.createAccountLink}
+          </Link>
         </p>
       </section>
     </main>

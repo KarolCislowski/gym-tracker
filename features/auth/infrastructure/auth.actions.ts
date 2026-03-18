@@ -16,6 +16,7 @@ export async function registerAction(formData: FormData): Promise<void> {
   const firstName = String(formData.get('firstName') ?? '');
   const lastName = String(formData.get('lastName') ?? '');
   const language = String(formData.get('language') ?? 'en');
+  const uiLanguage = String(formData.get('uiLanguage') ?? 'en');
   const isDarkMode = formData.get('isDarkMode') === 'on';
 
   try {
@@ -29,11 +30,11 @@ export async function registerAction(formData: FormData): Promise<void> {
     });
   } catch (error) {
     redirect(
-      `/register?error=${encodeURIComponent(getActionErrorMessage(error))}`,
+      `/register?lang=${encodeURIComponent(uiLanguage)}&error=${encodeURIComponent(getActionErrorMessage(error))}`,
     );
   }
 
-  redirect('/login?registered=1');
+  redirect(`/login?lang=${encodeURIComponent(uiLanguage)}&registered=1`);
 }
 
 /**
@@ -42,6 +43,7 @@ export async function registerAction(formData: FormData): Promise<void> {
 export async function loginAction(formData: FormData): Promise<void> {
   const email = String(formData.get('email') ?? '');
   const password = String(formData.get('password') ?? '');
+  const uiLanguage = String(formData.get('uiLanguage') ?? 'en');
 
   try {
     await signIn('credentials', {
@@ -51,7 +53,9 @@ export async function loginAction(formData: FormData): Promise<void> {
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      redirect('/login?error=Invalid%20email%20or%20password.');
+      redirect(
+        `/login?lang=${encodeURIComponent(uiLanguage)}&error=Invalid%20email%20or%20password.`,
+      );
     }
 
     throw error;
