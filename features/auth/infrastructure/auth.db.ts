@@ -3,41 +3,56 @@ import {
   dropTenantDatabase,
   initializeTenantDatabase,
 } from '@/infrastructure/db/tenant-database.service';
-
-interface CreateCoreUserRecordInput {
-  email: string;
-  password: string;
-  tenantDbName: string;
-}
-
-interface CreateTenantDatabaseInput {
-  tenantDbName: string;
-  userId: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  language: string;
-  isDarkMode: boolean;
-}
+import type {
+  CoreUserAuthDto,
+  CoreUserLookupDto,
+  CreateCoreUserRecordInput,
+  CreateTenantDatabaseInput,
+  CreatedCoreUserDto,
+  TenantProfileSnapshot,
+  TenantSettingsSnapshot,
+} from '../domain/auth.types';
 
 /**
  * Finds a Core user by email.
  */
-export async function findCoreUserByEmail(email: string) {
+export async function findCoreUserByEmail(
+  email: string,
+): Promise<CoreUserLookupDto | null> {
   const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findOne({ email }).lean();
 
-  return CoreUserModel.findOne({ email });
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user._id.toString(),
+  };
 }
 
 /**
  * Finds a Core user by email and explicitly includes the password hash.
  */
-export async function findCoreUserWithPasswordByEmail(email: string) {
+export async function findCoreUserWithPasswordByEmail(
+  email: string,
+): Promise<CoreUserAuthDto | null> {
   const CoreUserModel = await getCoreUserModel();
-
-  return CoreUserModel.findOne({ email }).select(
+  const user = await CoreUserModel.findOne({ email }).select(
     '+password isActive tenantDbName email',
   );
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+    password: user.password,
+    isActive: user.isActive,
+    tenantDbName: user.tenantDbName,
+  };
 }
 
 /**
@@ -45,15 +60,22 @@ export async function findCoreUserWithPasswordByEmail(email: string) {
  */
 export async function createCoreUserRecord(
   input: CreateCoreUserRecordInput,
-) {
+): Promise<CreatedCoreUserDto> {
   const CoreUserModel = await getCoreUserModel();
 
-  return CoreUserModel.create({
+  const createdUser = await CoreUserModel.create({
     email: input.email,
     password: input.password,
     isActive: true,
     tenantDbName: input.tenantDbName,
   });
+
+  return {
+    id: createdUser.id,
+    email: createdUser.email,
+    isActive: createdUser.isActive,
+    tenantDbName: createdUser.tenantDbName,
+  };
 }
 
 /**
@@ -87,7 +109,7 @@ export async function deleteTenantDatabase(tenantDbName: string): Promise<void> 
 export async function findTenantProfileByUserId(
   tenantDbName: string,
   userId: string,
-) {
+): Promise<TenantProfileSnapshot | null> {
   const { getTenantProfileModel } = await import(
     '@/infrastructure/db/models/tenant-profile.model'
   );
@@ -99,7 +121,9 @@ export async function findTenantProfileByUserId(
 /**
  * Finds tenant-level settings for the current tenant database.
  */
-export async function findTenantSettings(tenantDbName: string) {
+export async function findTenantSettings(
+  tenantDbName: string,
+): Promise<TenantSettingsSnapshot | null> {
   const { getTenantSettingsModel } = await import(
     '@/infrastructure/db/models/tenant-settings.model'
   );
