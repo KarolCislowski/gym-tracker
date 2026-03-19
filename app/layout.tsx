@@ -4,7 +4,10 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { cookies } from 'next/headers';
 
 import { auth } from '@/auth';
+import { AppShell } from '@/features/app/ui/app-shell';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
+import { logoutAction } from '@/features/auth/infrastructure/auth.actions';
+import { getTranslations } from '@/shared/i18n/application/i18n.service';
 import {
   COLOR_MODE_COOKIE_NAME,
   getColorModeFromSettings,
@@ -49,12 +52,28 @@ export default async function RootLayout({
   const mode = userSnapshot?.settings
     ? getColorModeFromSettings(userSnapshot.settings.isDarkMode)
     : guestMode;
+  const translations = getTranslations(userSnapshot?.settings?.language);
+  const displayName = userSnapshot?.profile
+    ? `${userSnapshot.profile.firstName} ${userSnapshot.profile.lastName}`
+    : session?.user?.email ?? translations.dashboard.appName;
 
   return (
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppThemeProvider mode={mode}>
-          <Box sx={{ width: '100vw' }}>{children}</Box>
+          <Box sx={{ width: '100vw' }}>
+            {session?.user ? (
+              <AppShell
+                displayName={displayName}
+                logoutAction={logoutAction}
+                translations={translations}
+              >
+                {children}
+              </AppShell>
+            ) : (
+              children
+            )}
+          </Box>
         </AppThemeProvider>
       </body>
     </html>

@@ -43,5 +43,9 @@ export function getTranslations(
       ...enMessages.auth,
       ...localized.auth,
     },
+    dashboard: {
+      ...enMessages.dashboard,
+      ...localized.dashboard,
+    },
   };
 }

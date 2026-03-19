@@ -41,8 +41,29 @@ export interface TranslationDictionary {
     languagePolish: string;
     languageSwedish: string;
   };
+  dashboard: {
+    appName: string;
+    overview: string;
+    profile: string;
+    settings: string;
+    workspace: string;
+    openNavigation: string;
+    collapseNavigation: string;
+    expandNavigation: string;
+    welcomeBack: string;
+    workspaceReady: string;
+    tenantDatabase: string;
+    profileName: string;
+    profileEmail: string;
+    settingsLanguage: string;
+    settingsTheme: string;
+    themeDark: string;
+    themeLight: string;
+    signOut: string;
+  };
 }
 
 export interface TranslationDictionaryOverrides {
   auth?: Partial<TranslationDictionary['auth']>;
+  dashboard?: Partial<TranslationDictionary['dashboard']>;
 }

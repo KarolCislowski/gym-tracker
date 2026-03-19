@@ -40,4 +40,23 @@ export const svMessages: TranslationDictionaryOverrides = {
     languagePolish: 'Polska',
     languageSwedish: 'Svenska',
   },
+  dashboard: {
+    overview: 'Översikt',
+    profile: 'Profil',
+    settings: 'Inställningar',
+    workspace: 'Arbetsyta',
+    openNavigation: 'Öppna navigering',
+    collapseNavigation: 'Fäll ihop navigering',
+    expandNavigation: 'Expandera navigering',
+    welcomeBack: 'Välkommen tillbaka',
+    workspaceReady:
+      'Din tenantarbetsyta är ansluten och redo för nästa träningsblock.',
+    tenantDatabase: 'Tenantdatabas',
+    profileName: 'Namn',
+    profileEmail: 'E-post',
+    settingsLanguage: 'Språk',
+    settingsTheme: 'Tema',
+    themeDark: 'Mörkt',
+    themeLight: 'Ljust',
+  },
 };

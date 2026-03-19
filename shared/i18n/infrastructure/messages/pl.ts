@@ -41,4 +41,23 @@ export const plMessages: TranslationDictionaryOverrides = {
     languagePolish: 'Polski',
     languageSwedish: 'Szwedzki',
   },
+  dashboard: {
+    overview: 'Przegląd',
+    profile: 'Profil',
+    settings: 'Ustawienia',
+    workspace: 'Przestrzeń',
+    openNavigation: 'Otwórz nawigację',
+    collapseNavigation: 'Zwiń nawigację',
+    expandNavigation: 'Rozwiń nawigację',
+    welcomeBack: 'Witamy ponownie',
+    workspaceReady:
+      'Twoja przestrzeń tenantowa jest połączona i gotowa na kolejny blok treningowy.',
+    tenantDatabase: 'Baza tenantowa',
+    profileName: 'Imię i nazwisko',
+    profileEmail: 'Email',
+    settingsLanguage: 'Język',
+    settingsTheme: 'Motyw',
+    themeDark: 'Ciemny',
+    themeLight: 'Jasny',
+  },
 };
