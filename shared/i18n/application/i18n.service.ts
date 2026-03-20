@@ -47,5 +47,9 @@ export function getTranslations(
       ...enMessages.dashboard,
       ...localized.dashboard,
     },
+    settings: {
+      ...enMessages.settings,
+      ...localized.settings,
+    },
   };
 }

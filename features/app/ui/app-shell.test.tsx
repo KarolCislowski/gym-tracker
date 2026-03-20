@@ -4,6 +4,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test, vi } from 'vitest';
 
+vi.mock('next/navigation', () => ({
+  usePathname: vi.fn(() => '/'),
+}));
+
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
 import { AppShell } from './app-shell';

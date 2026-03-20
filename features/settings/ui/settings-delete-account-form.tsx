@@ -1,0 +1,62 @@
+import { Alert, Button, Paper, Stack, TextField, Typography } from '@mui/material';
+
+import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+
+import { deleteAccountAction } from '../infrastructure/settings.actions';
+
+interface SettingsDeleteAccountFormProps {
+  email: string;
+  translations: TranslationDictionary;
+}
+
+/**
+ * Danger-zone form section for deleting the signed-in account with explicit confirmation.
+ */
+export function SettingsDeleteAccountForm({
+  email,
+  translations,
+}: SettingsDeleteAccountFormProps) {
+  const t = translations.settings;
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 3, md: 4 },
+        border: 1,
+        borderColor: 'error.light',
+        borderRadius: 6,
+      }}
+    >
+      <Stack component='form' action={deleteAccountAction} spacing={2}>
+        <Stack spacing={0.5}>
+          <Typography color='error.main' variant='h6'>
+            {t.dangerZoneTitle}
+          </Typography>
+          <Typography color='text.secondary'>{t.dangerZoneDescription}</Typography>
+        </Stack>
+        <Alert severity='warning'>{t.deleteAccountWarning}</Alert>
+        <TextField
+          helperText={t.confirmationEmailHelp}
+          label={t.confirmationEmailLabel}
+          name='confirmationEmail'
+          required
+          type='email'
+        />
+        <TextField
+          label={t.currentPasswordLabel}
+          name='currentPassword'
+          required
+          slotProps={{ htmlInput: { minLength: 8 } }}
+          type='password'
+        />
+        <Button color='error' type='submit' variant='contained'>
+          {t.deleteAccount}
+        </Button>
+        <Typography color='text.secondary' variant='body2'>
+          {email}
+        </Typography>
+      </Stack>
+    </Paper>
+  );
+}

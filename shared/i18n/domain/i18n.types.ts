@@ -22,6 +22,7 @@ export interface TranslationDictionary {
     createAccount: string;
     signInTitle: string;
     signInDescription: string;
+    accountDeleted: string;
     registrationSuccess: string;
     emailLabel: string;
     passwordLabel: string;
@@ -61,9 +62,38 @@ export interface TranslationDictionary {
     themeLight: string;
     signOut: string;
   };
+  settings: {
+    title: string;
+    description: string;
+    preferencesTitle: string;
+    preferencesDescription: string;
+    languageLabel: string;
+    darkModeLabel: string;
+    savePreferences: string;
+    preferencesUpdated: string;
+    securityTitle: string;
+    securityDescription: string;
+    currentPasswordLabel: string;
+    newPasswordLabel: string;
+    confirmPasswordLabel: string;
+    changePassword: string;
+    passwordUpdated: string;
+    dangerZoneTitle: string;
+    dangerZoneDescription: string;
+    deleteAccountWarning: string;
+    confirmationEmailLabel: string;
+    confirmationEmailHelp: string;
+    deleteAccount: string;
+    accountDeleted: string;
+    errorGeneric: string;
+    errorInvalidCurrentPassword: string;
+    errorPasswordConfirmationMismatch: string;
+    errorConfirmationEmailMismatch: string;
+  };
 }
 
 export interface TranslationDictionaryOverrides {
   auth?: Partial<TranslationDictionary['auth']>;
   dashboard?: Partial<TranslationDictionary['dashboard']>;
+  settings?: Partial<TranslationDictionary['settings']>;
 }

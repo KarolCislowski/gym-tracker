@@ -1,0 +1,68 @@
+import {
+  Button,
+  FormControlLabel,
+  MenuItem,
+  Paper,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
+
+import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
+import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+
+import { updateSettingsAction } from '../infrastructure/settings.actions';
+
+interface SettingsPreferencesFormProps {
+  translations: TranslationDictionary;
+  userSnapshot: AuthenticatedUserSnapshot | null;
+}
+
+/**
+ * Form section for updating tenant preference values from the Settings document.
+ */
+export function SettingsPreferencesForm({
+  translations,
+  userSnapshot,
+}: SettingsPreferencesFormProps) {
+  const t = translations.settings;
+  const activeSettings = userSnapshot?.settings;
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{ p: { xs: 3, md: 4 }, border: 1, borderColor: 'divider', borderRadius: 6 }}
+    >
+      <Stack component='form' action={updateSettingsAction} spacing={2}>
+        <Stack spacing={0.5}>
+          <Typography variant='h6'>{t.preferencesTitle}</Typography>
+          <Typography color='text.secondary'>{t.preferencesDescription}</Typography>
+        </Stack>
+        <TextField
+          defaultValue={activeSettings?.language ?? 'en'}
+          id='language'
+          label={t.languageLabel}
+          name='language'
+          select
+        >
+          <MenuItem value='en'>{translations.auth.languageEnglish}</MenuItem>
+          <MenuItem value='pl'>{translations.auth.languagePolish}</MenuItem>
+          <MenuItem value='sv'>{translations.auth.languageSwedish}</MenuItem>
+        </TextField>
+        <FormControlLabel
+          control={
+            <Switch
+              defaultChecked={activeSettings?.isDarkMode ?? false}
+              name='isDarkMode'
+            />
+          }
+          label={t.darkModeLabel}
+        />
+        <Button type='submit' variant='contained'>
+          {t.savePreferences}
+        </Button>
+      </Stack>
+    </Paper>
+  );
+}

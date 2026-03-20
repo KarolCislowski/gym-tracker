@@ -21,6 +21,7 @@ export const enMessages: TranslationDictionary = {
     signInTitle: 'Sign in',
     signInDescription:
       'Use your email address and password to access your tenant workspace.',
+    accountDeleted: 'Your account has been deleted.',
     registrationSuccess: 'Your account has been created. You can sign in now.',
     emailLabel: 'Email',
     passwordLabel: 'Password',
@@ -61,5 +62,38 @@ export const enMessages: TranslationDictionary = {
     themeDark: 'Dark',
     themeLight: 'Light',
     signOut: 'Sign out',
+  },
+  settings: {
+    title: 'Settings',
+    description: 'Manage your tenant preferences, password, and account lifecycle.',
+    preferencesTitle: 'Preferences',
+    preferencesDescription: 'Update language and interface mode for your workspace.',
+    languageLabel: 'Language',
+    darkModeLabel: 'Dark mode',
+    savePreferences: 'Save preferences',
+    preferencesUpdated: 'Preferences updated successfully.',
+    securityTitle: 'Password',
+    securityDescription: 'Use your current password to set a new one.',
+    currentPasswordLabel: 'Current password',
+    newPasswordLabel: 'New password',
+    confirmPasswordLabel: 'Confirm new password',
+    changePassword: 'Change password',
+    passwordUpdated: 'Password updated successfully.',
+    dangerZoneTitle: 'Delete account',
+    dangerZoneDescription:
+      'Deleting your account permanently removes your Core account and tenant database.',
+    deleteAccountWarning:
+      'This action cannot be undone. Please confirm with your current password and email address.',
+    confirmationEmailLabel: 'Confirm email address',
+    confirmationEmailHelp:
+      'Type the email address of the account you want to delete.',
+    deleteAccount: 'Delete account',
+    accountDeleted: 'Account deleted successfully.',
+    errorGeneric: 'Something went wrong. Please try again.',
+    errorInvalidCurrentPassword: 'The current password is incorrect.',
+    errorPasswordConfirmationMismatch:
+      'The new password confirmation does not match.',
+    errorConfirmationEmailMismatch:
+      'The confirmation email does not match the signed-in account.',
   },
 };

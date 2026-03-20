@@ -17,6 +17,7 @@ interface LoginPageProps {
   searchParams?: Promise<{
     error?: string;
     registered?: string;
+    deleted?: string;
     lang?: string;
   }>;
 }
@@ -41,6 +42,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       activeLanguage={activeLanguage}
       pathname='/login'
       query={{
+        deleted: params?.deleted,
         error: params?.error,
         registered: params?.registered,
       }}
@@ -50,6 +52,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       width='min(100%, 560px)'>
       <LoginForm
         activeLanguage={activeLanguage}
+        deleted={params?.deleted}
         error={params?.error}
         registered={params?.registered}
         translations={t}

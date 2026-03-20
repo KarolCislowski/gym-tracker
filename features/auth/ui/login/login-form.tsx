@@ -8,6 +8,7 @@ import { loginAction } from '../../infrastructure/auth.actions';
 
 interface LoginFormProps {
   activeLanguage: string;
+  deleted?: string;
   error?: string;
   registered?: string;
   translations: TranslationDictionary;
@@ -18,6 +19,7 @@ interface LoginFormProps {
  */
 export function LoginForm({
   activeLanguage,
+  deleted,
   error,
   registered,
   translations,
@@ -28,6 +30,9 @@ export function LoginForm({
     <>
       {registered === '1' ? (
         <Alert severity='success'>{t.registrationSuccess}</Alert>
+      ) : null}
+      {deleted === '1' ? (
+        <Alert severity='success'>{t.accountDeleted}</Alert>
       ) : null}
       {error ? <Alert severity='error'>{error}</Alert> : null}
       <Stack

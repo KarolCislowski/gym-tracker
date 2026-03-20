@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
 import {
@@ -43,23 +44,20 @@ export function AppSideDrawer({
   onToggleDesktop,
   translations,
 }: AppSideDrawerProps) {
+  const pathname = usePathname();
   const t = translations.dashboard;
   const navigationItems = [
     {
-      icon: <SpaceDashboardRoundedIcon color='primary' />,
+      href: '/',
+      icon: <SpaceDashboardRoundedIcon />,
       label: t.overview,
       secondary: t.workspace,
-      selected: true,
     },
     {
-      icon: <PersonRoundedIcon />,
-      label: t.profile,
-      secondary: displayName,
-    },
-    {
+      href: '/settings',
       icon: <SettingsRoundedIcon />,
       label: t.settings,
-      secondary: t.workspace,
+      secondary: displayName,
     },
   ];
 
@@ -110,39 +108,42 @@ export function AppSideDrawer({
       <List sx={{ px: 1.5, py: 1 }}>
         {navigationItems.map((item) => (
           <Tooltip
-            key={item.label}
+            key={item.href}
             placement='right'
             title={isDesktopExpanded ? '' : item.label}
           >
-            <ListItemButton
-              selected={item.selected}
-              sx={{
-                minHeight: 52,
-                borderRadius: 3,
-                justifyContent: isDesktopExpanded ? 'initial' : 'center',
-                px: isDesktopExpanded ? 1.5 : 1,
-              }}
-            >
-              <ListItemIcon
+            <Link href={item.href} style={{ color: 'inherit', textDecoration: 'none' }}>
+              <ListItemButton
+                onClick={isMobileOpen ? onCloseMobile : undefined}
+                selected={pathname === item.href}
                 sx={{
-                  minWidth: 0,
-                  mr: isDesktopExpanded ? 1.5 : 0,
-                  justifyContent: 'center',
+                  minHeight: 52,
+                  borderRadius: 3,
+                  justifyContent: isDesktopExpanded ? 'initial' : 'center',
+                  px: isDesktopExpanded ? 1.5 : 1,
                 }}
               >
-                {item.icon}
-              </ListItemIcon>
-              {isDesktopExpanded ? (
-                <ListItemText
-                  primary={item.label}
-                  secondary={item.secondary}
-                  slotProps={{
-                    primary: { noWrap: true },
-                    secondary: { noWrap: true },
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: isDesktopExpanded ? 1.5 : 0,
+                    justifyContent: 'center',
                   }}
-                />
-              ) : null}
-            </ListItemButton>
+                >
+                  {item.icon}
+                </ListItemIcon>
+                {isDesktopExpanded ? (
+                  <ListItemText
+                    primary={item.label}
+                    secondary={item.secondary}
+                    slotProps={{
+                      primary: { noWrap: true },
+                      secondary: { noWrap: true },
+                    }}
+                  />
+                ) : null}
+              </ListItemButton>
+            </Link>
           </Tooltip>
         ))}
       </List>

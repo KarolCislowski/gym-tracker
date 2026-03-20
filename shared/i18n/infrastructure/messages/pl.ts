@@ -20,6 +20,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     signInTitle: 'Logowanie',
     signInDescription:
       'Użyj adresu email i hasła, aby uzyskać dostęp do swojej przestrzeni tenantowej.',
+    accountDeleted: 'Twoje konto zostało usunięte.',
     registrationSuccess:
       'Twoje konto zostało utworzone. Możesz się teraz zalogować.',
     emailLabel: 'Email',
@@ -59,5 +60,41 @@ export const plMessages: TranslationDictionaryOverrides = {
     settingsTheme: 'Motyw',
     themeDark: 'Ciemny',
     themeLight: 'Jasny',
+  },
+  settings: {
+    title: 'Ustawienia',
+    description:
+      'Zarządzaj preferencjami tenantowymi, hasłem i cyklem życia konta.',
+    preferencesTitle: 'Preferencje',
+    preferencesDescription:
+      'Zaktualizuj język i tryb interfejsu dla swojej przestrzeni.',
+    languageLabel: 'Język',
+    darkModeLabel: 'Tryb ciemny',
+    savePreferences: 'Zapisz preferencje',
+    preferencesUpdated: 'Preferencje zostały zapisane.',
+    securityTitle: 'Hasło',
+    securityDescription:
+      'Użyj aktualnego hasła, aby ustawić nowe.',
+    currentPasswordLabel: 'Aktualne hasło',
+    newPasswordLabel: 'Nowe hasło',
+    confirmPasswordLabel: 'Potwierdź nowe hasło',
+    changePassword: 'Zmień hasło',
+    passwordUpdated: 'Hasło zostało zmienione.',
+    dangerZoneTitle: 'Usuń konto',
+    dangerZoneDescription:
+      'Usunięcie konta trwale usuwa konto Core oraz tenantową bazę danych.',
+    deleteAccountWarning:
+      'Tej operacji nie można cofnąć. Potwierdź ją aktualnym hasłem i adresem email.',
+    confirmationEmailLabel: 'Potwierdź adres email',
+    confirmationEmailHelp:
+      'Wpisz adres email konta, które chcesz usunąć.',
+    deleteAccount: 'Usuń konto',
+    accountDeleted: 'Konto zostało usunięte.',
+    errorGeneric: 'Coś poszło nie tak. Spróbuj ponownie.',
+    errorInvalidCurrentPassword: 'Aktualne hasło jest nieprawidłowe.',
+    errorPasswordConfirmationMismatch:
+      'Potwierdzenie nowego hasła nie zgadza się.',
+    errorConfirmationEmailMismatch:
+      'Potwierdzony adres email nie pasuje do zalogowanego konta.',
   },
 };

@@ -20,6 +20,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     signInTitle: 'Logga in',
     signInDescription:
       'Använd din e-postadress och ditt lösenord för att komma åt din tenantyta.',
+    accountDeleted: 'Ditt konto har raderats.',
     registrationSuccess: 'Ditt konto har skapats. Du kan logga in nu.',
     emailLabel: 'E-post',
     passwordLabel: 'Lösenord',
@@ -58,5 +59,41 @@ export const svMessages: TranslationDictionaryOverrides = {
     settingsTheme: 'Tema',
     themeDark: 'Mörkt',
     themeLight: 'Ljust',
+  },
+  settings: {
+    title: 'Inställningar',
+    description:
+      'Hantera tenantinställningar, lösenord och kontots livscykel.',
+    preferencesTitle: 'Preferenser',
+    preferencesDescription:
+      'Uppdatera språk och gränssnittsläge för din arbetsyta.',
+    languageLabel: 'Språk',
+    darkModeLabel: 'Mörkt läge',
+    savePreferences: 'Spara preferenser',
+    preferencesUpdated: 'Preferenserna har uppdaterats.',
+    securityTitle: 'Lösenord',
+    securityDescription:
+      'Använd ditt nuvarande lösenord för att ange ett nytt.',
+    currentPasswordLabel: 'Nuvarande lösenord',
+    newPasswordLabel: 'Nytt lösenord',
+    confirmPasswordLabel: 'Bekräfta nytt lösenord',
+    changePassword: 'Byt lösenord',
+    passwordUpdated: 'Lösenordet har uppdaterats.',
+    dangerZoneTitle: 'Radera konto',
+    dangerZoneDescription:
+      'Att radera kontot tar permanent bort ditt Core-konto och tenantdatabas.',
+    deleteAccountWarning:
+      'Den här åtgärden kan inte ångras. Bekräfta med ditt nuvarande lösenord och din e-postadress.',
+    confirmationEmailLabel: 'Bekräfta e-postadress',
+    confirmationEmailHelp:
+      'Skriv e-postadressen för kontot du vill radera.',
+    deleteAccount: 'Radera konto',
+    accountDeleted: 'Kontot har raderats.',
+    errorGeneric: 'Något gick fel. Försök igen.',
+    errorInvalidCurrentPassword: 'Det nuvarande lösenordet är felaktigt.',
+    errorPasswordConfirmationMismatch:
+      'Bekräftelsen av det nya lösenordet matchar inte.',
+    errorConfirmationEmailMismatch:
+      'Bekräftelseadressen matchar inte det inloggade kontot.',
   },
 };
