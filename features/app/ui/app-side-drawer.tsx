@@ -2,12 +2,10 @@
 
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import FitnessCenterRoundedIcon from '@mui/icons-material/FitnessCenterRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
 import {
-  Avatar,
   Box,
   Divider,
   Drawer,
@@ -18,7 +16,6 @@ import {
   ListItemText,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -77,43 +74,28 @@ export function AppSideDrawer({
     >
       <Stack
         direction='row'
-        spacing={1.5}
         alignItems='center'
         sx={{
+          width: '100%',
           px: 1.5,
-          py: 2,
-          minHeight: 76,
-          justifyContent: isDesktopExpanded ? 'space-between' : 'center',
+          py: 1,
+          minHeight: 64,
+          justifyContent: isDesktopExpanded ? 'flex-end' : 'center',
         }}
       >
-        <Stack
-          direction='row'
-          spacing={1.5}
-          alignItems='center'
-          sx={{
-            minWidth: 0,
-            justifyContent: isDesktopExpanded ? 'flex-start' : 'center',
-            flexGrow: 1,
-          }}
-        >
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
-            <FitnessCenterRoundedIcon />
-          </Avatar>
-          {isDesktopExpanded ? (
-            <Box sx={{ minWidth: 0 }}>
-              <Typography variant='subtitle1' fontWeight={700} noWrap>
-                {t.appName}
-              </Typography>
-              <Typography variant='body2' color='text.secondary' noWrap>
-                {t.workspace}
-              </Typography>
-            </Box>
-          ) : null}
-        </Stack>
         <IconButton
           aria-label={isDesktopExpanded ? t.collapseNavigation : t.expandNavigation}
           onClick={onToggleDesktop}
-          sx={{ display: { xs: 'none', md: 'inline-flex' } }}
+          sx={{
+            display: { xs: 'none', md: 'inline-flex' },
+            width: 52,
+            height: 52,
+            borderRadius: 3,
+            color: 'text.secondary',
+            '&:hover': {
+              backgroundColor: 'action.hover',
+            },
+          }}
         >
           {isDesktopExpanded ? (
             <ChevronLeftRoundedIcon />
