@@ -1,4 +1,5 @@
 import {
+  Box,
   Stack,
   Typography,
 } from '@mui/material';
@@ -49,11 +50,20 @@ export function SettingsPage({
         status={status}
         translations={translations}
       />
-      <SettingsPreferencesForm
-        translations={translations}
-        userSnapshot={userSnapshot}
-      />
-      <SettingsPasswordForm translations={translations} />
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', xl: 'repeat(2, minmax(0, 1fr))' },
+          gap: 3,
+          alignItems: 'start',
+        }}
+      >
+        <SettingsPreferencesForm
+          translations={translations}
+          userSnapshot={userSnapshot}
+        />
+        <SettingsPasswordForm translations={translations} />
+      </Box>
       <SettingsDeleteAccountForm email={email} translations={translations} />
     </Stack>
   );
