@@ -21,6 +21,9 @@ import type {
 
 /**
  * Updates tenant-level settings for the current workspace.
+ * @param input - Tenant settings values to persist for the authenticated workspace.
+ * @returns A promise that resolves when the tenant settings have been updated.
+ * @remarks Input is validated before persistence to ensure language and mode values stay within supported bounds.
  */
 export async function updateTenantSettings(
   input: UpdateTenantSettingsInput,
@@ -36,6 +39,9 @@ export async function updateTenantSettings(
 
 /**
  * Changes the signed-in user's password after verifying the current password.
+ * @param input - Password change payload for the authenticated user.
+ * @returns A promise that resolves when the password hash has been updated.
+ * @remarks Validation failures and security mismatches are surfaced as stable error codes for the UI layer.
  */
 export async function changeUserPassword(
   input: ChangePasswordInput,
@@ -78,6 +84,9 @@ export async function changeUserPassword(
 
 /**
  * Deletes the signed-in account after password validation and explicit email confirmation.
+ * @param input - Account deletion payload for the authenticated user.
+ * @returns A promise that resolves when both the Core user and tenant database have been removed.
+ * @remarks This operation is destructive and requires both password verification and email confirmation.
  */
 export async function deleteUserAccount(
   input: DeleteAccountInput,

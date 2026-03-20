@@ -21,6 +21,11 @@ interface SettingsPreferencesFormProps {
 
 /**
  * Form section for updating tenant preference values from the Settings document.
+ * @param props - Component props for the tenant preferences form.
+ * @param props.translations - The translation dictionary for the active language.
+ * @param props.userSnapshot - The authenticated user's snapshot containing the current settings values.
+ * @returns A React element rendering the tenant preferences form.
+ * @remarks The form uses server actions and defaults to the current persisted tenant settings.
  */
 export function SettingsPreferencesForm({
   translations,

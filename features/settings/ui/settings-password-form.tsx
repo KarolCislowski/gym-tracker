@@ -10,6 +10,10 @@ interface SettingsPasswordFormProps {
 
 /**
  * Form section for changing the signed-in user's password.
+ * @param props - Component props for the password change form.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering the password change form.
+ * @remarks The form posts to a server action and requires the current password for confirmation.
  */
 export function SettingsPasswordForm({
   translations,

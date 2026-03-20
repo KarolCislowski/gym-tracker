@@ -1,8 +1,4 @@
-import {
-  Box,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -24,6 +20,14 @@ interface SettingsPageProps {
 
 /**
  * Authenticated settings view for tenant preferences and account management.
+ * @param props - Component props for the authenticated settings screen.
+ * @param props.email - The email of the authenticated user, used for account deletion confirmation.
+ * @param props.error - Optional error code returned by settings actions.
+ * @param props.status - Optional success status returned by settings actions.
+ * @param props.translations - The translation dictionary for the active language.
+ * @param props.userSnapshot - The authenticated user's snapshot containing current settings.
+ * @returns A React element rendering the settings page with its sections and feedback.
+ * @remarks This component is server-rendered and expects all props to be provided by the parent page.
  */
 export function SettingsPage({
   email,
@@ -38,7 +42,9 @@ export function SettingsPage({
   return (
     <Stack spacing={3}>
       {activeSettings ? (
-        <ThemeModeSync mode={getColorModeFromSettings(activeSettings.isDarkMode)} />
+        <ThemeModeSync
+          mode={getColorModeFromSettings(activeSettings.isDarkMode)}
+        />
       ) : null}
       <Stack spacing={1}>
         <Typography variant='h3'>{t.title}</Typography>
@@ -56,8 +62,7 @@ export function SettingsPage({
           gridTemplateColumns: { xs: '1fr', xl: 'repeat(2, minmax(0, 1fr))' },
           gap: 3,
           alignItems: 'start',
-        }}
-      >
+        }}>
         <SettingsPreferencesForm
           translations={translations}
           userSnapshot={userSnapshot}

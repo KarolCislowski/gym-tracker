@@ -8,6 +8,14 @@ interface SettingsFeedbackAlertProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Maps settings route status and error codes to translated alert content.
+ * @param t - The translated settings message bundle.
+ * @param error - Optional error code from a failed settings action.
+ * @param status - Optional success status from a completed settings action.
+ * @returns Alert metadata when a matching message exists; otherwise `null`.
+ * @remarks This helper keeps route-level query params decoupled from display strings.
+ */
 function resolveFeedback(
   t: TranslationDictionary['settings'],
   error?: string,
@@ -38,6 +46,12 @@ function resolveFeedback(
 
 /**
  * Resolves and renders feedback messages for settings actions.
+ * @param props - Component props for settings feedback rendering.
+ * @param props.error - Optional error code from a settings action.
+ * @param props.status - Optional success status from a settings action.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A translated alert element when feedback is available; otherwise `null`.
+ * @remarks This component intentionally renders nothing when the route has no actionable feedback.
  */
 export function SettingsFeedbackAlert({
   error,

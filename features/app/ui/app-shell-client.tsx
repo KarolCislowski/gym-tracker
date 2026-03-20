@@ -17,6 +17,13 @@ interface AppShellClientProps {
 
 /**
  * Client-side wrapper responsible only for drawer interaction state.
+ * @param props - Component props for the client shell wrapper.
+ * @param props.children - Nested page content rendered inside the shell layout.
+ * @param props.displayName - Display name shown in the authenticated shell.
+ * @param props.logoutAction - Server action used to sign the current user out.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering the interactive shell layout.
+ * @remarks This component owns only responsive drawer state and leaves data loading to server components.
  */
 export function AppShellClient({
   children,

@@ -26,6 +26,13 @@ interface AppHeaderProps {
 
 /**
  * Shared application header displayed across authenticated dashboard pages.
+ * @param props - Component props for the authenticated header.
+ * @param props.displayName - Display name of the signed-in user.
+ * @param props.logoutAction - Server action used to sign the current user out.
+ * @param props.onOpenMobileNavigation - Callback that opens the mobile side navigation.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering the authenticated header.
+ * @remarks The header remains client-side because it forwards interaction callbacks to the shell state.
  */
 export function AppHeader({
   displayName,

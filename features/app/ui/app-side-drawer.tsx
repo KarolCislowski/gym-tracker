@@ -35,6 +35,15 @@ const collapsedDrawerWidth = 88;
 
 /**
  * Shared application side navigation with a collapsible desktop state.
+ * @param props - Component props for the authenticated side drawer.
+ * @param props.displayName - Display name used as secondary navigation context.
+ * @param props.isDesktopExpanded - Indicates whether the desktop drawer is expanded.
+ * @param props.isMobileOpen - Indicates whether the temporary mobile drawer is open.
+ * @param props.onCloseMobile - Callback that closes the mobile drawer.
+ * @param props.onToggleDesktop - Callback that toggles the desktop drawer width.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering both mobile and desktop drawer variants.
+ * @remarks The component renders a temporary drawer on small screens and a permanent drawer on desktop.
  */
 export function AppSideDrawer({
   displayName,

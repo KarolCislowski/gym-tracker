@@ -12,6 +12,9 @@ import {
 
 /**
  * Persists tenant preference updates.
+ * @param formData - Submitted form data containing tenant preference values.
+ * @returns A promise that resolves only through redirect handling.
+ * @remarks The action always redirects either to a success status or to an error code on the settings route.
  */
 export async function updateSettingsAction(formData: FormData): Promise<void> {
   const session = await auth();
@@ -35,6 +38,9 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
 
 /**
  * Changes the signed-in user's password.
+ * @param formData - Submitted form data containing current and next password values.
+ * @returns A promise that resolves only through redirect handling.
+ * @remarks Password update outcomes are encoded as query params so the route can render translated feedback.
  */
 export async function changePasswordAction(formData: FormData): Promise<void> {
   const session = await auth();
@@ -59,6 +65,9 @@ export async function changePasswordAction(formData: FormData): Promise<void> {
 
 /**
  * Deletes the signed-in account after explicit confirmation.
+ * @param formData - Submitted form data containing deletion confirmation values.
+ * @returns A promise that resolves by signing the user out and redirecting to the login route.
+ * @remarks Successful deletion immediately invalidates the session and navigates to a deleted-account state.
  */
 export async function deleteAccountAction(formData: FormData): Promise<void> {
   const session = await auth();
@@ -82,6 +91,12 @@ export async function deleteAccountAction(formData: FormData): Promise<void> {
   });
 }
 
+/**
+ * Extracts a stable settings error code from thrown values.
+ * @param error - Unknown error value thrown by validation or persistence code.
+ * @returns A stable error code string understood by the settings UI.
+ * @remarks Unknown failures collapse to a generic code to keep user-facing messaging predictable.
+ */
 function getSettingsErrorCode(error: unknown): string {
   if (error instanceof Error && error.message) {
     return error.message;

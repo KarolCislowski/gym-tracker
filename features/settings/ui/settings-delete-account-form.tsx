@@ -11,6 +11,11 @@ interface SettingsDeleteAccountFormProps {
 
 /**
  * Danger-zone form section for deleting the signed-in account with explicit confirmation.
+ * @param props - Component props for the account deletion form.
+ * @param props.email - The signed-in user's email shown as the confirmation target.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering the account deletion form.
+ * @remarks Account deletion requires both the current password and a matching confirmation email.
  */
 export function SettingsDeleteAccountForm({
   email,
