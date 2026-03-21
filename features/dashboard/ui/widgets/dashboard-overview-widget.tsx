@@ -32,7 +32,9 @@ export function DashboardOverviewWidget({
         <Typography variant='overline' color='text.secondary'>
           {translations.overview}
         </Typography>
-        <Typography variant='h3'>{translations.welcomeBack}</Typography>
+        <Typography component='h1' variant='h3'>
+          {translations.welcomeBack}
+        </Typography>
         <Typography color='text.secondary'>{translations.workspaceReady}</Typography>
         <Chip
           label={`${translations.tenantDatabase}: ${tenantDbName}`}

@@ -49,6 +49,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     settings: 'Ustawienia',
     workspace: 'Przestrzeń',
     openNavigation: 'Otwórz nawigację',
+    primaryNavigation: 'Nawigacja główna',
     collapseNavigation: 'Zwiń nawigację',
     expandNavigation: 'Rozwiń nawigację',
     welcomeBack: 'Witamy ponownie',

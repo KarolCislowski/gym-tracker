@@ -38,7 +38,9 @@ export function ProfilePage({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant='h3'>{t.title}</Typography>
+        <Typography component='h1' variant='h3'>
+          {t.title}
+        </Typography>
         <Typography color='text.secondary'>{t.description}</Typography>
       </Stack>
 

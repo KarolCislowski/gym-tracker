@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 
@@ -31,11 +31,25 @@ export function ProfileDetailsSection({
   userSnapshot,
 }: ProfileDetailsSectionProps) {
   const [mode, setMode] = useState<'view' | 'edit'>(initialMode);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
   const t = translations.profile;
+
+  useEffect(() => {
+    if (mode !== 'edit') {
+      return;
+    }
+
+    const firstField = sectionRef.current?.querySelector<HTMLElement>(
+      'form input:not([disabled]), form textarea:not([disabled]), form [role="combobox"]',
+    );
+
+    firstField?.focus();
+  }, [mode]);
 
   return (
     <Paper
       elevation={0}
+      ref={sectionRef}
       sx={{
         p: { xs: 3, md: 4 },
         border: 1,
@@ -51,7 +65,9 @@ export function ProfileDetailsSection({
           spacing={2}
         >
           <Stack spacing={0.5}>
-            <Typography variant='h6'>{t.personalInfoTitle}</Typography>
+            <Typography component='h2' variant='h6'>
+              {t.personalInfoTitle}
+            </Typography>
             <Typography color='text.secondary'>
               {t.personalInfoDescription}
             </Typography>

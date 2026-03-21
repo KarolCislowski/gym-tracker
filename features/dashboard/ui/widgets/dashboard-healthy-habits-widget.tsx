@@ -51,7 +51,9 @@ export function DashboardHealthyHabitsWidget({
         >
           <Stack direction='row' spacing={1} alignItems='center'>
             <FavoriteRoundedIcon color='primary' fontSize='small' />
-            <Typography variant='h6'>{dashboardTranslations.healthyHabits}</Typography>
+            <Typography component='h2' variant='h6'>
+              {dashboardTranslations.healthyHabits}
+            </Typography>
           </Stack>
           <Link href='/profile'>
             <Button

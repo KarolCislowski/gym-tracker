@@ -33,7 +33,9 @@ export function DashboardSettingsWidget({
       <Stack spacing={1.5}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <SettingsRoundedIcon color='primary' fontSize='small' />
-          <Typography variant='h6'>{translations.settings}</Typography>
+          <Typography component='h2' variant='h6'>
+            {translations.settings}
+          </Typography>
         </Stack>
         <Typography color='text.secondary'>
           {translations.settingsLanguage}: <strong>{settings.language}</strong>

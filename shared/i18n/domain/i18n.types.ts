@@ -49,6 +49,7 @@ export interface TranslationDictionary {
     settings: string;
     workspace: string;
     openNavigation: string;
+    primaryNavigation: string;
     collapseNavigation: string;
     expandNavigation: string;
     welcomeBack: string;

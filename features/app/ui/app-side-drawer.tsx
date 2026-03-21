@@ -122,7 +122,7 @@ export function AppSideDrawer({
 
       <Divider />
 
-      <Box component='nav' aria-label={t.openNavigation}>
+      <Box component='nav' aria-label={t.primaryNavigation}>
         <List sx={{ px: 1.5, py: 1 }}>
         {navigationItems.map((item) => (
           <Tooltip

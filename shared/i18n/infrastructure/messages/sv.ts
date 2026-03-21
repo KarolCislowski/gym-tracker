@@ -48,6 +48,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     settings: 'Inställningar',
     workspace: 'Arbetsyta',
     openNavigation: 'Öppna navigering',
+    primaryNavigation: 'Primär navigering',
     collapseNavigation: 'Fäll ihop navigering',
     expandNavigation: 'Expandera navigering',
     welcomeBack: 'Välkommen tillbaka',

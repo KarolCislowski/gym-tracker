@@ -51,7 +51,9 @@ export function DashboardProfileWidget({
         >
           <Stack direction='row' spacing={1} alignItems='center'>
             <PersonRoundedIcon color='primary' fontSize='small' />
-            <Typography variant='h6'>{dashboardTranslations.profile}</Typography>
+            <Typography component='h2' variant='h6'>
+              {dashboardTranslations.profile}
+            </Typography>
           </Stack>
           <Link href='/profile'>
             <Button

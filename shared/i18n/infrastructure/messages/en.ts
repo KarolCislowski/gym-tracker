@@ -49,6 +49,7 @@ export const enMessages: TranslationDictionary = {
     settings: 'Settings',
     workspace: 'Workspace',
     openNavigation: 'Open navigation',
+    primaryNavigation: 'Primary navigation',
     collapseNavigation: 'Collapse navigation',
     expandNavigation: 'Expand navigation',
     welcomeBack: 'Welcome back',
