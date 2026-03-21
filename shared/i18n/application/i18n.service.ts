@@ -51,5 +51,9 @@ export function getTranslations(
       ...enMessages.settings,
       ...localized.settings,
     },
+    profile: {
+      ...enMessages.profile,
+      ...localized.profile,
+    },
   };
 }

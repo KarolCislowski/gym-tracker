@@ -96,4 +96,36 @@ export const svMessages: TranslationDictionaryOverrides = {
     errorConfirmationEmailMismatch:
       'Bekräftelseadressen matchar inte det inloggade kontot.',
   },
+  profile: {
+    title: 'Profil',
+    description:
+      'Granska och uppdatera personuppgifter som används i hela din arbetsyta.',
+    personalInfoTitle: 'Personuppgifter',
+    personalInfoDescription:
+      'Håll dessa värden uppdaterade så att rekommendationer och beräkningar förblir relevanta.',
+    firstNameLabel: 'Förnamn',
+    lastNameLabel: 'Efternamn',
+    emailLabel: 'E-post',
+    ageLabel: 'Ålder',
+    biologicalSexLabel: 'Biologiskt kön',
+    biologicalSexTooltip:
+      'Detta inkluderande fält används endast för metabola beräkningar och definierar inte din identitet.',
+    activityLevelLabel: 'Aktivitetsnivå',
+    saveChanges: 'Spara ändringar',
+    editProfile: 'Redigera profil',
+    goToProfile: 'Gå till profil',
+    cancelEditing: 'Avbryt',
+    updated: 'Profilen har uppdaterats.',
+    emptyValue: 'Ej angivet',
+    sexFemale: 'Kvinna',
+    sexMale: 'Man',
+    sexOther: 'Annat',
+    sexPreferNotToSay: 'Vill inte ange',
+    activitySedentary: 'Stillasittande',
+    activityLightlyActive: 'Lätt aktiv',
+    activityModeratelyActive: 'Måttligt aktiv',
+    activityVeryActive: 'Mycket aktiv',
+    activityExtraActive: 'Extra aktiv',
+    errorGeneric: 'Något gick fel. Försök igen.',
+  },
 };

@@ -90,10 +90,40 @@ export interface TranslationDictionary {
     errorPasswordConfirmationMismatch: string;
     errorConfirmationEmailMismatch: string;
   };
+  profile: {
+    title: string;
+    description: string;
+    personalInfoTitle: string;
+    personalInfoDescription: string;
+    firstNameLabel: string;
+    lastNameLabel: string;
+    emailLabel: string;
+    ageLabel: string;
+    biologicalSexLabel: string;
+    biologicalSexTooltip: string;
+    activityLevelLabel: string;
+    saveChanges: string;
+    editProfile: string;
+    goToProfile: string;
+    cancelEditing: string;
+    updated: string;
+    emptyValue: string;
+    sexFemale: string;
+    sexMale: string;
+    sexOther: string;
+    sexPreferNotToSay: string;
+    activitySedentary: string;
+    activityLightlyActive: string;
+    activityModeratelyActive: string;
+    activityVeryActive: string;
+    activityExtraActive: string;
+    errorGeneric: string;
+  };
 }
 
 export interface TranslationDictionaryOverrides {
   auth?: Partial<TranslationDictionary['auth']>;
   dashboard?: Partial<TranslationDictionary['dashboard']>;
   settings?: Partial<TranslationDictionary['settings']>;
+  profile?: Partial<TranslationDictionary['profile']>;
 }

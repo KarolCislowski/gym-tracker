@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -9,6 +11,52 @@ interface DashboardHomeProps {
   tenantDbName: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
+}
+
+function getSexLabel(
+  t: TranslationDictionary['profile'],
+  value: AuthenticatedUserSnapshot['profile'] extends infer P
+    ? P extends { gender: infer G }
+      ? G
+      : never
+    : never,
+): string {
+  switch (value) {
+    case 'female':
+      return t.sexFemale;
+    case 'male':
+      return t.sexMale;
+    case 'other':
+      return t.sexOther;
+    case 'prefer_not_to_say':
+      return t.sexPreferNotToSay;
+    default:
+      return t.emptyValue;
+  }
+}
+
+function getActivityLabel(
+  t: TranslationDictionary['profile'],
+  value: AuthenticatedUserSnapshot['profile'] extends infer P
+    ? P extends { activityLevel: infer A }
+      ? A
+      : never
+    : never,
+): string {
+  switch (value) {
+    case 'sedentary':
+      return t.activitySedentary;
+    case 'lightly_active':
+      return t.activityLightlyActive;
+    case 'moderately_active':
+      return t.activityModeratelyActive;
+    case 'very_active':
+      return t.activityVeryActive;
+    case 'extra_active':
+      return t.activityExtraActive;
+    default:
+      return t.emptyValue;
+  }
 }
 
 /**
@@ -20,6 +68,7 @@ export function DashboardHome({
   userSnapshot,
 }: DashboardHomeProps) {
   const t = translations.dashboard;
+  const profileT = translations.profile;
 
   return (
     <Stack spacing={3}>
@@ -65,9 +114,25 @@ export function DashboardHome({
             }}
           >
             <Stack spacing={1.5}>
-              <Stack direction='row' spacing={1} alignItems='center'>
-                <PersonRoundedIcon color='primary' fontSize='small' />
-                <Typography variant='h6'>{t.profile}</Typography>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={1.5}
+                justifyContent='space-between'
+                alignItems={{ xs: 'flex-start', sm: 'center' }}
+              >
+                <Stack direction='row' spacing={1} alignItems='center'>
+                  <PersonRoundedIcon color='primary' fontSize='small' />
+                  <Typography variant='h6'>{t.profile}</Typography>
+                </Stack>
+                <Link href='/profile'>
+                  <Button
+                    size='small'
+                    startIcon={<EditRoundedIcon />}
+                    variant='outlined'
+                  >
+                    {profileT.goToProfile}
+                  </Button>
+                </Link>
               </Stack>
               <Typography color='text.secondary'>
                 {t.profileName}:{' '}
@@ -77,6 +142,24 @@ export function DashboardHome({
               </Typography>
               <Typography color='text.secondary'>
                 {t.profileEmail}: <strong>{userSnapshot.profile.email}</strong>
+              </Typography>
+              <Typography color='text.secondary'>
+                {profileT.ageLabel}:{' '}
+                <strong>
+                  {userSnapshot.profile.age != null
+                    ? String(userSnapshot.profile.age)
+                    : profileT.emptyValue}
+                </strong>
+              </Typography>
+              <Typography color='text.secondary'>
+                {profileT.biologicalSexLabel}:{' '}
+                <strong>{getSexLabel(profileT, userSnapshot.profile.gender)}</strong>
+              </Typography>
+              <Typography color='text.secondary'>
+                {profileT.activityLevelLabel}:{' '}
+                <strong>
+                  {getActivityLabel(profileT, userSnapshot.profile.activityLevel)}
+                </strong>
               </Typography>
             </Stack>
           </Paper>

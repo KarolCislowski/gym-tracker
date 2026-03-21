@@ -97,4 +97,36 @@ export const plMessages: TranslationDictionaryOverrides = {
     errorConfirmationEmailMismatch:
       'Potwierdzony adres email nie pasuje do zalogowanego konta.',
   },
+  profile: {
+    title: 'Profil',
+    description:
+      'Przeglądaj i aktualizuj dane osobowe używane w całej Twojej przestrzeni.',
+    personalInfoTitle: 'Dane osobowe',
+    personalInfoDescription:
+      'Dbaj o aktualność tych wartości, aby rekomendacje i obliczenia pozostawały trafne.',
+    firstNameLabel: 'Imię',
+    lastNameLabel: 'Nazwisko',
+    emailLabel: 'Email',
+    ageLabel: 'Wiek',
+    biologicalSexLabel: 'Płeć biologiczna',
+    biologicalSexTooltip:
+      'To inkluzywne pole służy wyłącznie do obliczeń metabolicznych i nie definiuje Twojej tożsamości.',
+    activityLevelLabel: 'Poziom aktywności',
+    saveChanges: 'Zapisz zmiany',
+    editProfile: 'Edytuj profil',
+    goToProfile: 'Przejdź do profilu',
+    cancelEditing: 'Anuluj',
+    updated: 'Profil został zaktualizowany.',
+    emptyValue: 'Nie podano',
+    sexFemale: 'Kobieta',
+    sexMale: 'Mężczyzna',
+    sexOther: 'Inna',
+    sexPreferNotToSay: 'Wolę nie podawać',
+    activitySedentary: 'Siedzący',
+    activityLightlyActive: 'Lekko aktywny',
+    activityModeratelyActive: 'Umiarkowanie aktywny',
+    activityVeryActive: 'Bardzo aktywny',
+    activityExtraActive: 'Ekstra aktywny',
+    errorGeneric: 'Coś poszło nie tak. Spróbuj ponownie.',
+  },
 };

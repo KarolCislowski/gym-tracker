@@ -39,7 +39,11 @@ describe('DashboardHome', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/tenant database: tenant_john_123/i)).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('31')).toBeInTheDocument();
+    expect(screen.getByText('Male')).toBeInTheDocument();
+    expect(screen.getByText('Moderately active')).toBeInTheDocument();
     expect(screen.getByText('sv')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Go to profile' })).toBeInTheDocument();
   });
 });
