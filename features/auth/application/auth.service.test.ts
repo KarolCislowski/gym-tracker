@@ -248,6 +248,7 @@ describe('auth.service', () => {
     mockedFindTenantSettings.mockResolvedValueOnce({
       language: 'sv',
       isDarkMode: true,
+      unitSystem: 'imperial_uk',
     } satisfies TenantSettingsSnapshot);
 
     const result = await getAuthenticatedUserSnapshot(
@@ -267,6 +268,7 @@ describe('auth.service', () => {
       settings: {
         language: 'sv',
         isDarkMode: true,
+        unitSystem: 'imperial_uk',
       },
     });
   });

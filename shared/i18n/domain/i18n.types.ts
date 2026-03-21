@@ -57,9 +57,13 @@ export interface TranslationDictionary {
     profileName: string;
     profileEmail: string;
     settingsLanguage: string;
+    settingsUnitSystem: string;
     settingsTheme: string;
     themeDark: string;
     themeLight: string;
+    unitSystemMetric: string;
+    unitSystemImperialUs: string;
+    unitSystemImperialUk: string;
     signOut: string;
   };
   settings: {
@@ -68,6 +72,10 @@ export interface TranslationDictionary {
     preferencesTitle: string;
     preferencesDescription: string;
     languageLabel: string;
+    unitSystemLabel: string;
+    unitSystemMetric: string;
+    unitSystemImperialUs: string;
+    unitSystemImperialUk: string;
     darkModeLabel: string;
     savePreferences: string;
     preferencesUpdated: string;

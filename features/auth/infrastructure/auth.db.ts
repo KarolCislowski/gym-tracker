@@ -140,6 +140,15 @@ export async function findTenantSettings(
     '@/infrastructure/db/models/tenant-settings.model'
   );
   const TenantSettingsModel = await getTenantSettingsModel(tenantDbName);
+  const settings = await TenantSettingsModel.findOne({ scope: 'tenant' }).lean();
 
-  return TenantSettingsModel.findOne({ scope: 'tenant' }).lean();
+  if (!settings) {
+    return null;
+  }
+
+  return {
+    language: settings.language,
+    isDarkMode: settings.isDarkMode,
+    unitSystem: settings.unitSystem ?? 'metric',
+  };
 }

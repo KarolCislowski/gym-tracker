@@ -1,7 +1,10 @@
+import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
+
 export interface UpdateTenantSettingsInput {
   tenantDbName: string;
   language: string;
   isDarkMode: boolean;
+  unitSystem: UnitSystem;
 }
 
 export interface ChangePasswordInput {

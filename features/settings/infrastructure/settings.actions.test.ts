@@ -78,6 +78,7 @@ describe('settings.actions', () => {
         createFormData({
           language: 'sv',
           isDarkMode: true,
+          unitSystem: 'imperial_us',
         }),
       ),
     ).rejects.toThrow('NEXT_REDIRECT:/settings?status=preferences-updated');
@@ -86,6 +87,7 @@ describe('settings.actions', () => {
       tenantDbName: 'tenant_john',
       language: 'sv',
       isDarkMode: true,
+      unitSystem: 'imperial_us',
     });
   });
 

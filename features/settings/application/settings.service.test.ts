@@ -55,11 +55,13 @@ describe('settings.service', () => {
       tenantDbName: 'tenant_john',
       language: 'sv',
       isDarkMode: true,
+      unitSystem: 'imperial_uk',
     });
 
     expect(mockedUpdateTenantSettingsRecord).toHaveBeenCalledWith('tenant_john', {
       language: 'sv',
       isDarkMode: true,
+      unitSystem: 'imperial_uk',
     });
   });
 

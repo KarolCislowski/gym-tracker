@@ -1,9 +1,11 @@
 import { z } from 'zod';
+import { supportedUnitSystems } from '@/shared/units/domain/unit-system.types';
 
 export const updateTenantSettingsSchema = z.object({
   tenantDbName: z.string().trim().min(1),
   language: z.enum(['en', 'pl', 'sv']),
   isDarkMode: z.boolean(),
+  unitSystem: z.enum(supportedUnitSystems),
 });
 
 export const changePasswordSchema = z

@@ -28,6 +28,10 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
       tenantDbName: session.user.tenantDbName,
       language: String(formData.get('language') ?? 'en'),
       isDarkMode: formData.get('isDarkMode') === 'on',
+      unitSystem: String(formData.get('unitSystem') ?? 'metric') as
+        | 'metric'
+        | 'imperial_us'
+        | 'imperial_uk',
     });
   } catch (error) {
     redirect(`/settings?error=${encodeURIComponent(getSettingsErrorCode(error))}`);

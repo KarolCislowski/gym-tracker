@@ -1,3 +1,5 @@
+import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
+
 export interface AuthenticatedUser {
   id: string;
   email: string;
@@ -70,6 +72,7 @@ export interface TenantProfileSnapshot {
 export interface TenantSettingsSnapshot {
   language: string;
   isDarkMode: boolean;
+  unitSystem: UnitSystem;
 }
 
 export interface AuthenticatedUserSnapshot {

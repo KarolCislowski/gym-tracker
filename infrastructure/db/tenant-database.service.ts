@@ -50,6 +50,7 @@ export async function initializeTenantDatabase(
         scope: 'tenant',
         language: input.language,
         isDarkMode: input.isDarkMode,
+        unitSystem: 'metric',
       },
     },
     { upsert: true },

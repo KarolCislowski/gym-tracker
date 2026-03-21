@@ -55,6 +55,17 @@ export function SettingsPreferencesForm({
           <MenuItem value='pl'>{translations.auth.languagePolish}</MenuItem>
           <MenuItem value='sv'>{translations.auth.languageSwedish}</MenuItem>
         </TextField>
+        <TextField
+          defaultValue={activeSettings?.unitSystem ?? 'metric'}
+          id='unitSystem'
+          label={t.unitSystemLabel}
+          name='unitSystem'
+          select
+        >
+          <MenuItem value='metric'>{t.unitSystemMetric}</MenuItem>
+          <MenuItem value='imperial_us'>{t.unitSystemImperialUs}</MenuItem>
+          <MenuItem value='imperial_uk'>{t.unitSystemImperialUk}</MenuItem>
+        </TextField>
         <FormControlLabel
           control={
             <Switch

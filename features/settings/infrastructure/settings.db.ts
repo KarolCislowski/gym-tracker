@@ -40,7 +40,7 @@ export async function findCoreUserSecurityById(
  */
 export async function updateTenantSettingsRecord(
   tenantDbName: string,
-  input: Pick<TenantSettingsSnapshot, 'language' | 'isDarkMode'>,
+  input: Pick<TenantSettingsSnapshot, 'language' | 'isDarkMode' | 'unitSystem'>,
 ): Promise<void> {
   const TenantSettingsModel = await getTenantSettingsModel(tenantDbName);
 
@@ -50,6 +50,7 @@ export async function updateTenantSettingsRecord(
       $set: {
         language: input.language,
         isDarkMode: input.isDarkMode,
+        unitSystem: input.unitSystem,
       },
     },
     { upsert: true },

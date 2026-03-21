@@ -118,6 +118,7 @@ export async function getAuthenticatedUserSnapshot(
       ? {
           language: settings.language,
           isDarkMode: settings.isDarkMode,
+          unitSystem: settings.unitSystem,
         }
       : null,
   };

@@ -25,6 +25,12 @@ const tenantSettingsSchema = new Schema<TenantSettings>(
       required: true,
       default: false,
     },
+    unitSystem: {
+      type: String,
+      required: true,
+      enum: ['metric', 'imperial_us', 'imperial_uk'],
+      default: 'metric',
+    },
   },
   {
     timestamps: {

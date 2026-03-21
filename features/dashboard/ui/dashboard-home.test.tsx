@@ -29,6 +29,7 @@ describe('DashboardHome', () => {
           settings: {
             language: 'sv',
             isDarkMode: true,
+            unitSystem: 'imperial_uk',
           },
         }}
       />,
@@ -43,6 +44,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Male')).toBeInTheDocument();
     expect(screen.getByText('Moderately active')).toBeInTheDocument();
     expect(screen.getByText('sv')).toBeInTheDocument();
+    expect(screen.getByText('Imperial (UK)')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Go to profile' })).toBeInTheDocument();
   });

@@ -39,6 +39,16 @@ export function DashboardSettingsWidget({
           {translations.settingsLanguage}: <strong>{settings.language}</strong>
         </Typography>
         <Typography color='text.secondary'>
+          {translations.settingsUnitSystem}:{' '}
+          <strong>
+            {settings.unitSystem === 'metric'
+              ? translations.unitSystemMetric
+              : settings.unitSystem === 'imperial_us'
+                ? translations.unitSystemImperialUs
+                : translations.unitSystemImperialUk}
+          </strong>
+        </Typography>
+        <Typography color='text.secondary'>
           {translations.settingsTheme}:{' '}
           <strong>{settings.isDarkMode ? translations.themeDark : translations.themeLight}</strong>
         </Typography>
