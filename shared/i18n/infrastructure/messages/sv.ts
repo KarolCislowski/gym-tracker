@@ -115,6 +115,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     lastNameLabel: 'Efternamn',
     emailLabel: 'E-post',
     ageLabel: 'Ålder',
+    heightLabel: 'Längd',
+    heightFeetLabel: 'Längd (ft)',
+    heightInchesLabel: 'Längd (in)',
     biologicalSexLabel: 'Biologiskt kön',
     biologicalSexTooltip:
       'Detta inkluderande fält används endast för metabola beräkningar och definierar inte din identitet.',

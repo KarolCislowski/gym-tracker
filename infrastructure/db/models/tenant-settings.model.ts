@@ -48,9 +48,18 @@ export async function getTenantSettingsModel(
   tenantDbName: string,
 ): Promise<Model<TenantSettings>> {
   const connection = await getTenantDbConnection(tenantDbName);
+  const existingModel = connection.models.TenantSettings as Model<TenantSettings> | undefined;
 
-  return (
-    (connection.models.TenantSettings as Model<TenantSettings> | undefined) ??
-    connection.model<TenantSettings>('TenantSettings', tenantSettingsSchema)
-  );
+  if (existingModel) {
+    const hasLatestSchemaFields = Boolean(existingModel.schema.path('unitSystem'));
+
+    if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
+      return existingModel;
+    }
+
+    // Refresh the cached model in development after schema changes so new fields are not ignored.
+    connection.deleteModel('TenantSettings');
+  }
+
+  return connection.model<TenantSettings>('TenantSettings', tenantSettingsSchema);
 }

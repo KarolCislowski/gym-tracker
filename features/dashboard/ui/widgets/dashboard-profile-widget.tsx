@@ -6,12 +6,14 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
   getProfileActivityLabel,
+  getProfileHeightLabel,
   getProfileSexLabel,
 } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 interface DashboardProfileWidgetProps {
   profile: NonNullable<AuthenticatedUserSnapshot['profile']>;
+  unitSystem: NonNullable<AuthenticatedUserSnapshot['settings']>['unitSystem'];
   translations: TranslationDictionary;
 }
 
@@ -24,6 +26,7 @@ interface DashboardProfileWidgetProps {
  */
 export function DashboardProfileWidget({
   profile,
+  unitSystem,
   translations,
 }: DashboardProfileWidgetProps) {
   const dashboardTranslations = translations.dashboard;
@@ -69,6 +72,10 @@ export function DashboardProfileWidget({
         <Typography color='text.secondary'>
           {profileTranslations.ageLabel}:{' '}
           <strong>{profile.age != null ? String(profile.age) : profileTranslations.emptyValue}</strong>
+        </Typography>
+        <Typography color='text.secondary'>
+          {profileTranslations.heightLabel}:{' '}
+          <strong>{getProfileHeightLabel(profileTranslations, profile.heightCm, unitSystem)}</strong>
         </Typography>
         <Typography color='text.secondary'>
           {profileTranslations.biologicalSexLabel}:{' '}

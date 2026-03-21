@@ -107,6 +107,9 @@ export interface TranslationDictionary {
     lastNameLabel: string;
     emailLabel: string;
     ageLabel: string;
+    heightLabel: string;
+    heightFeetLabel: string;
+    heightInchesLabel: string;
     biologicalSexLabel: string;
     biologicalSexTooltip: string;
     activityLevelLabel: string;

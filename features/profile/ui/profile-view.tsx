@@ -1,7 +1,11 @@
 import { Box } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
-import { getProfileActivityLabel, getProfileSexLabel } from '@/features/profile/application/profile-view';
+import {
+  getProfileActivityLabel,
+  getProfileHeightLabel,
+  getProfileSexLabel,
+} from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { ProfileField } from '@/shared/ui/ProfileField';
 
@@ -24,6 +28,7 @@ export function ProfileView({
 }: ProfileViewProps) {
   const t = translations.profile;
   const profile = userSnapshot?.profile;
+  const unitSystem = userSnapshot?.settings?.unitSystem ?? 'metric';
 
   return (
     <Box
@@ -39,6 +44,10 @@ export function ProfileView({
       <ProfileField
         label={t.ageLabel}
         value={profile?.age != null ? String(profile.age) : undefined}
+      />
+      <ProfileField
+        label={t.heightLabel}
+        value={getProfileHeightLabel(t, profile?.heightCm ?? null, unitSystem)}
       />
       <ProfileField
         label={t.biologicalSexLabel}

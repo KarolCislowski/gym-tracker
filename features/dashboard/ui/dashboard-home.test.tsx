@@ -23,6 +23,7 @@ describe('DashboardHome', () => {
             firstName: 'John',
             lastName: 'Doe',
             age: 31,
+            heightCm: 180,
             gender: 'male',
             activityLevel: 'moderately_active',
           },
@@ -41,6 +42,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText(/tenant database: tenant_john_123/i)).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
     expect(screen.getByText('31')).toBeInTheDocument();
+    expect(screen.getByText('5 ft 11 in')).toBeInTheDocument();
     expect(screen.getByText('Male')).toBeInTheDocument();
     expect(screen.getByText('Moderately active')).toBeInTheDocument();
     expect(screen.getByText('sv')).toBeInTheDocument();

@@ -6,6 +6,7 @@ export const updateProfileSchema = z.object({
   firstName: z.string().trim().min(2, 'First name must be at least 2 characters long.'),
   lastName: z.string().trim().min(2, 'Last name must be at least 2 characters long.'),
   age: z.number().int().min(0).max(120).nullable(),
+  heightCm: z.number().min(30).max(300).nullable(),
   gender: z
     .enum(['female', 'male', 'other', 'prefer_not_to_say'])
     .nullable(),

@@ -21,6 +21,10 @@ describe('profile.service', () => {
       firstName: 'John',
       lastName: 'Doe',
       age: 31,
+      unitSystem: 'imperial_uk',
+      heightCm: null,
+      heightFeet: 5,
+      heightInches: 11,
       gender: 'male',
       activityLevel: 'moderately_active',
     });
@@ -31,6 +35,7 @@ describe('profile.service', () => {
       firstName: 'John',
       lastName: 'Doe',
       age: 31,
+      heightCm: 180.34,
       gender: 'male',
       activityLevel: 'moderately_active',
     });

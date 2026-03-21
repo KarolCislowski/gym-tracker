@@ -116,6 +116,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     lastNameLabel: 'Nazwisko',
     emailLabel: 'Email',
     ageLabel: 'Wiek',
+    heightLabel: 'Wzrost',
+    heightFeetLabel: 'Wzrost (ft)',
+    heightInchesLabel: 'Wzrost (in)',
     biologicalSexLabel: 'Płeć biologiczna',
     biologicalSexTooltip:
       'To inkluzywne pole służy wyłącznie do obliczeń metabolicznych i nie definiuje Twojej tożsamości.',

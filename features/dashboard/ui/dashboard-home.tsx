@@ -38,6 +38,7 @@ export function DashboardHome({
         {userSnapshot?.profile ? (
           <DashboardProfileWidget
             profile={userSnapshot.profile}
+            unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
             translations={translations}
           />
         ) : null}

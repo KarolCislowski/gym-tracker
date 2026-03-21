@@ -63,7 +63,10 @@ describe('profile.actions', () => {
         createFormData({
           firstName: 'John',
           lastName: 'Doe',
+          unitSystem: 'imperial_uk',
           age: '31',
+          heightFeet: '5',
+          heightInches: '11',
           gender: 'male',
           activityLevel: 'moderately_active',
         }),
@@ -76,6 +79,10 @@ describe('profile.actions', () => {
       firstName: 'John',
       lastName: 'Doe',
       age: 31,
+      unitSystem: 'imperial_uk',
+      heightCm: null,
+      heightFeet: 5,
+      heightInches: 11,
       gender: 'male',
       activityLevel: 'moderately_active',
     });
@@ -92,7 +99,9 @@ describe('profile.actions', () => {
         createFormData({
           firstName: 'John',
           lastName: 'Doe',
+          unitSystem: 'metric',
           age: '',
+          heightCm: '',
           gender: '',
           activityLevel: '',
         }),

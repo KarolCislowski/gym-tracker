@@ -1,10 +1,13 @@
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { convertHeightFromMetric } from '@/shared/units/application/unit-conversion';
+import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 type ProfileTranslations = TranslationDictionary['profile'];
 type ProfileSnapshot = NonNullable<AuthenticatedUserSnapshot['profile']>;
 type ProfileGender = ProfileSnapshot['gender'];
 type ProfileActivityLevel = ProfileSnapshot['activityLevel'];
+type ProfileHeight = ProfileSnapshot['heightCm'];
 
 /**
  * Resolves the localized label for a biological sex value.
@@ -54,4 +57,29 @@ export function getProfileActivityLabel(
     default:
       return translations.emptyValue;
   }
+}
+
+/**
+ * Formats profile height using the active measurement system.
+ * @param translations - The localized profile translation subset.
+ * @param value - Height stored in metric centimeters.
+ * @param unitSystem - Preferred measurement system used for presentation.
+ * @returns The formatted height value or the empty-state label when no value is set.
+ */
+export function getProfileHeightLabel(
+  translations: ProfileTranslations,
+  value: ProfileHeight,
+  unitSystem: UnitSystem,
+): string {
+  if (value == null) {
+    return translations.emptyValue;
+  }
+
+  const convertedValue = convertHeightFromMetric(value, unitSystem);
+
+  if (convertedValue.system === 'metric') {
+    return `${convertedValue.value} cm`;
+  }
+
+  return `${convertedValue.feet} ft ${convertedValue.inches} in`;
 }

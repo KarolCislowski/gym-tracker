@@ -242,6 +242,7 @@ describe('auth.service', () => {
       firstName: 'John',
       lastName: 'Doe',
       age: 31,
+      heightCm: 180,
       gender: 'male',
       activityLevel: 'moderately_active',
     } satisfies TenantProfileSnapshot);
@@ -262,6 +263,7 @@ describe('auth.service', () => {
         firstName: 'John',
         lastName: 'Doe',
         age: 31,
+        heightCm: 180,
         gender: 'male',
         activityLevel: 'moderately_active',
       },

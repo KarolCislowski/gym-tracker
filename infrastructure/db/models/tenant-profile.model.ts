@@ -36,6 +36,13 @@ const tenantProfileSchema = new Schema<TenantProfile>(
       max: 120,
       default: null,
     },
+    heightCm: {
+      type: Number,
+      required: false,
+      min: 30,
+      max: 300,
+      default: null,
+    },
     gender: {
       type: String,
       required: false,
@@ -71,9 +78,20 @@ export async function getTenantProfileModel(
   tenantDbName: string,
 ): Promise<Model<TenantProfile>> {
   const connection = await getTenantDbConnection(tenantDbName);
+  const existingModel = connection.models.TenantProfile as Model<TenantProfile> | undefined;
 
-  return (
-    (connection.models.TenantProfile as Model<TenantProfile> | undefined) ??
-    connection.model<TenantProfile>('TenantProfile', tenantProfileSchema)
-  );
+  if (existingModel) {
+    const hasLatestSchemaFields =
+      Boolean(existingModel.schema.path('heightCm')) &&
+      Boolean(existingModel.schema.path('activityLevel'));
+
+    if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
+      return existingModel;
+    }
+
+    // Refresh the cached model in development after schema changes so new fields are not ignored.
+    connection.deleteModel('TenantProfile');
+  }
+
+  return connection.model<TenantProfile>('TenantProfile', tenantProfileSchema);
 }

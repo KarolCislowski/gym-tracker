@@ -26,6 +26,10 @@ export async function updateProfileAction(formData: FormData): Promise<void> {
       firstName: String(formData.get('firstName') ?? ''),
       lastName: String(formData.get('lastName') ?? ''),
       age: normalizeOptionalNumber(formData.get('age')),
+      unitSystem: normalizeUnitSystem(formData.get('unitSystem')),
+      heightCm: normalizeOptionalNumber(formData.get('heightCm')),
+      heightFeet: normalizeOptionalNumber(formData.get('heightFeet')),
+      heightInches: normalizeOptionalNumber(formData.get('heightInches')),
       gender: normalizeOptionalEnum(
         formData.get('gender'),
       ) as
@@ -49,6 +53,16 @@ export async function updateProfileAction(formData: FormData): Promise<void> {
   }
 
   redirect('/profile?status=updated');
+}
+
+function normalizeUnitSystem(
+  value: FormDataEntryValue | null,
+): 'metric' | 'imperial_us' | 'imperial_uk' {
+  const normalizedValue = String(value ?? 'metric').trim();
+
+  return normalizedValue === 'imperial_us' || normalizedValue === 'imperial_uk'
+    ? normalizedValue
+    : 'metric';
 }
 
 function normalizeOptionalNumber(value: FormDataEntryValue | null): number | null {

@@ -125,6 +125,7 @@ export async function findTenantProfileByUserId(
     firstName: profile.firstName,
     lastName: profile.lastName,
     age: profile.age ?? null,
+    heightCm: profile.heightCm ?? null,
     gender: profile.gender ?? null,
     activityLevel: profile.activityLevel ?? null,
   };

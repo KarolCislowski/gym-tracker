@@ -114,6 +114,9 @@ export const enMessages: TranslationDictionary = {
     lastNameLabel: 'Last name',
     emailLabel: 'Email',
     ageLabel: 'Age',
+    heightLabel: 'Height',
+    heightFeetLabel: 'Height (ft)',
+    heightInchesLabel: 'Height (in)',
     biologicalSexLabel: 'Biological sex',
     biologicalSexTooltip:
       'This inclusive field is used only for metabolic calculations and does not define your identity.',

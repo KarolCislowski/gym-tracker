@@ -12,6 +12,7 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { convertHeightFromMetric } from '@/shared/units/application/unit-conversion';
 
 import { updateProfileAction } from '../infrastructure/profile.actions';
 
@@ -34,7 +35,12 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const t = translations.profile;
   const profile = userSnapshot?.profile;
+  const unitSystem = userSnapshot?.settings?.unitSystem ?? 'metric';
   const biologicalSexHelpId = 'biological-sex-help';
+  const heightValue =
+    profile?.heightCm != null
+      ? convertHeightFromMetric(profile.heightCm, unitSystem)
+      : null;
 
   return (
     <Stack component='form' action={updateProfileAction} spacing={2}>
@@ -65,6 +71,43 @@ export function ProfileEditForm({
           slotProps={{ htmlInput: { min: 0, max: 120 } }}
           type='number'
         />
+        <input type='hidden' name='unitSystem' value={unitSystem} />
+        {unitSystem === 'metric' ? (
+          <TextField
+            defaultValue={
+              heightValue?.system === 'metric' ? heightValue.value : ''
+            }
+            label={t.heightLabel}
+            name='heightCm'
+            slotProps={{ htmlInput: { min: 30, max: 300, step: 0.1 } }}
+            type='number'
+          />
+        ) : (
+          <>
+            <TextField
+              defaultValue={
+                heightValue && heightValue.system !== 'metric'
+                  ? heightValue.feet
+                  : ''
+              }
+              label={t.heightFeetLabel}
+              name='heightFeet'
+              slotProps={{ htmlInput: { min: 1, max: 9, step: 1 } }}
+              type='number'
+            />
+            <TextField
+              defaultValue={
+                heightValue && heightValue.system !== 'metric'
+                  ? heightValue.inches
+                  : ''
+              }
+              label={t.heightInchesLabel}
+              name='heightInches'
+              slotProps={{ htmlInput: { min: 0, max: 11, step: 1 } }}
+              type='number'
+            />
+          </>
+        )}
         <TextField
           helperText={t.biologicalSexTooltip}
           defaultValue={profile?.gender ?? ''}

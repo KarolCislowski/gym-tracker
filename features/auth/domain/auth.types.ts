@@ -59,6 +59,7 @@ export interface TenantProfileSnapshot {
   firstName: string;
   lastName: string;
   age: number | null;
+  heightCm: number | null;
   gender: 'female' | 'male' | 'other' | 'prefer_not_to_say' | null;
   activityLevel:
     | 'sedentary'

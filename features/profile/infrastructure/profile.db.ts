@@ -1,6 +1,6 @@
 import { getTenantProfileModel } from '@/infrastructure/db/models/tenant-profile.model';
 
-import type { UpdateProfileInput } from '../domain/profile.types';
+import type { UpdateProfileRecordInput } from '../domain/profile.types';
 
 /**
  * Updates the authenticated user's tenant profile document.
@@ -9,7 +9,7 @@ import type { UpdateProfileInput } from '../domain/profile.types';
  * @remarks The existing profile document is assumed to exist because it is created during tenant bootstrap.
  */
 export async function updateTenantProfileRecord(
-  input: UpdateProfileInput,
+  input: UpdateProfileRecordInput,
 ): Promise<void> {
   const TenantProfileModel = await getTenantProfileModel(input.tenantDbName);
 
@@ -20,6 +20,7 @@ export async function updateTenantProfileRecord(
         firstName: input.firstName,
         lastName: input.lastName,
         age: input.age,
+        heightCm: input.heightCm,
         gender: input.gender,
         activityLevel: input.activityLevel,
       },
