@@ -13,6 +13,7 @@ import {
   Drawer,
   IconButton,
   List,
+  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -121,15 +122,19 @@ export function AppSideDrawer({
 
       <Divider />
 
-      <List sx={{ px: 1.5, py: 1 }}>
+      <Box component='nav' aria-label={t.openNavigation}>
+        <List sx={{ px: 1.5, py: 1 }}>
         {navigationItems.map((item) => (
           <Tooltip
             key={item.href}
             placement='right'
             title={isDesktopExpanded ? '' : item.label}
           >
-            <Link href={item.href} style={{ color: 'inherit', textDecoration: 'none' }}>
+            <ListItem disablePadding>
               <ListItemButton
+                aria-current={pathname === item.href ? 'page' : undefined}
+                component={Link}
+                href={item.href}
                 onClick={isMobileOpen ? onCloseMobile : undefined}
                 selected={pathname === item.href}
                 sx={{
@@ -159,10 +164,11 @@ export function AppSideDrawer({
                   />
                 ) : null}
               </ListItemButton>
-            </Link>
+            </ListItem>
           </Tooltip>
         ))}
-      </List>
+        </List>
+      </Box>
     </Box>
   );
 

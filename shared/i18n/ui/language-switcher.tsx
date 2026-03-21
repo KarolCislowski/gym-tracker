@@ -35,6 +35,7 @@ export function LanguageSwitcher({
       flexWrap='wrap'
       useFlexGap
       alignItems='center'
+      role='group'
       aria-label='Language switcher'
     >
       <TranslateRoundedIcon color='action' fontSize='small' />
@@ -51,9 +52,15 @@ export function LanguageSwitcher({
 
         return (
           <Tooltip key={language.code} title={language.label}>
-            <Link href={`${pathname}?${searchParams.toString()}`}>
+            <Link
+              aria-current={
+                language.code === resolvedLanguage ? 'page' : undefined
+              }
+              aria-label={language.label}
+              href={`${pathname}?${searchParams.toString()}`}
+              style={{ textDecoration: 'none' }}
+            >
               <Chip
-                clickable
                 color={
                   language.code === resolvedLanguage ? 'primary' : 'default'
                 }

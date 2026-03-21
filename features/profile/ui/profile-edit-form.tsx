@@ -34,6 +34,7 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const t = translations.profile;
   const profile = userSnapshot?.profile;
+  const biologicalSexHelpId = 'biological-sex-help';
 
   return (
     <Stack component='form' action={updateProfileAction} spacing={2}>
@@ -65,15 +66,26 @@ export function ProfileEditForm({
           type='number'
         />
         <TextField
+          helperText={t.biologicalSexTooltip}
           defaultValue={profile?.gender ?? ''}
           label={t.biologicalSexLabel}
           name='gender'
           select
           slotProps={{
+            formHelperText: {
+              id: biologicalSexHelpId,
+            },
+            htmlInput: {
+              'aria-describedby': biologicalSexHelpId,
+            },
             input: {
               endAdornment: (
-                <Tooltip title={t.biologicalSexTooltip}>
-                  <IconButton edge='end' size='small' tabIndex={-1}>
+                <Tooltip describeChild title={t.biologicalSexTooltip}>
+                  <IconButton
+                    aria-label={t.biologicalSexTooltip}
+                    edge='end'
+                    size='small'
+                  >
                     <HelpOutlineRoundedIcon fontSize='small' />
                   </IconButton>
                 </Tooltip>
