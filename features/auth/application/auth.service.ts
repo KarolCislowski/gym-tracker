@@ -109,6 +109,9 @@ export async function getAuthenticatedUserSnapshot(
           email: profile.email,
           firstName: profile.firstName,
           lastName: profile.lastName,
+          age: profile.age ?? null,
+          gender: profile.gender ?? null,
+          activityLevel: profile.activityLevel ?? null,
         }
       : null,
     settings: settings

@@ -22,6 +22,9 @@ describe('DashboardHome', () => {
             email: 'john@example.com',
             firstName: 'John',
             lastName: 'Doe',
+            age: 31,
+            gender: 'male',
+            activityLevel: 'moderately_active',
           },
           settings: {
             language: 'sv',

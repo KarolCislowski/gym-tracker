@@ -29,6 +29,31 @@ const tenantProfileSchema = new Schema<TenantProfile>(
       required: true,
       trim: true,
     },
+    age: {
+      type: Number,
+      required: false,
+      min: 0,
+      max: 120,
+      default: null,
+    },
+    gender: {
+      type: String,
+      required: false,
+      enum: ['female', 'male', 'other', 'prefer_not_to_say'],
+      default: null,
+    },
+    activityLevel: {
+      type: String,
+      required: false,
+      enum: [
+        'sedentary',
+        'lightly_active',
+        'moderately_active',
+        'very_active',
+        'extra_active',
+      ],
+      default: null,
+    },
   },
   {
     timestamps: {

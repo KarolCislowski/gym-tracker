@@ -114,8 +114,20 @@ export async function findTenantProfileByUserId(
     '@/infrastructure/db/models/tenant-profile.model'
   );
   const TenantProfileModel = await getTenantProfileModel(tenantDbName);
+  const profile = await TenantProfileModel.findOne({ userId }).lean();
 
-  return TenantProfileModel.findOne({ userId }).lean();
+  if (!profile) {
+    return null;
+  }
+
+  return {
+    email: profile.email,
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    age: profile.age ?? null,
+    gender: profile.gender ?? null,
+    activityLevel: profile.activityLevel ?? null,
+  };
 }
 
 /**
