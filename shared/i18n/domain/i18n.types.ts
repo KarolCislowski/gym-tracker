@@ -109,6 +109,7 @@ export interface TranslationDictionary {
     emailLabel: string;
     ageLabel: string;
     heightLabel: string;
+    heightCentimetersLabel: string;
     heightFeetLabel: string;
     heightInchesLabel: string;
     biologicalSexLabel: string;
@@ -137,6 +138,7 @@ export interface TranslationDictionary {
     averageSleepHoursPerDayLabel: string;
     stepsPerDayLabel: string;
     waterPerDayLabel: string;
+    waterLitersPerDayLabel: string;
     waterFluidOuncesPerDayLabel: string;
     proteinPerDayLabel: string;
     strengthWorkoutsPerWeekLabel: string;

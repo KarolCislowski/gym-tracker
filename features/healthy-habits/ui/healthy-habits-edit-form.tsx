@@ -62,7 +62,7 @@ export function HealthyHabitsEditForm({
             defaultValue={
               waterValue?.system === 'metric' ? waterValue.value : ''
             }
-            label={t.waterPerDayLabel}
+            label={t.waterLitersPerDayLabel}
             name='waterLitersPerDay'
             slotProps={{ htmlInput: { min: 0, max: 20, step: 0.1 } }}
             type='number'

@@ -77,7 +77,7 @@ export function ProfileEditForm({
             defaultValue={
               heightValue?.system === 'metric' ? heightValue.value : ''
             }
-            label={t.heightLabel}
+            label={t.heightCentimetersLabel}
             name='heightCm'
             slotProps={{ htmlInput: { min: 30, max: 300, step: 0.1 } }}
             type='number'
