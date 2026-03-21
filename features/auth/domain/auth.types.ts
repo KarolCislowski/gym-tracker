@@ -76,7 +76,17 @@ export interface TenantSettingsSnapshot {
   unitSystem: UnitSystem;
 }
 
+export interface TenantHealthyHabitsSnapshot {
+  averageSleepHoursPerDay: number | null;
+  stepsPerDay: number | null;
+  waterLitersPerDay: number | null;
+  proteinGramsPerDay: number | null;
+  strengthWorkoutsPerWeek: number | null;
+  cardioMinutesPerWeek: number | null;
+}
+
 export interface AuthenticatedUserSnapshot {
   profile: TenantProfileSnapshot | null;
   settings: TenantSettingsSnapshot | null;
+  healthyHabits: TenantHealthyHabitsSnapshot | null;
 }

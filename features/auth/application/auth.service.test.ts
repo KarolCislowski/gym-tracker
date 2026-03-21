@@ -4,6 +4,7 @@ import type {
   CoreUserAuthDto,
   CoreUserLookupDto,
   CreatedCoreUserDto,
+  TenantHealthyHabitsSnapshot,
   TenantProfileSnapshot,
   TenantSettingsSnapshot,
 } from '../domain/auth.types';
@@ -28,6 +29,7 @@ vi.mock('../infrastructure/auth.db', () => ({
   deleteTenantDatabase: vi.fn(),
   findCoreUserByEmail: vi.fn(),
   findCoreUserWithPasswordByEmail: vi.fn(),
+  findTenantHealthyHabits: vi.fn(),
   findTenantProfileByUserId: vi.fn(),
   findTenantSettings: vi.fn(),
 }));
@@ -39,6 +41,7 @@ import {
   deleteTenantDatabase,
   findCoreUserByEmail,
   findCoreUserWithPasswordByEmail,
+  findTenantHealthyHabits,
   findTenantProfileByUserId,
   findTenantSettings,
 } from '../infrastructure/auth.db';
@@ -52,6 +55,7 @@ const mockedFindCoreUserByEmail = vi.mocked(findCoreUserByEmail);
 const mockedFindCoreUserWithPasswordByEmail = vi.mocked(
   findCoreUserWithPasswordByEmail,
 );
+const mockedFindTenantHealthyHabits = vi.mocked(findTenantHealthyHabits);
 const mockedFindTenantProfileByUserId = vi.mocked(findTenantProfileByUserId);
 const mockedFindTenantSettings = vi.mocked(findTenantSettings);
 const mockedHash = mockedBcrypt.hash as unknown as ReturnType<typeof vi.fn>;
@@ -251,6 +255,14 @@ describe('auth.service', () => {
       isDarkMode: true,
       unitSystem: 'imperial_uk',
     } satisfies TenantSettingsSnapshot);
+    mockedFindTenantHealthyHabits.mockResolvedValueOnce({
+      averageSleepHoursPerDay: 7.5,
+      stepsPerDay: 9000,
+      waterLitersPerDay: 2,
+      proteinGramsPerDay: 150,
+      strengthWorkoutsPerWeek: 3,
+      cardioMinutesPerWeek: 120,
+    } satisfies TenantHealthyHabitsSnapshot);
 
     const result = await getAuthenticatedUserSnapshot(
       'tenant_john_123456789abc',
@@ -271,6 +283,14 @@ describe('auth.service', () => {
         language: 'sv',
         isDarkMode: true,
         unitSystem: 'imperial_uk',
+      },
+      healthyHabits: {
+        averageSleepHoursPerDay: 7.5,
+        stepsPerDay: 9000,
+        waterLitersPerDay: 2,
+        proteinGramsPerDay: 150,
+        strengthWorkoutsPerWeek: 3,
+        cardioMinutesPerWeek: 120,
       },
     });
   });

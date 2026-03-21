@@ -32,6 +32,14 @@ describe('DashboardHome', () => {
             isDarkMode: true,
             unitSystem: 'imperial_uk',
           },
+          healthyHabits: {
+            averageSleepHoursPerDay: 7.5,
+            stepsPerDay: 9000,
+            waterLitersPerDay: 2,
+            proteinGramsPerDay: 150,
+            strengthWorkoutsPerWeek: 3,
+            cardioMinutesPerWeek: 120,
+          },
         }}
       />,
     );
@@ -47,7 +55,13 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Moderately active')).toBeInTheDocument();
     expect(screen.getByText('sv')).toBeInTheDocument();
     expect(screen.getByText('Imperial (UK)')).toBeInTheDocument();
+    expect(screen.getByText('9000')).toBeInTheDocument();
+    expect(screen.getByText('7.5 h')).toBeInTheDocument();
+    expect(screen.getByText('70.4 fl oz')).toBeInTheDocument();
+    expect(screen.getByText('150 g')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Go to profile' })).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('button', { name: 'Go to profile' }),
+    ).toHaveLength(2);
   });
 });

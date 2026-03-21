@@ -45,6 +45,7 @@ export const plMessages: TranslationDictionaryOverrides = {
   dashboard: {
     overview: 'Przegląd',
     profile: 'Profil',
+    healthyHabits: 'Zdrowe nawyki',
     settings: 'Ustawienia',
     workspace: 'Przestrzeń',
     openNavigation: 'Otwórz nawigację',
@@ -138,6 +139,25 @@ export const plMessages: TranslationDictionaryOverrides = {
     activityModeratelyActive: 'Umiarkowanie aktywny',
     activityVeryActive: 'Bardzo aktywny',
     activityExtraActive: 'Ekstra aktywny',
+    errorGeneric: 'Coś poszło nie tak. Spróbuj ponownie.',
+  },
+  healthyHabits: {
+    title: 'Cele zdrowych nawyków',
+    description:
+      'Ustaw dzienne i tygodniowe cele wspierające trening oraz regenerację.',
+    averageSleepHoursPerDayLabel: 'Średnia długość snu na dobę',
+    stepsPerDayLabel: 'Liczba kroków dziennie',
+    waterPerDayLabel: 'Woda dziennie',
+    waterFluidOuncesPerDayLabel: 'Woda dziennie (fl oz)',
+    proteinPerDayLabel: 'Białko dziennie (g)',
+    strengthWorkoutsPerWeekLabel: 'Treningi siłowe tygodniowo',
+    cardioMinutesPerWeekLabel: 'Cardio (minuty tygodniowo)',
+    editGoals: 'Edytuj cele',
+    goToProfile: 'Przejdź do profilu',
+    saveChanges: 'Zapisz zmiany',
+    cancelEditing: 'Anuluj',
+    updated: 'Cele zdrowych nawyków zostały zaktualizowane.',
+    emptyValue: 'Nie podano',
     errorGeneric: 'Coś poszło nie tak. Spróbuj ponownie.',
   },
 };

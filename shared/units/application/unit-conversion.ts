@@ -212,6 +212,97 @@ export function convertBodyMassToMetric(
 }
 
 /**
+ * Converts protein mass stored in metric grams to a display value.
+ * @param grams - Protein mass stored in the persistence layer as grams.
+ * @param unitSystem - Preferred measurement system used for presentation.
+ * @returns A metric value in grams or an imperial value in ounces.
+ * @remarks Protein goals are presented in ounces for both imperial systems because it is more appropriate than pounds at this scale.
+ */
+export function convertProteinMassFromMetric(
+  grams: number,
+  unitSystem: UnitSystem,
+): MetricValue | ImperialValue {
+  if (unitSystem === 'metric') {
+    return { system: 'metric', unit: 'g', value: roundTo(grams, 0) };
+  }
+
+  return {
+    system: unitSystem,
+    unit: 'oz',
+    value: roundTo(grams / 28.349523125, 1),
+  };
+}
+
+/**
+ * Converts a display protein mass value back to metric grams.
+ * @param input - Protein mass value expressed in the active presentation system.
+ * @returns Normalized metric protein mass ready to be stored in the database.
+ * @remarks Use this when forms expose ounces in imperial systems but persistence remains metric.
+ */
+export function convertProteinMassToMetric(
+  input:
+    | { system: 'metric'; value: number }
+    | { system: 'imperial_us' | 'imperial_uk'; value: number },
+): number {
+  if (input.system === 'metric') {
+    return roundTo(input.value, 2);
+  }
+
+  return roundTo(input.value * 28.349523125, 2);
+}
+
+/**
+ * Converts hydration stored in metric liters to a display value.
+ * @param liters - Hydration amount stored in the persistence layer as liters.
+ * @param unitSystem - Preferred measurement system used for presentation.
+ * @returns A metric value in liters or an imperial value in fluid ounces.
+ * @remarks This helper preserves liters in the database while exposing more natural inputs in imperial systems.
+ */
+export function convertHydrationFromMetricLiters(
+  liters: number,
+  unitSystem: UnitSystem,
+): MetricValue | ImperialValue {
+  if (unitSystem === 'metric') {
+    return { system: 'metric', unit: 'l', value: roundTo(liters, 2) };
+  }
+
+  const milliliters = liters * 1000;
+  const divisor =
+    unitSystem === 'imperial_us'
+      ? millilitersPerUsFluidOunce
+      : millilitersPerUkFluidOunce;
+
+  return {
+    system: unitSystem,
+    unit: 'fl oz',
+    value: roundTo(milliliters / divisor, 1),
+  };
+}
+
+/**
+ * Converts a display hydration value back to metric liters.
+ * @param input - Hydration value expressed in the active presentation system.
+ * @returns Normalized metric hydration amount in liters ready to be stored in the database.
+ * @remarks Imperial inputs are expected in fluid ounces, while metric input is expected in liters.
+ */
+export function convertHydrationToMetricLiters(
+  input:
+    | { system: 'metric'; value: number }
+    | { system: 'imperial_us' | 'imperial_uk'; value: number },
+): number {
+  if (input.system === 'metric') {
+    return roundTo(input.value, 3);
+  }
+
+  const multiplier =
+    input.system === 'imperial_us'
+      ? millilitersPerUsFluidOunce
+      : millilitersPerUkFluidOunce;
+
+  return roundTo((input.value * multiplier) / 1000, 3);
+}
+
+/**
  * Converts a metric volume stored in milliliters to a display value.
  * @param milliliters - Volume stored in the persistence layer as milliliters.
  * @param unitSystem - Preferred measurement system used for presentation.

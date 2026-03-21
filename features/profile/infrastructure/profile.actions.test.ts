@@ -71,7 +71,7 @@ describe('profile.actions', () => {
           activityLevel: 'moderately_active',
         }),
       ),
-    ).rejects.toThrow('NEXT_REDIRECT:/profile?status=updated');
+    ).rejects.toThrow('NEXT_REDIRECT:/profile?section=profile&status=profile-updated');
 
     expect(mockedUpdateProfile).toHaveBeenCalledWith({
       tenantDbName: 'tenant_john',
@@ -106,6 +106,8 @@ describe('profile.actions', () => {
           activityLevel: '',
         }),
       ),
-    ).rejects.toThrow('NEXT_REDIRECT:/profile?error=PROFILE_ERROR_GENERIC');
+    ).rejects.toThrow(
+      'NEXT_REDIRECT:/profile?section=profile&error=PROFILE_ERROR_GENERIC',
+    );
   });
 });

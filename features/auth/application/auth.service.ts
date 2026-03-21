@@ -14,6 +14,7 @@ import {
   deleteTenantDatabase,
   findCoreUserByEmail,
   findCoreUserWithPasswordByEmail,
+  findTenantHealthyHabits,
   findTenantProfileByUserId,
   findTenantSettings,
 } from '../infrastructure/auth.db';
@@ -98,9 +99,10 @@ export async function getAuthenticatedUserSnapshot(
   tenantDbName: string,
   userId: string,
 ): Promise<AuthenticatedUserSnapshot> {
-  const [profile, settings] = await Promise.all([
+  const [profile, settings, healthyHabits] = await Promise.all([
     findTenantProfileByUserId(tenantDbName, userId),
     findTenantSettings(tenantDbName),
+    findTenantHealthyHabits(tenantDbName),
   ]);
 
   return {
@@ -122,6 +124,14 @@ export async function getAuthenticatedUserSnapshot(
           unitSystem: settings.unitSystem,
         }
       : null,
+    healthyHabits: healthyHabits ?? {
+      averageSleepHoursPerDay: null,
+      stepsPerDay: null,
+      waterLitersPerDay: null,
+      proteinGramsPerDay: null,
+      strengthWorkoutsPerWeek: null,
+      cardioMinutesPerWeek: null,
+    },
   };
 }
 

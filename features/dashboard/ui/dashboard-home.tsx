@@ -3,6 +3,7 @@ import { Box, Stack } from '@mui/material';
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
@@ -40,6 +41,14 @@ export function DashboardHome({
             profile={userSnapshot.profile}
             unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
             translations={translations}
+          />
+        ) : null}
+
+        {userSnapshot?.healthyHabits ? (
+          <DashboardHealthyHabitsWidget
+            healthyHabits={userSnapshot.healthyHabits}
+            translations={translations}
+            unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
           />
         ) : null}
 

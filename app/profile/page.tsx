@@ -8,6 +8,7 @@ import { getTranslations } from '@/shared/i18n/application/i18n.service';
 interface ProfileRoutePageProps {
   searchParams?: Promise<{
     error?: string;
+    section?: string;
     status?: string;
   }>;
 }
@@ -31,6 +32,7 @@ export default async function ProfileRoutePage({
   return (
     <ProfilePage
       error={params?.error}
+      section={params?.section}
       status={params?.status}
       translations={translations}
       userSnapshot={userSnapshot}

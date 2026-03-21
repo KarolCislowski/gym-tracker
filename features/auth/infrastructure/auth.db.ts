@@ -9,6 +9,7 @@ import type {
   CreateCoreUserRecordInput,
   CreateTenantDatabaseInput,
   CreatedCoreUserDto,
+  TenantHealthyHabitsSnapshot,
   TenantProfileSnapshot,
   TenantSettingsSnapshot,
 } from '../domain/auth.types';
@@ -151,5 +152,33 @@ export async function findTenantSettings(
     language: settings.language,
     isDarkMode: settings.isDarkMode,
     unitSystem: settings.unitSystem ?? 'metric',
+  };
+}
+
+/**
+ * Finds tenant-level healthy habits goals for the current tenant database.
+ * @param tenantDbName - Name of the tenant database.
+ * @returns The tenant healthy habits snapshot or `null` when it does not exist.
+ */
+export async function findTenantHealthyHabits(
+  tenantDbName: string,
+): Promise<TenantHealthyHabitsSnapshot | null> {
+  const { getTenantHealthyHabitsModel } = await import(
+    '@/infrastructure/db/models/tenant-healthy-habits.model'
+  );
+  const TenantHealthyHabitsModel = await getTenantHealthyHabitsModel(tenantDbName);
+  const habits = await TenantHealthyHabitsModel.findOne({ scope: 'tenant' }).lean();
+
+  if (!habits) {
+    return null;
+  }
+
+  return {
+    averageSleepHoursPerDay: habits.averageSleepHoursPerDay ?? null,
+    stepsPerDay: habits.stepsPerDay ?? null,
+    waterLitersPerDay: habits.waterLitersPerDay ?? null,
+    proteinGramsPerDay: habits.proteinGramsPerDay ?? null,
+    strengthWorkoutsPerWeek: habits.strengthWorkoutsPerWeek ?? null,
+    cardioMinutesPerWeek: habits.cardioMinutesPerWeek ?? null,
   };
 }

@@ -55,5 +55,9 @@ export function getTranslations(
       ...enMessages.profile,
       ...localized.profile,
     },
+    healthyHabits: {
+      ...enMessages.healthyHabits,
+      ...localized.healthyHabits,
+    },
   };
 }

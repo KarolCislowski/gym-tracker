@@ -5,10 +5,14 @@ import {
   convertBodyMassToMetric,
   convertHeightFromMetric,
   convertHeightToMetric,
+  convertHydrationFromMetricLiters,
+  convertHydrationToMetricLiters,
   convertLengthFromMetric,
   convertLengthToMetric,
   convertMassFromMetric,
   convertMassToMetric,
+  convertProteinMassFromMetric,
+  convertProteinMassToMetric,
   convertVolumeFromMetric,
   convertVolumeToMetric,
 } from './unit-conversion';
@@ -60,6 +64,28 @@ describe('unit-conversion', () => {
         pounds: 0,
       }),
     ).toBe(69.853);
+  });
+
+  test('converts hydration between liters and imperial fluid ounces', () => {
+    expect(convertHydrationFromMetricLiters(2, 'imperial_us')).toEqual({
+      system: 'imperial_us',
+      unit: 'fl oz',
+      value: 67.6,
+    });
+    expect(
+      convertHydrationToMetricLiters({ system: 'imperial_uk', value: 70.4 }),
+    ).toBe(2);
+  });
+
+  test('converts protein mass between grams and ounces', () => {
+    expect(convertProteinMassFromMetric(150, 'imperial_uk')).toEqual({
+      system: 'imperial_uk',
+      unit: 'oz',
+      value: 5.3,
+    });
+    expect(
+      convertProteinMassToMetric({ system: 'imperial_us', value: 5.3 }),
+    ).toBe(150.25);
   });
 
   test('converts volume using US and UK fluid ounces independently', () => {

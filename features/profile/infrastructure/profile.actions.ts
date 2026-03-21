@@ -49,10 +49,12 @@ export async function updateProfileAction(formData: FormData): Promise<void> {
         | null,
     });
   } catch (error) {
-    redirect(`/profile?error=${encodeURIComponent(getProfileErrorCode(error))}`);
+    redirect(
+      `/profile?section=profile&error=${encodeURIComponent(getProfileErrorCode(error))}`,
+    );
   }
 
-  redirect('/profile?status=updated');
+  redirect('/profile?section=profile&status=profile-updated');
 }
 
 function normalizeUnitSystem(

@@ -59,6 +59,7 @@ export interface TranslationDictionary {
     settingsLanguage: string;
     settingsUnitSystem: string;
     settingsTheme: string;
+    healthyHabits: string;
     themeDark: string;
     themeLight: string;
     unitSystemMetric: string;
@@ -130,6 +131,24 @@ export interface TranslationDictionary {
     activityExtraActive: string;
     errorGeneric: string;
   };
+  healthyHabits: {
+    title: string;
+    description: string;
+    averageSleepHoursPerDayLabel: string;
+    stepsPerDayLabel: string;
+    waterPerDayLabel: string;
+    waterFluidOuncesPerDayLabel: string;
+    proteinPerDayLabel: string;
+    strengthWorkoutsPerWeekLabel: string;
+    cardioMinutesPerWeekLabel: string;
+    editGoals: string;
+    goToProfile: string;
+    saveChanges: string;
+    cancelEditing: string;
+    updated: string;
+    emptyValue: string;
+    errorGeneric: string;
+  };
 }
 
 export interface TranslationDictionaryOverrides {
@@ -137,4 +156,5 @@ export interface TranslationDictionaryOverrides {
   dashboard?: Partial<TranslationDictionary['dashboard']>;
   settings?: Partial<TranslationDictionary['settings']>;
   profile?: Partial<TranslationDictionary['profile']>;
+  healthyHabits?: Partial<TranslationDictionary['healthyHabits']>;
 }

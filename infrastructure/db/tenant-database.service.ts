@@ -1,4 +1,5 @@
 import { getTenantMetadataModel } from './models/tenant-metadata.model';
+import { getTenantHealthyHabitsModel } from './models/tenant-healthy-habits.model';
 import { getTenantProfileModel } from './models/tenant-profile.model';
 import { getTenantSettingsModel } from './models/tenant-settings.model';
 import { getTenantDbConnection } from './mongoose.client';
@@ -21,6 +22,9 @@ export async function initializeTenantDatabase(
   input: InitializeTenantDatabaseInput,
 ): Promise<void> {
   const TenantMetadataModel = await getTenantMetadataModel(input.tenantDbName);
+  const TenantHealthyHabitsModel = await getTenantHealthyHabitsModel(
+    input.tenantDbName,
+  );
   const TenantProfileModel = await getTenantProfileModel(input.tenantDbName);
   const TenantSettingsModel = await getTenantSettingsModel(input.tenantDbName);
 
@@ -51,6 +55,22 @@ export async function initializeTenantDatabase(
         language: input.language,
         isDarkMode: input.isDarkMode,
         unitSystem: 'metric',
+      },
+    },
+    { upsert: true },
+  );
+
+  await TenantHealthyHabitsModel.updateOne(
+    { scope: 'tenant' },
+    {
+      $setOnInsert: {
+        scope: 'tenant',
+        averageSleepHoursPerDay: null,
+        stepsPerDay: null,
+        waterLitersPerDay: null,
+        proteinGramsPerDay: null,
+        strengthWorkoutsPerWeek: null,
+        cardioMinutesPerWeek: null,
       },
     },
     { upsert: true },

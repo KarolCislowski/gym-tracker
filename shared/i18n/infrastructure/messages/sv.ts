@@ -44,6 +44,7 @@ export const svMessages: TranslationDictionaryOverrides = {
   dashboard: {
     overview: 'Översikt',
     profile: 'Profil',
+    healthyHabits: 'Hälsosamma vanor',
     settings: 'Inställningar',
     workspace: 'Arbetsyta',
     openNavigation: 'Öppna navigering',
@@ -137,6 +138,25 @@ export const svMessages: TranslationDictionaryOverrides = {
     activityModeratelyActive: 'Måttligt aktiv',
     activityVeryActive: 'Mycket aktiv',
     activityExtraActive: 'Extra aktiv',
+    errorGeneric: 'Något gick fel. Försök igen.',
+  },
+  healthyHabits: {
+    title: 'Mål för hälsosamma vanor',
+    description:
+      'Sätt dagliga och veckovisa mål som stödjer din träning och återhämtning.',
+    averageSleepHoursPerDayLabel: 'Genomsnittlig sömn per dag',
+    stepsPerDayLabel: 'Steg per dag',
+    waterPerDayLabel: 'Vatten per dag',
+    waterFluidOuncesPerDayLabel: 'Vatten per dag (fl oz)',
+    proteinPerDayLabel: 'Protein per dag (g)',
+    strengthWorkoutsPerWeekLabel: 'Styrkepass per vecka',
+    cardioMinutesPerWeekLabel: 'Cardio (minuter per vecka)',
+    editGoals: 'Redigera mål',
+    goToProfile: 'Gå till profil',
+    saveChanges: 'Spara ändringar',
+    cancelEditing: 'Avbryt',
+    updated: 'Målen för hälsosamma vanor har uppdaterats.',
+    emptyValue: 'Ej angivet',
     errorGeneric: 'Något gick fel. Försök igen.',
   },
 };
