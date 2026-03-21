@@ -1,58 +1,13 @@
 import { Box } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
+import { getProfileActivityLabel, getProfileSexLabel } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { ProfileField } from '@/shared/ui/ProfileField';
 
 interface ProfileViewProps {
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
-}
-
-function getSexLabel(
-  t: TranslationDictionary['profile'],
-  value: AuthenticatedUserSnapshot['profile'] extends infer P
-    ? P extends { gender: infer G }
-      ? G
-      : never
-    : never,
-): string {
-  switch (value) {
-    case 'female':
-      return t.sexFemale;
-    case 'male':
-      return t.sexMale;
-    case 'other':
-      return t.sexOther;
-    case 'prefer_not_to_say':
-      return t.sexPreferNotToSay;
-    default:
-      return t.emptyValue;
-  }
-}
-
-function getActivityLabel(
-  t: TranslationDictionary['profile'],
-  value: AuthenticatedUserSnapshot['profile'] extends infer P
-    ? P extends { activityLevel: infer A }
-      ? A
-      : never
-    : never,
-): string {
-  switch (value) {
-    case 'sedentary':
-      return t.activitySedentary;
-    case 'lightly_active':
-      return t.activityLightlyActive;
-    case 'moderately_active':
-      return t.activityModeratelyActive;
-    case 'very_active':
-      return t.activityVeryActive;
-    case 'extra_active':
-      return t.activityExtraActive;
-    default:
-      return t.emptyValue;
-  }
 }
 
 /**
@@ -87,11 +42,11 @@ export function ProfileView({
       />
       <ProfileField
         label={t.biologicalSexLabel}
-        value={getSexLabel(t, profile?.gender ?? null)}
+        value={getProfileSexLabel(t, profile?.gender ?? null)}
       />
       <ProfileField
         label={t.activityLevelLabel}
-        value={getActivityLabel(t, profile?.activityLevel ?? null)}
+        value={getProfileActivityLabel(t, profile?.activityLevel ?? null)}
       />
     </Box>
   );
