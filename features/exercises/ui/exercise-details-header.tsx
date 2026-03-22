@@ -1,11 +1,15 @@
-import Link from 'next/link';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import Link from 'next/link';
 import { Button, Stack, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import { ExerciseFavoriteButton } from './exercise-favorite-button';
+
 interface ExerciseDetailsHeaderProps {
   exerciseName: string;
+  exerciseSlug: string;
+  isFavorite: boolean;
   translations: TranslationDictionary['exercises'];
 }
 
@@ -18,15 +22,31 @@ interface ExerciseDetailsHeaderProps {
  */
 export function ExerciseDetailsHeader({
   exerciseName,
+  exerciseSlug,
+  isFavorite,
   translations,
 }: ExerciseDetailsHeaderProps) {
   return (
     <Stack spacing={2}>
-      <Link href='/exercises'>
-        <Button startIcon={<ArrowBackRoundedIcon />} variant='outlined'>
-          {translations.backToAtlas}
-        </Button>
-      </Link>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={1.5}
+        justifyContent='space-between'
+        alignItems={{ xs: 'stretch', sm: 'center' }}
+      >
+        <Link href='/exercises'>
+          <Button startIcon={<ArrowBackRoundedIcon />} variant='outlined'>
+            {translations.backToAtlas}
+          </Button>
+        </Link>
+        <ExerciseFavoriteButton
+          exerciseName={exerciseName}
+          exerciseSlug={exerciseSlug}
+          isFavorite={isFavorite}
+          size='medium'
+          translations={translations}
+        />
+      </Stack>
       <Stack spacing={1}>
         <Typography component='h1' variant='h3'>
           {exerciseName}

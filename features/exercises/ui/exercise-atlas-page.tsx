@@ -8,6 +8,7 @@ import { ExerciseAtlasGrid } from './exercise-atlas-grid';
 
 interface ExerciseAtlasPageProps {
   exercises: Exercise[];
+  favoriteExerciseSlugs: string[];
   translations: TranslationDictionary;
 }
 
@@ -20,6 +21,7 @@ interface ExerciseAtlasPageProps {
  */
 export function ExerciseAtlasPage({
   exercises,
+  favoriteExerciseSlugs,
   translations,
 }: ExerciseAtlasPageProps) {
   const t = translations.exercises;
@@ -32,7 +34,11 @@ export function ExerciseAtlasPage({
         </Typography>
         <Typography color='text.secondary'>{t.description}</Typography>
       </Stack>
-      <ExerciseAtlasGrid exercises={exercises} translations={t} />
+      <ExerciseAtlasGrid
+        exercises={exercises}
+        favoriteExerciseSlugs={favoriteExerciseSlugs}
+        translations={t}
+      />
     </Stack>
   );
 }

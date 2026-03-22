@@ -2,11 +2,23 @@
  * @vitest-environment jsdom
  */
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
 import { ExerciseDetailsPage } from './exercise-details-page';
+
+vi.mock('./exercise-favorite-button', () => ({
+  ExerciseFavoriteButton: ({
+    exerciseName,
+    isFavorite,
+  }: {
+    exerciseName: string;
+    isFavorite: boolean;
+  }) => (
+    <div>{`${isFavorite ? 'Favorite' : 'Not favorite'}: ${exerciseName}`}</div>
+  ),
+}));
 
 describe('ExerciseDetailsPage', () => {
   /**
@@ -61,6 +73,7 @@ describe('ExerciseDetailsPage', () => {
           commonMistakes: ['Flaring elbows.'],
           isActive: true,
         }}
+        favoriteExerciseSlugs={['bench-press']}
         translations={enMessages}
       />,
     );
@@ -68,6 +81,7 @@ describe('ExerciseDetailsPage', () => {
     expect(
       screen.getByRole('heading', { name: 'Bench Press' }),
     ).toBeInTheDocument();
+    expect(screen.getByText('Favorite: Bench Press')).toBeInTheDocument();
     expect(screen.getAllByText('Barbell Bench Press')).toHaveLength(2);
     expect(screen.getByText('Flat Bench Press')).toBeInTheDocument();
     expect(screen.getByText('Key details')).toBeInTheDocument();

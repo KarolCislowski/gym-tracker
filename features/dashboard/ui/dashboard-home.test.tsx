@@ -24,6 +24,33 @@ describe('DashboardHome', () => {
   test('renders the dashboard overview content', () => {
     render(
       <DashboardHome
+        favoriteExercises={[
+          {
+            id: 'exercise-1',
+            name: 'Bench Press',
+            slug: 'bench-press',
+            type: 'compound',
+            movementPattern: 'push',
+            difficulty: 'beginner',
+            muscles: [
+              {
+                muscleGroupId: 'pectorals',
+                role: 'primary',
+                activationLevel: 0.95,
+              },
+            ],
+            variants: [
+              {
+                id: 'variant-1',
+                name: 'Barbell Bench Press',
+                slug: 'barbell-bench-press',
+                equipment: ['barbell', 'bench'],
+                trackableMetrics: ['weight', 'reps'],
+              },
+            ],
+            isActive: true,
+          },
+        ]}
         tenantDbName='tenant_john_123'
         translations={enMessages}
         userSnapshot={{
@@ -33,6 +60,7 @@ describe('DashboardHome', () => {
             lastName: 'Doe',
             birthDate: '1995-03-22T00:00:00.000Z',
             age: 31,
+            favoriteExerciseSlugs: [],
             heightCm: 180,
             gender: 'male',
             activityLevel: 'moderately_active',
@@ -51,6 +79,7 @@ describe('DashboardHome', () => {
             cardioMinutesPerWeek: 120,
             regularSleepSchedule: true,
           },
+          favoriteExerciseSlugs: [],
         }}
       />,
     );
@@ -72,6 +101,9 @@ describe('DashboardHome', () => {
     expect(screen.getByText('70.4 fl oz')).toBeInTheDocument();
     expect(screen.getByText('150 g')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'My favorite exercises' })).toBeInTheDocument();
+    expect(screen.getByText('Bench Press')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'View details: Bench Press' })).toBeInTheDocument();
     expect(
       screen.getAllByRole('button', { name: 'Go to profile' }),
     ).toHaveLength(2);

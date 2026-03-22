@@ -20,5 +20,11 @@ export default async function ExercisesRoutePage() {
   const translations = getTranslations(userSnapshot.settings?.language);
   const exercises = await listExerciseAtlas();
 
-  return <ExerciseAtlasPage exercises={exercises} translations={translations} />;
+  return (
+    <ExerciseAtlasPage
+      exercises={exercises}
+      favoriteExerciseSlugs={userSnapshot.favoriteExerciseSlugs}
+      translations={translations}
+    />
+  );
 }

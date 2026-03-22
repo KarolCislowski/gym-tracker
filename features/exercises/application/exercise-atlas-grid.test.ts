@@ -108,6 +108,7 @@ describe('exercise-atlas-grid', () => {
 
     const filteredRows = filterExerciseAtlasRows(rows, {
       search: '',
+      showFavoritesOnly: false,
       selectedTypes: ['compound'],
       selectedPatterns: ['pull'],
       selectedDifficulties: ['beginner'],
@@ -126,6 +127,7 @@ describe('exercise-atlas-grid', () => {
     const rows = [
       {
         id: '1',
+        slug: 'bench-press',
         name: 'Bench Press',
         type: 'compound',
         movementPattern: 'push',
@@ -138,6 +140,7 @@ describe('exercise-atlas-grid', () => {
       },
       {
         id: '2',
+        slug: 'incline-bench-press',
         name: 'Incline Bench Press',
         type: 'compound',
         movementPattern: 'push',
@@ -155,6 +158,81 @@ describe('exercise-atlas-grid', () => {
     expect(options.types).toEqual(['compound']);
     expect(options.primaryMuscles).toEqual(['pectorals']);
     expect(options.equipment).toEqual(['barbell', 'bench']);
+  });
+
+  /**
+   * Verifies that the favorites-only toggle narrows rows to the authenticated user's favorites.
+   */
+  test('filterExerciseAtlasRows supports favorites-only filtering', () => {
+    const rows = buildExerciseAtlasRows([
+      {
+        id: 'exercise-1',
+        name: 'Bench Press',
+        slug: 'bench-press',
+        type: 'compound',
+        movementPattern: 'push',
+        difficulty: 'beginner',
+        muscles: [
+          {
+            muscleGroupId: 'pectorals',
+            role: 'primary',
+            activationLevel: 0.95,
+          },
+        ],
+        variants: [
+          {
+            id: 'variant-1',
+            name: 'Barbell Bench Press',
+            slug: 'barbell-bench-press',
+            equipment: ['barbell', 'bench'],
+            trackableMetrics: ['weight', 'reps'],
+          },
+        ],
+        isActive: true,
+      },
+      {
+        id: 'exercise-2',
+        name: 'Lat Pulldown',
+        slug: 'lat-pulldown',
+        type: 'compound',
+        movementPattern: 'pull',
+        difficulty: 'beginner',
+        muscles: [
+          {
+            muscleGroupId: 'lats',
+            role: 'primary',
+            activationLevel: 0.92,
+          },
+        ],
+        variants: [
+          {
+            id: 'variant-2',
+            name: 'Cable Lat Pulldown',
+            slug: 'cable-lat-pulldown',
+            equipment: ['cable'],
+            trackableMetrics: ['weight', 'reps'],
+          },
+        ],
+        isActive: true,
+      },
+    ]);
+
+    const filteredRows = filterExerciseAtlasRows(
+      rows,
+      {
+        search: '',
+        showFavoritesOnly: true,
+        selectedTypes: [],
+        selectedPatterns: [],
+        selectedDifficulties: [],
+        selectedPrimaryMuscles: [],
+        selectedEquipment: [],
+      },
+      ['bench-press'],
+    );
+
+    expect(filteredRows).toHaveLength(1);
+    expect(filteredRows[0]?.slug).toBe('bench-press');
   });
 
   /**

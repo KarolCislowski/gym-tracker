@@ -1,14 +1,17 @@
 import { Box, Stack } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
+import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
 
 interface DashboardHomeProps {
+  favoriteExercises: Exercise[];
   tenantDbName: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
@@ -18,6 +21,7 @@ interface DashboardHomeProps {
  * Main dashboard overview content rendered inside the shared authenticated shell.
  */
 export function DashboardHome({
+  favoriteExercises,
   tenantDbName,
   translations,
   userSnapshot,
@@ -51,6 +55,11 @@ export function DashboardHome({
             unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
           />
         ) : null}
+
+        <DashboardFavoriteExercisesWidget
+          exercises={favoriteExercises}
+          translations={translations}
+        />
 
         {userSnapshot?.settings ? (
           <DashboardSettingsWidget

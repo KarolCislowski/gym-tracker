@@ -58,6 +58,8 @@ export interface TranslationDictionary {
     tenantDatabase: string;
     profileName: string;
     profileEmail: string;
+    favoriteExercises: string;
+    favoriteExercisesEmpty: string;
     settingsLanguage: string;
     settingsUnitSystem: string;
     settingsTheme: string;
@@ -142,6 +144,8 @@ export interface TranslationDictionary {
     detailsDescription: string;
     backToAtlas: string;
     viewDetails: string;
+    addToFavorites: string;
+    removeFromFavorites: string;
     columnActions: string;
     searchPlaceholder: string;
     filterTypeLabel: string;
@@ -149,6 +153,7 @@ export interface TranslationDictionary {
     filterDifficultyLabel: string;
     filterPrimaryMuscleLabel: string;
     filterEquipmentLabel: string;
+    filterFavoritesLabel: string;
     clearFilters: string;
     allOptions: string;
     emptyState: string;

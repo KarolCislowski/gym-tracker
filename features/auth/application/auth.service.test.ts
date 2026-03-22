@@ -254,6 +254,7 @@ describe('auth.service', () => {
       lastName: 'Doe',
       birthDate: '1995-03-22T00:00:00.000Z',
       age: null,
+      favoriteExerciseSlugs: ['bench-press'],
       heightCm: 180,
       gender: 'male',
       activityLevel: 'moderately_active',
@@ -285,6 +286,7 @@ describe('auth.service', () => {
         lastName: 'Doe',
         birthDate: '1995-03-22T00:00:00.000Z',
         age: 31,
+        favoriteExerciseSlugs: ['bench-press'],
         heightCm: 180,
         gender: 'male',
         activityLevel: 'moderately_active',
@@ -303,6 +305,7 @@ describe('auth.service', () => {
         cardioMinutesPerWeek: 120,
         regularSleepSchedule: true,
       },
+      favoriteExerciseSlugs: ['bench-press'],
     });
   });
 });

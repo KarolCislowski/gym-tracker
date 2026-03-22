@@ -5,6 +5,7 @@ import { Alert, Box, Button, Stack } from '@mui/material';
 
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
+import { listFavoriteExercises } from '@/features/exercises/application/exercise-atlas.service';
 import { DashboardHome } from '@/features/dashboard/ui/dashboard-home';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
@@ -18,10 +19,14 @@ export default async function Page() {
         )
       : null;
   const t = getTranslations(userSnapshot?.settings?.language);
+  const favoriteExercises = userSnapshot
+    ? await listFavoriteExercises(userSnapshot.favoriteExerciseSlugs)
+    : [];
 
   if (session?.user) {
     return (
       <DashboardHome
+        favoriteExercises={favoriteExercises}
         tenantDbName={session.user.tenantDbName}
         translations={t}
         userSnapshot={userSnapshot}

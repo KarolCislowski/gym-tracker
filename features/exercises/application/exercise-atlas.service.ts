@@ -53,6 +53,28 @@ export async function getExerciseAtlasDetails(
   return exercise?.isActive ? exercise : null;
 }
 
+/**
+ * Returns active atlas exercises that match the provided favorite slugs.
+ * @param slugs - Stable exercise slugs saved in the tenant profile.
+ * @returns A promise resolving to matching active exercises in the same order as the provided slugs.
+ */
+export async function listFavoriteExercises(slugs: string[]): Promise<Exercise[]> {
+  if (!slugs.length) {
+    return [];
+  }
+
+  const exercises = await findExercises();
+  const activeExercisesBySlug = new Map(
+    exercises
+      .filter((exercise) => exercise.isActive)
+      .map((exercise) => [exercise.slug, exercise] as const),
+  );
+
+  return slugs
+    .map((slug) => activeExercisesBySlug.get(slug))
+    .filter((exercise): exercise is Exercise => Boolean(exercise));
+}
+
 function matchesExerciseSearch(
   exercise: Exercise,
   normalizedSearch?: string,

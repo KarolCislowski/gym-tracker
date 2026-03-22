@@ -33,5 +33,11 @@ export default async function ExerciseDetailsRoutePage({
     notFound();
   }
 
-  return <ExerciseDetailsPage exercise={exercise} translations={translations} />;
+  return (
+    <ExerciseDetailsPage
+      exercise={exercise}
+      favoriteExerciseSlugs={userSnapshot.favoriteExerciseSlugs}
+      translations={translations}
+    />
+  );
 }

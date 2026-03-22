@@ -114,6 +114,7 @@ export async function getAuthenticatedUserSnapshot(
           lastName: profile.lastName,
           birthDate: profile.birthDate ?? null,
           age: calculateAgeFromBirthDate(profile.birthDate),
+          favoriteExerciseSlugs: profile.favoriteExerciseSlugs ?? [],
           heightCm: profile.heightCm ?? null,
           gender: profile.gender ?? null,
           activityLevel: profile.activityLevel ?? null,
@@ -135,6 +136,7 @@ export async function getAuthenticatedUserSnapshot(
       cardioMinutesPerWeek: null,
       regularSleepSchedule: false,
     },
+    favoriteExerciseSlugs: profile?.favoriteExerciseSlugs ?? [],
   };
 }
 

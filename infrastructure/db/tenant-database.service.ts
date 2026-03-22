@@ -43,6 +43,7 @@ export async function initializeTenantDatabase(
         firstName: input.firstName,
         lastName: input.lastName,
         birthDate: null,
+        favoriteExerciseSlugs: [],
       },
     },
     { upsert: true },

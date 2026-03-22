@@ -60,6 +60,7 @@ export interface TenantProfileSnapshot {
   lastName: string;
   birthDate: string | null;
   age: number | null;
+  favoriteExerciseSlugs: string[];
   heightCm: number | null;
   gender: 'female' | 'male' | 'other' | 'prefer_not_to_say' | null;
   activityLevel:
@@ -91,4 +92,5 @@ export interface AuthenticatedUserSnapshot {
   profile: TenantProfileSnapshot | null;
   settings: TenantSettingsSnapshot | null;
   healthyHabits: TenantHealthyHabitsSnapshot | null;
+  favoriteExerciseSlugs: string[];
 }

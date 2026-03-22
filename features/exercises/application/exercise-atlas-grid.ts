@@ -19,6 +19,7 @@ export interface ExerciseAtlasRow {
   name: string;
   primaryMuscleIds: string[];
   primaryMuscles: string;
+  slug: string;
   type: string;
   variants: number;
 }
@@ -33,6 +34,7 @@ export interface ExerciseAtlasFilterOptions {
 
 export interface ExerciseAtlasFiltersState {
   search: string;
+  showFavoritesOnly: boolean;
   selectedDifficulties: ExerciseDifficulty[];
   selectedEquipment: EquipmentType[];
   selectedPatterns: MovementPattern[];
@@ -50,6 +52,7 @@ export function buildExerciseAtlasRows(
 ): ExerciseAtlasRow[] {
   return exercises.map((exercise) => ({
     id: exercise.id,
+    slug: exercise.slug,
     name: exercise.name,
     type: exercise.type,
     movementPattern: exercise.movementPattern,
@@ -107,6 +110,7 @@ export function buildExerciseAtlasFilterOptions(
 export function filterExerciseAtlasRows(
   rows: ExerciseAtlasRow[],
   filters: ExerciseAtlasFiltersState,
+  favoriteExerciseSlugs: string[] = [],
 ): ExerciseAtlasRow[] {
   const normalizedSearch = filters.search.trim().toLowerCase();
 
@@ -144,6 +148,9 @@ export function filterExerciseAtlasRows(
       filters.selectedEquipment.some((equipment) =>
         row.equipmentList.includes(equipment),
       );
+    const matchesFavorites =
+      !filters.showFavoritesOnly ||
+      favoriteExerciseSlugs.includes(row.slug);
 
     return (
       matchesSearch &&
@@ -151,7 +158,8 @@ export function filterExerciseAtlasRows(
       matchesPattern &&
       matchesDifficulty &&
       matchesPrimaryMuscle &&
-      matchesEquipment
+      matchesEquipment &&
+      matchesFavorites
     );
   });
 }

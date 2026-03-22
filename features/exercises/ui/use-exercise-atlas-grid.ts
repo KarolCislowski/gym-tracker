@@ -23,8 +23,12 @@ export { formatAtlasToken } from '../application/exercise-atlas-grid';
  * @param exercises - Shared exercise definitions loaded from the server.
  * @returns Derived rows, filter options, state, and update handlers for the atlas UI.
  */
-export function useExerciseAtlasGrid(exercises: Exercise[]) {
+export function useExerciseAtlasGrid(
+  exercises: Exercise[],
+  favoriteExerciseSlugs: string[],
+) {
   const [search, setSearch] = useState('');
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<ExerciseType[]>([]);
   const [selectedPatterns, setSelectedPatterns] = useState<MovementPattern[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<
@@ -47,16 +51,23 @@ export function useExerciseAtlasGrid(exercises: Exercise[]) {
   const filteredRows = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
-    return filterExerciseAtlasRows(rows, {
-      search: normalizedSearch,
-      selectedTypes,
-      selectedPatterns,
-      selectedDifficulties,
-      selectedPrimaryMuscles,
-      selectedEquipment,
-    });
+    return filterExerciseAtlasRows(
+      rows,
+      {
+        search: normalizedSearch,
+        showFavoritesOnly,
+        selectedTypes,
+        selectedPatterns,
+        selectedDifficulties,
+        selectedPrimaryMuscles,
+        selectedEquipment,
+      },
+      favoriteExerciseSlugs,
+    );
   }, [
+    favoriteExerciseSlugs,
     rows,
+    showFavoritesOnly,
     selectedDifficulties,
     selectedEquipment,
     selectedPatterns,
@@ -70,6 +81,7 @@ export function useExerciseAtlasGrid(exercises: Exercise[]) {
     filterOptions,
     filters: {
       search,
+      showFavoritesOnly,
       selectedTypes,
       selectedPatterns,
       selectedDifficulties,
@@ -77,6 +89,7 @@ export function useExerciseAtlasGrid(exercises: Exercise[]) {
       selectedEquipment,
     } satisfies ExerciseAtlasFiltersState,
     setSearch,
+    setShowFavoritesOnly,
     setSelectedTypes,
     setSelectedPatterns,
     setSelectedDifficulties,
@@ -87,6 +100,7 @@ export function useExerciseAtlasGrid(exercises: Exercise[]) {
 
   function resetFilters(): void {
     setSearch('');
+    setShowFavoritesOnly(false);
     setSelectedTypes([]);
     setSelectedPatterns([]);
     setSelectedDifficulties([]);

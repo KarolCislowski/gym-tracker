@@ -130,6 +130,7 @@ export async function findTenantProfileByUserId(
         ? profile.birthDate.toISOString()
         : null,
     age: null,
+    favoriteExerciseSlugs: profile.favoriteExerciseSlugs ?? [],
     heightCm: profile.heightCm ?? null,
     gender: profile.gender ?? null,
     activityLevel: profile.activityLevel ?? null,

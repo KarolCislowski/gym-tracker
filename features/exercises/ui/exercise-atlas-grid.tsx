@@ -4,8 +4,10 @@ import Link from 'next/link';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import {
+  Checkbox,
   Button,
   Chip,
+  FormControlLabel,
   IconButton,
   MenuItem,
   Paper,
@@ -30,9 +32,11 @@ import {
   normalizeAtlasMultiSelectValue,
   useExerciseAtlasGrid,
 } from './use-exercise-atlas-grid';
+import { ExerciseFavoriteButton } from './exercise-favorite-button';
 
 interface ExerciseAtlasGridProps {
   exercises: Exercise[];
+  favoriteExerciseSlugs: string[];
   translations: TranslationDictionary['exercises'];
 }
 
@@ -45,6 +49,7 @@ interface ExerciseAtlasGridProps {
  */
 export function ExerciseAtlasGrid({
   exercises,
+  favoriteExerciseSlugs,
   translations,
 }: ExerciseAtlasGridProps) {
   const {
@@ -53,19 +58,20 @@ export function ExerciseAtlasGrid({
     filters,
     resetFilters,
     setSearch,
+    setShowFavoritesOnly,
     setSelectedDifficulties,
     setSelectedEquipment,
     setSelectedPatterns,
     setSelectedPrimaryMuscles,
     setSelectedTypes,
-  } = useExerciseAtlasGrid(exercises);
+  } = useExerciseAtlasGrid(exercises, favoriteExerciseSlugs);
   const actionColumn = {
     field: 'actions',
     headerName: translations.columnActions,
     sortable: false,
     filterable: false,
     pinnable: true,
-    width: 90,
+    width: 132,
     align: 'center' as const,
     headerAlign: 'center' as const,
     renderCell: ({ row }: { row: { name: string } & { id: string } }) => {
@@ -76,16 +82,24 @@ export function ExerciseAtlasGrid({
       }
 
       return (
-        <Tooltip title={translations.viewDetails}>
-          <IconButton
-            aria-label={`${translations.viewDetails}: ${exercise.name}`}
-            component={Link}
-            href={`/exercises/${exercise.slug}`}
-            size='small'
-          >
-            <VisibilityRoundedIcon fontSize='small' />
-          </IconButton>
-        </Tooltip>
+        <Stack direction='row' spacing={0.5}>
+          <ExerciseFavoriteButton
+            exerciseName={exercise.name}
+            exerciseSlug={exercise.slug}
+            isFavorite={favoriteExerciseSlugs.includes(exercise.slug)}
+            translations={translations}
+          />
+          <Tooltip title={translations.viewDetails}>
+            <IconButton
+              aria-label={`${translations.viewDetails}: ${exercise.name}`}
+              component={Link}
+              href={`/exercises/${exercise.slug}`}
+              size='small'
+            >
+              <VisibilityRoundedIcon fontSize='small' />
+            </IconButton>
+          </Tooltip>
+        </Stack>
       );
     },
   };
@@ -128,6 +142,16 @@ export function ExerciseAtlasGrid({
           onChange={(event) => setSearch(event.target.value)}
           sx={{ minWidth: { xs: '100%', lg: 240 }, flex: 1 }}
           value={filters.search}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={filters.showFavoritesOnly}
+              onChange={(event) => setShowFavoritesOnly(event.target.checked)}
+            />
+          }
+          label={translations.filterFavoritesLabel}
+          sx={{ minWidth: { xs: '100%', sm: 'auto' }, mx: 0.5 }}
         />
         <TextField
           label={translations.filterTypeLabel}

@@ -11,6 +11,7 @@ import { ExerciseDetailsVariantsSection } from './exercise-details-variants-sect
 
 interface ExerciseDetailsPageProps {
   exercise: Exercise;
+  favoriteExerciseSlugs: string[];
   translations: TranslationDictionary;
 }
 
@@ -23,14 +24,18 @@ interface ExerciseDetailsPageProps {
  */
 export function ExerciseDetailsPage({
   exercise,
+  favoriteExerciseSlugs,
   translations,
 }: ExerciseDetailsPageProps) {
   const t = translations.exercises;
+  const isFavorite = favoriteExerciseSlugs.includes(exercise.slug);
 
   return (
     <Stack spacing={3}>
       <ExerciseDetailsHeader
         exerciseName={exercise.name}
+        exerciseSlug={exercise.slug}
+        isFavorite={isFavorite}
         translations={t}
       />
       <Box
