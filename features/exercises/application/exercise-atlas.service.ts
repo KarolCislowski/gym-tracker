@@ -1,4 +1,4 @@
-import { findExercises } from '../infrastructure/exercise-atlas.db';
+import { findExerciseBySlug, findExercises } from '../infrastructure/exercise-atlas.db';
 import type { Exercise, ExerciseAtlasFilters } from '../domain/exercise.types';
 
 /**
@@ -38,6 +38,19 @@ export async function listExerciseAtlas(
     )
     .filter((exercise) => matchesExerciseSearch(exercise, normalizedSearch))
     .sort((left, right) => left.name.localeCompare(right.name));
+}
+
+/**
+ * Returns a single active atlas exercise resolved by slug.
+ * @param slug - Stable exercise slug.
+ * @returns The matching exercise or `null` when it is missing or inactive.
+ */
+export async function getExerciseAtlasDetails(
+  slug: string,
+): Promise<Exercise | null> {
+  const exercise = await findExerciseBySlug(slug);
+
+  return exercise?.isActive ? exercise : null;
 }
 
 function matchesExerciseSearch(

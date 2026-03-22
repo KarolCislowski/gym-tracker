@@ -138,6 +138,11 @@ export interface TranslationDictionary {
   exercises: {
     title: string;
     description: string;
+    detailsTitle: string;
+    detailsDescription: string;
+    backToAtlas: string;
+    viewDetails: string;
+    columnActions: string;
     searchPlaceholder: string;
     filterTypeLabel: string;
     filterPatternLabel: string;
@@ -154,6 +159,27 @@ export interface TranslationDictionary {
     columnPrimaryMuscles: string;
     columnVariants: string;
     columnEquipment: string;
+    sectionOverview: string;
+    sectionInstructions: string;
+    sectionTips: string;
+    sectionMistakes: string;
+    sectionVariants: string;
+    aliasesLabel: string;
+    goalsLabel: string;
+    tagsLabel: string;
+    primaryMusclesLabel: string;
+    bodyPositionLabel: string;
+    limbModeLabel: string;
+    gripOptionsLabel: string;
+    stanceOptionsLabel: string;
+    attachmentOptionsLabel: string;
+    trackableMetricsLabel: string;
+    executionNotesLabel: string;
+    defaultVariantLabel: string;
+    yesLabel: string;
+    noLabel: string;
+    notFoundTitle: string;
+    notFoundDescription: string;
   };
   healthyHabits: {
     title: string;

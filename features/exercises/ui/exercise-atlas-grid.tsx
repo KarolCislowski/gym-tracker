@@ -1,13 +1,17 @@
 'use client';
 
+import Link from 'next/link';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import {
   Button,
   Chip,
+  IconButton,
   MenuItem,
   Paper,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -20,11 +24,11 @@ import type {
   ExerciseType,
   MovementPattern,
 } from '../domain/exercise.types';
+import { buildExerciseAtlasGridColumns } from '../application/exercise-atlas-grid';
 import {
   formatAtlasToken,
   normalizeAtlasMultiSelectValue,
   useExerciseAtlasGrid,
-  useExerciseAtlasGridColumns,
 } from './use-exercise-atlas-grid';
 
 interface ExerciseAtlasGridProps {
@@ -55,7 +59,60 @@ export function ExerciseAtlasGrid({
     setSelectedPrimaryMuscles,
     setSelectedTypes,
   } = useExerciseAtlasGrid(exercises);
-  const columns = useExerciseAtlasGridColumns(translations);
+  const actionColumn = {
+    field: 'actions',
+    headerName: translations.columnActions,
+    sortable: false,
+    filterable: false,
+    pinnable: true,
+    width: 90,
+    align: 'center' as const,
+    headerAlign: 'center' as const,
+    renderCell: ({ row }: { row: { name: string } & { id: string } }) => {
+      const exercise = exercises.find((candidate) => candidate.id === row.id);
+
+      if (!exercise) {
+        return null;
+      }
+
+      return (
+        <Tooltip title={translations.viewDetails}>
+          <IconButton
+            aria-label={`${translations.viewDetails}: ${exercise.name}`}
+            component={Link}
+            href={`/exercises/${exercise.slug}`}
+            size='small'
+          >
+            <VisibilityRoundedIcon fontSize='small' />
+          </IconButton>
+        </Tooltip>
+      );
+    },
+  };
+  const columns = [
+    ...buildExerciseAtlasGridColumns(translations)
+      .map((column) =>
+        column.field === 'name' ? { ...column, pinnable: true } : column,
+      )
+      .flatMap((column) =>
+        column.field === 'name' ? [column, actionColumn] : [column],
+      ),
+  ];
+  const initialState = {
+    pagination: {
+      paginationModel: {
+        pageSize: 10,
+        page: 0,
+      },
+    },
+    pinnedColumns: {
+      left: ['name', 'actions'],
+    },
+  } as Parameters<typeof DataGrid>[0]['initialState'] & {
+    pinnedColumns: {
+      left: string[];
+    };
+  };
 
   return (
     <Stack spacing={2.5}>
@@ -255,16 +312,9 @@ export function ExerciseAtlasGrid({
           disableColumnMenu
           disableRowSelectionOnClick
           disableVirtualization
+          initialState={initialState}
           pageSizeOptions={[10, 25, 50]}
           rows={filteredRows}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-                page: 0,
-              },
-            },
-          }}
           sx={{
             border: 0,
             '& .MuiDataGrid-columnHeaders': {
