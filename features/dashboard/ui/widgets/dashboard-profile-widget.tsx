@@ -8,6 +8,7 @@ import {
   calculateAgeFromBirthDate,
   getProfileActivityLabel,
   getProfileHeightLabel,
+  getProfileLocationLabel,
   getProfileSexLabel,
 } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -71,6 +72,10 @@ export function DashboardProfileWidget({
         </Typography>
         <Typography color='text.secondary'>
           {dashboardTranslations.profileEmail}: <strong>{profile.email}</strong>
+        </Typography>
+        <Typography color='text.secondary'>
+          {profileTranslations.locationLabel}:{' '}
+          <strong>{getProfileLocationLabel(profileTranslations, profile.location)}</strong>
         </Typography>
         <Typography color='text.secondary'>
           {profileTranslations.ageLabel}:{' '}

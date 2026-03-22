@@ -122,6 +122,10 @@ export const plMessages: TranslationDictionaryOverrides = {
     emailLabel: 'Email',
     ageLabel: 'Wiek (lata)',
     birthDateLabel: 'Data urodzenia',
+    locationLabel: 'Lokalizacja',
+    locationHelperText:
+      'Wyszukaj swoje miasto lub adres i wybierz właściwy wynik z Google Places.',
+    locationNoOptions: 'Nie znaleziono pasujących lokalizacji.',
     heightLabel: 'Wzrost',
     heightCentimetersLabel: 'Wzrost (cm)',
     heightFeetLabel: 'Wzrost (ft)',

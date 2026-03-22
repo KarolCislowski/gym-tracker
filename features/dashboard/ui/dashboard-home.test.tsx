@@ -61,6 +61,20 @@ describe('DashboardHome', () => {
             birthDate: '1995-03-22T00:00:00.000Z',
             age: 31,
             favoriteExerciseSlugs: [],
+            location: {
+              provider: 'google_places',
+              placeId: 'place-1',
+              displayName: 'Stockholm',
+              formattedAddress: 'Stockholm, Sweden',
+              latitude: 59.3293,
+              longitude: 18.0686,
+              countryCode: 'SE',
+              country: 'Sweden',
+              region: 'Stockholm County',
+              city: 'Stockholm',
+              locality: null,
+              postalCode: null,
+            },
             heightCm: 180,
             gender: 'male',
             activityLevel: 'moderately_active',
@@ -89,6 +103,7 @@ describe('DashboardHome', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/tenant database: tenant_john_123/i)).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Stockholm, Sweden')).toBeInTheDocument();
     expect(screen.getByText('31')).toBeInTheDocument();
     expect(screen.getByText('5 ft 11 in')).toBeInTheDocument();
     expect(screen.getByText('Male')).toBeInTheDocument();

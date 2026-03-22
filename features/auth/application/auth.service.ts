@@ -115,6 +115,7 @@ export async function getAuthenticatedUserSnapshot(
           birthDate: profile.birthDate ?? null,
           age: calculateAgeFromBirthDate(profile.birthDate),
           favoriteExerciseSlugs: profile.favoriteExerciseSlugs ?? [],
+          location: profile.location ?? null,
           heightCm: profile.heightCm ?? null,
           gender: profile.gender ?? null,
           activityLevel: profile.activityLevel ?? null,

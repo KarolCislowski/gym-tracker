@@ -5,6 +5,7 @@ import {
   calculateAgeFromBirthDate,
   getProfileActivityLabel,
   getProfileHeightLabel,
+  getProfileLocationLabel,
   getProfileSexLabel,
 } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -42,6 +43,10 @@ export function ProfileView({
       <ProfileField label={t.firstNameLabel} value={profile?.firstName} />
       <ProfileField label={t.lastNameLabel} value={profile?.lastName} />
       <ProfileField label={t.emailLabel} value={profile?.email} />
+      <ProfileField
+        label={t.locationLabel}
+        value={getProfileLocationLabel(t, profile?.location ?? null)}
+      />
       <ProfileField
         label={t.ageLabel}
         value={

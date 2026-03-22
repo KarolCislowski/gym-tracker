@@ -13,6 +13,7 @@ import { convertHeightFromMetric } from '@/shared/units/application/unit-convers
 
 import { formatBirthDateForDateInput } from '../application/profile-view';
 import { updateProfileAction } from '../infrastructure/profile.actions';
+import { ProfileLocationField } from './profile-location-field';
 
 interface ProfileEditFormProps {
   translations: TranslationDictionary;
@@ -71,6 +72,10 @@ export function ProfileEditForm({
             htmlInput: { max: new Date().toISOString().slice(0, 10) },
           }}
           type='date'
+        />
+        <ProfileLocationField
+          defaultLocation={profile?.location ?? null}
+          translations={t}
         />
         <input type='hidden' name='unitSystem' value={unitSystem} />
         {unitSystem === 'metric' ? (

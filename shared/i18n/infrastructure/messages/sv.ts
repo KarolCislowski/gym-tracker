@@ -121,6 +121,10 @@ export const svMessages: TranslationDictionaryOverrides = {
     emailLabel: 'E-post',
     ageLabel: 'Ålder (år)',
     birthDateLabel: 'Födelsedatum',
+    locationLabel: 'Plats',
+    locationHelperText:
+      'Sök efter din stad eller adress och välj rätt träff från Google Places.',
+    locationNoOptions: 'Inga matchande platser hittades.',
     heightLabel: 'Längd',
     heightCentimetersLabel: 'Längd (cm)',
     heightFeetLabel: 'Längd (ft)',

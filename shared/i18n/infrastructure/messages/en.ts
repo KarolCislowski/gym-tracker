@@ -120,6 +120,10 @@ export const enMessages: TranslationDictionary = {
     emailLabel: 'Email',
     ageLabel: 'Age (years)',
     birthDateLabel: 'Birth date',
+    locationLabel: 'Location',
+    locationHelperText:
+      'Search for your city or address and select the matching result from Google Places.',
+    locationNoOptions: 'No matching locations found.',
     heightLabel: 'Height',
     heightCentimetersLabel: 'Height (cm)',
     heightFeetLabel: 'Height (ft)',

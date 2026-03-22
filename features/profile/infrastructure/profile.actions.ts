@@ -26,6 +26,7 @@ export async function updateProfileAction(formData: FormData): Promise<void> {
       firstName: String(formData.get('firstName') ?? ''),
       lastName: String(formData.get('lastName') ?? ''),
       birthDate: normalizeOptionalDate(formData.get('birthDate')),
+      location: normalizeLocation(formData),
       unitSystem: normalizeUnitSystem(formData.get('unitSystem')),
       heightCm: normalizeOptionalNumber(formData.get('heightCm')),
       heightFeet: normalizeOptionalNumber(formData.get('heightFeet')),
@@ -103,6 +104,54 @@ function normalizeOptionalEnum(value: FormDataEntryValue | null): string | null 
   const normalizedValue = String(value).trim();
 
   return normalizedValue ? normalizedValue : null;
+}
+
+function normalizeLocation(
+  formData: FormData,
+):
+  | {
+      provider: 'google_places';
+      placeId: string;
+      displayName: string;
+      formattedAddress: string;
+      latitude: number;
+      longitude: number;
+      countryCode: string | null;
+      country: string | null;
+      region: string | null;
+      city: string | null;
+      locality: string | null;
+      postalCode: string | null;
+    }
+  | null {
+  const placeId = String(formData.get('locationPlaceId') ?? '').trim();
+
+  if (!placeId) {
+    return null;
+  }
+
+  return {
+    provider: 'google_places',
+    placeId,
+    displayName: String(formData.get('locationDisplayName') ?? '').trim(),
+    formattedAddress: String(
+      formData.get('locationFormattedAddress') ?? '',
+    ).trim(),
+    latitude: Number(formData.get('locationLatitude') ?? ''),
+    longitude: Number(formData.get('locationLongitude') ?? ''),
+    countryCode: normalizeOptionalString(formData.get('locationCountryCode')),
+    country: normalizeOptionalString(formData.get('locationCountry')),
+    region: normalizeOptionalString(formData.get('locationRegion')),
+    city: normalizeOptionalString(formData.get('locationCity')),
+    locality: normalizeOptionalString(formData.get('locationLocality')),
+    postalCode: normalizeOptionalString(formData.get('locationPostalCode')),
+  };
+}
+
+function normalizeOptionalString(value: FormDataEntryValue | null): string | null {
+  const normalizedValue = String(value ?? '').trim();
+
+  return normalizedValue || null;
 }
 
 function getProfileErrorCode(error: unknown): string {

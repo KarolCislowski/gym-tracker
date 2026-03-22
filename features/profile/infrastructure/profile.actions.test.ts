@@ -79,6 +79,7 @@ describe('profile.actions', () => {
       firstName: 'John',
       lastName: 'Doe',
       birthDate: new Date('1994-03-22T00:00:00.000Z'),
+      location: null,
       unitSystem: 'imperial_uk',
       heightCm: null,
       heightFeet: 5,

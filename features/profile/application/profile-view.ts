@@ -9,6 +9,7 @@ type ProfileGender = ProfileSnapshot['gender'];
 type ProfileActivityLevel = ProfileSnapshot['activityLevel'];
 type ProfileHeight = ProfileSnapshot['heightCm'];
 type ProfileBirthDate = ProfileSnapshot['birthDate'];
+type ProfileLocation = ProfileSnapshot['location'];
 
 /**
  * Resolves the localized label for a biological sex value.
@@ -127,4 +128,17 @@ export function formatBirthDateForDateInput(
   birthDate: ProfileBirthDate,
 ): string {
   return birthDate ? birthDate.slice(0, 10) : '';
+}
+
+/**
+ * Formats the stored structured location for read-only profile presentation.
+ * @param translations - The localized profile translation subset.
+ * @param location - Structured location stored in the tenant profile snapshot.
+ * @returns The formatted address or the empty-state label when no location is set.
+ */
+export function getProfileLocationLabel(
+  translations: ProfileTranslations,
+  location: ProfileLocation,
+): string {
+  return location?.formattedAddress ?? translations.emptyValue;
 }

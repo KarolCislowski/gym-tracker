@@ -113,6 +113,9 @@ export interface TranslationDictionary {
     emailLabel: string;
     ageLabel: string;
     birthDateLabel: string;
+    locationLabel: string;
+    locationHelperText: string;
+    locationNoOptions: string;
     heightLabel: string;
     heightCentimetersLabel: string;
     heightFeetLabel: string;

@@ -20,6 +20,7 @@ export async function updateTenantProfileRecord(
         firstName: input.firstName,
         lastName: input.lastName,
         birthDate: input.birthDate,
+        location: input.location,
         heightCm: input.heightCm,
         gender: input.gender,
         activityLevel: input.activityLevel,

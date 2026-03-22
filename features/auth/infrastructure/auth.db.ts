@@ -131,6 +131,22 @@ export async function findTenantProfileByUserId(
         : null,
     age: null,
     favoriteExerciseSlugs: profile.favoriteExerciseSlugs ?? [],
+    location: profile.location
+      ? {
+          provider: profile.location.provider,
+          placeId: profile.location.placeId,
+          displayName: profile.location.displayName,
+          formattedAddress: profile.location.formattedAddress,
+          latitude: profile.location.latitude,
+          longitude: profile.location.longitude,
+          countryCode: profile.location.countryCode ?? null,
+          country: profile.location.country ?? null,
+          region: profile.location.region ?? null,
+          city: profile.location.city ?? null,
+          locality: profile.location.locality ?? null,
+          postalCode: profile.location.postalCode ?? null,
+        }
+      : null,
     heightCm: profile.heightCm ?? null,
     gender: profile.gender ?? null,
     activityLevel: profile.activityLevel ?? null,

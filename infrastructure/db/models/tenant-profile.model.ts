@@ -39,6 +39,80 @@ const tenantProfileSchema = new Schema<TenantProfile>(
       required: false,
       default: [],
     },
+    location: {
+      type: {
+        provider: {
+          type: String,
+          required: true,
+          enum: ['google_places'],
+        },
+        placeId: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        displayName: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        formattedAddress: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        latitude: {
+          type: Number,
+          required: true,
+          min: -90,
+          max: 90,
+        },
+        longitude: {
+          type: Number,
+          required: true,
+          min: -180,
+          max: 180,
+        },
+        countryCode: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+        country: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+        region: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+        city: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+        locality: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+        postalCode: {
+          type: String,
+          required: false,
+          default: null,
+          trim: true,
+        },
+      },
+      required: false,
+      default: null,
+    },
     heightCm: {
       type: Number,
       required: false,
@@ -87,6 +161,7 @@ export async function getTenantProfileModel(
     const hasLatestSchemaFields =
       Boolean(existingModel.schema.path('birthDate')) &&
       Boolean(existingModel.schema.path('favoriteExerciseSlugs')) &&
+      Boolean(existingModel.schema.path('location')) &&
       Boolean(existingModel.schema.path('heightCm')) &&
       Boolean(existingModel.schema.path('activityLevel'));
 
