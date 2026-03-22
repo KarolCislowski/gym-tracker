@@ -21,6 +21,7 @@ describe('healthy-habits.service', () => {
       tenantDbName: 'tenant_john',
       unitSystem: 'imperial_uk',
       averageSleepHoursPerDay: 7.5,
+      regularSleepSchedule: true,
       stepsPerDay: 9000,
       waterLitersPerDay: null,
       waterFluidOuncesPerDay: 70.4,
@@ -32,6 +33,7 @@ describe('healthy-habits.service', () => {
     expect(mockedUpdateTenantHealthyHabitsRecord).toHaveBeenCalledWith({
       tenantDbName: 'tenant_john',
       averageSleepHoursPerDay: 7.5,
+      regularSleepSchedule: true,
       stepsPerDay: 9000,
       waterLitersPerDay: 2,
       proteinGramsPerDay: 150,

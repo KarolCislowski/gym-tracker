@@ -62,6 +62,7 @@ describe('healthy-habits.actions', () => {
         createFormData({
           unitSystem: 'imperial_us',
           averageSleepHoursPerDay: '7.5',
+          regularSleepSchedule: true,
           stepsPerDay: '9000',
           waterFluidOuncesPerDay: '67.6',
           proteinGramsPerDay: '150',
@@ -77,12 +78,47 @@ describe('healthy-habits.actions', () => {
       tenantDbName: 'tenant_john',
       unitSystem: 'imperial_us',
       averageSleepHoursPerDay: 7.5,
+      regularSleepSchedule: true,
       stepsPerDay: 9000,
       waterLitersPerDay: null,
       waterFluidOuncesPerDay: 67.6,
       proteinGramsPerDay: 150,
       strengthWorkoutsPerWeek: 3,
       cardioMinutesPerWeek: 120,
+    });
+  });
+
+  /**
+   * Verifies that an unchecked regular sleep schedule toggle is normalized to false.
+   */
+  test('updateHealthyHabitsAction sends false for an unchecked regular sleep schedule', async () => {
+    await expect(
+      updateHealthyHabitsAction(
+        createFormData({
+          unitSystem: 'metric',
+          averageSleepHoursPerDay: '8',
+          stepsPerDay: '7500',
+          waterLitersPerDay: '2.5',
+          proteinGramsPerDay: '140',
+          strengthWorkoutsPerWeek: '4',
+          cardioMinutesPerWeek: '90',
+        }),
+      ),
+    ).rejects.toThrow(
+      'NEXT_REDIRECT:/profile?section=healthy-habits&status=healthy-habits-updated',
+    );
+
+    expect(mockedUpdateHealthyHabits).toHaveBeenCalledWith({
+      tenantDbName: 'tenant_john',
+      unitSystem: 'metric',
+      averageSleepHoursPerDay: 8,
+      regularSleepSchedule: false,
+      stepsPerDay: 7500,
+      waterLitersPerDay: 2.5,
+      waterFluidOuncesPerDay: null,
+      proteinGramsPerDay: 140,
+      strengthWorkoutsPerWeek: 4,
+      cardioMinutesPerWeek: 90,
     });
   });
 });

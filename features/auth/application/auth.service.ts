@@ -131,6 +131,7 @@ export async function getAuthenticatedUserSnapshot(
       proteinGramsPerDay: null,
       strengthWorkoutsPerWeek: null,
       cardioMinutesPerWeek: null,
+      regularSleepSchedule: false,
     },
   };
 }

@@ -21,6 +21,11 @@ const tenantHealthyHabitsSchema = new Schema<TenantHealthyHabits>(
       max: 24,
       default: null,
     },
+    regularSleepSchedule: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     stepsPerDay: {
       type: Number,
       required: false,
@@ -80,7 +85,8 @@ export async function getTenantHealthyHabitsModel(
     const hasLatestSchemaFields =
       Boolean(existingModel.schema.path('averageSleepHoursPerDay')) &&
       Boolean(existingModel.schema.path('waterLitersPerDay')) &&
-      Boolean(existingModel.schema.path('proteinGramsPerDay'));
+      Boolean(existingModel.schema.path('proteinGramsPerDay')) &&
+      Boolean(existingModel.schema.path('regularSleepSchedule'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
       return existingModel;

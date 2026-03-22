@@ -262,6 +262,7 @@ describe('auth.service', () => {
       proteinGramsPerDay: 150,
       strengthWorkoutsPerWeek: 3,
       cardioMinutesPerWeek: 120,
+      regularSleepSchedule: true,
     } satisfies TenantHealthyHabitsSnapshot);
 
     const result = await getAuthenticatedUserSnapshot(
@@ -291,6 +292,7 @@ describe('auth.service', () => {
         proteinGramsPerDay: 150,
         strengthWorkoutsPerWeek: 3,
         cardioMinutesPerWeek: 120,
+        regularSleepSchedule: true,
       },
     });
   });

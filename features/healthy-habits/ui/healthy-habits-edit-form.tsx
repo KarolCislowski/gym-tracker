@@ -1,5 +1,12 @@
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import { Box, Button, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Stack,
+  Switch,
+  TextField,
+} from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -50,6 +57,19 @@ export function HealthyHabitsEditForm({
           slotProps={{ htmlInput: { min: 0, max: 24, step: 0.1 } }}
           type='number'
         />
+        <Box>
+          <input type='hidden' name='regularSleepSchedule' value='false' />
+          <FormControlLabel
+            control={
+              <Switch
+                defaultChecked={habits?.regularSleepSchedule ?? false}
+                name='regularSleepSchedule'
+                value='true'
+              />
+            }
+            label={t.regularSleepScheduleLabel}
+          />
+        </Box>
         <TextField
           defaultValue={habits?.stepsPerDay ?? ''}
           label={t.stepsPerDayLabel}

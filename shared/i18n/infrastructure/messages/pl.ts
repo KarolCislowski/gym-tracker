@@ -148,6 +148,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     description:
       'Ustaw dzienne i tygodniowe cele wspierające trening oraz regenerację.',
     averageSleepHoursPerDayLabel: 'Średnia długość snu na dobę (h)',
+    regularSleepScheduleLabel: 'Regularny harmonogram snu',
+    regularSleepScheduleEnabled: 'Tak',
+    regularSleepScheduleDisabled: 'Nie',
     stepsPerDayLabel: 'Liczba kroków dziennie',
     waterPerDayLabel: 'Woda dziennie',
     waterLitersPerDayLabel: 'Woda dziennie (l)',

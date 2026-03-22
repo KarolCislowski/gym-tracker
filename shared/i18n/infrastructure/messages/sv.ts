@@ -147,6 +147,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     description:
       'Sätt dagliga och veckovisa mål som stödjer din träning och återhämtning.',
     averageSleepHoursPerDayLabel: 'Genomsnittlig sömn per dag (h)',
+    regularSleepScheduleLabel: 'Regelbundet sömnschema',
+    regularSleepScheduleEnabled: 'Ja',
+    regularSleepScheduleDisabled: 'Nej',
     stepsPerDayLabel: 'Steg per dag',
     waterPerDayLabel: 'Vatten per dag',
     waterLitersPerDayLabel: 'Vatten per dag (l)',

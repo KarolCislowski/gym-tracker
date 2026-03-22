@@ -4,6 +4,7 @@ export interface UpdateHealthyHabitsInput {
   averageSleepHoursPerDay: number | null;
   cardioMinutesPerWeek: number | null;
   proteinGramsPerDay: number | null;
+  regularSleepSchedule: boolean;
   stepsPerDay: number | null;
   strengthWorkoutsPerWeek: number | null;
   tenantDbName: string;
@@ -16,6 +17,7 @@ export interface UpdateHealthyHabitsRecordInput {
   averageSleepHoursPerDay: number | null;
   cardioMinutesPerWeek: number | null;
   proteinGramsPerDay: number | null;
+  regularSleepSchedule: boolean;
   stepsPerDay: number | null;
   strengthWorkoutsPerWeek: number | null;
   tenantDbName: string;

@@ -39,6 +39,7 @@ describe('DashboardHome', () => {
             proteinGramsPerDay: 150,
             strengthWorkoutsPerWeek: 3,
             cardioMinutesPerWeek: 120,
+            regularSleepSchedule: true,
           },
         }}
       />,
@@ -57,6 +58,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Imperial (UK)')).toBeInTheDocument();
     expect(screen.getByText('9000')).toBeInTheDocument();
     expect(screen.getByText('7.5 h')).toBeInTheDocument();
+    expect(screen.getByText('Yes')).toBeInTheDocument();
     expect(screen.getByText('70.4 fl oz')).toBeInTheDocument();
     expect(screen.getByText('150 g')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();

@@ -20,6 +20,7 @@ export async function updateTenantHealthyHabitsRecord(
     {
       $set: {
         averageSleepHoursPerDay: input.averageSleepHoursPerDay,
+        regularSleepSchedule: input.regularSleepSchedule,
         stepsPerDay: input.stepsPerDay,
         waterLitersPerDay: input.waterLitersPerDay,
         proteinGramsPerDay: input.proteinGramsPerDay,

@@ -146,6 +146,9 @@ export const enMessages: TranslationDictionary = {
     description:
       'Set daily and weekly targets that support your training and recovery.',
     averageSleepHoursPerDayLabel: 'Average sleep per day (h)',
+    regularSleepScheduleLabel: 'Regular sleep schedule',
+    regularSleepScheduleEnabled: 'Yes',
+    regularSleepScheduleDisabled: 'No',
     stepsPerDayLabel: 'Steps per day',
     waterPerDayLabel: 'Water per day',
     waterLitersPerDayLabel: 'Water per day (L)',

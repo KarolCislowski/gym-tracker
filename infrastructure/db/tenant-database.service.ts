@@ -66,6 +66,7 @@ export async function initializeTenantDatabase(
       $setOnInsert: {
         scope: 'tenant',
         averageSleepHoursPerDay: null,
+        regularSleepSchedule: false,
         stepsPerDay: null,
         waterLitersPerDay: null,
         proteinGramsPerDay: null,

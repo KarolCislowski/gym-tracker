@@ -137,6 +137,9 @@ export interface TranslationDictionary {
     title: string;
     description: string;
     averageSleepHoursPerDayLabel: string;
+    regularSleepScheduleLabel: string;
+    regularSleepScheduleEnabled: string;
+    regularSleepScheduleDisabled: string;
     stepsPerDayLabel: string;
     waterPerDayLabel: string;
     waterLitersPerDayLabel: string;

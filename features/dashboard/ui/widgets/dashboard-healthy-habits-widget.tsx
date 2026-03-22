@@ -74,6 +74,14 @@ export function DashboardHealthyHabitsWidget({
           </strong>
         </Typography>
         <Typography color='text.secondary'>
+          {habitsTranslations.regularSleepScheduleLabel}:{' '}
+          <strong>
+            {healthyHabits.regularSleepSchedule
+              ? habitsTranslations.regularSleepScheduleEnabled
+              : habitsTranslations.regularSleepScheduleDisabled}
+          </strong>
+        </Typography>
+        <Typography color='text.secondary'>
           {habitsTranslations.stepsPerDayLabel}:{' '}
           <strong>
             {healthyHabits.stepsPerDay != null

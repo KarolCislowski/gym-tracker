@@ -45,6 +45,16 @@ export function HealthyHabitsView({
         }
       />
       <ProfileField
+        label={t.regularSleepScheduleLabel}
+        value={
+          habits
+            ? habits.regularSleepSchedule
+              ? t.regularSleepScheduleEnabled
+              : t.regularSleepScheduleDisabled
+            : undefined
+        }
+      />
+      <ProfileField
         label={t.stepsPerDayLabel}
         value={habits?.stepsPerDay != null ? String(habits.stepsPerDay) : undefined}
       />

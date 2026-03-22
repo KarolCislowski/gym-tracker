@@ -7,6 +7,7 @@ export interface TenantHealthyHabits {
   cardioMinutesPerWeek: number | null;
   createdAt: Date;
   proteinGramsPerDay: number | null;
+  regularSleepSchedule: boolean;
   stepsPerDay: number | null;
   strengthWorkoutsPerWeek: number | null;
   waterLitersPerDay: number | null;

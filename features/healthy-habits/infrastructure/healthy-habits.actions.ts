@@ -26,6 +26,9 @@ export async function updateHealthyHabitsAction(formData: FormData): Promise<voi
       averageSleepHoursPerDay: normalizeOptionalNumber(
         formData.get('averageSleepHoursPerDay'),
       ),
+      regularSleepSchedule: normalizeCheckboxValues(
+        formData.getAll('regularSleepSchedule'),
+      ),
       stepsPerDay: normalizeOptionalNumber(formData.get('stepsPerDay')),
       waterLitersPerDay: normalizeOptionalNumber(formData.get('waterLitersPerDay')),
       waterFluidOuncesPerDay: normalizeOptionalNumber(
@@ -72,6 +75,14 @@ function normalizeUnitSystem(
   return normalizedValue === 'imperial_us' || normalizedValue === 'imperial_uk'
     ? normalizedValue
     : 'metric';
+}
+
+function normalizeCheckboxValues(values: FormDataEntryValue[]): boolean {
+  return values.some((value) => {
+    const normalizedValue = String(value).trim();
+
+    return normalizedValue === 'true' || normalizedValue === 'on';
+  });
 }
 
 function getHealthyHabitsErrorCode(error: unknown): string {

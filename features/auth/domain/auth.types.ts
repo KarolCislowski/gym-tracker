@@ -83,6 +83,7 @@ export interface TenantHealthyHabitsSnapshot {
   proteinGramsPerDay: number | null;
   strengthWorkoutsPerWeek: number | null;
   cardioMinutesPerWeek: number | null;
+  regularSleepSchedule: boolean;
 }
 
 export interface AuthenticatedUserSnapshot {

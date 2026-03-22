@@ -18,6 +18,7 @@ export async function updateHealthyHabits(
   const parsedInput = updateHealthyHabitsSchema.parse({
     tenantDbName: input.tenantDbName,
     averageSleepHoursPerDay: input.averageSleepHoursPerDay,
+    regularSleepSchedule: input.regularSleepSchedule,
     stepsPerDay: input.stepsPerDay,
     waterLitersPerDay: resolveWaterLiters(input),
     proteinGramsPerDay: input.proteinGramsPerDay,

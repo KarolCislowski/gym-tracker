@@ -180,5 +180,6 @@ export async function findTenantHealthyHabits(
     proteinGramsPerDay: habits.proteinGramsPerDay ?? null,
     strengthWorkoutsPerWeek: habits.strengthWorkoutsPerWeek ?? null,
     cardioMinutesPerWeek: habits.cardioMinutesPerWeek ?? null,
+    regularSleepSchedule: habits.regularSleepSchedule ?? false,
   };
 }
