@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
+  calculateAgeFromBirthDate,
   getProfileActivityLabel,
   getProfileHeightLabel,
   getProfileSexLabel,
@@ -43,7 +44,11 @@ export function ProfileView({
       <ProfileField label={t.emailLabel} value={profile?.email} />
       <ProfileField
         label={t.ageLabel}
-        value={profile?.age != null ? String(profile.age) : undefined}
+        value={
+          profile
+            ? calculateAgeFromBirthDate(profile.birthDate)?.toString()
+            : undefined
+        }
       />
       <ProfileField
         label={t.heightLabel}

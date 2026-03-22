@@ -18,6 +18,7 @@ import {
   findTenantProfileByUserId,
   findTenantSettings,
 } from '../infrastructure/auth.db';
+import { calculateAgeFromBirthDate } from '@/features/profile/application/profile-view';
 
 /**
  * Creates a new user in the Core database and initializes the user's tenant database.
@@ -111,7 +112,8 @@ export async function getAuthenticatedUserSnapshot(
           email: profile.email,
           firstName: profile.firstName,
           lastName: profile.lastName,
-          age: profile.age ?? null,
+          birthDate: profile.birthDate ?? null,
+          age: calculateAgeFromBirthDate(profile.birthDate),
           heightCm: profile.heightCm ?? null,
           gender: profile.gender ?? null,
           activityLevel: profile.activityLevel ?? null,

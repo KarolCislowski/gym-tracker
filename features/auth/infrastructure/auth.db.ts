@@ -125,7 +125,11 @@ export async function findTenantProfileByUserId(
     email: profile.email,
     firstName: profile.firstName,
     lastName: profile.lastName,
-    age: profile.age ?? null,
+    birthDate:
+      profile.birthDate instanceof Date
+        ? profile.birthDate.toISOString()
+        : null,
+    age: null,
     heightCm: profile.heightCm ?? null,
     gender: profile.gender ?? null,
     activityLevel: profile.activityLevel ?? null,

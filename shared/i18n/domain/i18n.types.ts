@@ -109,6 +109,7 @@ export interface TranslationDictionary {
     lastNameLabel: string;
     emailLabel: string;
     ageLabel: string;
+    birthDateLabel: string;
     heightLabel: string;
     heightCentimetersLabel: string;
     heightFeetLabel: string;

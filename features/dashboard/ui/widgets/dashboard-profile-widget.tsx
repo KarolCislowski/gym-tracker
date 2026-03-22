@@ -5,6 +5,7 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
+  calculateAgeFromBirthDate,
   getProfileActivityLabel,
   getProfileHeightLabel,
   getProfileSexLabel,
@@ -73,7 +74,10 @@ export function DashboardProfileWidget({
         </Typography>
         <Typography color='text.secondary'>
           {profileTranslations.ageLabel}:{' '}
-          <strong>{profile.age != null ? String(profile.age) : profileTranslations.emptyValue}</strong>
+          <strong>
+            {calculateAgeFromBirthDate(profile.birthDate) ??
+              profileTranslations.emptyValue}
+          </strong>
         </Typography>
         <Typography color='text.secondary'>
           {profileTranslations.heightLabel}:{' '}

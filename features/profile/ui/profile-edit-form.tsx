@@ -1,19 +1,17 @@
-import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
   Box,
   Button,
-  IconButton,
   MenuItem,
   Stack,
   TextField,
-  Tooltip,
 } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { convertHeightFromMetric } from '@/shared/units/application/unit-conversion';
 
+import { formatBirthDateForDateInput } from '../application/profile-view';
 import { updateProfileAction } from '../infrastructure/profile.actions';
 
 interface ProfileEditFormProps {
@@ -65,11 +63,14 @@ export function ProfileEditForm({
         />
         <TextField disabled label={t.emailLabel} value={profile?.email ?? ''} />
         <TextField
-          defaultValue={profile?.age ?? ''}
-          label={t.ageLabel}
-          name='age'
-          slotProps={{ htmlInput: { min: 0, max: 120 } }}
-          type='number'
+          defaultValue={formatBirthDateForDateInput(profile?.birthDate ?? null)}
+          label={t.birthDateLabel}
+          name='birthDate'
+          slotProps={{
+            inputLabel: { shrink: true },
+            htmlInput: { max: new Date().toISOString().slice(0, 10) },
+          }}
+          type='date'
         />
         <input type='hidden' name='unitSystem' value={unitSystem} />
         {unitSystem === 'metric' ? (
@@ -120,19 +121,6 @@ export function ProfileEditForm({
             },
             htmlInput: {
               'aria-describedby': biologicalSexHelpId,
-            },
-            input: {
-              endAdornment: (
-                <Tooltip describeChild title={t.biologicalSexTooltip}>
-                  <IconButton
-                    aria-label={t.biologicalSexTooltip}
-                    edge='end'
-                    size='small'
-                  >
-                    <HelpOutlineRoundedIcon fontSize='small' />
-                  </IconButton>
-                </Tooltip>
-              ),
             },
           }}
         >

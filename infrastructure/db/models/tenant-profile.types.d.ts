@@ -6,7 +6,7 @@ export interface TenantProfile {
   email: string;
   firstName: string;
   lastName: string;
-  age?: number | null;
+  birthDate?: Date | null;
   heightCm?: number | null;
   gender?: 'female' | 'male' | 'other' | 'prefer_not_to_say' | null;
   activityLevel?:

@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type {
   CoreUserAuthDto,
   CoreUserLookupDto,
@@ -67,6 +67,10 @@ describe('auth.service', () => {
    */
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   /**
@@ -241,11 +245,15 @@ describe('auth.service', () => {
    * Verifies that tenant profile and settings are mapped into the snapshot shape used by the UI.
    */
   test('getAuthenticatedUserSnapshot maps profile and settings data', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-22T12:00:00.000Z'));
+
     mockedFindTenantProfileByUserId.mockResolvedValueOnce({
       email: 'john@example.com',
       firstName: 'John',
       lastName: 'Doe',
-      age: 31,
+      birthDate: '1995-03-22T00:00:00.000Z',
+      age: null,
       heightCm: 180,
       gender: 'male',
       activityLevel: 'moderately_active',
@@ -275,6 +283,7 @@ describe('auth.service', () => {
         email: 'john@example.com',
         firstName: 'John',
         lastName: 'Doe',
+        birthDate: '1995-03-22T00:00:00.000Z',
         age: 31,
         heightCm: 180,
         gender: 'male',

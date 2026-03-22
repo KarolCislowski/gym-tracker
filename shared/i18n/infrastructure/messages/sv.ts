@@ -117,6 +117,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     lastNameLabel: 'Efternamn',
     emailLabel: 'E-post',
     ageLabel: 'Ålder (år)',
+    birthDateLabel: 'Födelsedatum',
     heightLabel: 'Längd',
     heightCentimetersLabel: 'Längd (cm)',
     heightFeetLabel: 'Längd (ft)',

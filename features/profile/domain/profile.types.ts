@@ -5,7 +5,7 @@ export interface UpdateProfileInput {
   userId: string;
   firstName: string;
   lastName: string;
-  age: number | null;
+  birthDate: Date | null;
   unitSystem: UnitSystem;
   heightCm: number | null;
   heightFeet: number | null;
@@ -25,7 +25,7 @@ export interface UpdateProfileRecordInput {
   userId: string;
   firstName: string;
   lastName: string;
-  age: number | null;
+  birthDate: Date | null;
   heightCm: number | null;
   gender: 'female' | 'male' | 'other' | 'prefer_not_to_say' | null;
   activityLevel:

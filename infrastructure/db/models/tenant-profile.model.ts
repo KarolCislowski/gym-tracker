@@ -29,11 +29,9 @@ const tenantProfileSchema = new Schema<TenantProfile>(
       required: true,
       trim: true,
     },
-    age: {
-      type: Number,
+    birthDate: {
+      type: Date,
       required: false,
-      min: 0,
-      max: 120,
       default: null,
     },
     heightCm: {
@@ -82,6 +80,7 @@ export async function getTenantProfileModel(
 
   if (existingModel) {
     const hasLatestSchemaFields =
+      Boolean(existingModel.schema.path('birthDate')) &&
       Boolean(existingModel.schema.path('heightCm')) &&
       Boolean(existingModel.schema.path('activityLevel'));
 

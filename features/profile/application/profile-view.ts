@@ -8,6 +8,7 @@ type ProfileSnapshot = NonNullable<AuthenticatedUserSnapshot['profile']>;
 type ProfileGender = ProfileSnapshot['gender'];
 type ProfileActivityLevel = ProfileSnapshot['activityLevel'];
 type ProfileHeight = ProfileSnapshot['heightCm'];
+type ProfileBirthDate = ProfileSnapshot['birthDate'];
 
 /**
  * Resolves the localized label for a biological sex value.
@@ -82,4 +83,48 @@ export function getProfileHeightLabel(
   }
 
   return `${convertedValue.feet} ft ${convertedValue.inches} in`;
+}
+
+/**
+ * Calculates the full age in years from a stored birth date.
+ * @param birthDate - Birth date stored in the tenant profile snapshot.
+ * @param referenceDate - Date used as the "today" reference for age calculation.
+ * @returns The age in years or `null` when the birth date is missing.
+ */
+export function calculateAgeFromBirthDate(
+  birthDate: ProfileBirthDate,
+  referenceDate: Date = new Date(),
+): number | null {
+  if (!birthDate) {
+    return null;
+  }
+
+  const parsedBirthDate = new Date(birthDate);
+
+  if (Number.isNaN(parsedBirthDate.getTime())) {
+    return null;
+  }
+
+  let age = referenceDate.getUTCFullYear() - parsedBirthDate.getUTCFullYear();
+  const hasHadBirthdayThisYear =
+    referenceDate.getUTCMonth() > parsedBirthDate.getUTCMonth() ||
+    (referenceDate.getUTCMonth() === parsedBirthDate.getUTCMonth() &&
+      referenceDate.getUTCDate() >= parsedBirthDate.getUTCDate());
+
+  if (!hasHadBirthdayThisYear) {
+    age -= 1;
+  }
+
+  return age >= 0 ? age : null;
+}
+
+/**
+ * Formats a stored birth date for an HTML date input.
+ * @param birthDate - Birth date stored in the tenant profile snapshot.
+ * @returns A `YYYY-MM-DD` string or an empty string when the value is missing.
+ */
+export function formatBirthDateForDateInput(
+  birthDate: ProfileBirthDate,
+): string {
+  return birthDate ? birthDate.slice(0, 10) : '';
 }

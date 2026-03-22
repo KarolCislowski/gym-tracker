@@ -116,6 +116,7 @@ export const enMessages: TranslationDictionary = {
     lastNameLabel: 'Last name',
     emailLabel: 'Email',
     ageLabel: 'Age (years)',
+    birthDateLabel: 'Birth date',
     heightLabel: 'Height',
     heightCentimetersLabel: 'Height (cm)',
     heightFeetLabel: 'Height (ft)',

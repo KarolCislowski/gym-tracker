@@ -15,7 +15,7 @@ export async function updateProfile(input: UpdateProfileInput): Promise<void> {
     userId: input.userId,
     firstName: input.firstName,
     lastName: input.lastName,
-    age: input.age,
+    birthDate: input.birthDate,
     heightCm: resolveHeightInMetric(input),
     gender: input.gender,
     activityLevel: input.activityLevel,

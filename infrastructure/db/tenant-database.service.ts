@@ -42,6 +42,7 @@ export async function initializeTenantDatabase(
         email: input.email,
         firstName: input.firstName,
         lastName: input.lastName,
+        birthDate: null,
       },
     },
     { upsert: true },

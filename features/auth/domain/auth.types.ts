@@ -58,6 +58,7 @@ export interface TenantProfileSnapshot {
   email: string;
   firstName: string;
   lastName: string;
+  birthDate: string | null;
   age: number | null;
   heightCm: number | null;
   gender: 'female' | 'male' | 'other' | 'prefer_not_to_say' | null;

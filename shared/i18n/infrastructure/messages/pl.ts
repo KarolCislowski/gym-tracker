@@ -118,6 +118,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     lastNameLabel: 'Nazwisko',
     emailLabel: 'Email',
     ageLabel: 'Wiek (lata)',
+    birthDateLabel: 'Data urodzenia',
     heightLabel: 'Wzrost',
     heightCentimetersLabel: 'Wzrost (cm)',
     heightFeetLabel: 'Wzrost (ft)',

@@ -2,13 +2,22 @@
  * @vitest-environment jsdom
  */
 import { render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
 import { DashboardHome } from './dashboard-home';
 
 describe('DashboardHome', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-22T12:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   /**
    * Verifies that the dashboard overview renders tenant profile and settings content.
    */
@@ -22,6 +31,7 @@ describe('DashboardHome', () => {
             email: 'john@example.com',
             firstName: 'John',
             lastName: 'Doe',
+            birthDate: '1995-03-22T00:00:00.000Z',
             age: 31,
             heightCm: 180,
             gender: 'male',

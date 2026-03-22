@@ -25,7 +25,7 @@ export async function updateProfileAction(formData: FormData): Promise<void> {
       userId: session.user.id,
       firstName: String(formData.get('firstName') ?? ''),
       lastName: String(formData.get('lastName') ?? ''),
-      age: normalizeOptionalNumber(formData.get('age')),
+      birthDate: normalizeOptionalDate(formData.get('birthDate')),
       unitSystem: normalizeUnitSystem(formData.get('unitSystem')),
       heightCm: normalizeOptionalNumber(formData.get('heightCm')),
       heightFeet: normalizeOptionalNumber(formData.get('heightFeet')),
@@ -79,6 +79,20 @@ function normalizeOptionalNumber(value: FormDataEntryValue | null): number | nul
   }
 
   return Number(normalizedValue);
+}
+
+function normalizeOptionalDate(value: FormDataEntryValue | null): Date | null {
+  if (!value) {
+    return null;
+  }
+
+  const normalizedValue = String(value).trim();
+
+  if (!normalizedValue) {
+    return null;
+  }
+
+  return new Date(`${normalizedValue}T00:00:00.000Z`);
 }
 
 function normalizeOptionalEnum(value: FormDataEntryValue | null): string | null {

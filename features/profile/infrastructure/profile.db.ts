@@ -19,7 +19,7 @@ export async function updateTenantProfileRecord(
       $set: {
         firstName: input.firstName,
         lastName: input.lastName,
-        age: input.age,
+        birthDate: input.birthDate,
         heightCm: input.heightCm,
         gender: input.gender,
         activityLevel: input.activityLevel,
