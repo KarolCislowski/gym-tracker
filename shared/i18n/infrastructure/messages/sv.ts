@@ -46,6 +46,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     profile: 'Profil',
     healthyHabits: 'Hälsosamma vanor',
     settings: 'Inställningar',
+    exerciseAtlas: 'Övningsatlas',
     workspace: 'Arbetsyta',
     openNavigation: 'Öppna navigering',
     primaryNavigation: 'Primär navigering',
@@ -142,6 +143,20 @@ export const svMessages: TranslationDictionaryOverrides = {
     activityVeryActive: 'Mycket aktiv',
     activityExtraActive: 'Extra aktiv',
     errorGeneric: 'Något gick fel. Försök igen.',
+  },
+  exercises: {
+    title: 'Övningsatlas',
+    description:
+      'Bläddra i det delade övningsbiblioteket och jämför rörelsemönster, primära muskelgrupper och stödd utrustning.',
+    searchPlaceholder: 'Sök övningar',
+    emptyState: 'Inga övningar matchade sökningen.',
+    columnExercise: 'Övning',
+    columnType: 'Typ',
+    columnPattern: 'Rörelsemönster',
+    columnDifficulty: 'Nivå',
+    columnPrimaryMuscles: 'Primära muskler',
+    columnVariants: 'Varianter',
+    columnEquipment: 'Utrustning',
   },
   healthyHabits: {
     title: 'Mål för hälsosamma vanor',

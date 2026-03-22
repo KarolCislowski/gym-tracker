@@ -22,5 +22,30 @@ export async function seedExampleData(): Promise<void> {
     workoutName: 'Push Day',
     durationMinutes: 45,
     performedAt: new Date(),
+    notes: 'Seeded example workout session.',
+    exerciseEntries: [
+      {
+        exerciseId: 'bench-press',
+        variantId: 'barbell-bench-press',
+        selectedEquipment: ['barbell', 'bench'],
+        selectedGrip: 'pronated',
+        selectedStance: null,
+        selectedAttachment: null,
+        notes: 'Controlled eccentric.',
+        sets: [
+          {
+            order: 1,
+            reps: 8,
+            weight: 80,
+            durationSec: null,
+            distanceMeters: null,
+            rpe: 7.5,
+            rir: 2,
+            isWarmup: false,
+            isFailure: false,
+          },
+        ],
+      },
+    ],
   });
 }

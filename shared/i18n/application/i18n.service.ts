@@ -55,6 +55,10 @@ export function getTranslations(
       ...enMessages.profile,
       ...localized.profile,
     },
+    exercises: {
+      ...enMessages.exercises,
+      ...localized.exercises,
+    },
     healthyHabits: {
       ...enMessages.healthyHabits,
       ...localized.healthyHabits,

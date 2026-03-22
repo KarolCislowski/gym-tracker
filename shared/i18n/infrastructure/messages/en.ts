@@ -47,6 +47,7 @@ export const enMessages: TranslationDictionary = {
     overview: 'Overview',
     profile: 'Profile',
     settings: 'Settings',
+    exerciseAtlas: 'Exercise atlas',
     workspace: 'Workspace',
     openNavigation: 'Open navigation',
     primaryNavigation: 'Primary navigation',
@@ -141,6 +142,20 @@ export const enMessages: TranslationDictionary = {
     activityVeryActive: 'Very active',
     activityExtraActive: 'Extra active',
     errorGeneric: 'Something went wrong. Please try again.',
+  },
+  exercises: {
+    title: 'Exercise atlas',
+    description:
+      'Browse the shared exercise library and compare movement patterns, primary muscles, and supported equipment.',
+    searchPlaceholder: 'Search exercises',
+    emptyState: 'No exercises matched the current search.',
+    columnExercise: 'Exercise',
+    columnType: 'Type',
+    columnPattern: 'Movement pattern',
+    columnDifficulty: 'Difficulty',
+    columnPrimaryMuscles: 'Primary muscles',
+    columnVariants: 'Variants',
+    columnEquipment: 'Equipment',
   },
   healthyHabits: {
     title: 'Healthy habits goals',

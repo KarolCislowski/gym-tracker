@@ -47,6 +47,7 @@ export interface TranslationDictionary {
     overview: string;
     profile: string;
     settings: string;
+    exerciseAtlas: string;
     workspace: string;
     openNavigation: string;
     primaryNavigation: string;
@@ -134,6 +135,19 @@ export interface TranslationDictionary {
     activityExtraActive: string;
     errorGeneric: string;
   };
+  exercises: {
+    title: string;
+    description: string;
+    searchPlaceholder: string;
+    emptyState: string;
+    columnExercise: string;
+    columnType: string;
+    columnPattern: string;
+    columnDifficulty: string;
+    columnPrimaryMuscles: string;
+    columnVariants: string;
+    columnEquipment: string;
+  };
   healthyHabits: {
     title: string;
     description: string;
@@ -163,5 +177,6 @@ export interface TranslationDictionaryOverrides {
   dashboard?: Partial<TranslationDictionary['dashboard']>;
   settings?: Partial<TranslationDictionary['settings']>;
   profile?: Partial<TranslationDictionary['profile']>;
+  exercises?: Partial<TranslationDictionary['exercises']>;
   healthyHabits?: Partial<TranslationDictionary['healthyHabits']>;
 }

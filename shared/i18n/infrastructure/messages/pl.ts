@@ -47,6 +47,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     profile: 'Profil',
     healthyHabits: 'Zdrowe nawyki',
     settings: 'Ustawienia',
+    exerciseAtlas: 'Atlas ćwiczeń',
     workspace: 'Przestrzeń',
     openNavigation: 'Otwórz nawigację',
     primaryNavigation: 'Nawigacja główna',
@@ -143,6 +144,20 @@ export const plMessages: TranslationDictionaryOverrides = {
     activityVeryActive: 'Bardzo aktywny',
     activityExtraActive: 'Ekstra aktywny',
     errorGeneric: 'Coś poszło nie tak. Spróbuj ponownie.',
+  },
+  exercises: {
+    title: 'Atlas ćwiczeń',
+    description:
+      'Przeglądaj wspólną bibliotekę ćwiczeń i porównuj wzorce ruchowe, główne grupy mięśniowe oraz obsługiwany sprzęt.',
+    searchPlaceholder: 'Szukaj ćwiczeń',
+    emptyState: 'Brak ćwiczeń pasujących do wyszukiwania.',
+    columnExercise: 'Ćwiczenie',
+    columnType: 'Typ',
+    columnPattern: 'Wzorzec ruchu',
+    columnDifficulty: 'Poziom',
+    columnPrimaryMuscles: 'Główne mięśnie',
+    columnVariants: 'Warianty',
+    columnEquipment: 'Sprzęt',
   },
   healthyHabits: {
     title: 'Cele zdrowych nawyków',
