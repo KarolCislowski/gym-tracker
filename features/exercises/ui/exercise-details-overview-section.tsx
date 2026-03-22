@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from '@mui/material';
+import { Box, Paper, Stack, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
@@ -6,6 +6,7 @@ import type { Exercise } from '../domain/exercise.types';
 import { formatAtlasToken } from '../application/exercise-atlas-grid';
 
 import { ExerciseDetailChips } from './exercise-detail-chips';
+import { ExerciseMuscleEngagementSection } from './exercise-muscle-engagement-section';
 
 interface ExerciseDetailsOverviewSectionProps {
   exercise: Exercise;
@@ -23,6 +24,15 @@ export function ExerciseDetailsOverviewSection({
   exercise,
   translations,
 }: ExerciseDetailsOverviewSectionProps) {
+  const supportedEquipment = uniqueFormattedTokens(
+    exercise.variants.flatMap((variant) => variant.equipment),
+  );
+  const availableMetrics = uniqueFormattedTokens(
+    exercise.variants.flatMap((variant) => variant.trackableMetrics),
+  );
+  const defaultVariantName =
+    exercise.variants.find((variant) => variant.isDefault)?.name ?? '—';
+
   return (
     <Paper
       elevation={0}
@@ -35,15 +45,49 @@ export function ExerciseDetailsOverviewSection({
         {exercise.description ? (
           <Typography color='text.secondary'>{exercise.description}</Typography>
         ) : null}
+        <Box
+          component='section'
+          aria-labelledby='exercise-overview-summary'
+          sx={{ display: 'grid', gap: 2 }}
+        >
+          <Typography id='exercise-overview-summary' variant='subtitle1'>
+            {translations.overviewSummaryLabel}
+          </Typography>
+          <Box
+            component='dl'
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+              gap: 2,
+              m: 0,
+            }}
+          >
+            <SummaryItem label={translations.columnType} value={formatAtlasToken(exercise.type)} />
+            <SummaryItem
+              label={translations.columnPattern}
+              value={formatAtlasToken(exercise.movementPattern)}
+            />
+            <SummaryItem
+              label={translations.columnDifficulty}
+              value={formatAtlasToken(exercise.difficulty)}
+            />
+            <SummaryItem
+              label={translations.variantCountLabel}
+              value={String(exercise.variants.length)}
+            />
+            <SummaryItem
+              label={translations.defaultVariantNameLabel}
+              value={defaultVariantName}
+            />
+          </Box>
+        </Box>
         <ExerciseDetailChips
           label={translations.aliasesLabel}
           values={exercise.aliases}
         />
-        <ExerciseDetailChips
-          label={translations.primaryMusclesLabel}
-          values={exercise.muscles
-            .filter((muscle) => muscle.role === 'primary')
-            .map((muscle) => formatAtlasToken(muscle.muscleGroupId))}
+        <ExerciseMuscleEngagementSection
+          muscles={exercise.muscles}
+          translations={translations}
         />
         <ExerciseDetailChips
           label={translations.goalsLabel}
@@ -53,7 +97,55 @@ export function ExerciseDetailsOverviewSection({
           label={translations.tagsLabel}
           values={exercise.tags?.map(formatAtlasToken)}
         />
+        <ExerciseDetailChips
+          label={translations.supportedEquipmentLabel}
+          values={supportedEquipment}
+        />
+        <ExerciseDetailChips
+          label={translations.availableMetricsLabel}
+          values={availableMetrics}
+        />
       </Stack>
     </Paper>
   );
+}
+
+interface SummaryItemProps {
+  label: string;
+  value: string;
+}
+
+function SummaryItem({ label, value }: SummaryItemProps) {
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(0, auto) minmax(0, 1fr)',
+        columnGap: 1,
+        rowGap: 0.5,
+        minWidth: 0,
+        alignItems: 'baseline',
+      }}
+    >
+      <Typography
+        component='dt'
+        variant='subtitle2'
+        color='text.secondary'
+        sx={{ m: 0, whiteSpace: 'nowrap' }}
+      >
+        {label}:
+      </Typography>
+      <Typography
+        component='dd'
+        variant='body1'
+        sx={{ m: 0, minWidth: 0, overflowWrap: 'anywhere' }}
+      >
+        {value}
+      </Typography>
+    </Box>
+  );
+}
+
+function uniqueFormattedTokens(values: string[]) {
+  return Array.from(new Set(values.map(formatAtlasToken)));
 }

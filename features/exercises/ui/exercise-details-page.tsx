@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
@@ -33,7 +33,20 @@ export function ExerciseDetailsPage({
         exerciseName={exercise.name}
         translations={t}
       />
-      <ExerciseDetailsOverviewSection exercise={exercise} translations={t} />
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            xl: 'minmax(0, 0.95fr) minmax(0, 1.05fr)',
+          },
+          gap: 3,
+          alignItems: 'start',
+        }}
+      >
+        <ExerciseDetailsOverviewSection exercise={exercise} translations={t} />
+        <ExerciseDetailsVariantsSection exercise={exercise} translations={t} />
+      </Box>
 
       {exercise.instructions?.length ? (
         <ExerciseDetailsListSection
@@ -50,7 +63,6 @@ export function ExerciseDetailsPage({
           values={exercise.commonMistakes}
         />
       ) : null}
-      <ExerciseDetailsVariantsSection exercise={exercise} translations={t} />
     </Stack>
   );
 }

@@ -30,6 +30,16 @@ describe('ExerciseDetailsPage', () => {
               role: 'primary',
               activationLevel: 0.95,
             },
+            {
+              muscleGroupId: 'triceps',
+              role: 'secondary',
+              activationLevel: 0.72,
+            },
+            {
+              muscleGroupId: 'anterior_deltoids',
+              role: 'stabilizer',
+              activationLevel: 0.38,
+            },
           ],
           variants: [
             {
@@ -58,8 +68,20 @@ describe('ExerciseDetailsPage', () => {
     expect(
       screen.getByRole('heading', { name: 'Bench Press' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Barbell Bench Press')).toBeInTheDocument();
+    expect(screen.getAllByText('Barbell Bench Press')).toHaveLength(2);
     expect(screen.getByText('Flat Bench Press')).toBeInTheDocument();
+    expect(screen.getByText('Key details')).toBeInTheDocument();
+    expect(screen.getByText('Muscle engagement')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Heuristic model (estimate), based on biomechanics + EMG + training practice.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Secondary muscles')).toBeInTheDocument();
+    expect(screen.getByText('Supported equipment')).toBeInTheDocument();
+    expect(screen.getByText('Triceps')).toBeInTheDocument();
+    expect(screen.getByText('95%')).toBeInTheDocument();
+    expect(screen.getByText('Weight')).toBeInTheDocument();
     expect(screen.getByRole('table', { name: 'Variant comparison' })).toBeInTheDocument();
   });
 });

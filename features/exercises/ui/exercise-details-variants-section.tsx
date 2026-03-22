@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -39,44 +40,46 @@ export function ExerciseDetailsVariantsSection({
         <Typography component='h2' variant='h6'>
           {translations.sectionVariants}
         </Typography>
-        <Table size='small' aria-label={translations.sectionVariants}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{translations.columnExercise}</TableCell>
-              <TableCell>{translations.columnEquipment}</TableCell>
-              <TableCell>{translations.gripOptionsLabel}</TableCell>
-              <TableCell>{translations.stanceOptionsLabel}</TableCell>
-              <TableCell>{translations.attachmentOptionsLabel}</TableCell>
-              <TableCell>{translations.bodyPositionLabel}</TableCell>
-              <TableCell>{translations.limbModeLabel}</TableCell>
-              <TableCell>{translations.trackableMetricsLabel}</TableCell>
-              <TableCell>{translations.defaultVariantLabel}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {exercise.variants.map((variant) => (
-              <TableRow key={variant.id} hover>
-                <TableCell>{variant.name}</TableCell>
-                <TableCell>{joinTokens(variant.equipment)}</TableCell>
-                <TableCell>{joinTokens(variant.gripOptions)}</TableCell>
-                <TableCell>{joinTokens(variant.stanceOptions)}</TableCell>
-                <TableCell>{joinTokens(variant.attachmentOptions)}</TableCell>
-                <TableCell>
-                  {variant.bodyPosition
-                    ? formatAtlasToken(variant.bodyPosition)
-                    : '—'}
-                </TableCell>
-                <TableCell>
-                  {variant.limbMode ? formatAtlasToken(variant.limbMode) : '—'}
-                </TableCell>
-                <TableCell>{joinTokens(variant.trackableMetrics)}</TableCell>
-                <TableCell>
-                  {variant.isDefault ? translations.yesLabel : translations.noLabel}
-                </TableCell>
+        <TableContainer sx={{ overflowX: 'auto' }}>
+          <Table size='small' aria-label={translations.sectionVariants}>
+            <TableHead>
+              <TableRow>
+                <TableCell>{translations.columnExercise}</TableCell>
+                <TableCell>{translations.columnEquipment}</TableCell>
+                <TableCell>{translations.gripOptionsLabel}</TableCell>
+                <TableCell>{translations.stanceOptionsLabel}</TableCell>
+                <TableCell>{translations.attachmentOptionsLabel}</TableCell>
+                <TableCell>{translations.bodyPositionLabel}</TableCell>
+                <TableCell>{translations.limbModeLabel}</TableCell>
+                <TableCell>{translations.trackableMetricsLabel}</TableCell>
+                <TableCell>{translations.defaultVariantLabel}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {exercise.variants.map((variant) => (
+                <TableRow key={variant.id} hover>
+                  <TableCell>{variant.name}</TableCell>
+                  <TableCell>{joinTokens(variant.equipment)}</TableCell>
+                  <TableCell>{joinTokens(variant.gripOptions)}</TableCell>
+                  <TableCell>{joinTokens(variant.stanceOptions)}</TableCell>
+                  <TableCell>{joinTokens(variant.attachmentOptions)}</TableCell>
+                  <TableCell>
+                    {variant.bodyPosition
+                      ? formatAtlasToken(variant.bodyPosition)
+                      : '—'}
+                  </TableCell>
+                  <TableCell>
+                    {variant.limbMode ? formatAtlasToken(variant.limbMode) : '—'}
+                  </TableCell>
+                  <TableCell>{joinTokens(variant.trackableMetrics)}</TableCell>
+                  <TableCell>
+                    {variant.isDefault ? translations.yesLabel : translations.noLabel}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
         {exercise.variants.some((variant) => variant.executionNotes?.length) ? (
           <Stack spacing={1}>
             <Typography variant='subtitle2'>
