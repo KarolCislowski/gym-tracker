@@ -139,6 +139,13 @@ export interface TranslationDictionary {
     title: string;
     description: string;
     searchPlaceholder: string;
+    filterTypeLabel: string;
+    filterPatternLabel: string;
+    filterDifficultyLabel: string;
+    filterPrimaryMuscleLabel: string;
+    filterEquipmentLabel: string;
+    clearFilters: string;
+    allOptions: string;
     emptyState: string;
     columnExercise: string;
     columnType: string;

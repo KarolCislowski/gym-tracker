@@ -149,6 +149,13 @@ export const svMessages: TranslationDictionaryOverrides = {
     description:
       'Bläddra i det delade övningsbiblioteket och jämför rörelsemönster, primära muskelgrupper och stödd utrustning.',
     searchPlaceholder: 'Sök övningar',
+    filterTypeLabel: 'Typ',
+    filterPatternLabel: 'Rörelsemönster',
+    filterDifficultyLabel: 'Nivå',
+    filterPrimaryMuscleLabel: 'Primär muskel',
+    filterEquipmentLabel: 'Utrustning',
+    clearFilters: 'Rensa filter',
+    allOptions: 'Alla',
     emptyState: 'Inga övningar matchade sökningen.',
     columnExercise: 'Övning',
     columnType: 'Typ',

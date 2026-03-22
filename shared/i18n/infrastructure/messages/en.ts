@@ -148,6 +148,13 @@ export const enMessages: TranslationDictionary = {
     description:
       'Browse the shared exercise library and compare movement patterns, primary muscles, and supported equipment.',
     searchPlaceholder: 'Search exercises',
+    filterTypeLabel: 'Type',
+    filterPatternLabel: 'Movement pattern',
+    filterDifficultyLabel: 'Difficulty',
+    filterPrimaryMuscleLabel: 'Primary muscle',
+    filterEquipmentLabel: 'Equipment',
+    clearFilters: 'Clear filters',
+    allOptions: 'All',
     emptyState: 'No exercises matched the current search.',
     columnExercise: 'Exercise',
     columnType: 'Type',

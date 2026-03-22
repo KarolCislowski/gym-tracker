@@ -150,6 +150,13 @@ export const plMessages: TranslationDictionaryOverrides = {
     description:
       'Przeglądaj wspólną bibliotekę ćwiczeń i porównuj wzorce ruchowe, główne grupy mięśniowe oraz obsługiwany sprzęt.',
     searchPlaceholder: 'Szukaj ćwiczeń',
+    filterTypeLabel: 'Typ',
+    filterPatternLabel: 'Wzorzec ruchu',
+    filterDifficultyLabel: 'Poziom',
+    filterPrimaryMuscleLabel: 'Główna grupa mięśniowa',
+    filterEquipmentLabel: 'Sprzęt',
+    clearFilters: 'Wyczyść filtry',
+    allOptions: 'Wszystkie',
     emptyState: 'Brak ćwiczeń pasujących do wyszukiwania.',
     columnExercise: 'Ćwiczenie',
     columnType: 'Typ',

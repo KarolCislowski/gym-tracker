@@ -1,27 +1,35 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import { Paper, Stack, TextField, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import {
+  Button,
+  Chip,
+  MenuItem,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
-import type { Exercise } from '../domain/exercise.types';
+import type {
+  EquipmentType,
+  Exercise,
+  ExerciseDifficulty,
+  ExerciseType,
+  MovementPattern,
+} from '../domain/exercise.types';
+import {
+  formatAtlasToken,
+  normalizeAtlasMultiSelectValue,
+  useExerciseAtlasGrid,
+  useExerciseAtlasGridColumns,
+} from './use-exercise-atlas-grid';
 
 interface ExerciseAtlasGridProps {
   exercises: Exercise[];
   translations: TranslationDictionary['exercises'];
-}
-
-interface ExerciseAtlasRow {
-  difficulty: string;
-  equipment: string;
-  id: string;
-  movementPattern: string;
-  name: string;
-  primaryMuscles: string;
-  type: string;
-  variants: number;
 }
 
 /**
@@ -35,107 +43,202 @@ export function ExerciseAtlasGrid({
   exercises,
   translations,
 }: ExerciseAtlasGridProps) {
-  const [search, setSearch] = useState('');
-
-  const rows = useMemo<ExerciseAtlasRow[]>(
-    () =>
-      exercises.map((exercise) => ({
-        id: exercise.id,
-        name: exercise.name,
-        type: exercise.type,
-        movementPattern: exercise.movementPattern,
-        difficulty: exercise.difficulty,
-        primaryMuscles: exercise.muscles
-          .filter((muscle) => muscle.role === 'primary')
-          .map((muscle) => muscle.muscleGroupId)
-          .join(', '),
-        variants: exercise.variants.length,
-        equipment: Array.from(
-          new Set(exercise.variants.flatMap((variant) => variant.equipment)),
-        ).join(', '),
-      })),
-    [exercises],
-  );
-
-  const filteredRows = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
-
-    if (!normalizedSearch) {
-      return rows;
-    }
-
-    return rows.filter((row) =>
-      [
-        row.name,
-        row.type,
-        row.movementPattern,
-        row.difficulty,
-        row.primaryMuscles,
-        row.equipment,
-      ]
-        .join(' ')
-        .toLowerCase()
-        .includes(normalizedSearch),
-    );
-  }, [rows, search]);
-
-  const columns = useMemo<GridColDef<ExerciseAtlasRow>[]>(
-    () => [
-      {
-        field: 'name',
-        headerName: translations.columnExercise,
-        flex: 1.4,
-        minWidth: 220,
-      },
-      {
-        field: 'type',
-        headerName: translations.columnType,
-        flex: 0.8,
-        minWidth: 120,
-      },
-      {
-        field: 'movementPattern',
-        headerName: translations.columnPattern,
-        flex: 1,
-        minWidth: 160,
-      },
-      {
-        field: 'difficulty',
-        headerName: translations.columnDifficulty,
-        flex: 0.8,
-        minWidth: 130,
-      },
-      {
-        field: 'primaryMuscles',
-        headerName: translations.columnPrimaryMuscles,
-        flex: 1.2,
-        minWidth: 200,
-      },
-      {
-        field: 'variants',
-        headerName: translations.columnVariants,
-        type: 'number',
-        flex: 0.6,
-        minWidth: 110,
-      },
-      {
-        field: 'equipment',
-        headerName: translations.columnEquipment,
-        flex: 1.2,
-        minWidth: 220,
-      },
-    ],
-    [translations],
-  );
+  const {
+    filteredRows,
+    filterOptions,
+    filters,
+    resetFilters,
+    setSearch,
+    setSelectedDifficulties,
+    setSelectedEquipment,
+    setSelectedPatterns,
+    setSelectedPrimaryMuscles,
+    setSelectedTypes,
+  } = useExerciseAtlasGrid(exercises);
+  const columns = useExerciseAtlasGridColumns(translations);
 
   return (
     <Stack spacing={2.5}>
-      <TextField
-        aria-label={translations.searchPlaceholder}
-        label={translations.searchPlaceholder}
-        onChange={(event) => setSearch(event.target.value)}
-        value={search}
-      />
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        spacing={1.5}
+        useFlexGap
+        flexWrap='wrap'
+      >
+        <TextField
+          aria-label={translations.searchPlaceholder}
+          label={translations.searchPlaceholder}
+          onChange={(event) => setSearch(event.target.value)}
+          sx={{ minWidth: { xs: '100%', lg: 240 }, flex: 1 }}
+          value={filters.search}
+        />
+        <TextField
+          label={translations.filterTypeLabel}
+          onChange={(event) => {
+            setSelectedTypes(
+              normalizeAtlasMultiSelectValue(
+                event.target.value,
+              ) as ExerciseType[],
+            );
+          }}
+          select
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) => (
+              <Stack direction='row' spacing={0.5} useFlexGap flexWrap='wrap'>
+                {(selected as string[]).map((type) => (
+                  <Chip key={type} label={formatAtlasToken(type)} size='small' />
+                ))}
+              </Stack>
+            ),
+          }}
+          sx={{ minWidth: { xs: '100%', sm: 180 } }}
+          value={filters.selectedTypes}
+        >
+          {filterOptions.types.map((type) => (
+            <MenuItem key={type} value={type}>
+              {formatAtlasToken(type)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          label={translations.filterPatternLabel}
+          onChange={(event) => {
+            setSelectedPatterns(
+              normalizeAtlasMultiSelectValue(
+                event.target.value,
+              ) as MovementPattern[],
+            );
+          }}
+          select
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) => (
+              <Stack direction='row' spacing={0.5} useFlexGap flexWrap='wrap'>
+                {(selected as string[]).map((pattern) => (
+                  <Chip
+                    key={pattern}
+                    label={formatAtlasToken(pattern)}
+                    size='small'
+                  />
+                ))}
+              </Stack>
+            ),
+          }}
+          sx={{ minWidth: { xs: '100%', sm: 180 } }}
+          value={filters.selectedPatterns}
+        >
+          {filterOptions.patterns.map((pattern) => (
+            <MenuItem key={pattern} value={pattern}>
+              {formatAtlasToken(pattern)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          label={translations.filterDifficultyLabel}
+          onChange={(event) => {
+            setSelectedDifficulties(
+              normalizeAtlasMultiSelectValue(
+                event.target.value,
+              ) as ExerciseDifficulty[],
+            );
+          }}
+          select
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) => (
+              <Stack direction='row' spacing={0.5} useFlexGap flexWrap='wrap'>
+                {(selected as string[]).map((difficulty) => (
+                  <Chip
+                    key={difficulty}
+                    label={formatAtlasToken(difficulty)}
+                    size='small'
+                  />
+                ))}
+              </Stack>
+            ),
+          }}
+          sx={{ minWidth: { xs: '100%', sm: 180 } }}
+          value={filters.selectedDifficulties}
+        >
+          {filterOptions.difficulties.map((difficulty) => (
+            <MenuItem key={difficulty} value={difficulty}>
+              {formatAtlasToken(difficulty)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          label={translations.filterPrimaryMuscleLabel}
+          onChange={(event) => {
+            setSelectedPrimaryMuscles(
+              normalizeAtlasMultiSelectValue(event.target.value),
+            );
+          }}
+          select
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) => (
+              <Stack direction='row' spacing={0.5} useFlexGap flexWrap='wrap'>
+                {(selected as string[]).map((muscle) => (
+                  <Chip
+                    key={muscle}
+                    label={formatAtlasToken(muscle)}
+                    size='small'
+                  />
+                ))}
+              </Stack>
+            ),
+          }}
+          sx={{ minWidth: { xs: '100%', sm: 220 } }}
+          value={filters.selectedPrimaryMuscles}
+        >
+          {filterOptions.primaryMuscles.map((muscle) => (
+            <MenuItem key={muscle} value={muscle}>
+              {formatAtlasToken(muscle)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          label={translations.filterEquipmentLabel}
+          onChange={(event) => {
+            setSelectedEquipment(
+              normalizeAtlasMultiSelectValue(
+                event.target.value,
+              ) as EquipmentType[],
+            );
+          }}
+          select
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) => (
+              <Stack direction='row' spacing={0.5} useFlexGap flexWrap='wrap'>
+                {(selected as string[]).map((equipment) => (
+                  <Chip
+                    key={equipment}
+                    label={formatAtlasToken(equipment)}
+                    size='small'
+                  />
+                ))}
+              </Stack>
+            ),
+          }}
+          sx={{ minWidth: { xs: '100%', sm: 200 } }}
+          value={filters.selectedEquipment}
+        >
+          {filterOptions.equipment.map((equipment) => (
+            <MenuItem key={equipment} value={equipment}>
+              {formatAtlasToken(equipment)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <Button
+          onClick={resetFilters}
+          sx={{ alignSelf: { xs: 'stretch', lg: 'center' }, minHeight: 56 }}
+          variant='outlined'
+        >
+          {translations.clearFilters}
+        </Button>
+      </Stack>
       <Paper
         elevation={0}
         sx={{
