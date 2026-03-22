@@ -35,14 +35,29 @@ export function AppShellClient({
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        minHeight: 0,
+        overflow: 'hidden',
+      }}
+    >
       <AppHeader
         displayName={displayName}
         logoutAction={logoutAction}
         onOpenMobileNavigation={() => setIsMobileDrawerOpen(true)}
         translations={translations}
       />
-      <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 65px)' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flex: 1,
+          minHeight: 0,
+          overflow: 'hidden',
+        }}
+      >
         <AppSideDrawer
           displayName={displayName}
           isDesktopExpanded={isDesktopDrawerExpanded}
@@ -58,6 +73,8 @@ export function AppShellClient({
           sx={{
             flexGrow: 1,
             minWidth: 0,
+            minHeight: 0,
+            overflowY: 'auto',
             px: { xs: 2, md: 3 },
             py: 3,
           }}
@@ -65,6 +82,6 @@ export function AppShellClient({
           {children}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

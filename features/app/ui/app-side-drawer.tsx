@@ -202,12 +202,14 @@ export function AppSideDrawer({
           display: { xs: 'none', md: 'block' },
           width: isDesktopExpanded ? expandedDrawerWidth : collapsedDrawerWidth,
           flexShrink: 0,
+          height: '100%',
           transition: (theme) =>
             theme.transitions.create('width', {
               duration: theme.transitions.duration.shorter,
             }),
           '& .MuiDrawer-paper': {
             position: 'relative',
+            height: '100%',
             width: isDesktopExpanded ? expandedDrawerWidth : collapsedDrawerWidth,
             boxSizing: 'border-box',
             overflowX: 'hidden',

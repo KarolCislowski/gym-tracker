@@ -28,7 +28,16 @@ export function AppShell({
   translations,
 }: AppShellProps) {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+    <Box
+      sx={{
+        position: 'fixed',
+        inset: 0,
+        height: '100dvh',
+        width: '100%',
+        bgcolor: 'background.default',
+        overflow: 'hidden',
+      }}
+    >
       <AppShellClient
         displayName={displayName}
         logoutAction={logoutAction}
