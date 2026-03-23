@@ -59,6 +59,14 @@ export function getTranslations(
       ...enMessages.exercises,
       ...localized.exercises,
     },
+    workouts: {
+      ...enMessages.workouts,
+      ...localized.workouts,
+    },
+    dailyReports: {
+      ...enMessages.dailyReports,
+      ...localized.dailyReports,
+    },
     healthyHabits: {
       ...enMessages.healthyHabits,
       ...localized.healthyHabits,

@@ -36,6 +36,12 @@ const tenantWorkoutSetSchema = new Schema(
       min: 0,
       default: null,
     },
+    calories: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
     rpe: {
       type: Number,
       required: false,
@@ -60,13 +66,40 @@ const tenantWorkoutSetSchema = new Schema(
       required: true,
       default: false,
     },
+    setKind: {
+      type: String,
+      required: true,
+      enum: ['normal', 'drop', 'backoff', 'top'],
+      default: 'normal',
+    },
+    parentSetOrder: {
+      type: Number,
+      required: false,
+      min: 1,
+      default: null,
+    },
+    completedAt: {
+      type: Date,
+      required: false,
+      default: null,
+    },
   },
   { _id: false },
 );
 
 const tenantWorkoutExerciseEntrySchema = new Schema(
   {
+    order: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
     exerciseId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    exerciseSlug: {
       type: String,
       required: true,
       trim: true,
@@ -101,10 +134,171 @@ const tenantWorkoutExerciseEntrySchema = new Schema(
       required: false,
       default: null,
     },
+    restAfterEntrySec: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
     sets: {
       type: [tenantWorkoutSetSchema],
       required: true,
       default: [],
+    },
+  },
+  { _id: false },
+);
+
+const tenantWorkoutBlockSchema = new Schema(
+  {
+    order: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ['single', 'superset', 'circuit', 'dropset'],
+    },
+    name: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    rounds: {
+      type: Number,
+      required: false,
+      min: 1,
+      default: null,
+    },
+    restAfterBlockSec: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
+    entries: {
+      type: [tenantWorkoutExerciseEntrySchema],
+      required: true,
+      default: [],
+    },
+  },
+  { _id: false },
+);
+
+const tenantWorkoutLocationSnapshotSchema = new Schema(
+  {
+    provider: {
+      type: String,
+      required: true,
+      enum: ['google_places'],
+    },
+    placeId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    displayName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    formattedAddress: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    latitude: {
+      type: Number,
+      required: true,
+      min: -90,
+      max: 90,
+    },
+    longitude: {
+      type: Number,
+      required: true,
+      min: -180,
+      max: 180,
+    },
+    countryCode: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    country: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    region: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    city: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    locality: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    postalCode: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+  { _id: false },
+);
+
+const tenantWorkoutWeatherSnapshotSchema = new Schema(
+  {
+    provider: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    temperatureC: {
+      type: Number,
+      required: false,
+      default: null,
+    },
+    apparentTemperatureC: {
+      type: Number,
+      required: false,
+      default: null,
+    },
+    humidityPercent: {
+      type: Number,
+      required: false,
+      min: 0,
+      max: 100,
+      default: null,
+    },
+    windSpeedKph: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
+    precipitationMm: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
+    weatherCode: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    capturedAt: {
+      type: Date,
+      required: true,
     },
   },
   { _id: false },
@@ -123,10 +317,21 @@ const tenantWorkoutSchema = new Schema<TenantWorkout>(
       required: true,
       trim: true,
     },
+    startedAt: {
+      type: Date,
+      required: false,
+      default: null,
+    },
+    endedAt: {
+      type: Date,
+      required: false,
+      default: null,
+    },
     durationMinutes: {
       type: Number,
-      required: true,
+      required: false,
       min: 1,
+      default: null,
     },
     performedAt: {
       type: Date,
@@ -137,8 +342,18 @@ const tenantWorkoutSchema = new Schema<TenantWorkout>(
       required: false,
       default: null,
     },
-    exerciseEntries: {
-      type: [tenantWorkoutExerciseEntrySchema],
+    locationSnapshot: {
+      type: tenantWorkoutLocationSnapshotSchema,
+      required: false,
+      default: null,
+    },
+    weatherSnapshot: {
+      type: tenantWorkoutWeatherSnapshotSchema,
+      required: false,
+      default: null,
+    },
+    blocks: {
+      type: [tenantWorkoutBlockSchema],
       required: true,
       default: [],
     },
@@ -161,9 +376,10 @@ export async function getTenantWorkoutModel(
     | undefined;
 
   if (existingModel) {
-    const hasLatestSchemaFields = Boolean(
-      existingModel.schema.path('exerciseEntries'),
-    );
+    const hasLatestSchemaFields =
+      Boolean(existingModel.schema.path('blocks')) &&
+      Boolean(existingModel.schema.path('locationSnapshot')) &&
+      Boolean(existingModel.schema.path('weatherSnapshot'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
       return existingModel;

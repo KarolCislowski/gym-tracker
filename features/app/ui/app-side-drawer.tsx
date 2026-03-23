@@ -5,9 +5,11 @@ import { usePathname } from 'next/navigation';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import FitnessCenterRoundedIcon from '@mui/icons-material/FitnessCenterRounded';
+import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
+import TableChartRoundedIcon from '@mui/icons-material/TableChartRounded';
 import {
   Box,
   Divider,
@@ -75,6 +77,18 @@ export function AppSideDrawer({
       href: '/exercises',
       icon: <FitnessCenterRoundedIcon />,
       label: t.exerciseAtlas,
+      secondary: t.workspace,
+    },
+    {
+      href: '/workouts',
+      icon: <TableChartRoundedIcon />,
+      label: t.workoutReports,
+      secondary: t.workspace,
+    },
+    {
+      href: '/daily-reports',
+      icon: <TodayRoundedIcon />,
+      label: t.dailyReports,
       secondary: t.workspace,
     },
     {
