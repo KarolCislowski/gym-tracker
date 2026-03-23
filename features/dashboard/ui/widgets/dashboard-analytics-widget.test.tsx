@@ -30,6 +30,7 @@ describe('DashboardAnalyticsWidget', () => {
           workoutVolumeMuscleGroupLabels: {},
         }}
         translations={enMessages}
+        unitSystem='metric'
       />,
     );
 
@@ -42,5 +43,55 @@ describe('DashboardAnalyticsWidget', () => {
     expect(
       screen.getByLabelText('Steps per day, 03/21: No'),
     ).toBeInTheDocument();
+  });
+
+  test('renders body weight chart label in imperial units when requested', () => {
+    render(
+      <DashboardAnalyticsWidget
+        analytics={{
+          goalCompliance: [],
+          wellbeing: [],
+          bodyMetrics: [
+            {
+              label: '03/21',
+              bodyWeightKg: 81.5,
+              restingHeartRate: 54,
+            },
+          ],
+          workoutVolume: [],
+          workoutVolumeMuscleGroups: [],
+          workoutVolumeMuscleGroupLabels: {},
+        }}
+        translations={enMessages}
+        unitSystem='imperial_us'
+      />,
+    );
+
+    expect(screen.getByText('Body weight (lb)')).toBeInTheDocument();
+  });
+
+  test('renders body weight chart label in stones for UK imperial units', () => {
+    render(
+      <DashboardAnalyticsWidget
+        analytics={{
+          goalCompliance: [],
+          wellbeing: [],
+          bodyMetrics: [
+            {
+              label: '03/21',
+              bodyWeightKg: 81.5,
+              restingHeartRate: 54,
+            },
+          ],
+          workoutVolume: [],
+          workoutVolumeMuscleGroups: [],
+          workoutVolumeMuscleGroupLabels: {},
+        }}
+        translations={enMessages}
+        unitSystem='imperial_uk'
+      />,
+    );
+
+    expect(screen.getByText('Body weight (st)')).toBeInTheDocument();
   });
 });

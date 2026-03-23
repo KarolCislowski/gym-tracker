@@ -18,6 +18,11 @@ import {
 import { alpha, useTheme } from '@mui/material/styles';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import {
+  convertBodyMassFromMetric,
+  convertMassFromMetric,
+} from '@/shared/units/application/unit-conversion';
+import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 import type {
   DashboardAnalytics,
@@ -27,6 +32,7 @@ import type {
 interface DashboardAnalyticsWidgetProps {
   analytics: DashboardAnalytics;
   translations: TranslationDictionary;
+  unitSystem: UnitSystem;
 }
 
 /**
@@ -39,11 +45,24 @@ interface DashboardAnalyticsWidgetProps {
 export function DashboardAnalyticsWidget({
   analytics,
   translations,
+  unitSystem,
 }: DashboardAnalyticsWidgetProps) {
   const theme = useTheme();
   const t = translations.dashboard;
   const habitsT = translations.healthyHabits;
   const dailyT = translations.dailyReports;
+  const bodyMetricsDataset = analytics.bodyMetrics.map((point) => ({
+    ...point,
+    bodyWeightKg:
+      point.bodyWeightKg == null
+        ? null
+        : convertBodyWeightForChart(point.bodyWeightKg, unitSystem).value,
+  }));
+  const bodyWeightUnit = resolveBodyWeightChartUnit(unitSystem);
+  const bodyWeightLabel = buildChartUnitLabel(
+    dailyT.bodyWeightLabel,
+    bodyWeightUnit,
+  );
   const wellbeingSeries = [
     {
       id: 'mood',
@@ -126,14 +145,14 @@ export function DashboardAnalyticsWidget({
         ) ? (
           <Stack spacing={2}>
             <LineChart
-              dataset={analytics.bodyMetrics}
+              dataset={bodyMetricsDataset}
               height={220}
-              series={[{ dataKey: 'bodyWeightKg', label: dailyT.bodyWeightLabel }]}
+              series={[{ dataKey: 'bodyWeightKg', label: bodyWeightLabel }]}
               skipAnimation
               xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
             />
             <LineChart
-              dataset={analytics.bodyMetrics}
+              dataset={bodyMetricsDataset}
               height={220}
               series={[{ dataKey: 'restingHeartRate', label: dailyT.restingHeartRateLabel }]}
               skipAnimation
@@ -164,6 +183,37 @@ export function DashboardAnalyticsWidget({
       </ChartCard>
     </Stack>
   );
+}
+
+function buildChartUnitLabel(label: string, unit: string): string {
+  const baseLabel = label.replace(/\s*\(.+\)\s*$/, '');
+
+  return `${baseLabel} (${unit})`;
+}
+
+function convertBodyWeightForChart(
+  kilograms: number,
+  unitSystem: UnitSystem,
+): { value: number } {
+  if (unitSystem === 'imperial_uk') {
+    const converted = convertBodyMassFromMetric(kilograms, unitSystem);
+
+    if ('stones' in converted) {
+      return {
+        value: Number((converted.stones + converted.pounds / 14).toFixed(1)),
+      };
+    }
+  }
+
+  return { value: convertMassFromMetric(kilograms, unitSystem).value };
+}
+
+function resolveBodyWeightChartUnit(unitSystem: UnitSystem): string {
+  if (unitSystem === 'imperial_uk') {
+    return 'st';
+  }
+
+  return unitSystem === 'metric' ? 'kg' : 'lb';
 }
 
 function OffsetWellbeingMark(props: MarkElementProps) {

@@ -40,6 +40,7 @@ export function DashboardHome({
       <DashboardAnalyticsWidget
         analytics={analytics}
         translations={translations}
+        unitSystem={userSnapshot?.settings?.unitSystem ?? 'metric'}
       />
 
       <Box
