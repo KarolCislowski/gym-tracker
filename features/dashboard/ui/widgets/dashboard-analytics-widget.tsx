@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import type { MarkElementProps } from '@mui/x-charts/LineChart';
 import { MarkElement } from '@mui/x-charts/LineChart';
 import { BarChart, LineChart } from '@mui/x-charts';
@@ -34,6 +36,9 @@ interface DashboardAnalyticsWidgetProps {
   translations: TranslationDictionary;
   unitSystem: UnitSystem;
 }
+
+const BODY_METRICS_CHART_GAP_PX = 16;
+const BODY_METRICS_SAFETY_BUFFER_PX = 20;
 
 /**
  * Dashboard analytics section rendering the four MVP charts for compliance, wellbeing, body metrics, and workout volume.
@@ -121,66 +126,72 @@ export function DashboardAnalyticsWidget({
         )}
       </ChartCard>
 
-      <ChartCard title={t.wellbeingChart}>
-        {analytics.wellbeing.length ? (
-          <LineChart
-            dataset={analytics.wellbeing}
-            height={280}
-            grid={{ horizontal: true }}
-            series={wellbeingSeries}
-            skipAnimation
-            slots={{ mark: OffsetWellbeingMark }}
-            xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
-            yAxis={[{ min: 0, max: 5 }]}
-          />
-        ) : (
-          <EmptyChartState message={t.noChartData} />
-        )}
-      </ChartCard>
-
-      <ChartCard title={t.bodyMetricsChart}>
-        {analytics.bodyMetrics.some(
-          (point) =>
-            point.bodyWeightKg != null || point.restingHeartRate != null,
-        ) ? (
-          <Stack spacing={2}>
+      <MeasuredChartCard minChartHeight={280} title={t.wellbeingChart}>
+        {(chartHeight) =>
+          analytics.wellbeing.length ? (
             <LineChart
-              dataset={bodyMetricsDataset}
-              height={220}
-              series={[{ dataKey: 'bodyWeightKg', label: bodyWeightLabel }]}
+              dataset={analytics.wellbeing}
+              height={chartHeight}
+              grid={{ horizontal: true }}
+              series={wellbeingSeries}
               skipAnimation
+              slots={{ mark: OffsetWellbeingMark }}
               xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+              yAxis={[{ min: 0, max: 5 }]}
             />
-            <LineChart
-              dataset={bodyMetricsDataset}
-              height={220}
-              series={[{ dataKey: 'restingHeartRate', label: dailyT.restingHeartRateLabel }]}
-              skipAnimation
-              xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
-            />
-          </Stack>
-        ) : (
-          <EmptyChartState message={t.noChartData} />
-        )}
-      </ChartCard>
+          ) : (
+            <EmptyChartState message={t.noChartData} />
+          )
+        }
+      </MeasuredChartCard>
 
-      <ChartCard title={t.workoutVolumeChart}>
-        {analytics.workoutVolume.length &&
-        analytics.workoutVolumeMuscleGroups.length ? (
-          <BarChart
-            dataset={analytics.workoutVolume}
-            height={280}
-            series={analytics.workoutVolumeMuscleGroups.map((muscleGroup) => ({
-              dataKey: muscleGroup,
-              label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
-            }))}
-            skipAnimation
-            xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
-          />
-        ) : (
-          <EmptyChartState message={t.noChartData} />
-        )}
-      </ChartCard>
+      <MeasuredChartCard minChartHeight={456} title={t.bodyMetricsChart}>
+        {(chartHeight) =>
+          analytics.bodyMetrics.some(
+            (point) =>
+              point.bodyWeightKg != null || point.restingHeartRate != null,
+          ) ? (
+            <Stack spacing={2}>
+              <LineChart
+                dataset={bodyMetricsDataset}
+                height={resolveBodyMetricsChartHeight(chartHeight)}
+                series={[{ dataKey: 'bodyWeightKg', label: bodyWeightLabel }]}
+                skipAnimation
+                xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+              />
+              <LineChart
+                dataset={bodyMetricsDataset}
+                height={resolveBodyMetricsChartHeight(chartHeight)}
+                series={[{ dataKey: 'restingHeartRate', label: dailyT.restingHeartRateLabel }]}
+                skipAnimation
+                xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+              />
+            </Stack>
+          ) : (
+            <EmptyChartState message={t.noChartData} />
+          )
+        }
+      </MeasuredChartCard>
+
+      <MeasuredChartCard minChartHeight={280} title={t.workoutVolumeChart}>
+        {(chartHeight) =>
+          analytics.workoutVolume.length &&
+          analytics.workoutVolumeMuscleGroups.length ? (
+            <BarChart
+              dataset={analytics.workoutVolume}
+              height={chartHeight}
+              series={analytics.workoutVolumeMuscleGroups.map((muscleGroup) => ({
+                dataKey: muscleGroup,
+                label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
+              }))}
+              skipAnimation
+              xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
+            />
+          ) : (
+            <EmptyChartState message={t.noChartData} />
+          )
+        }
+      </MeasuredChartCard>
     </Stack>
   );
 }
@@ -189,6 +200,103 @@ function buildChartUnitLabel(label: string, unit: string): string {
   const baseLabel = label.replace(/\s*\(.+\)\s*$/, '');
 
   return `${baseLabel} (${unit})`;
+}
+
+function resolveBodyMetricsChartHeight(chartHeight: number): number {
+  return Math.max(
+    172,
+    Math.floor(
+      (chartHeight - BODY_METRICS_CHART_GAP_PX - BODY_METRICS_SAFETY_BUFFER_PX) / 2,
+    ),
+  );
+}
+
+function MeasuredChartCard({
+  children,
+  minChartHeight,
+  title,
+}: {
+  children: (chartHeight: number) => React.ReactNode;
+  minChartHeight: number;
+  title: string;
+}) {
+  const theme = useTheme();
+  const chartFrameRef = useRef<HTMLDivElement | null>(null);
+  const [chartHeight, setChartHeight] = useState(minChartHeight);
+
+  useEffect(() => {
+    const frameElement = chartFrameRef.current;
+
+    if (!frameElement) {
+      return undefined;
+    }
+
+    const updateHeight = () => {
+      const nextHeight = Math.max(
+        minChartHeight,
+        Math.floor(frameElement.getBoundingClientRect().height),
+      );
+
+      setChartHeight((currentHeight) =>
+        currentHeight === nextHeight ? currentHeight : nextHeight,
+      );
+    };
+
+    updateHeight();
+
+    if (typeof ResizeObserver === "undefined") {
+      return undefined;
+    }
+
+    const observer = new ResizeObserver(() => {
+      updateHeight();
+    });
+
+    observer.observe(frameElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [minChartHeight, theme]);
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: 3,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 6,
+        height: '100%',
+        display: 'flex',
+      }}
+    >
+      <Stack spacing={2} sx={{ flex: 1, minHeight: 0 }}>
+        <Typography component='h2' variant='h6'>
+          {title}
+        </Typography>
+        <Box
+          ref={chartFrameRef}
+          sx={{
+            position: 'relative',
+            flex: 1,
+            minHeight: minChartHeight,
+            overflow: 'visible',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              minHeight: minChartHeight,
+            }}
+          >
+            {children(chartHeight)}
+          </Box>
+        </Box>
+      </Stack>
+    </Paper>
+  );
 }
 
 function convertBodyWeightForChart(
@@ -385,7 +493,12 @@ function ChartCard({
   return (
     <Paper
       elevation={0}
-      sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
+      sx={{
+        p: 3,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 6,
+      }}
     >
       <Stack spacing={2}>
         <Typography component='h2' variant='h6'>
