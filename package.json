@@ -12,7 +12,8 @@
     "db:smoke": "node --env-file=example.env.local scripts/mongoose-smoke-test.cjs",
     "db:infra-smoke": "node --env-file=example.env.local --import tsx scripts/mongoose-infra-smoke.ts",
     "db:auth-smoke": "node --env-file=example.env.local --import tsx scripts/auth-register-smoke.ts",
-    "db:seed:atlas": "node --env-file=example.env.local --import tsx scripts/seed-exercise-atlas.ts"
+    "db:seed:atlas": "node --env-file=example.env.local --import tsx scripts/seed-exercise-atlas.ts",
+    "db:seed:demo-user": "node --env-file=.env.local --import tsx scripts/seed-demo-user.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -21,6 +22,7 @@
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
     "@mui/material-nextjs": "^7.3.9",
+    "@mui/x-charts": "^8.28.0",
     "@mui/x-data-grid": "^8.28.0",
     "@mui/x-date-pickers": "^8.27.2",
     "bcryptjs": "^3.0.3",

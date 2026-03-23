@@ -120,6 +120,10 @@ describe('daily-report.service', () => {
           motivation: 5,
           recovery: 4,
         },
+        body: {
+          bodyWeightKg: 81.2,
+          restingHeartRate: 54,
+        },
         completion: {
           sleepGoalMet: false,
           stepsGoalMet: true,

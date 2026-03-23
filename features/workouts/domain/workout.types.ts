@@ -93,4 +93,5 @@ export interface WorkoutSessionSummary {
   notes: string | null;
   blockCount: number;
   exerciseCount: number;
+  setCount: number;
 }

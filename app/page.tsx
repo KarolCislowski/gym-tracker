@@ -5,7 +5,10 @@ import { Alert, Box, Button, Stack } from '@mui/material';
 
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
+import { buildDashboardAnalytics } from '@/features/dashboard/application/dashboard-analytics';
+import { listDailyReports } from '@/features/daily-reports/application/daily-report.service';
 import { listFavoriteExercises } from '@/features/exercises/application/exercise-atlas.service';
+import { listWorkoutSessions } from '@/features/workouts/application/workout.service';
 import { DashboardHome } from '@/features/dashboard/ui/dashboard-home';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
@@ -22,10 +25,19 @@ export default async function Page() {
   const favoriteExercises = userSnapshot
     ? await listFavoriteExercises(userSnapshot.favoriteExerciseSlugs)
     : [];
+  const [dailyReports, workoutSessions] =
+    session?.user?.id && session.user.tenantDbName
+      ? await Promise.all([
+          listDailyReports(session.user.tenantDbName, session.user.id),
+          listWorkoutSessions(session.user.tenantDbName, session.user.id),
+        ])
+      : [[], []];
+  const analytics = buildDashboardAnalytics(dailyReports, workoutSessions);
 
   if (session?.user) {
     return (
       <DashboardHome
+        analytics={analytics}
         favoriteExercises={favoriteExercises}
         tenantDbName={session.user.tenantDbName}
         translations={t}

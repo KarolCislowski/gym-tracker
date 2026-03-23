@@ -1,0 +1,108 @@
+import { describe, expect, test } from 'vitest';
+
+import { buildDashboardAnalytics } from './dashboard-analytics';
+
+describe('dashboard-analytics', () => {
+  test('builds chart-friendly dashboard analytics series', () => {
+    const analytics = buildDashboardAnalytics(
+      [
+        {
+          id: 'daily-2',
+          reportDate: '2026-03-22T00:00:00.000Z',
+          wellbeing: {
+            mood: 4,
+            energy: 3,
+            stress: 2,
+            soreness: 3,
+            libido: null,
+            motivation: 4,
+            recovery: 4,
+          },
+          body: {
+            bodyWeightKg: 82,
+            restingHeartRate: 55,
+          },
+          completion: {
+            sleepGoalMet: true,
+            stepsGoalMet: false,
+            waterGoalMet: true,
+            proteinGoalMet: true,
+            cardioGoalMet: false,
+          },
+          actuals: {
+            sleepHours: 7,
+            sleepScheduleKept: true,
+            steps: 8000,
+            waterLiters: 2.2,
+            proteinGrams: 160,
+            strengthWorkoutDone: true,
+            cardioMinutes: 15,
+          },
+        },
+        {
+          id: 'daily-1',
+          reportDate: '2026-03-21T00:00:00.000Z',
+          wellbeing: {
+            mood: 5,
+            energy: 4,
+            stress: 2,
+            soreness: 2,
+            libido: 4,
+            motivation: 5,
+            recovery: 5,
+          },
+          body: {
+            bodyWeightKg: 81.5,
+            restingHeartRate: 54,
+          },
+          completion: {
+            sleepGoalMet: true,
+            stepsGoalMet: true,
+            waterGoalMet: true,
+            proteinGoalMet: true,
+            cardioGoalMet: true,
+          },
+          actuals: {
+            sleepHours: 8,
+            sleepScheduleKept: true,
+            steps: 10000,
+            waterLiters: 2.5,
+            proteinGrams: 170,
+            strengthWorkoutDone: false,
+            cardioMinutes: 30,
+          },
+        },
+      ],
+      [
+        {
+          id: 'workout-1',
+          workoutName: 'Upper Body',
+          performedAt: '2026-03-20T10:00:00.000Z',
+          durationMinutes: 60,
+          notes: null,
+          blockCount: 2,
+          exerciseCount: 5,
+          setCount: 16,
+        },
+        {
+          id: 'workout-2',
+          workoutName: 'Lower Body',
+          performedAt: '2026-03-22T10:00:00.000Z',
+          durationMinutes: 70,
+          notes: null,
+          blockCount: 3,
+          exerciseCount: 6,
+          setCount: 20,
+        },
+      ],
+    );
+
+    expect(analytics.goalCompliance).toHaveLength(2);
+    expect(analytics.goalCompliance[0]?.label).toBe('03/21');
+    expect(analytics.wellbeing[1]?.mood).toBe(4);
+    expect(analytics.bodyMetrics[0]?.bodyWeightKg).toBe(81.5);
+    expect(analytics.workoutVolume).toHaveLength(1);
+    expect(analytics.workoutVolume[0]?.sessions).toBe(2);
+    expect(analytics.workoutVolume[0]?.sets).toBe(36);
+  });
+});

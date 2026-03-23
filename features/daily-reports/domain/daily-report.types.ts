@@ -86,6 +86,7 @@ export interface DailyReportSummary {
   id: string;
   reportDate: string;
   wellbeing: DailyWellbeingInput;
+  body: DailyBodySnapshotInput;
   completion: DailyCompletionInput;
   actuals: DailyActualsInput;
 }

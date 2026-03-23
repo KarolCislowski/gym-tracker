@@ -71,6 +71,14 @@ export interface TranslationDictionary {
     unitSystemMetric: string;
     unitSystemImperialUs: string;
     unitSystemImperialUk: string;
+    goalComplianceChart: string;
+    wellbeingChart: string;
+    bodyMetricsChart: string;
+    workoutVolumeChart: string;
+    chartSessions: string;
+    chartExercises: string;
+    chartSets: string;
+    noChartData: string;
     signOut: string;
   };
   settings: {

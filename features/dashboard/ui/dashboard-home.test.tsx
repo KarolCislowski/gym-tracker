@@ -24,6 +24,42 @@ describe('DashboardHome', () => {
   test('renders the dashboard overview content', () => {
     render(
       <DashboardHome
+        analytics={{
+          goalCompliance: [
+            {
+              label: '03/21',
+              sleep: 1,
+              steps: 1,
+              water: 1,
+              protein: 1,
+              cardio: 0,
+            },
+          ],
+          wellbeing: [
+            {
+              label: '03/21',
+              mood: 4,
+              energy: 4,
+              stress: 2,
+              recovery: 4,
+            },
+          ],
+          bodyMetrics: [
+            {
+              label: '03/21',
+              bodyWeightKg: 81.5,
+              restingHeartRate: 54,
+            },
+          ],
+          workoutVolume: [
+            {
+              label: '2026-W12',
+              sessions: 2,
+              exercises: 8,
+              sets: 24,
+            },
+          ],
+        }}
         favoriteExercises={[
           {
             id: 'exercise-1',
@@ -114,7 +150,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Imperial (UK)')).toBeInTheDocument();
     expect(screen.getByText('9000')).toBeInTheDocument();
     expect(screen.getByText('7.5 h')).toBeInTheDocument();
-    expect(screen.getByText('Yes')).toBeInTheDocument();
+    expect(screen.getAllByText('Yes').length).toBeGreaterThan(0);
     expect(screen.getByText('70.4 fl oz')).toBeInTheDocument();
     expect(screen.getByText('150 g')).toBeInTheDocument();
     expect(screen.getByText('Dark')).toBeInTheDocument();

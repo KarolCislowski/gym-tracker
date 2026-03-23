@@ -297,6 +297,7 @@ describe('workout.service', () => {
         notes: 'Heavy top sets',
         blockCount: 2,
         exerciseCount: 2,
+        setCount: 3,
       },
     ]);
 

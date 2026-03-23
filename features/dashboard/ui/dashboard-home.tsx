@@ -4,13 +4,16 @@ import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.type
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import type { DashboardAnalytics } from '../application/dashboard-analytics';
 import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
+import { DashboardAnalyticsWidget } from './widgets/dashboard-analytics-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
 
 interface DashboardHomeProps {
+  analytics: DashboardAnalytics;
   favoriteExercises: Exercise[];
   tenantDbName: string;
   translations: TranslationDictionary;
@@ -21,6 +24,7 @@ interface DashboardHomeProps {
  * Main dashboard overview content rendered inside the shared authenticated shell.
  */
 export function DashboardHome({
+  analytics,
   favoriteExercises,
   tenantDbName,
   translations,
@@ -31,6 +35,11 @@ export function DashboardHome({
       <DashboardOverviewWidget
         tenantDbName={tenantDbName}
         translations={translations.dashboard}
+      />
+
+      <DashboardAnalyticsWidget
+        analytics={analytics}
+        translations={translations}
       />
 
       <Box

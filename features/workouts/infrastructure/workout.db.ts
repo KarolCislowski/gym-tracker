@@ -56,5 +56,15 @@ export async function listTenantWorkoutSessionRecords(
         (total, block) => total + (block.entries?.length ?? 0),
         0,
       ) ?? 0,
+    setCount:
+      session.blocks?.reduce(
+        (total, block) =>
+          total +
+          (block.entries?.reduce(
+            (entryTotal, entry) => entryTotal + (entry.sets?.length ?? 0),
+            0,
+          ) ?? 0),
+        0,
+      ) ?? 0,
   }));
 }

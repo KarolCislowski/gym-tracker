@@ -82,6 +82,10 @@ export async function listTenantDailyReportRecords(
       motivation: report.wellbeing?.motivation ?? null,
       recovery: report.wellbeing?.recovery ?? null,
     },
+    body: {
+      bodyWeightKg: report.body?.bodyWeightKg ?? null,
+      restingHeartRate: report.body?.restingHeartRate ?? null,
+    },
     completion: {
       sleepGoalMet: report.completion?.sleepGoalMet ?? null,
       stepsGoalMet: report.completion?.stepsGoalMet ?? null,
