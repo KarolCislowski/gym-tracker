@@ -146,15 +146,15 @@ export function DashboardAnalyticsWidget({
       </ChartCard>
 
       <ChartCard title={t.workoutVolumeChart}>
-        {analytics.workoutVolume.length ? (
+        {analytics.workoutVolume.length &&
+        analytics.workoutVolumeMuscleGroups.length ? (
           <BarChart
             dataset={analytics.workoutVolume}
             height={280}
-            series={[
-              { dataKey: 'sessions', label: t.chartSessions },
-              { dataKey: 'exercises', label: t.chartExercises },
-              { dataKey: 'sets', label: t.chartSets },
-            ]}
+            series={analytics.workoutVolumeMuscleGroups.map((muscleGroup) => ({
+              dataKey: muscleGroup,
+              label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
+            }))}
             skipAnimation
             xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
           />

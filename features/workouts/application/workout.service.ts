@@ -1,10 +1,12 @@
 import { createWorkoutSessionSchema } from '../domain/workout.validation';
 import type {
   CreateWorkoutSessionInput,
+  WorkoutSessionAnalytics,
   WorkoutSessionSummary,
 } from '../domain/workout.types';
 import {
   createTenantWorkoutSessionRecord,
+  listTenantWorkoutSessionAnalyticsRecords,
   listTenantWorkoutSessionRecords,
 } from '../infrastructure/workout.db';
 
@@ -32,4 +34,17 @@ export async function listWorkoutSessions(
   userId: string,
 ): Promise<WorkoutSessionSummary[]> {
   return listTenantWorkoutSessionRecords(tenantDbName, userId);
+}
+
+/**
+ * Lists workout sessions normalized for analytics computations.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @returns A promise resolving to workout sessions with entry-level set counts.
+ */
+export async function listWorkoutSessionsForAnalytics(
+  tenantDbName: string,
+  userId: string,
+): Promise<WorkoutSessionAnalytics[]> {
+  return listTenantWorkoutSessionAnalyticsRecords(tenantDbName, userId);
 }

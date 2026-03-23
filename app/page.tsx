@@ -7,8 +7,14 @@ import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 import { buildDashboardAnalytics } from '@/features/dashboard/application/dashboard-analytics';
 import { listDailyReports } from '@/features/daily-reports/application/daily-report.service';
-import { listFavoriteExercises } from '@/features/exercises/application/exercise-atlas.service';
-import { listWorkoutSessions } from '@/features/workouts/application/workout.service';
+import {
+  listExerciseAtlas,
+  listFavoriteExercises,
+} from '@/features/exercises/application/exercise-atlas.service';
+import {
+  listWorkoutSessions,
+  listWorkoutSessionsForAnalytics,
+} from '@/features/workouts/application/workout.service';
 import { DashboardHome } from '@/features/dashboard/ui/dashboard-home';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
@@ -25,14 +31,24 @@ export default async function Page() {
   const favoriteExercises = userSnapshot
     ? await listFavoriteExercises(userSnapshot.favoriteExerciseSlugs)
     : [];
-  const [dailyReports, workoutSessions] =
+  const [dailyReports, workoutSessions, workoutSessionsForAnalytics, exerciseAtlas] =
     session?.user?.id && session.user.tenantDbName
       ? await Promise.all([
           listDailyReports(session.user.tenantDbName, session.user.id),
           listWorkoutSessions(session.user.tenantDbName, session.user.id),
+          listWorkoutSessionsForAnalytics(
+            session.user.tenantDbName,
+            session.user.id,
+          ),
+          listExerciseAtlas(),
         ])
-      : [[], []];
-  const analytics = buildDashboardAnalytics(dailyReports, workoutSessions);
+      : [[], [], [], []];
+  const analytics = buildDashboardAnalytics(
+    dailyReports,
+    workoutSessions,
+    workoutSessionsForAnalytics,
+    exerciseAtlas,
+  );
 
   if (session?.user) {
     return (

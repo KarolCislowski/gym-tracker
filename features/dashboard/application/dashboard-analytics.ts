@@ -1,5 +1,8 @@
 import type { DailyReportSummary } from '@/features/daily-reports/domain/daily-report.types';
+import type { Exercise } from '@/features/exercises/domain/exercise.types';
+import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { WorkoutSessionSummary } from '@/features/workouts/domain/workout.types';
+import type { WorkoutSessionAnalytics } from '@/features/workouts/domain/workout.types';
 
 export interface GoalComplianceChartPoint {
   [key: string]: string | number | null;
@@ -30,9 +33,6 @@ export interface BodyMetricsChartPoint {
 export interface WorkoutVolumeChartPoint {
   [key: string]: string | number | null;
   label: string;
-  sessions: number;
-  exercises: number;
-  sets: number;
 }
 
 export interface DashboardAnalytics {
@@ -40,6 +40,8 @@ export interface DashboardAnalytics {
   wellbeing: WellbeingChartPoint[];
   bodyMetrics: BodyMetricsChartPoint[];
   workoutVolume: WorkoutVolumeChartPoint[];
+  workoutVolumeMuscleGroups: string[];
+  workoutVolumeMuscleGroupLabels: Record<string, string>;
 }
 
 /**
@@ -51,12 +53,14 @@ export interface DashboardAnalytics {
 export function buildDashboardAnalytics(
   dailyReports: DailyReportSummary[],
   workoutSessions: WorkoutSessionSummary[],
+  workoutSessionsForAnalytics: WorkoutSessionAnalytics[],
+  exercises: Exercise[],
 ): DashboardAnalytics {
   return {
     goalCompliance: buildGoalComplianceSeries(dailyReports),
     wellbeing: buildWellbeingSeries(dailyReports),
     bodyMetrics: buildBodyMetricsSeries(dailyReports),
-    workoutVolume: buildWorkoutVolumeSeries(workoutSessions),
+    ...buildWorkoutVolumeSeries(workoutSessions, workoutSessionsForAnalytics, exercises),
   };
 }
 
@@ -106,38 +110,94 @@ function buildBodyMetricsSeries(
 
 function buildWorkoutVolumeSeries(
   workoutSessions: WorkoutSessionSummary[],
-): WorkoutVolumeChartPoint[] {
-  const sessionsByWeek = new Map<
-    string,
-    { exercises: number; sessions: number; sets: number }
-  >();
+  workoutSessionsForAnalytics: WorkoutSessionAnalytics[],
+  exercises: Exercise[],
+): Pick<
+  DashboardAnalytics,
+  'workoutVolume' | 'workoutVolumeMuscleGroups' | 'workoutVolumeMuscleGroupLabels'
+> {
+  const exerciseMap = new Map(exercises.map((exercise) => [exercise.slug, exercise]));
+  const sessionsByWeek = new Map<string, Record<string, number>>();
+  const totalsByMuscleGroup = new Map<string, number>();
+  const workoutSessionIds = new Set(workoutSessions.map((session) => session.id));
 
-  [...workoutSessions]
-    .slice(0, 56)
+  workoutSessionsForAnalytics
+    .filter((session) => workoutSessionIds.has(session.id))
     .forEach((session) => {
       const key = formatIsoWeekKey(session.performedAt);
-      const current = sessionsByWeek.get(key) ?? {
-        sessions: 0,
-        exercises: 0,
-        sets: 0,
-      };
+      const current = sessionsByWeek.get(key) ?? {};
 
-      sessionsByWeek.set(key, {
-        sessions: current.sessions + 1,
-        exercises: current.exercises + session.exerciseCount,
-        sets: current.sets + session.setCount,
+      session.entries.forEach((entry) => {
+        const exercise = exerciseMap.get(entry.exerciseSlug);
+        const primaryMuscleGroups = resolvePrimaryMuscleGroups(
+          exercise,
+          entry.variantId,
+        );
+
+        primaryMuscleGroups.forEach((muscleGroup) => {
+          current[muscleGroup] = (current[muscleGroup] ?? 0) + entry.setCount;
+          totalsByMuscleGroup.set(
+            muscleGroup,
+            (totalsByMuscleGroup.get(muscleGroup) ?? 0) + entry.setCount,
+          );
+        });
       });
+
+      sessionsByWeek.set(key, current);
     });
 
-  return Array.from(sessionsByWeek.entries())
+  const workoutVolumeMuscleGroups = Array.from(totalsByMuscleGroup.entries())
+    .sort((left, right) => right[1] - left[1])
+    .slice(0, 6)
+    .map(([muscleGroup]) => muscleGroup);
+
+  const workoutVolume = Array.from(sessionsByWeek.entries())
     .sort(([left], [right]) => left.localeCompare(right))
     .slice(-8)
-    .map(([label, totals]) => ({
-      label,
-      sessions: totals.sessions,
-      exercises: totals.exercises,
-      sets: totals.sets,
-    }));
+    .map(([label, totals]) =>
+      workoutVolumeMuscleGroups.reduce<WorkoutVolumeChartPoint>(
+        (point, muscleGroup) => {
+          point[muscleGroup] = totals[muscleGroup] ?? 0;
+          return point;
+        },
+        { label },
+      ),
+    );
+
+  return {
+    workoutVolume,
+    workoutVolumeMuscleGroups,
+    workoutVolumeMuscleGroupLabels: Object.fromEntries(
+      workoutVolumeMuscleGroups.map((muscleGroup) => [
+        muscleGroup,
+        formatAtlasToken(muscleGroup),
+      ]),
+    ),
+  };
+}
+
+function resolvePrimaryMuscleGroups(
+  exercise: Exercise | undefined,
+  variantId: string | null,
+): string[] {
+  if (!exercise) {
+    return [];
+  }
+
+  const variant = variantId
+    ? exercise.variants.find((currentVariant) => currentVariant.id === variantId)
+    : undefined;
+  const muscles = variant?.musclesOverride?.length
+    ? variant.musclesOverride
+    : exercise.muscles;
+
+  return Array.from(
+    new Set(
+      muscles
+        .filter((muscle) => muscle.role === 'primary')
+        .map((muscle) => muscle.muscleGroupId),
+    ),
+  );
 }
 
 function formatShortDate(isoDate: string): string {

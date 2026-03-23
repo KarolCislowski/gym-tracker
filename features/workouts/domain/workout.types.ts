@@ -95,3 +95,15 @@ export interface WorkoutSessionSummary {
   exerciseCount: number;
   setCount: number;
 }
+
+export interface WorkoutSessionAnalyticsEntry {
+  exerciseSlug: string;
+  variantId: string | null;
+  setCount: number;
+}
+
+export interface WorkoutSessionAnalytics {
+  id: string;
+  performedAt: string;
+  entries: WorkoutSessionAnalyticsEntry[];
+}

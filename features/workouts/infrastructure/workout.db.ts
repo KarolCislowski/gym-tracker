@@ -2,6 +2,7 @@ import { getTenantWorkoutModel } from '@/infrastructure/db/models/tenant-workout
 
 import type {
   CreateWorkoutSessionRecordInput,
+  WorkoutSessionAnalytics,
   WorkoutSessionSummary,
 } from '../domain/workout.types';
 
@@ -66,5 +67,34 @@ export async function listTenantWorkoutSessionRecords(
           ) ?? 0),
         0,
       ) ?? 0,
+  }));
+}
+
+/**
+ * Lists tenant workout sessions with entry-level set counts for analytics purposes.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @returns A promise resolving to workout sessions normalized for dashboard analytics.
+ */
+export async function listTenantWorkoutSessionAnalyticsRecords(
+  tenantDbName: string,
+  userId: string,
+): Promise<WorkoutSessionAnalytics[]> {
+  const TenantWorkoutModel = await getTenantWorkoutModel(tenantDbName);
+  const sessions = await TenantWorkoutModel.find({ userId })
+    .sort({ performedAt: -1 })
+    .lean();
+
+  return sessions.map((session) => ({
+    id: session._id.toString(),
+    performedAt: session.performedAt.toISOString(),
+    entries:
+      session.blocks?.flatMap((block) =>
+        block.entries?.map((entry) => ({
+          exerciseSlug: entry.exerciseSlug,
+          variantId: entry.variantId ?? null,
+          setCount: entry.sets?.length ?? 0,
+        })) ?? [],
+      ) ?? [],
   }));
 }

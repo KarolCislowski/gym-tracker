@@ -54,11 +54,15 @@ describe('DashboardHome', () => {
           workoutVolume: [
             {
               label: '2026-W12',
-              sessions: 2,
-              exercises: 8,
-              sets: 24,
+              pectorals: 8,
+              lats: 6,
             },
           ],
+          workoutVolumeMuscleGroups: ['pectorals', 'lats'],
+          workoutVolumeMuscleGroupLabels: {
+            pectorals: 'Pectorals',
+            lats: 'Lats',
+          },
         }}
         favoriteExercises={[
           {

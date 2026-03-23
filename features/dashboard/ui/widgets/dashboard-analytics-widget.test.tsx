@@ -26,6 +26,8 @@ describe('DashboardAnalyticsWidget', () => {
           wellbeing: [],
           bodyMetrics: [],
           workoutVolume: [],
+          workoutVolumeMuscleGroups: [],
+          workoutVolumeMuscleGroupLabels: {},
         }}
         translations={enMessages}
       />,

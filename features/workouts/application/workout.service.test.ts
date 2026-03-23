@@ -4,11 +4,13 @@ import { createWorkoutSession } from './workout.service';
 
 vi.mock('../infrastructure/workout.db', () => ({
   createTenantWorkoutSessionRecord: vi.fn(),
+  listTenantWorkoutSessionAnalyticsRecords: vi.fn(),
   listTenantWorkoutSessionRecords: vi.fn(),
 }));
 
 import {
   createTenantWorkoutSessionRecord,
+  listTenantWorkoutSessionAnalyticsRecords,
   listTenantWorkoutSessionRecords,
 } from '../infrastructure/workout.db';
 
@@ -17,6 +19,9 @@ const mockedCreateTenantWorkoutSessionRecord = vi.mocked(
 );
 const mockedListTenantWorkoutSessionRecords = vi.mocked(
   listTenantWorkoutSessionRecords,
+);
+const mockedListTenantWorkoutSessionAnalyticsRecords = vi.mocked(
+  listTenantWorkoutSessionAnalyticsRecords,
 );
 
 describe('workout.service', () => {
@@ -309,5 +314,33 @@ describe('workout.service', () => {
       'user-1',
     );
     expect(result[0]?.blockCount).toBe(2);
+  });
+
+  test('listWorkoutSessionsForAnalytics delegates to persistence', async () => {
+    mockedListTenantWorkoutSessionAnalyticsRecords.mockResolvedValueOnce([
+      {
+        id: 'workout-1',
+        performedAt: '2026-03-22T12:00:00.000Z',
+        entries: [
+          {
+            exerciseSlug: 'bench-press',
+            variantId: 'variant-1',
+            setCount: 3,
+          },
+        ],
+      },
+    ]);
+
+    const { listWorkoutSessionsForAnalytics } = await import('./workout.service');
+    const result = await listWorkoutSessionsForAnalytics(
+      'tenant_john',
+      'user-1',
+    );
+
+    expect(mockedListTenantWorkoutSessionAnalyticsRecords).toHaveBeenCalledWith(
+      'tenant_john',
+      'user-1',
+    );
+    expect(result[0]?.entries[0]?.setCount).toBe(3);
   });
 });
