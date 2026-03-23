@@ -6,6 +6,8 @@ export const updateTenantSettingsSchema = z.object({
   language: z.enum(['en', 'pl', 'sv']),
   isDarkMode: z.boolean(),
   unitSystem: z.enum(supportedUnitSystems),
+  trackMenstrualCycle: z.boolean(),
+  trackLibido: z.boolean(),
 });
 
 export const changePasswordSchema = z

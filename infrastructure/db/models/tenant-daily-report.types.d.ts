@@ -23,6 +23,7 @@ export interface TenantDailyWellbeing {
   energy?: 1 | 2 | 3 | 4 | 5 | null;
   stress?: 1 | 2 | 3 | 4 | 5 | null;
   soreness?: 1 | 2 | 3 | 4 | 5 | null;
+  libido?: 1 | 2 | 3 | 4 | 5 | null;
   motivation?: 1 | 2 | 3 | 4 | 5 | null;
   recovery?: 1 | 2 | 3 | 4 | 5 | null;
 }
@@ -45,7 +46,13 @@ export interface TenantDailyWeatherSnapshot {
 
 export interface TenantDailyContext {
   weatherSnapshot?: TenantDailyWeatherSnapshot | null;
-  menstruationPhase?: string | null;
+  menstruationPhase?:
+    | 'menstruation'
+    | 'follicular'
+    | 'ovulation'
+    | 'luteal'
+    | 'unknown'
+    | null;
   illness?: boolean | null;
   notes?: string | null;
 }

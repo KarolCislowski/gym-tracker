@@ -1,3 +1,10 @@
+export type MenstruationPhase =
+  | 'menstruation'
+  | 'follicular'
+  | 'ovulation'
+  | 'luteal'
+  | 'unknown';
+
 export interface DailyGoalsSnapshotInput {
   averageSleepHoursPerDay: number | null;
   regularSleepSchedule: boolean | null;
@@ -23,6 +30,7 @@ export interface DailyWellbeingInput {
   energy: 1 | 2 | 3 | 4 | 5 | null;
   stress: 1 | 2 | 3 | 4 | 5 | null;
   soreness: 1 | 2 | 3 | 4 | 5 | null;
+  libido: 1 | 2 | 3 | 4 | 5 | null;
   motivation: 1 | 2 | 3 | 4 | 5 | null;
   recovery: 1 | 2 | 3 | 4 | 5 | null;
 }
@@ -45,7 +53,7 @@ export interface DailyWeatherSnapshotInput {
 
 export interface DailyContextInput {
   weatherSnapshot: DailyWeatherSnapshotInput | null;
-  menstruationPhase: string | null;
+  menstruationPhase: MenstruationPhase | null;
   illness: boolean | null;
   notes: string | null;
 }

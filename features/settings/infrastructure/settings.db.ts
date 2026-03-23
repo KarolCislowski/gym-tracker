@@ -40,7 +40,10 @@ export async function findCoreUserSecurityById(
  */
 export async function updateTenantSettingsRecord(
   tenantDbName: string,
-  input: Pick<TenantSettingsSnapshot, 'language' | 'isDarkMode' | 'unitSystem'>,
+  input: Pick<
+    TenantSettingsSnapshot,
+    'language' | 'isDarkMode' | 'unitSystem' | 'trackMenstrualCycle' | 'trackLibido'
+  >,
 ): Promise<void> {
   const TenantSettingsModel = await getTenantSettingsModel(tenantDbName);
 
@@ -51,6 +54,8 @@ export async function updateTenantSettingsRecord(
         language: input.language,
         isDarkMode: input.isDarkMode,
         unitSystem: input.unitSystem,
+        trackMenstrualCycle: input.trackMenstrualCycle,
+        trackLibido: input.trackLibido,
       },
     },
     { upsert: true },

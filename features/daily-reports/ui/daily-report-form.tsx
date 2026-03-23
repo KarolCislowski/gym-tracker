@@ -17,6 +17,7 @@ import {
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import type { MenstruationPhase } from '../domain/daily-report.types';
 import { createDailyReportAction } from '../infrastructure/daily-report.actions';
 
 interface DailyReportFormProps {
@@ -31,6 +32,7 @@ interface DailyWellbeingDraft {
   energy: DailyScoreDraft;
   stress: DailyScoreDraft;
   soreness: DailyScoreDraft;
+  libido: DailyScoreDraft;
   motivation: DailyScoreDraft;
   recovery: DailyScoreDraft;
 }
@@ -51,6 +53,7 @@ export function DailyReportForm({
   const profileT = translations.profile;
   const yesNoT = translations.exercises;
   const goals = userSnapshot?.healthyHabits;
+  const settings = userSnapshot?.settings;
 
   const [reportDate, setReportDate] = useState(formatDateInput(new Date()));
   const [sleepHours, setSleepHours] = useState('');
@@ -62,7 +65,8 @@ export function DailyReportForm({
   const [cardioMinutes, setCardioMinutes] = useState('');
   const [bodyWeightKg, setBodyWeightKg] = useState('');
   const [restingHeartRate, setRestingHeartRate] = useState('');
-  const [menstruationPhase, setMenstruationPhase] = useState('');
+  const [menstruationPhase, setMenstruationPhase] =
+    useState<MenstruationPhase | ''>('');
   const [illness, setIllness] = useState(false);
   const [notes, setNotes] = useState('');
   const [wellbeing, setWellbeing] = useState<DailyWellbeingDraft>({
@@ -70,6 +74,7 @@ export function DailyReportForm({
     energy: '',
     stress: '',
     soreness: '',
+    libido: '',
     motivation: '',
     recovery: '',
   });
@@ -123,6 +128,9 @@ export function DailyReportForm({
           energy: normalizeOptionalScore(wellbeing.energy),
           stress: normalizeOptionalScore(wellbeing.stress),
           soreness: normalizeOptionalScore(wellbeing.soreness),
+          libido: settings?.trackLibido
+            ? normalizeOptionalScore(wellbeing.libido)
+            : null,
           motivation: normalizeOptionalScore(wellbeing.motivation),
           recovery: normalizeOptionalScore(wellbeing.recovery),
         },
@@ -132,7 +140,10 @@ export function DailyReportForm({
         },
         dayContext: {
           weatherSnapshot: null,
-          menstruationPhase: menstruationPhase.trim() || null,
+          menstruationPhase:
+            settings?.trackMenstrualCycle && menstruationPhase
+              ? menstruationPhase
+              : null,
           illness,
           notes: notes.trim() || null,
         },
@@ -155,6 +166,8 @@ export function DailyReportForm({
       strengthWorkoutDone,
       waterLiters,
       wellbeing,
+      settings?.trackLibido,
+      settings?.trackMenstrualCycle,
     ],
   );
 
@@ -291,6 +304,15 @@ export function DailyReportForm({
             scoreLow={t.scoreLow}
             value={wellbeing.soreness}
           />
+          {settings?.trackLibido ? (
+            <ScoreField
+              label={t.libidoLabel}
+              onChange={(value) => updateWellbeing('libido', value)}
+              scoreHigh={t.scoreHigh}
+              scoreLow={t.scoreLow}
+              value={wellbeing.libido}
+            />
+          ) : null}
           <ScoreField
             label={t.motivationLabel}
             onChange={(value) => updateWellbeing('motivation', value)}
@@ -325,12 +347,24 @@ export function DailyReportForm({
 
       <FormSectionCard title={t.contextTitle}>
         <Stack spacing={1.5}>
-          <TextField
-            fullWidth
-            label={t.menstruationPhaseLabel}
-            onChange={(event) => setMenstruationPhase(event.target.value)}
-            value={menstruationPhase}
-          />
+          {settings?.trackMenstrualCycle ? (
+            <TextField
+              fullWidth
+              label={t.menstruationPhaseLabel}
+              onChange={(event) =>
+                setMenstruationPhase(event.target.value as MenstruationPhase | '')
+              }
+              select
+              value={menstruationPhase}
+            >
+              <MenuItem value=''>—</MenuItem>
+              <MenuItem value='menstruation'>{t.menstruationPhaseMenstruation}</MenuItem>
+              <MenuItem value='follicular'>{t.menstruationPhaseFollicular}</MenuItem>
+              <MenuItem value='ovulation'>{t.menstruationPhaseOvulation}</MenuItem>
+              <MenuItem value='luteal'>{t.menstruationPhaseLuteal}</MenuItem>
+              <MenuItem value='unknown'>{t.menstruationPhaseUnknown}</MenuItem>
+            </TextField>
+          ) : null}
           <SwitchField checked={illness} label={t.illnessLabel} onChange={setIllness} />
           <TextField
             fullWidth

@@ -9,6 +9,15 @@ const nullableScoreSchema = z.union([
   z.null(),
 ]);
 
+const nullableMenstruationPhaseSchema = z.union([
+  z.literal('menstruation'),
+  z.literal('follicular'),
+  z.literal('ovulation'),
+  z.literal('luteal'),
+  z.literal('unknown'),
+  z.null(),
+]);
+
 const nullableNumberSchema = z.number().min(0).nullable();
 const nullableBooleanSchema = z.boolean().nullable();
 
@@ -39,6 +48,7 @@ export const createDailyReportSchema = z.object({
     energy: nullableScoreSchema,
     stress: nullableScoreSchema,
     soreness: nullableScoreSchema,
+    libido: nullableScoreSchema,
     motivation: nullableScoreSchema,
     recovery: nullableScoreSchema,
   }),
@@ -59,7 +69,7 @@ export const createDailyReportSchema = z.object({
         capturedAt: z.date(),
       })
       .nullable(),
-    menstruationPhase: z.string().trim().min(1).nullable(),
+    menstruationPhase: nullableMenstruationPhaseSchema,
     illness: nullableBooleanSchema,
     notes: z.string().trim().min(1).nullable(),
   }),

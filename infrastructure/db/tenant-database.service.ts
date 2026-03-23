@@ -58,6 +58,8 @@ export async function initializeTenantDatabase(
         language: input.language,
         isDarkMode: input.isDarkMode,
         unitSystem: 'metric',
+        trackMenstrualCycle: false,
+        trackLibido: false,
       },
     },
     { upsert: true },

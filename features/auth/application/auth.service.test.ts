@@ -277,6 +277,8 @@ describe('auth.service', () => {
       language: 'sv',
       isDarkMode: true,
       unitSystem: 'imperial_uk',
+      trackMenstrualCycle: true,
+      trackLibido: false,
     } satisfies TenantSettingsSnapshot);
     mockedFindTenantHealthyHabits.mockResolvedValueOnce({
       averageSleepHoursPerDay: 7.5,
@@ -323,6 +325,8 @@ describe('auth.service', () => {
         language: 'sv',
         isDarkMode: true,
         unitSystem: 'imperial_uk',
+        trackMenstrualCycle: true,
+        trackLibido: false,
       },
       healthyHabits: {
         averageSleepHoursPerDay: 7.5,

@@ -103,6 +103,7 @@ const tenantDailyReportSchema = new Schema<TenantDailyReport>(
         energy: { type: Number, required: false, min: 1, max: 5, default: null },
         stress: { type: Number, required: false, min: 1, max: 5, default: null },
         soreness: { type: Number, required: false, min: 1, max: 5, default: null },
+        libido: { type: Number, required: false, min: 1, max: 5, default: null },
         motivation: { type: Number, required: false, min: 1, max: 5, default: null },
         recovery: { type: Number, required: false, min: 1, max: 5, default: null },
       },
@@ -127,6 +128,7 @@ const tenantDailyReportSchema = new Schema<TenantDailyReport>(
         menstruationPhase: {
           type: String,
           required: false,
+          enum: ['menstruation', 'follicular', 'ovulation', 'luteal', 'unknown'],
           default: null,
         },
         illness: nullableBooleanField,
@@ -172,7 +174,8 @@ export async function getTenantDailyReportModel(
     const hasLatestSchemaFields =
       Boolean(existingModel.schema.path('goalsSnapshot')) &&
       Boolean(existingModel.schema.path('wellbeing')) &&
-      Boolean(existingModel.schema.path('completion'));
+      Boolean(existingModel.schema.path('completion')) &&
+      Boolean(existingModel.schema.path('wellbeing.libido'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
       return existingModel;

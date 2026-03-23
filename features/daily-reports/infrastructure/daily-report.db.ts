@@ -47,6 +47,7 @@ export async function listTenantDailyReportRecords(
       energy: report.wellbeing?.energy ?? null,
       stress: report.wellbeing?.stress ?? null,
       soreness: report.wellbeing?.soreness ?? null,
+      libido: report.wellbeing?.libido ?? null,
       motivation: report.wellbeing?.motivation ?? null,
       recovery: report.wellbeing?.recovery ?? null,
     },

@@ -90,6 +90,8 @@ export interface TenantSettingsSnapshot {
   language: string;
   isDarkMode: boolean;
   unitSystem: UnitSystem;
+  trackMenstrualCycle: boolean;
+  trackLibido: boolean;
 }
 
 export interface TenantHealthyHabitsSnapshot {

@@ -83,6 +83,8 @@ describe('DashboardHome', () => {
             language: 'sv',
             isDarkMode: true,
             unitSystem: 'imperial_uk',
+            trackMenstrualCycle: false,
+            trackLibido: false,
           },
           healthyHabits: {
             averageSleepHoursPerDay: 7.5,

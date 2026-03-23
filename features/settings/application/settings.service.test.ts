@@ -55,12 +55,16 @@ describe('settings.service', () => {
       tenantDbName: 'tenant_john',
       language: 'sv',
       isDarkMode: true,
+      trackMenstrualCycle: true,
+      trackLibido: true,
       unitSystem: 'imperial_uk',
     });
 
     expect(mockedUpdateTenantSettingsRecord).toHaveBeenCalledWith('tenant_john', {
       language: 'sv',
       isDarkMode: true,
+      trackMenstrualCycle: true,
+      trackLibido: true,
       unitSystem: 'imperial_uk',
     });
   });

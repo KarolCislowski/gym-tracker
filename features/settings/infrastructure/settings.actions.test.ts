@@ -78,6 +78,8 @@ describe('settings.actions', () => {
         createFormData({
           language: 'sv',
           isDarkMode: true,
+          trackMenstrualCycle: false,
+          trackLibido: false,
           unitSystem: 'imperial_us',
         }),
       ),
@@ -87,6 +89,8 @@ describe('settings.actions', () => {
       tenantDbName: 'tenant_john',
       language: 'sv',
       isDarkMode: true,
+      trackMenstrualCycle: false,
+      trackLibido: false,
       unitSystem: 'imperial_us',
     });
   });

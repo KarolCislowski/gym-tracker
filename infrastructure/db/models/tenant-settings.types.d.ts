@@ -7,5 +7,7 @@ export interface TenantSettings {
   language: string;
   isDarkMode: boolean;
   unitSystem: UnitSystem;
+  trackMenstrualCycle: boolean;
+  trackLibido: boolean;
   createdAt: Date;
 }

@@ -5,6 +5,8 @@ export interface UpdateTenantSettingsInput {
   language: string;
   isDarkMode: boolean;
   unitSystem: UnitSystem;
+  trackMenstrualCycle: boolean;
+  trackLibido: boolean;
 }
 
 export interface ChangePasswordInput {

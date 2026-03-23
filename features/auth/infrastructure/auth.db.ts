@@ -173,6 +173,8 @@ export async function findTenantSettings(
     language: settings.language,
     isDarkMode: settings.isDarkMode,
     unitSystem: settings.unitSystem ?? 'metric',
+    trackMenstrualCycle: settings.trackMenstrualCycle ?? false,
+    trackLibido: settings.trackLibido ?? false,
   };
 }
 

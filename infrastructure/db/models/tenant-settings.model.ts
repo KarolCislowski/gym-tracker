@@ -31,6 +31,16 @@ const tenantSettingsSchema = new Schema<TenantSettings>(
       enum: ['metric', 'imperial_us', 'imperial_uk'],
       default: 'metric',
     },
+    trackMenstrualCycle: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    trackLibido: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: {
@@ -51,7 +61,10 @@ export async function getTenantSettingsModel(
   const existingModel = connection.models.TenantSettings as Model<TenantSettings> | undefined;
 
   if (existingModel) {
-    const hasLatestSchemaFields = Boolean(existingModel.schema.path('unitSystem'));
+    const hasLatestSchemaFields =
+      Boolean(existingModel.schema.path('unitSystem')) &&
+      Boolean(existingModel.schema.path('trackMenstrualCycle')) &&
+      Boolean(existingModel.schema.path('trackLibido'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
       return existingModel;

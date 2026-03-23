@@ -126,6 +126,8 @@ export async function getAuthenticatedUserSnapshot(
           language: settings.language,
           isDarkMode: settings.isDarkMode,
           unitSystem: settings.unitSystem,
+          trackMenstrualCycle: settings.trackMenstrualCycle,
+          trackLibido: settings.trackLibido,
         }
       : null,
     healthyHabits: healthyHabits ?? {

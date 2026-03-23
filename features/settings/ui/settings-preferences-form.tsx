@@ -75,6 +75,34 @@ export function SettingsPreferencesForm({
           }
           label={t.darkModeLabel}
         />
+        <Stack spacing={0.5}>
+          <FormControlLabel
+            control={
+              <Switch
+                defaultChecked={activeSettings?.trackMenstrualCycle ?? false}
+                name='trackMenstrualCycle'
+              />
+            }
+            label={t.trackMenstrualCycleLabel}
+          />
+          <Typography color='text.secondary' variant='body2'>
+            {t.trackMenstrualCycleHelper}
+          </Typography>
+        </Stack>
+        <Stack spacing={0.5}>
+          <FormControlLabel
+            control={
+              <Switch
+                defaultChecked={activeSettings?.trackLibido ?? false}
+                name='trackLibido'
+              />
+            }
+            label={t.trackLibidoLabel}
+          />
+          <Typography color='text.secondary' variant='body2'>
+            {t.trackLibidoHelper}
+          </Typography>
+        </Stack>
         <Button type='submit' variant='contained'>
           {t.savePreferences}
         </Button>

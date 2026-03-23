@@ -84,6 +84,10 @@ export interface TranslationDictionary {
     unitSystemImperialUs: string;
     unitSystemImperialUk: string;
     darkModeLabel: string;
+    trackMenstrualCycleLabel: string;
+    trackMenstrualCycleHelper: string;
+    trackLibidoLabel: string;
+    trackLibidoHelper: string;
     savePreferences: string;
     preferencesUpdated: string;
     securityTitle: string;
@@ -285,6 +289,12 @@ export interface TranslationDictionary {
     notesLabel: string;
     illnessLabel: string;
     menstruationPhaseLabel: string;
+    libidoLabel: string;
+    menstruationPhaseMenstruation: string;
+    menstruationPhaseFollicular: string;
+    menstruationPhaseOvulation: string;
+    menstruationPhaseLuteal: string;
+    menstruationPhaseUnknown: string;
     wellbeingTitle: string;
     actualsTitle: string;
     bodyTitle: string;

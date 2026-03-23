@@ -28,6 +28,8 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
       tenantDbName: session.user.tenantDbName,
       language: String(formData.get('language') ?? 'en'),
       isDarkMode: formData.get('isDarkMode') === 'on',
+      trackMenstrualCycle: formData.get('trackMenstrualCycle') === 'on',
+      trackLibido: formData.get('trackLibido') === 'on',
       unitSystem: String(formData.get('unitSystem') ?? 'metric') as
         | 'metric'
         | 'imperial_us'

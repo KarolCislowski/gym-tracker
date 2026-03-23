@@ -28,13 +28,22 @@ import type {
 export async function updateTenantSettings(
   input: UpdateTenantSettingsInput,
 ): Promise<void> {
-  const { tenantDbName, language, isDarkMode, unitSystem } =
+  const {
+    tenantDbName,
+    language,
+    isDarkMode,
+    unitSystem,
+    trackMenstrualCycle,
+    trackLibido,
+  } =
     updateTenantSettingsSchema.parse(input);
 
   await updateTenantSettingsRecord(tenantDbName, {
     language,
     isDarkMode,
     unitSystem,
+    trackMenstrualCycle,
+    trackLibido,
   });
 }
 
