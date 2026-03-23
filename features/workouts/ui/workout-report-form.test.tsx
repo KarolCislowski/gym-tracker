@@ -48,6 +48,7 @@ describe('WorkoutReportForm', () => {
             isActive: true,
           },
         ]}
+        favoriteExerciseSlugs={[]}
         translations={enMessages}
       />,
     );
@@ -67,5 +68,75 @@ describe('WorkoutReportForm', () => {
     expect(
       screen.getByRole('button', { name: 'Save workout report' }),
     ).toBeInTheDocument();
+  });
+
+  /**
+   * Verifies that favorite exercises are shown first in a dedicated section of the exercise select.
+   */
+  test('renders favorite exercises at the top of the exercise select', async () => {
+    render(
+      <WorkoutReportForm
+        exercises={[
+          {
+            id: 'exercise-1',
+            name: 'Bench Press',
+            slug: 'bench-press',
+            type: 'compound',
+            movementPattern: 'push',
+            difficulty: 'beginner',
+            muscles: [
+              {
+                muscleGroupId: 'pectorals',
+                role: 'primary',
+                activationLevel: 0.95,
+              },
+            ],
+            variants: [
+              {
+                id: 'variant-1',
+                name: 'Barbell Bench Press',
+                slug: 'barbell-bench-press',
+                equipment: ['barbell', 'bench'],
+                trackableMetrics: ['weight', 'reps'],
+              },
+            ],
+            isActive: true,
+          },
+          {
+            id: 'exercise-2',
+            name: 'Lat Pulldown',
+            slug: 'lat-pulldown',
+            type: 'compound',
+            movementPattern: 'pull',
+            difficulty: 'beginner',
+            muscles: [
+              {
+                muscleGroupId: 'lats',
+                role: 'primary',
+                activationLevel: 0.91,
+              },
+            ],
+            variants: [
+              {
+                id: 'variant-2',
+                name: 'Cable Lat Pulldown',
+                slug: 'cable-lat-pulldown',
+                equipment: ['cable'],
+                trackableMetrics: ['weight', 'reps'],
+              },
+            ],
+            isActive: true,
+          },
+        ]}
+        favoriteExerciseSlugs={['bench-press']}
+        translations={enMessages}
+      />,
+    );
+
+    fireEvent.mouseDown(screen.getAllByRole('combobox', { name: 'Exercise' })[0]!);
+
+    expect(await screen.findByText('My favorite exercises')).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Bench Press' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Lat Pulldown' })).toBeInTheDocument();
   });
 });

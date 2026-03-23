@@ -15,7 +15,7 @@ import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.type
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type { DailyReportSummary } from '../domain/daily-report.types';
-import { DailyReportForm } from './daily-report-form';
+import { DailyReportComposer } from './daily-report-composer';
 
 interface DailyReportsPageProps {
   error?: string;
@@ -58,7 +58,11 @@ export function DailyReportsPage({
 
       {feedback ? <Alert severity={feedback.severity}>{feedback.message}</Alert> : null}
 
-      <DailyReportForm translations={translations} userSnapshot={userSnapshot} />
+      <DailyReportComposer
+        initiallyOpen={Boolean(error)}
+        translations={translations}
+        userSnapshot={userSnapshot}
+      />
 
       <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={1}>

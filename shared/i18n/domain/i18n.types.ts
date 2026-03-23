@@ -206,6 +206,8 @@ export interface TranslationDictionary {
     description: string;
     addReportTitle: string;
     addReportDescription: string;
+    openComposerLabel: string;
+    closeComposerLabel: string;
     saveReport: string;
     workoutNameLabel: string;
     performedAtLabel: string;
@@ -267,6 +269,8 @@ export interface TranslationDictionary {
     description: string;
     addReportTitle: string;
     addReportDescription: string;
+    openComposerLabel: string;
+    closeComposerLabel: string;
     saveReport: string;
     reportDateLabel: string;
     sleepHoursLabel: string;

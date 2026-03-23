@@ -223,6 +223,8 @@ export const plMessages: TranslationDictionaryOverrides = {
     addReportTitle: 'Dodaj raport treningu',
     addReportDescription:
       'Zapisuj trening na telefonie z blokami dla pojedynczych ćwiczeń, superserii, obwodów i dropsetów.',
+    openComposerLabel: 'Dodaj raport treningu',
+    closeComposerLabel: 'Ukryj formularz treningu',
     saveReport: 'Zapisz raport treningu',
     workoutNameLabel: 'Nazwa treningu',
     performedAtLabel: 'Wykonano',
@@ -287,6 +289,8 @@ export const plMessages: TranslationDictionaryOverrides = {
     addReportTitle: 'Dzienny check-in',
     addReportDescription:
       'Zapisz realizację celów, samopoczucie, regenerację i kontekst dnia w mobilnym raporcie dziennym.',
+    openComposerLabel: 'Dodaj raport dzienny',
+    closeComposerLabel: 'Ukryj formularz raportu dziennego',
     saveReport: 'Zapisz raport dzienny',
     reportDateLabel: 'Data raportu',
     sleepHoursLabel: 'Godziny snu',

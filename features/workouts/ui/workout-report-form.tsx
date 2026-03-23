@@ -7,6 +7,7 @@ import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
   Alert,
   Button,
+  ListSubheader,
   MenuItem,
   Paper,
   Stack,
@@ -23,6 +24,7 @@ import { createWorkoutReportAction } from '../infrastructure/workout.actions';
 
 interface WorkoutReportFormProps {
   exercises: Exercise[];
+  favoriteExerciseSlugs: string[];
   translations: TranslationDictionary;
 }
 
@@ -74,9 +76,24 @@ interface WorkoutBlockDraft {
  */
 export function WorkoutReportForm({
   exercises,
+  favoriteExerciseSlugs,
   translations,
 }: WorkoutReportFormProps) {
   const t = translations.workouts;
+  const favoriteExercises = useMemo(
+    () =>
+      exercises.filter((exercise) =>
+        favoriteExerciseSlugs.includes(exercise.slug),
+      ),
+    [exercises, favoriteExerciseSlugs],
+  );
+  const nonFavoriteExercises = useMemo(
+    () =>
+      exercises.filter(
+        (exercise) => !favoriteExerciseSlugs.includes(exercise.slug),
+      ),
+    [exercises, favoriteExerciseSlugs],
+  );
   const [workoutName, setWorkoutName] = useState('');
   const [performedAt, setPerformedAt] = useState(formatDateTimeLocal(new Date()));
   const [startedAt, setStartedAt] = useState('');
@@ -322,7 +339,22 @@ export function WorkoutReportForm({
                         select
                         value={entry.exerciseSlug}
                       >
-                        {exercises.map((option) => (
+                        {favoriteExercises.length ? (
+                          <ListSubheader disableSticky>
+                            {translations.dashboard.favoriteExercises}
+                          </ListSubheader>
+                        ) : null}
+                        {favoriteExercises.map((option) => (
+                          <MenuItem key={`favorite-${option.id}`} value={option.slug}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                        {nonFavoriteExercises.length ? (
+                          <ListSubheader disableSticky>
+                            {t.exerciseLabel}
+                          </ListSubheader>
+                        ) : null}
+                        {nonFavoriteExercises.map((option) => (
                           <MenuItem key={option.id} value={option.slug}>
                             {option.name}
                           </MenuItem>
@@ -506,14 +538,16 @@ export function WorkoutReportForm({
                 );
               })}
 
-              <Button
-                type='button'
-                onClick={() => addEntry(block.id)}
-                startIcon={<AddRoundedIcon />}
-                variant='outlined'
-              >
-                {t.addEntry}
-              </Button>
+              {block.type !== 'single' ? (
+                <Button
+                  type='button'
+                  onClick={() => addEntry(block.id)}
+                  startIcon={<AddRoundedIcon />}
+                  variant='outlined'
+                >
+                  {t.addEntry}
+                </Button>
+              ) : null}
             </Stack>
           </Paper>
         ))}

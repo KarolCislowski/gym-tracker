@@ -222,6 +222,8 @@ export const svMessages: TranslationDictionaryOverrides = {
     addReportTitle: 'Lägg till träningsrapport',
     addReportDescription:
       'Logga passet på mobilen med block för enskilda övningar, superset, cirklar och dropset.',
+    openComposerLabel: 'Lägg till träningsrapport',
+    closeComposerLabel: 'Dölj träningsformuläret',
     saveReport: 'Spara träningsrapport',
     workoutNameLabel: 'Träningsnamn',
     performedAtLabel: 'Utförd',
@@ -286,6 +288,8 @@ export const svMessages: TranslationDictionaryOverrides = {
     addReportTitle: 'Daglig check-in',
     addReportDescription:
       'Logga målutförande, välbefinnande, återhämtning och dagens kontext i en mobilvänlig daglig rapport.',
+    openComposerLabel: 'Lägg till daglig rapport',
+    closeComposerLabel: 'Dölj formuläret för daglig rapport',
     saveReport: 'Spara daglig rapport',
     reportDateLabel: 'Rapportdatum',
     sleepHoursLabel: 'Sömntimmar',

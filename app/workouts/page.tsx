@@ -39,6 +39,7 @@ export default async function WorkoutReportsRoutePage({
     <WorkoutReportsPage
       error={params?.error}
       exercises={exercises}
+      favoriteExerciseSlugs={userSnapshot.favoriteExerciseSlugs}
       reports={reports}
       status={params?.status}
       translations={translations}

@@ -221,6 +221,8 @@ export const enMessages: TranslationDictionary = {
     addReportTitle: 'Log workout',
     addReportDescription:
       'Capture the session on your phone with blocks for singles, supersets, circuits, and dropsets.',
+    openComposerLabel: 'Add workout report',
+    closeComposerLabel: 'Hide workout form',
     saveReport: 'Save workout report',
     workoutNameLabel: 'Workout name',
     performedAtLabel: 'Performed at',
@@ -285,6 +287,8 @@ export const enMessages: TranslationDictionary = {
     addReportTitle: 'Daily check-in',
     addReportDescription:
       'Log goals completion, wellbeing, recovery, and context in a mobile-friendly daily report.',
+    openComposerLabel: 'Add daily report',
+    closeComposerLabel: 'Hide daily report form',
     saveReport: 'Save daily report',
     reportDateLabel: 'Report date',
     sleepHoursLabel: 'Sleep hours',

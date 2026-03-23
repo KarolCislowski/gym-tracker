@@ -15,11 +15,12 @@ import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type { WorkoutSessionSummary } from '../domain/workout.types';
-import { WorkoutReportForm } from './workout-report-form';
+import { WorkoutReportComposer } from './workout-report-composer';
 
 interface WorkoutReportsPageProps {
   error?: string;
   exercises: Exercise[];
+  favoriteExerciseSlugs: string[];
   reports: WorkoutSessionSummary[];
   status?: string;
   translations: TranslationDictionary;
@@ -35,6 +36,7 @@ interface WorkoutReportsPageProps {
 export function WorkoutReportsPage({
   error,
   exercises,
+  favoriteExerciseSlugs,
   reports,
   status,
   translations,
@@ -57,7 +59,12 @@ export function WorkoutReportsPage({
 
       {feedback ? <Alert severity={feedback.severity}>{feedback.message}</Alert> : null}
 
-      <WorkoutReportForm exercises={exercises} translations={translations} />
+      <WorkoutReportComposer
+        exercises={exercises}
+        favoriteExerciseSlugs={favoriteExerciseSlugs}
+        initiallyOpen={Boolean(error)}
+        translations={translations}
+      />
 
       <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={1}>
