@@ -16,11 +16,23 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import {
+  convertHydrationFromMetricLiters,
+  convertHydrationToMetricLiters,
+} from '@/shared/units/application/unit-conversion';
+import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
-import type { MenstruationPhase } from '../domain/daily-report.types';
+import type {
+  DailyReportDetails,
+  MenstruationPhase,
+} from '../domain/daily-report.types';
 import { createDailyReportAction } from '../infrastructure/daily-report.actions';
 
 interface DailyReportFormProps {
+  formAction?: (formData: FormData) => Promise<void>;
+  initialReport?: DailyReportDetails | null;
+  reportId?: string;
+  submitLabel?: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
 }
@@ -45,6 +57,10 @@ interface DailyWellbeingDraft {
  * @returns A React element rendering the daily report form.
  */
 export function DailyReportForm({
+  formAction = createDailyReportAction,
+  initialReport,
+  reportId,
+  submitLabel,
   translations,
   userSnapshot,
 }: DailyReportFormProps) {
@@ -54,29 +70,54 @@ export function DailyReportForm({
   const yesNoT = translations.exercises;
   const goals = userSnapshot?.healthyHabits;
   const settings = userSnapshot?.settings;
+  const unitSystem = settings?.unitSystem ?? 'metric';
+  const waterLabel =
+    unitSystem === 'metric' ? t.waterLitersLabel : t.waterFluidOuncesLabel;
+  const goalsWaterLabel =
+    unitSystem === 'metric'
+      ? habitsT.waterLitersPerDayLabel
+      : habitsT.waterFluidOuncesPerDayLabel;
 
-  const [reportDate, setReportDate] = useState(formatDateInput(new Date()));
-  const [sleepHours, setSleepHours] = useState('');
-  const [sleepScheduleKept, setSleepScheduleKept] = useState(false);
-  const [steps, setSteps] = useState('');
-  const [waterLiters, setWaterLiters] = useState('');
-  const [proteinGrams, setProteinGrams] = useState('');
-  const [strengthWorkoutDone, setStrengthWorkoutDone] = useState(false);
-  const [cardioMinutes, setCardioMinutes] = useState('');
-  const [bodyWeightKg, setBodyWeightKg] = useState('');
-  const [restingHeartRate, setRestingHeartRate] = useState('');
+  const [reportDate, setReportDate] = useState(
+    initialReport ? formatDateInput(new Date(initialReport.reportDate)) : formatDateInput(new Date()),
+  );
+  const [sleepHours, setSleepHours] = useState(
+    formatInitialNumber(initialReport?.actuals.sleepHours),
+  );
+  const [sleepScheduleKept, setSleepScheduleKept] = useState(
+    initialReport?.actuals.sleepScheduleKept ?? false,
+  );
+  const [steps, setSteps] = useState(formatInitialNumber(initialReport?.actuals.steps));
+  const [waterAmount, setWaterAmount] = useState(
+    formatInitialHydration(initialReport?.actuals.waterLiters, unitSystem),
+  );
+  const [proteinGrams, setProteinGrams] = useState(
+    formatInitialNumber(initialReport?.actuals.proteinGrams),
+  );
+  const [strengthWorkoutDone, setStrengthWorkoutDone] = useState(
+    initialReport?.actuals.strengthWorkoutDone ?? false,
+  );
+  const [cardioMinutes, setCardioMinutes] = useState(
+    formatInitialNumber(initialReport?.actuals.cardioMinutes),
+  );
+  const [bodyWeightKg, setBodyWeightKg] = useState(
+    formatInitialNumber(initialReport?.body.bodyWeightKg),
+  );
+  const [restingHeartRate, setRestingHeartRate] = useState(
+    formatInitialNumber(initialReport?.body.restingHeartRate),
+  );
   const [menstruationPhase, setMenstruationPhase] =
-    useState<MenstruationPhase | ''>('');
-  const [illness, setIllness] = useState(false);
-  const [notes, setNotes] = useState('');
+    useState<MenstruationPhase | ''>(initialReport?.dayContext.menstruationPhase ?? '');
+  const [illness, setIllness] = useState(initialReport?.dayContext.illness ?? false);
+  const [notes, setNotes] = useState(initialReport?.dayContext.notes ?? '');
   const [wellbeing, setWellbeing] = useState<DailyWellbeingDraft>({
-    mood: '',
-    energy: '',
-    stress: '',
-    soreness: '',
-    libido: '',
-    motivation: '',
-    recovery: '',
+    mood: formatInitialScore(initialReport?.wellbeing.mood),
+    energy: formatInitialScore(initialReport?.wellbeing.energy),
+    stress: formatInitialScore(initialReport?.wellbeing.stress),
+    soreness: formatInitialScore(initialReport?.wellbeing.soreness),
+    libido: formatInitialScore(initialReport?.wellbeing.libido),
+    motivation: formatInitialScore(initialReport?.wellbeing.motivation),
+    recovery: formatInitialScore(initialReport?.wellbeing.recovery),
   });
 
   const completion = useMemo(
@@ -85,7 +126,7 @@ export function DailyReportForm({
       stepsGoalMet: resolveNumericGoalMet(goals?.stepsPerDay ?? null, steps),
       waterGoalMet: resolveNumericGoalMet(
         goals?.waterLitersPerDay ?? null,
-        waterLiters,
+        resolveWaterLiters(waterAmount, unitSystem),
       ),
       proteinGoalMet: resolveNumericGoalMet(
         goals?.proteinGramsPerDay ?? null,
@@ -105,7 +146,8 @@ export function DailyReportForm({
       sleepHours,
       sleepScheduleKept,
       steps,
-      waterLiters,
+      waterAmount,
+      unitSystem,
     ],
   );
 
@@ -118,7 +160,7 @@ export function DailyReportForm({
           sleepScheduleKept:
             goals?.regularSleepSchedule === true ? sleepScheduleKept : null,
           steps: normalizeOptionalNumber(steps),
-          waterLiters: normalizeOptionalNumber(waterLiters),
+          waterLiters: resolveWaterLiters(waterAmount, unitSystem),
           proteinGrams: normalizeOptionalNumber(proteinGrams),
           strengthWorkoutDone,
           cardioMinutes: normalizeOptionalNumber(cardioMinutes),
@@ -164,15 +206,16 @@ export function DailyReportForm({
       sleepScheduleKept,
       steps,
       strengthWorkoutDone,
-      waterLiters,
+      waterAmount,
       wellbeing,
       settings?.trackLibido,
       settings?.trackMenstrualCycle,
+      unitSystem,
     ],
   );
 
   return (
-    <Stack component='form' action={createDailyReportAction} spacing={2.5}>
+    <Stack component='form' action={formAction} spacing={2.5}>
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
@@ -215,8 +258,8 @@ export function DailyReportForm({
               value={formatGoalValue(goals?.stepsPerDay, '', profileT.emptyValue)}
             />
             <GoalSnapshotRow
-              label={habitsT.waterLitersPerDayLabel}
-              value={formatGoalValue(goals?.waterLitersPerDay, 'L', profileT.emptyValue)}
+              label={goalsWaterLabel}
+              value={formatHydrationValue(goals?.waterLitersPerDay, unitSystem, profileT.emptyValue)}
             />
             <GoalSnapshotRow
               label={habitsT.proteinPerDayLabel}
@@ -246,9 +289,9 @@ export function DailyReportForm({
           ) : null}
           <NumberField label={t.stepsLabel} onChange={setSteps} value={steps} />
           <NumberField
-            label={t.waterLitersLabel}
-            onChange={setWaterLiters}
-            value={waterLiters}
+            label={waterLabel}
+            onChange={setWaterAmount}
+            value={waterAmount}
           />
           <NumberField
             label={t.proteinGramsLabel}
@@ -378,6 +421,7 @@ export function DailyReportForm({
       </FormSectionCard>
 
       <input name='reportPayload' type='hidden' value={payload} />
+      {reportId ? <input name='reportId' type='hidden' value={reportId} /> : null}
 
       <Paper
         elevation={8}
@@ -398,7 +442,7 @@ export function DailyReportForm({
           type='submit'
           variant='contained'
         >
-          {t.saveReport}
+          {submitLabel ?? t.saveReport}
         </Button>
       </Paper>
     </Stack>
@@ -543,6 +587,27 @@ function formatDateInput(value: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+function formatInitialNumber(value: number | null | undefined): string {
+  return value == null ? '' : String(value);
+}
+
+function formatInitialHydration(
+  liters: number | null | undefined,
+  unitSystem: UnitSystem,
+): string {
+  if (liters == null) {
+    return '';
+  }
+
+  return String(convertHydrationFromMetricLiters(liters, unitSystem).value);
+}
+
+function formatInitialScore(
+  value: 1 | 2 | 3 | 4 | 5 | null | undefined,
+): DailyScoreDraft {
+  return value == null ? '' : String(value) as DailyScoreDraft;
+}
+
 function formatGoalValue(
   value: number | null | undefined,
   suffix: string,
@@ -553,6 +618,20 @@ function formatGoalValue(
   }
 
   return suffix ? `${value} ${suffix}` : String(value);
+}
+
+function formatHydrationValue(
+  liters: number | null | undefined,
+  unitSystem: UnitSystem,
+  emptyValue: string,
+): string {
+  if (liters == null) {
+    return emptyValue;
+  }
+
+  const converted = convertHydrationFromMetricLiters(liters, unitSystem);
+
+  return `${converted.value} ${converted.unit}`;
 }
 
 function formatBooleanValue(
@@ -579,19 +658,44 @@ function normalizeOptionalScore(value: DailyScoreDraft): 1 | 2 | 3 | 4 | 5 | nul
 
 function resolveNumericGoalMet(
   goal: number | null,
-  actualValue: string,
+  actualValue: string | number | null,
 ): boolean | null {
   if (goal == null) {
     return null;
   }
 
-  const actual = normalizeOptionalNumber(actualValue);
+  const actual =
+    typeof actualValue === 'number'
+      ? actualValue
+      : actualValue == null
+        ? null
+        : normalizeOptionalNumber(actualValue);
 
   if (actual == null) {
     return null;
   }
 
   return actual >= goal;
+}
+
+function resolveWaterLiters(
+  displayValue: string,
+  unitSystem: UnitSystem,
+): number | null {
+  const normalized = normalizeOptionalNumber(displayValue);
+
+  if (normalized == null) {
+    return null;
+  }
+
+  if (unitSystem === 'metric') {
+    return normalized;
+  }
+
+  return convertHydrationToMetricLiters({
+    system: unitSystem,
+    value: normalized,
+  });
 }
 
 function resolveSleepGoalMet(

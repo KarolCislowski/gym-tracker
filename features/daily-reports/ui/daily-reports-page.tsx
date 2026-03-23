@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import Link from 'next/link';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -87,6 +88,7 @@ export function DailyReportsPage({
                   <TableCell>{t.columnSteps}</TableCell>
                   <TableCell>{t.columnProtein}</TableCell>
                   <TableCell>{t.columnSleepGoal}</TableCell>
+                  <TableCell>{t.columnActions}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -109,6 +111,11 @@ export function DailyReportsPage({
                         : report.completion.sleepGoalMet
                           ? translations.exercises.yesLabel
                           : translations.exercises.noLabel}
+                    </TableCell>
+                    <TableCell>
+                      <Link href={`/daily-reports/${report.id}`}>
+                        {t.viewDetailsLabel}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

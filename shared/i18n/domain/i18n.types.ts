@@ -281,6 +281,7 @@ export interface TranslationDictionary {
     sleepScheduleKeptLabel: string;
     stepsLabel: string;
     waterLitersLabel: string;
+    waterFluidOuncesLabel: string;
     proteinGramsLabel: string;
     strengthWorkoutDoneLabel: string;
     cardioMinutesLabel: string;
@@ -305,6 +306,7 @@ export interface TranslationDictionary {
     scoreLow: string;
     scoreHigh: string;
     reportCreated: string;
+    reportUpdated: string;
     reportError: string;
     emptyState: string;
     columnDate: string;
@@ -315,6 +317,22 @@ export interface TranslationDictionary {
     columnSteps: string;
     columnProtein: string;
     columnSleepGoal: string;
+    columnActions: string;
+    viewDetailsLabel: string;
+    detailsTitle: string;
+    detailsDescription: string;
+    summaryTitle: string;
+    goalsSectionTitle: string;
+    actualsSectionTitle: string;
+    completionSectionTitle: string;
+    wellbeingSectionTitle: string;
+    bodySectionTitle: string;
+    contextSectionTitle: string;
+    openEditLabel: string;
+    closeEditLabel: string;
+    updateReport: string;
+    notFoundTitle: string;
+    notFoundDescription: string;
     modelTitle: string;
     modelDescription: string;
   };

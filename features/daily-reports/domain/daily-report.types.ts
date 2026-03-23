@@ -78,10 +78,25 @@ export interface CreateDailyReportInput {
   completion: DailyCompletionInput;
 }
 
+export interface UpdateDailyReportInput extends CreateDailyReportInput {
+  reportId: string;
+}
+
 export interface DailyReportSummary {
   id: string;
   reportDate: string;
   wellbeing: DailyWellbeingInput;
   completion: DailyCompletionInput;
   actuals: DailyActualsInput;
+}
+
+export interface DailyReportDetails {
+  id: string;
+  reportDate: string;
+  goalsSnapshot: DailyGoalsSnapshotInput;
+  actuals: DailyActualsInput;
+  wellbeing: DailyWellbeingInput;
+  body: DailyBodySnapshotInput;
+  dayContext: DailyContextInput;
+  completion: DailyCompletionInput;
 }

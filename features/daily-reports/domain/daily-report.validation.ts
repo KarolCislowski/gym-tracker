@@ -81,3 +81,7 @@ export const createDailyReportSchema = z.object({
     cardioGoalMet: nullableBooleanSchema,
   }),
 });
+
+export const updateDailyReportSchema = createDailyReportSchema.extend({
+  reportId: z.string().trim().min(1),
+});

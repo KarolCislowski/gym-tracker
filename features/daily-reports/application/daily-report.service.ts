@@ -1,11 +1,18 @@
 import type {
   CreateDailyReportInput,
+  DailyReportDetails,
   DailyReportSummary,
+  UpdateDailyReportInput,
 } from '../domain/daily-report.types';
-import { createDailyReportSchema } from '../domain/daily-report.validation';
+import {
+  createDailyReportSchema,
+  updateDailyReportSchema,
+} from '../domain/daily-report.validation';
 import {
   createTenantDailyReportRecord,
+  findTenantDailyReportRecordById,
   listTenantDailyReportRecords,
+  updateTenantDailyReportRecord,
 } from '../infrastructure/daily-report.db';
 
 /**
@@ -32,4 +39,32 @@ export async function listDailyReports(
   userId: string,
 ): Promise<DailyReportSummary[]> {
   return listTenantDailyReportRecords(tenantDbName, userId);
+}
+
+/**
+ * Resolves a full daily report for the authenticated tenant user.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @param reportId - Stable report identifier.
+ * @returns A detailed daily report or `null` when it does not exist.
+ */
+export async function getDailyReportDetails(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<DailyReportDetails | null> {
+  return findTenantDailyReportRecordById(tenantDbName, userId, reportId);
+}
+
+/**
+ * Updates a stored daily report for the authenticated tenant user.
+ * @param input - Tenant-scoped daily report update payload.
+ * @returns A promise that resolves when the daily report has been updated.
+ */
+export async function updateDailyReport(
+  input: UpdateDailyReportInput,
+): Promise<void> {
+  updateDailyReportSchema.parse(input);
+
+  await updateTenantDailyReportRecord(input);
 }
