@@ -1,5 +1,7 @@
 'use client';
 
+import type { MarkElementProps } from '@mui/x-charts/LineChart';
+import { MarkElement } from '@mui/x-charts/LineChart';
 import { BarChart, LineChart } from '@mui/x-charts';
 import {
   Box,
@@ -13,6 +15,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
@@ -37,9 +40,48 @@ export function DashboardAnalyticsWidget({
   analytics,
   translations,
 }: DashboardAnalyticsWidgetProps) {
+  const theme = useTheme();
   const t = translations.dashboard;
   const habitsT = translations.healthyHabits;
   const dailyT = translations.dailyReports;
+  const wellbeingSeries = [
+    {
+      id: 'mood',
+      dataKey: 'mood',
+      label: dailyT.columnMood,
+      showMark: true,
+      shape: 'circle' as const,
+      color: alpha(theme.palette.primary.main, 0.6),
+      colorGetter: () => theme.palette.primary.main,
+    },
+    {
+      id: 'energy',
+      dataKey: 'energy',
+      label: dailyT.columnEnergy,
+      showMark: true,
+      shape: 'diamond' as const,
+      color: alpha(theme.palette.success.main, 0.6),
+      colorGetter: () => theme.palette.success.main,
+    },
+    {
+      id: 'stress',
+      dataKey: 'stress',
+      label: dailyT.columnStress,
+      showMark: true,
+      shape: 'square' as const,
+      color: alpha(theme.palette.error.main, 0.6),
+      colorGetter: () => theme.palette.error.main,
+    },
+    {
+      id: 'recovery',
+      dataKey: 'recovery',
+      label: dailyT.columnRecovery,
+      showMark: true,
+      shape: 'triangle' as const,
+      color: alpha(theme.palette.secondary.main, 0.6),
+      colorGetter: () => theme.palette.secondary.main,
+    },
+  ];
 
   return (
     <Stack
@@ -65,13 +107,10 @@ export function DashboardAnalyticsWidget({
           <LineChart
             dataset={analytics.wellbeing}
             height={280}
-            series={[
-              { dataKey: 'mood', label: dailyT.columnMood },
-              { dataKey: 'energy', label: dailyT.columnEnergy },
-              { dataKey: 'stress', label: dailyT.columnStress },
-              { dataKey: 'recovery', label: dailyT.columnRecovery },
-            ]}
+            grid={{ horizontal: true }}
+            series={wellbeingSeries}
             skipAnimation
+            slots={{ mark: OffsetWellbeingMark }}
             xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
             yAxis={[{ min: 0, max: 5 }]}
           />
@@ -125,6 +164,20 @@ export function DashboardAnalyticsWidget({
       </ChartCard>
     </Stack>
   );
+}
+
+function OffsetWellbeingMark(props: MarkElementProps) {
+  const offsetBySeries: Record<string, number> = {
+    mood: -6,
+    energy: -2,
+    stress: 2,
+    recovery: 6,
+  };
+  const seriesId = String(props.id);
+  const xOffset = offsetBySeries[seriesId] ?? 0;
+  const x = typeof props.x === 'number' ? props.x : Number(props.x ?? 0);
+
+  return <MarkElement {...props} x={x + xOffset} />;
 }
 
 function GoalComplianceHeatmap({
