@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 import { auth } from '@/auth';
+import { ForgotPasswordForm } from '@/features/auth/ui/forgot-password/forgot-password-form';
 import { AuthPageShell } from '@/features/auth/ui/shared/auth-page-shell';
-import { LoginForm } from '@/features/auth/ui/login/login-form';
 import {
   getTranslations,
   resolveLanguage,
@@ -13,20 +13,17 @@ import {
   resolveAppColorMode,
 } from '@/shared/theme/application/theme-mode';
 
-interface LoginPageProps {
+interface ForgotPasswordPageProps {
   searchParams?: Promise<{
     error?: string;
-    registered?: string;
-    deleted?: string;
-    email?: string;
-    passwordReset?: string;
-    resent?: string;
-    verified?: string;
     lang?: string;
+    sent?: string;
   }>;
 }
 
-export default async function LoginPage({ searchParams }: LoginPageProps) {
+export default async function ForgotPasswordPage({
+  searchParams,
+}: ForgotPasswordPageProps) {
   const session = await auth();
   const cookieStore = await cookies();
   const params = searchParams ? await searchParams : undefined;
@@ -44,29 +41,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <AuthPageShell
       activeColorMode={activeColorMode}
       activeLanguage={activeLanguage}
-      pathname='/login'
+      pathname='/forgot-password'
       query={{
-        deleted: params?.deleted,
-        email: params?.email,
         error: params?.error,
-        passwordReset: params?.passwordReset,
-        registered: params?.registered,
-        resent: params?.resent,
-        verified: params?.verified,
+        sent: params?.sent,
       }}
-      subtitle={t.auth.signInDescription}
-      title={t.auth.signInTitle}
+      subtitle={t.auth.forgotPasswordDescription}
+      title={t.auth.forgotPasswordTitle}
       translations={t}
-      width='min(100%, 560px)'>
-      <LoginForm
+      width='min(100%, 520px)'>
+      <ForgotPasswordForm
         activeLanguage={activeLanguage}
-        deleted={params?.deleted}
-        email={params?.email}
         error={params?.error}
-        passwordReset={params?.passwordReset}
-        registered={params?.registered}
-        resent={params?.resent}
-        verified={params?.verified}
+        sent={params?.sent}
         translations={t}
       />
     </AuthPageShell>

@@ -20,11 +20,41 @@ export const svMessages: TranslationDictionaryOverrides = {
     signInTitle: 'Logga in',
     signInDescription:
       'Använd din e-postadress och ditt lösenord för att komma åt din tenantyta.',
+    forgotPasswordTitle: 'Glömt lösenord',
+    forgotPasswordDescription:
+      'Ange din e-postadress så skickar vi en återställningslänk om kontot kan återställas.',
+    resetPasswordTitle: 'Välj nytt lösenord',
+    resetPasswordDescription:
+      'Välj ett nytt lösenord för kontot med den säkra länken från ditt e-postmeddelande.',
     accountDeleted: 'Ditt konto har raderats.',
-    registrationSuccess: 'Ditt konto har skapats. Du kan logga in nu.',
+    registrationSuccess:
+      'Ditt konto har skapats. Kontrollera inkorgen och verifiera din e-postadress innan du loggar in.',
+    emailVerificationSuccess:
+      'Din e-postadress har verifierats. Du kan logga in nu.',
+    verificationEmailResent:
+      'Om det finns ett overifierat konto för den här e-postadressen har en ny verifieringslänk skickats.',
+    passwordResetRequested:
+      'Om det finns ett verifierat konto för den här e-postadressen har en återställningslänk skickats.',
+    passwordResetSuccess:
+      'Ditt lösenord har återställts. Du kan logga in nu.',
+    emailVerificationRequired:
+      'Verifiera din e-postadress innan du loggar in.',
+    verificationLinkInvalid:
+      'Verifieringslänken är ogiltig eller har gått ut.',
+    passwordResetLinkInvalid:
+      'Länken för lösenordsåterställning är ogiltig eller har gått ut.',
+    invalidCredentialsError: 'Fel e-postadress eller lösenord.',
     emailLabel: 'E-post',
     passwordLabel: 'Lösenord',
     signInButton: 'Logga in',
+    resendVerificationButton: 'Skicka länken igen',
+    resendVerificationDescription:
+      'Behöver du ett nytt verifieringsmail? Ange din e-postadress så skickar vi en ny länk om kontot fortfarande väntar på verifiering.',
+    orDivider: 'eller',
+    forgotPasswordLink: 'Glömt lösenordet?',
+    requestPasswordResetButton: 'Skicka återställningslänk',
+    resetPasswordButton: 'Välj nytt lösenord',
+    confirmPasswordLabel: 'Bekräfta lösenord',
     newHere: 'Ny här?',
     createAccountLink: 'Skapa ett konto',
     registerTitle: 'Skapa konto',

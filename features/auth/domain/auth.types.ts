@@ -7,6 +7,21 @@ export interface AuthenticatedUser {
   tenantDbName: string;
 }
 
+export type AuthenticationFailureReason =
+  | 'invalid_credentials'
+  | 'inactive_account'
+  | 'email_not_verified';
+
+export type AuthenticationAttemptResult =
+  | {
+      status: 'success';
+      user: AuthenticatedUser;
+    }
+  | {
+      status: 'failure';
+      reason: AuthenticationFailureReason;
+    };
+
 export interface CredentialsInput {
   email: string;
   password: string;
@@ -23,6 +38,9 @@ export interface CreateCoreUserRecordInput {
   email: string;
   password: string;
   tenantDbName: string;
+  emailVerificationTokenHash?: string | null;
+  emailVerificationTokenExpiresAt?: Date | null;
+  emailVerifiedAt?: Date | null;
 }
 
 export interface CreateTenantDatabaseInput {
@@ -39,12 +57,29 @@ export interface CoreUserLookupDto {
   id: string;
 }
 
+export interface CoreUserVerificationResendDto {
+  id: string;
+  email: string;
+  isActive: boolean;
+  tenantDbName: string;
+  emailVerifiedAt: string | null;
+}
+
+export interface CoreUserPasswordResetRequestDto {
+  id: string;
+  email: string;
+  isActive: boolean;
+  tenantDbName: string;
+  emailVerifiedAt: string | null;
+}
+
 export interface CoreUserAuthDto {
   id: string;
   email: string;
   password: string;
   isActive: boolean;
   tenantDbName: string;
+  emailVerifiedAt: string | null;
 }
 
 export interface CreatedCoreUserDto {
@@ -52,6 +87,38 @@ export interface CreatedCoreUserDto {
   email: string;
   isActive: boolean;
   tenantDbName: string;
+  emailVerifiedAt: string | null;
+}
+
+export interface CoreUserEmailVerificationLookupDto {
+  id: string;
+  emailVerifiedAt: string | null;
+  emailVerificationTokenExpiresAt: string | null;
+}
+
+export interface CoreUserPasswordResetLookupDto {
+  id: string;
+  passwordResetTokenExpiresAt: string | null;
+}
+
+export interface SendVerificationEmailInput {
+  email: string;
+  firstName: string;
+  language: string;
+  verificationUrl: string;
+}
+
+export interface SendPasswordResetEmailInput {
+  email: string;
+  firstName: string;
+  language: string;
+  resetUrl: string;
+}
+
+export interface ResetPasswordInput {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
 }
 
 export interface TenantProfileSnapshot {

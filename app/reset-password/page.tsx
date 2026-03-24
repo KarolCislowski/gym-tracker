@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 import { auth } from '@/auth';
+import { ResetPasswordForm } from '@/features/auth/ui/reset-password/reset-password-form';
 import { AuthPageShell } from '@/features/auth/ui/shared/auth-page-shell';
-import { LoginForm } from '@/features/auth/ui/login/login-form';
 import {
   getTranslations,
   resolveLanguage,
@@ -13,20 +13,17 @@ import {
   resolveAppColorMode,
 } from '@/shared/theme/application/theme-mode';
 
-interface LoginPageProps {
+interface ResetPasswordPageProps {
   searchParams?: Promise<{
     error?: string;
-    registered?: string;
-    deleted?: string;
-    email?: string;
-    passwordReset?: string;
-    resent?: string;
-    verified?: string;
     lang?: string;
+    token?: string;
   }>;
 }
 
-export default async function LoginPage({ searchParams }: LoginPageProps) {
+export default async function ResetPasswordPage({
+  searchParams,
+}: ResetPasswordPageProps) {
   const session = await auth();
   const cookieStore = await cookies();
   const params = searchParams ? await searchParams : undefined;
@@ -44,29 +41,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <AuthPageShell
       activeColorMode={activeColorMode}
       activeLanguage={activeLanguage}
-      pathname='/login'
+      pathname='/reset-password'
       query={{
-        deleted: params?.deleted,
-        email: params?.email,
         error: params?.error,
-        passwordReset: params?.passwordReset,
-        registered: params?.registered,
-        resent: params?.resent,
-        verified: params?.verified,
+        token: params?.token,
       }}
-      subtitle={t.auth.signInDescription}
-      title={t.auth.signInTitle}
+      subtitle={t.auth.resetPasswordDescription}
+      title={t.auth.resetPasswordTitle}
       translations={t}
-      width='min(100%, 560px)'>
-      <LoginForm
+      width='min(100%, 520px)'>
+      <ResetPasswordForm
         activeLanguage={activeLanguage}
-        deleted={params?.deleted}
-        email={params?.email}
         error={params?.error}
-        passwordReset={params?.passwordReset}
-        registered={params?.registered}
-        resent={params?.resent}
-        verified={params?.verified}
+        token={params?.token}
         translations={t}
       />
     </AuthPageShell>

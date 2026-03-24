@@ -21,11 +21,41 @@ export const enMessages: TranslationDictionary = {
     signInTitle: 'Sign in',
     signInDescription:
       'Use your email address and password to access your tenant workspace.',
+    forgotPasswordTitle: 'Forgot password',
+    forgotPasswordDescription:
+      'Enter your email address and we will send a reset link if the account is eligible for password recovery.',
+    resetPasswordTitle: 'Choose a new password',
+    resetPasswordDescription:
+      'Set a new password for your account using the secure link from your email.',
     accountDeleted: 'Your account has been deleted.',
-    registrationSuccess: 'Your account has been created. You can sign in now.',
+    registrationSuccess:
+      'Your account has been created. Check your inbox and verify your email address before signing in.',
+    emailVerificationSuccess:
+      'Your email address has been verified. You can sign in now.',
+    verificationEmailResent:
+      'If an unverified account exists for this email address, a fresh verification link has been sent.',
+    passwordResetRequested:
+      'If a verified account exists for this email address, a password reset link has been sent.',
+    passwordResetSuccess:
+      'Your password has been reset. You can sign in now.',
+    emailVerificationRequired:
+      'Verify your email address before signing in.',
+    verificationLinkInvalid:
+      'The verification link is invalid or has expired.',
+    passwordResetLinkInvalid:
+      'The password reset link is invalid or has expired.',
+    invalidCredentialsError: 'Invalid email or password.',
     emailLabel: 'Email',
     passwordLabel: 'Password',
     signInButton: 'Sign in',
+    resendVerificationButton: 'Resend verification link',
+    resendVerificationDescription:
+      'Need a new verification email? Enter your email address and we will send another link if the account is still waiting for verification.',
+    orDivider: 'or',
+    forgotPasswordLink: 'Forgot password?',
+    requestPasswordResetButton: 'Send reset link',
+    resetPasswordButton: 'Set new password',
+    confirmPasswordLabel: 'Confirm password',
     newHere: 'New here?',
     createAccountLink: 'Create an account',
     registerTitle: 'Create account',

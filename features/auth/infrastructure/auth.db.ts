@@ -4,8 +4,12 @@ import {
   initializeTenantDatabase,
 } from '@/infrastructure/db/tenant-database.service';
 import type {
+  CoreUserEmailVerificationLookupDto,
   CoreUserAuthDto,
   CoreUserLookupDto,
+  CoreUserPasswordResetLookupDto,
+  CoreUserPasswordResetRequestDto,
+  CoreUserVerificationResendDto,
   CreateCoreUserRecordInput,
   CreateTenantDatabaseInput,
   CreatedCoreUserDto,
@@ -33,6 +37,56 @@ export async function findCoreUserByEmail(
 }
 
 /**
+ * Finds the Core user data required to resend a verification link.
+ */
+export async function findCoreUserForVerificationResend(
+  email: string,
+): Promise<CoreUserVerificationResendDto | null> {
+  const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findOne({ email }).lean();
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user._id.toString(),
+    email: user.email,
+    isActive: user.isActive,
+    tenantDbName: user.tenantDbName,
+    emailVerifiedAt:
+      user.emailVerifiedAt instanceof Date
+        ? user.emailVerifiedAt.toISOString()
+        : null,
+  };
+}
+
+/**
+ * Finds the Core user data required to issue a password-reset email.
+ */
+export async function findCoreUserForPasswordResetRequest(
+  email: string,
+): Promise<CoreUserPasswordResetRequestDto | null> {
+  const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findOne({ email }).lean();
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user._id.toString(),
+    email: user.email,
+    isActive: user.isActive,
+    tenantDbName: user.tenantDbName,
+    emailVerifiedAt:
+      user.emailVerifiedAt instanceof Date
+        ? user.emailVerifiedAt.toISOString()
+        : null,
+  };
+}
+
+/**
  * Finds a Core user by email and explicitly includes the password hash.
  */
 export async function findCoreUserWithPasswordByEmail(
@@ -53,6 +107,10 @@ export async function findCoreUserWithPasswordByEmail(
     password: user.password,
     isActive: user.isActive,
     tenantDbName: user.tenantDbName,
+    emailVerifiedAt:
+      user.emailVerifiedAt instanceof Date
+        ? user.emailVerifiedAt.toISOString()
+        : null,
   };
 }
 
@@ -69,6 +127,9 @@ export async function createCoreUserRecord(
     password: input.password,
     isActive: true,
     tenantDbName: input.tenantDbName,
+    emailVerifiedAt: input.emailVerifiedAt ?? null,
+    emailVerificationTokenHash: input.emailVerificationTokenHash ?? null,
+    emailVerificationTokenExpiresAt: input.emailVerificationTokenExpiresAt ?? null,
   });
 
   return {
@@ -76,7 +137,136 @@ export async function createCoreUserRecord(
     email: createdUser.email,
     isActive: createdUser.isActive,
     tenantDbName: createdUser.tenantDbName,
+    emailVerifiedAt:
+      createdUser.emailVerifiedAt instanceof Date
+        ? createdUser.emailVerifiedAt.toISOString()
+        : null,
   };
+}
+
+/**
+ * Finds a Core user by a hashed email-verification token.
+ */
+export async function findCoreUserByEmailVerificationTokenHash(
+  emailVerificationTokenHash: string,
+): Promise<CoreUserEmailVerificationLookupDto | null> {
+  const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findOne({
+    emailVerificationTokenHash,
+  }).select('+emailVerificationTokenHash +emailVerificationTokenExpiresAt');
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user.id,
+    emailVerifiedAt:
+      user.emailVerifiedAt instanceof Date
+        ? user.emailVerifiedAt.toISOString()
+        : null,
+    emailVerificationTokenExpiresAt:
+      user.emailVerificationTokenExpiresAt instanceof Date
+        ? user.emailVerificationTokenExpiresAt.toISOString()
+        : null,
+  };
+}
+
+/**
+ * Marks a Core user email as verified and clears one-time verification token fields.
+ */
+export async function markCoreUserEmailAsVerified(userId: string): Promise<void> {
+  const CoreUserModel = await getCoreUserModel();
+
+  await CoreUserModel.findByIdAndUpdate(userId, {
+    $set: {
+      emailVerifiedAt: new Date(),
+    },
+    $unset: {
+      emailVerificationTokenHash: 1,
+      emailVerificationTokenExpiresAt: 1,
+    },
+  });
+}
+
+/**
+ * Replaces the one-time verification token for a Core user.
+ */
+export async function refreshCoreUserEmailVerificationToken(
+  userId: string,
+  emailVerificationTokenHash: string,
+  emailVerificationTokenExpiresAt: Date,
+): Promise<void> {
+  const CoreUserModel = await getCoreUserModel();
+
+  await CoreUserModel.findByIdAndUpdate(userId, {
+    $set: {
+      emailVerificationTokenHash,
+      emailVerificationTokenExpiresAt,
+    },
+  });
+}
+
+/**
+ * Stores a fresh one-time password-reset token for a Core user.
+ */
+export async function refreshCoreUserPasswordResetToken(
+  userId: string,
+  passwordResetTokenHash: string,
+  passwordResetTokenExpiresAt: Date,
+): Promise<void> {
+  const CoreUserModel = await getCoreUserModel();
+
+  await CoreUserModel.findByIdAndUpdate(userId, {
+    $set: {
+      passwordResetTokenHash,
+      passwordResetTokenExpiresAt,
+    },
+  });
+}
+
+/**
+ * Finds a Core user by a hashed password-reset token.
+ */
+export async function findCoreUserByPasswordResetTokenHash(
+  passwordResetTokenHash: string,
+): Promise<CoreUserPasswordResetLookupDto | null> {
+  const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findOne({
+    passwordResetTokenHash,
+  }).select('+passwordResetTokenHash +passwordResetTokenExpiresAt');
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user.id,
+    passwordResetTokenExpiresAt:
+      user.passwordResetTokenExpiresAt instanceof Date
+        ? user.passwordResetTokenExpiresAt.toISOString()
+        : null,
+  };
+}
+
+/**
+ * Updates a user's password and clears any outstanding password-reset token.
+ */
+export async function resetCoreUserPasswordByToken(
+  userId: string,
+  password: string,
+): Promise<void> {
+  const CoreUserModel = await getCoreUserModel();
+
+  await CoreUserModel.findByIdAndUpdate(userId, {
+    $set: {
+      password,
+    },
+    $unset: {
+      passwordResetTokenHash: 1,
+      passwordResetTokenExpiresAt: 1,
+    },
+  });
 }
 
 /**

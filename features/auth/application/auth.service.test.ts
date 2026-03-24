@@ -1,8 +1,12 @@
 import bcrypt from 'bcryptjs';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type {
+  CoreUserEmailVerificationLookupDto,
   CoreUserAuthDto,
   CoreUserLookupDto,
+  CoreUserPasswordResetLookupDto,
+  CoreUserPasswordResetRequestDto,
+  CoreUserVerificationResendDto,
   CreatedCoreUserDto,
   TenantHealthyHabitsSnapshot,
   TenantProfileSnapshot,
@@ -11,8 +15,13 @@ import type {
 
 import {
   authenticateUser,
+  authenticateUserAttempt,
   getAuthenticatedUserSnapshot,
+  requestPasswordReset,
   registerUser,
+  resetPasswordWithToken,
+  resendVerificationEmail,
+  verifyEmailAddress,
 } from './auth.service';
 
 vi.mock('bcryptjs', () => ({
@@ -28,10 +37,23 @@ vi.mock('../infrastructure/auth.db', () => ({
   deleteCoreUserRecordById: vi.fn(),
   deleteTenantDatabase: vi.fn(),
   findCoreUserByEmail: vi.fn(),
+  findCoreUserByEmailVerificationTokenHash: vi.fn(),
+  findCoreUserByPasswordResetTokenHash: vi.fn(),
+  findCoreUserForPasswordResetRequest: vi.fn(),
+  findCoreUserForVerificationResend: vi.fn(),
   findCoreUserWithPasswordByEmail: vi.fn(),
   findTenantHealthyHabits: vi.fn(),
   findTenantProfileByUserId: vi.fn(),
   findTenantSettings: vi.fn(),
+  markCoreUserEmailAsVerified: vi.fn(),
+  refreshCoreUserPasswordResetToken: vi.fn(),
+  refreshCoreUserEmailVerificationToken: vi.fn(),
+  resetCoreUserPasswordByToken: vi.fn(),
+}));
+
+vi.mock('../infrastructure/auth-email.mailer', () => ({
+  sendPasswordResetEmail: vi.fn(),
+  sendVerificationEmail: vi.fn(),
 }));
 
 import {
@@ -40,11 +62,23 @@ import {
   deleteCoreUserRecordById,
   deleteTenantDatabase,
   findCoreUserByEmail,
+  findCoreUserByEmailVerificationTokenHash,
+  findCoreUserByPasswordResetTokenHash,
+  findCoreUserForPasswordResetRequest,
+  findCoreUserForVerificationResend,
   findCoreUserWithPasswordByEmail,
   findTenantHealthyHabits,
   findTenantProfileByUserId,
   findTenantSettings,
+  markCoreUserEmailAsVerified,
+  refreshCoreUserPasswordResetToken,
+  refreshCoreUserEmailVerificationToken,
+  resetCoreUserPasswordByToken,
 } from '../infrastructure/auth.db';
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+} from '../infrastructure/auth-email.mailer';
 
 const mockedBcrypt = vi.mocked(bcrypt);
 const mockedCreateCoreUserRecord = vi.mocked(createCoreUserRecord);
@@ -52,12 +86,34 @@ const mockedCreateTenantDatabase = vi.mocked(createTenantDatabase);
 const mockedDeleteCoreUserRecordById = vi.mocked(deleteCoreUserRecordById);
 const mockedDeleteTenantDatabase = vi.mocked(deleteTenantDatabase);
 const mockedFindCoreUserByEmail = vi.mocked(findCoreUserByEmail);
+const mockedFindCoreUserByEmailVerificationTokenHash = vi.mocked(
+  findCoreUserByEmailVerificationTokenHash,
+);
+const mockedFindCoreUserByPasswordResetTokenHash = vi.mocked(
+  findCoreUserByPasswordResetTokenHash,
+);
+const mockedFindCoreUserForPasswordResetRequest = vi.mocked(
+  findCoreUserForPasswordResetRequest,
+);
+const mockedFindCoreUserForVerificationResend = vi.mocked(
+  findCoreUserForVerificationResend,
+);
 const mockedFindCoreUserWithPasswordByEmail = vi.mocked(
   findCoreUserWithPasswordByEmail,
 );
 const mockedFindTenantHealthyHabits = vi.mocked(findTenantHealthyHabits);
 const mockedFindTenantProfileByUserId = vi.mocked(findTenantProfileByUserId);
 const mockedFindTenantSettings = vi.mocked(findTenantSettings);
+const mockedMarkCoreUserEmailAsVerified = vi.mocked(markCoreUserEmailAsVerified);
+const mockedRefreshCoreUserPasswordResetToken = vi.mocked(
+  refreshCoreUserPasswordResetToken,
+);
+const mockedRefreshCoreUserEmailVerificationToken = vi.mocked(
+  refreshCoreUserEmailVerificationToken,
+);
+const mockedResetCoreUserPasswordByToken = vi.mocked(resetCoreUserPasswordByToken);
+const mockedSendPasswordResetEmail = vi.mocked(sendPasswordResetEmail);
+const mockedSendVerificationEmail = vi.mocked(sendVerificationEmail);
 const mockedHash = mockedBcrypt.hash as unknown as ReturnType<typeof vi.fn>;
 const mockedCompare = mockedBcrypt.compare as unknown as ReturnType<typeof vi.fn>;
 
@@ -67,10 +123,12 @@ describe('auth.service', () => {
    */
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.stubEnv('NODE_ENV', 'production');
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.unstubAllEnvs();
   });
 
   /**
@@ -85,6 +143,7 @@ describe('auth.service', () => {
       email: 'john@example.com',
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
     } satisfies CreatedCoreUserDto);
 
     const result = await registerUser({
@@ -101,6 +160,9 @@ describe('auth.service', () => {
       email: 'john@example.com',
       password: 'hashed-password',
       tenantDbName: expect.stringMatching(/^tenant_john_/),
+      emailVerificationTokenHash: expect.any(String),
+      emailVerificationTokenExpiresAt: expect.any(Date),
+      emailVerifiedAt: null,
     });
     expect(mockedCreateTenantDatabase).toHaveBeenCalledWith({
       tenantDbName: expect.stringMatching(/^tenant_john_/),
@@ -111,12 +173,53 @@ describe('auth.service', () => {
       language: 'sv',
       isDarkMode: true,
     });
+    expect(mockedSendVerificationEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      firstName: 'John',
+      language: 'sv',
+      verificationUrl: expect.stringContaining('/verify-email?'),
+    });
     expect(result).toEqual({
       id: 'user-1',
       email: 'john@example.com',
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
     });
+  });
+
+  /**
+   * Verifies that non-production registrations are auto-verified and skip verification email delivery.
+   */
+  test('registerUser auto-verifies accounts outside production', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    mockedFindCoreUserByEmail.mockResolvedValueOnce(null);
+    mockedHash.mockResolvedValueOnce('hashed-password');
+    mockedCreateCoreUserRecord.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: '2026-03-24T12:00:00.000Z',
+    } satisfies CreatedCoreUserDto);
+
+    await registerUser({
+      email: 'john@example.com',
+      password: 'VeryStrong123',
+      firstName: 'John',
+      lastName: 'Doe',
+      language: 'sv',
+      isDarkMode: true,
+    });
+
+    expect(mockedCreateCoreUserRecord).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      password: 'hashed-password',
+      tenantDbName: expect.stringMatching(/^tenant_john_/),
+      emailVerificationTokenHash: null,
+      emailVerificationTokenExpiresAt: null,
+      emailVerifiedAt: expect.any(Date),
+    });
+    expect(mockedSendVerificationEmail).not.toHaveBeenCalled();
   });
 
   /**
@@ -153,6 +256,7 @@ describe('auth.service', () => {
       email: 'john@example.com',
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
     } satisfies CreatedCoreUserDto);
     mockedCreateTenantDatabase.mockRejectedValueOnce(new Error('DB bootstrap failed'));
 
@@ -174,6 +278,40 @@ describe('auth.service', () => {
   });
 
   /**
+   * Verifies that registration rolls back persisted data when verification email delivery fails.
+   */
+  test('registerUser rolls back user and tenant database on verification email failure', async () => {
+    mockedFindCoreUserByEmail.mockResolvedValueOnce(null);
+    mockedHash.mockResolvedValueOnce('hashed-password');
+    mockedCreateCoreUserRecord.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
+    } satisfies CreatedCoreUserDto);
+    mockedSendVerificationEmail.mockRejectedValueOnce(
+      new Error('SMTP unavailable'),
+    );
+
+    await expect(
+      registerUser({
+        email: 'john@example.com',
+        password: 'VeryStrong123',
+        firstName: 'John',
+        lastName: 'Doe',
+        language: 'pl',
+        isDarkMode: false,
+      }),
+    ).rejects.toThrow('SMTP unavailable');
+
+    expect(mockedDeleteCoreUserRecordById).toHaveBeenCalledWith('user-1');
+    expect(mockedDeleteTenantDatabase).toHaveBeenCalledWith(
+      expect.stringMatching(/^tenant_john_/),
+    );
+  });
+
+  /**
    * Verifies that inactive users cannot authenticate even when found in Core.
    */
   test('authenticateUser returns null for inactive users', async () => {
@@ -183,6 +321,7 @@ describe('auth.service', () => {
       password: 'hashed-password',
       isActive: false,
       tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: '2026-03-20T00:00:00.000Z',
     } satisfies CoreUserAuthDto);
 
     const result = await authenticateUser({
@@ -204,6 +343,7 @@ describe('auth.service', () => {
       password: 'hashed-password',
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: '2026-03-20T00:00:00.000Z',
     } satisfies CoreUserAuthDto);
     mockedCompare.mockResolvedValueOnce(false);
 
@@ -225,6 +365,7 @@ describe('auth.service', () => {
       password: 'hashed-password',
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: '2026-03-20T00:00:00.000Z',
     } satisfies CoreUserAuthDto);
     mockedCompare.mockResolvedValueOnce(true);
 
@@ -239,6 +380,218 @@ describe('auth.service', () => {
       isActive: true,
       tenantDbName: 'tenant_john_123456789abc',
     });
+  });
+
+  /**
+   * Verifies that login attempts report unverified accounts only after a valid password match.
+   */
+  test('authenticateUserAttempt reports email_not_verified for matching credentials', async () => {
+    mockedFindCoreUserWithPasswordByEmail.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      password: 'hashed-password',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
+    } satisfies CoreUserAuthDto);
+    mockedCompare.mockResolvedValueOnce(true);
+
+    const result = await authenticateUserAttempt({
+      email: 'john@example.com',
+      password: 'VeryStrong123',
+    });
+
+    expect(result).toEqual({
+      status: 'failure',
+      reason: 'email_not_verified',
+    });
+  });
+
+  /**
+   * Verifies that valid verification tokens mark a Core user as verified.
+   */
+  test('verifyEmailAddress marks the email as verified', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-24T12:00:00.000Z'));
+    mockedFindCoreUserByEmailVerificationTokenHash.mockResolvedValueOnce({
+      id: 'user-1',
+      emailVerifiedAt: null,
+      emailVerificationTokenExpiresAt: '2026-03-25T12:00:00.000Z',
+    } satisfies CoreUserEmailVerificationLookupDto);
+
+    await verifyEmailAddress('token-123');
+
+    expect(mockedFindCoreUserByEmailVerificationTokenHash).toHaveBeenCalledWith(
+      expect.any(String),
+    );
+    expect(mockedMarkCoreUserEmailAsVerified).toHaveBeenCalledWith('user-1');
+  });
+
+  /**
+   * Verifies that expired verification tokens are rejected.
+   */
+  test('verifyEmailAddress rejects expired tokens', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-24T12:00:00.000Z'));
+    mockedFindCoreUserByEmailVerificationTokenHash.mockResolvedValueOnce({
+      id: 'user-1',
+      emailVerifiedAt: null,
+      emailVerificationTokenExpiresAt: '2026-03-23T12:00:00.000Z',
+    } satisfies CoreUserEmailVerificationLookupDto);
+
+    await expect(verifyEmailAddress('token-123')).rejects.toThrow(
+      'Verification link is invalid or has expired.',
+    );
+
+    expect(mockedMarkCoreUserEmailAsVerified).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Verifies that resendVerificationEmail rotates the token and sends a fresh email.
+   */
+  test('resendVerificationEmail refreshes the token for unverified accounts', async () => {
+    mockedFindCoreUserForVerificationResend.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
+    } satisfies CoreUserVerificationResendDto);
+    mockedFindTenantProfileByUserId.mockResolvedValueOnce({
+      email: 'john@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      birthDate: null,
+      age: null,
+      favoriteExerciseSlugs: [],
+      location: null,
+      heightCm: null,
+      gender: null,
+      activityLevel: null,
+    } satisfies TenantProfileSnapshot);
+
+    await resendVerificationEmail('john@example.com', 'pl');
+
+    expect(mockedRefreshCoreUserEmailVerificationToken).toHaveBeenCalledWith(
+      'user-1',
+      expect.any(String),
+      expect.any(Date),
+    );
+    expect(mockedSendVerificationEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      firstName: 'John',
+      language: 'pl',
+      verificationUrl: expect.stringContaining('/verify-email?'),
+    });
+  });
+
+  /**
+   * Verifies that resendVerificationEmail stays silent for unknown accounts.
+   */
+  test('resendVerificationEmail does nothing when the account does not exist', async () => {
+    mockedFindCoreUserForVerificationResend.mockResolvedValueOnce(null);
+
+    await resendVerificationEmail('missing@example.com', 'en');
+
+    expect(mockedRefreshCoreUserEmailVerificationToken).not.toHaveBeenCalled();
+    expect(mockedSendVerificationEmail).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Verifies that requestPasswordReset sends a reset email for verified accounts.
+   */
+  test('requestPasswordReset refreshes the password-reset token and sends an email', async () => {
+    mockedFindCoreUserForPasswordResetRequest.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: '2026-03-20T12:00:00.000Z',
+    } satisfies CoreUserPasswordResetRequestDto);
+    mockedFindTenantProfileByUserId.mockResolvedValueOnce({
+      email: 'john@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      birthDate: null,
+      age: null,
+      favoriteExerciseSlugs: [],
+      location: null,
+      heightCm: null,
+      gender: null,
+      activityLevel: null,
+    } satisfies TenantProfileSnapshot);
+
+    await requestPasswordReset('john@example.com', 'sv');
+
+    expect(mockedRefreshCoreUserPasswordResetToken).toHaveBeenCalledWith(
+      'user-1',
+      expect.any(String),
+      expect.any(Date),
+    );
+    expect(mockedSendPasswordResetEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      firstName: 'John',
+      language: 'sv',
+      resetUrl: expect.stringContaining('/reset-password?'),
+    });
+  });
+
+  /**
+   * Verifies that requestPasswordReset stays silent for unknown accounts.
+   */
+  test('requestPasswordReset does nothing when the account does not exist', async () => {
+    mockedFindCoreUserForPasswordResetRequest.mockResolvedValueOnce(null);
+
+    await requestPasswordReset('missing@example.com', 'en');
+
+    expect(mockedRefreshCoreUserPasswordResetToken).not.toHaveBeenCalled();
+    expect(mockedSendPasswordResetEmail).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Verifies that resetPasswordWithToken updates the password and clears the token.
+   */
+  test('resetPasswordWithToken updates the password for a valid token', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-24T12:00:00.000Z'));
+    mockedFindCoreUserByPasswordResetTokenHash.mockResolvedValueOnce({
+      id: 'user-1',
+      passwordResetTokenExpiresAt: '2026-03-24T13:00:00.000Z',
+    } satisfies CoreUserPasswordResetLookupDto);
+    mockedHash.mockResolvedValueOnce('hashed-new-password');
+
+    await resetPasswordWithToken({
+      token: 'reset-token-123',
+      newPassword: 'NewPassword123',
+      confirmPassword: 'NewPassword123',
+    });
+
+    expect(mockedResetCoreUserPasswordByToken).toHaveBeenCalledWith(
+      'user-1',
+      'hashed-new-password',
+    );
+  });
+
+  /**
+   * Verifies that resetPasswordWithToken rejects expired tokens.
+   */
+  test('resetPasswordWithToken rejects expired tokens', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-24T12:00:00.000Z'));
+    mockedFindCoreUserByPasswordResetTokenHash.mockResolvedValueOnce({
+      id: 'user-1',
+      passwordResetTokenExpiresAt: '2026-03-24T11:00:00.000Z',
+    } satisfies CoreUserPasswordResetLookupDto);
+
+    await expect(
+      resetPasswordWithToken({
+        token: 'reset-token-123',
+        newPassword: 'NewPassword123',
+        confirmPassword: 'NewPassword123',
+      }),
+    ).rejects.toThrow('PASSWORD_RESET_INVALID');
+
+    expect(mockedResetCoreUserPasswordByToken).not.toHaveBeenCalled();
   });
 
   /**

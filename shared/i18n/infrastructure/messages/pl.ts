@@ -20,12 +20,41 @@ export const plMessages: TranslationDictionaryOverrides = {
     signInTitle: 'Logowanie',
     signInDescription:
       'Użyj adresu email i hasła, aby uzyskać dostęp do swojej przestrzeni tenantowej.',
+    forgotPasswordTitle: 'Nie pamiętasz hasła',
+    forgotPasswordDescription:
+      'Wpisz swój adres email, a wyślemy link do resetu hasła, jeśli konto kwalifikuje się do odzyskania dostępu.',
+    resetPasswordTitle: 'Ustaw nowe hasło',
+    resetPasswordDescription:
+      'Ustaw nowe hasło do konta, korzystając z bezpiecznego linku z wiadomości email.',
     accountDeleted: 'Twoje konto zostało usunięte.',
     registrationSuccess:
-      'Twoje konto zostało utworzone. Możesz się teraz zalogować.',
+      'Twoje konto zostało utworzone. Sprawdź skrzynkę i zweryfikuj adres email przed zalogowaniem.',
+    emailVerificationSuccess:
+      'Twój adres email został zweryfikowany. Możesz się teraz zalogować.',
+    verificationEmailResent:
+      'Jeśli dla tego adresu istnieje nieweryfikowane konto, wysłaliśmy nowy link weryfikacyjny.',
+    passwordResetRequested:
+      'Jeśli dla tego adresu istnieje zweryfikowane konto, wysłaliśmy link do resetu hasła.',
+    passwordResetSuccess:
+      'Hasło zostało zresetowane. Możesz się teraz zalogować.',
+    emailVerificationRequired:
+      'Zweryfikuj adres email przed zalogowaniem.',
+    verificationLinkInvalid:
+      'Link weryfikacyjny jest nieprawidłowy albo wygasł.',
+    passwordResetLinkInvalid:
+      'Link do resetu hasła jest nieprawidłowy albo wygasł.',
+    invalidCredentialsError: 'Nieprawidłowy email lub hasło.',
     emailLabel: 'Email',
     passwordLabel: 'Hasło',
     signInButton: 'Zaloguj się',
+    resendVerificationButton: 'Wyślij link ponownie',
+    resendVerificationDescription:
+      'Potrzebujesz nowego maila weryfikacyjnego? Wpisz adres email, a wyślemy kolejny link, jeśli konto nadal czeka na weryfikację.',
+    orDivider: 'lub',
+    forgotPasswordLink: 'Nie pamiętasz hasła?',
+    requestPasswordResetButton: 'Wyślij link resetujący',
+    resetPasswordButton: 'Ustaw nowe hasło',
+    confirmPasswordLabel: 'Potwierdź hasło',
     newHere: 'Nie masz jeszcze konta?',
     createAccountLink: 'Utwórz konto',
     registerTitle: 'Utwórz konto',
