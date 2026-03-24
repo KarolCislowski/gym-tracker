@@ -14,8 +14,12 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
-import type { WorkoutSessionSummary } from '../domain/workout.types';
+import type {
+  WorkoutSessionSummary,
+  WorkoutTemplateSummary,
+} from '../domain/workout.types';
 import { WorkoutReportComposer } from './workout-report-composer';
+import { WorkoutTemplateComposer } from './workout-template-composer';
 
 interface WorkoutReportsPageProps {
   error?: string;
@@ -23,6 +27,7 @@ interface WorkoutReportsPageProps {
   favoriteExerciseSlugs: string[];
   reports: WorkoutSessionSummary[];
   status?: string;
+  templates: WorkoutTemplateSummary[];
   translations: TranslationDictionary;
 }
 
@@ -39,11 +44,14 @@ export function WorkoutReportsPage({
   favoriteExerciseSlugs,
   reports,
   status,
+  templates,
   translations,
 }: WorkoutReportsPageProps) {
   const t = translations.workouts;
   const feedback = status === 'workout-report-created'
     ? { severity: 'success' as const, message: t.reportCreated }
+    : status === 'workout-template-created'
+      ? { severity: 'success' as const, message: t.templateCreated }
     : error
       ? { severity: 'error' as const, message: t.reportError }
       : null;
@@ -63,8 +71,11 @@ export function WorkoutReportsPage({
         exercises={exercises}
         favoriteExerciseSlugs={favoriteExerciseSlugs}
         initiallyOpen={Boolean(error)}
+        templates={templates}
         translations={translations}
       />
+
+      <WorkoutTemplateComposer exercises={exercises} translations={translations} />
 
       <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={1}>
@@ -72,6 +83,41 @@ export function WorkoutReportsPage({
             {t.modelTitle}
           </Typography>
           <Typography color='text.secondary'>{t.modelDescription}</Typography>
+        </Stack>
+      </Paper>
+
+      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+        <Stack spacing={2}>
+          <Typography component='h2' variant='h6'>
+            {t.templatesTitle}
+          </Typography>
+
+          {templates.length ? (
+            <TableContainer>
+              <Table aria-label={t.templatesTitle} size='small'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{t.templateNameLabel}</TableCell>
+                    <TableCell>{t.columnBlocks}</TableCell>
+                    <TableCell>{t.columnExercises}</TableCell>
+                    <TableCell>{t.columnNotes}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {templates.map((template) => (
+                    <TableRow key={template.id} hover>
+                      <TableCell>{template.name}</TableCell>
+                      <TableCell>{template.blockCount}</TableCell>
+                      <TableCell>{template.exerciseCount}</TableCell>
+                      <TableCell>{template.notes ?? '—'}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Typography color='text.secondary'>{t.templatesEmptyState}</Typography>
+          )}
         </Stack>
       </Paper>
 

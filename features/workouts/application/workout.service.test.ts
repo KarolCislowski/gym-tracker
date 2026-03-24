@@ -1,15 +1,22 @@
 import { describe, expect, test, vi } from 'vitest';
 
-import { createWorkoutSession } from './workout.service';
+import {
+  createWorkoutSession,
+  createWorkoutTemplate,
+} from './workout.service';
 
 vi.mock('../infrastructure/workout.db', () => ({
+  createTenantWorkoutTemplateRecord: vi.fn(),
   createTenantWorkoutSessionRecord: vi.fn(),
+  listTenantWorkoutTemplateRecords: vi.fn(),
   listTenantWorkoutSessionAnalyticsRecords: vi.fn(),
   listTenantWorkoutSessionRecords: vi.fn(),
 }));
 
 import {
+  createTenantWorkoutTemplateRecord,
   createTenantWorkoutSessionRecord,
+  listTenantWorkoutTemplateRecords,
   listTenantWorkoutSessionAnalyticsRecords,
   listTenantWorkoutSessionRecords,
 } from '../infrastructure/workout.db';
@@ -17,8 +24,14 @@ import {
 const mockedCreateTenantWorkoutSessionRecord = vi.mocked(
   createTenantWorkoutSessionRecord,
 );
+const mockedCreateTenantWorkoutTemplateRecord = vi.mocked(
+  createTenantWorkoutTemplateRecord,
+);
 const mockedListTenantWorkoutSessionRecords = vi.mocked(
   listTenantWorkoutSessionRecords,
+);
+const mockedListTenantWorkoutTemplateRecords = vi.mocked(
+  listTenantWorkoutTemplateRecords,
 );
 const mockedListTenantWorkoutSessionAnalyticsRecords = vi.mocked(
   listTenantWorkoutSessionAnalyticsRecords,
@@ -292,6 +305,44 @@ describe('workout.service', () => {
     });
   });
 
+  test('createWorkoutTemplate persists the validated template payload', async () => {
+    await createWorkoutTemplate({
+      tenantDbName: 'tenant_john',
+      userId: 'user-1',
+      name: 'Push A',
+      notes: 'Primary push day',
+      blocks: [
+        {
+          order: 1,
+          type: 'single',
+          name: 'Main press',
+          rounds: null,
+          restAfterBlockSec: 180,
+          entries: [
+            {
+              order: 1,
+              exerciseId: 'exercise-1',
+              exerciseSlug: 'bench-press',
+              variantId: 'variant-1',
+              selectedGrip: 'pronated',
+              selectedStance: null,
+              selectedAttachment: null,
+              notes: 'Pause on chest',
+              restAfterEntrySec: 180,
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(mockedCreateTenantWorkoutTemplateRecord).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tenantDbName: 'tenant_john',
+        name: 'Push A',
+      }),
+    );
+  });
+
   test('listWorkoutSessions delegates to persistence', async () => {
     mockedListTenantWorkoutSessionRecords.mockResolvedValueOnce([
       {
@@ -342,5 +393,27 @@ describe('workout.service', () => {
       'user-1',
     );
     expect(result[0]?.entries[0]?.setCount).toBe(3);
+  });
+
+  test('listWorkoutTemplates delegates to persistence', async () => {
+    mockedListTenantWorkoutTemplateRecords.mockResolvedValueOnce([
+      {
+        id: 'template-1',
+        name: 'Push A',
+        notes: 'Primary push day',
+        blockCount: 1,
+        exerciseCount: 1,
+        blocks: [],
+      },
+    ]);
+
+    const { listWorkoutTemplates } = await import('./workout.service');
+    const result = await listWorkoutTemplates('tenant_john', 'user-1');
+
+    expect(mockedListTenantWorkoutTemplateRecords).toHaveBeenCalledWith(
+      'tenant_john',
+      'user-1',
+    );
+    expect(result[0]?.name).toBe('Push A');
   });
 });

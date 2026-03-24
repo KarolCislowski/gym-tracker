@@ -18,6 +18,7 @@ describe('WorkoutReportComposer', () => {
       <WorkoutReportComposer
         exercises={[]}
         favoriteExerciseSlugs={[]}
+        templates={[]}
         translations={enMessages}
       />,
     );
@@ -33,5 +34,30 @@ describe('WorkoutReportComposer', () => {
     expect(
       screen.getByRole('button', { name: 'Hide workout form' }),
     ).toBeInTheDocument();
+  });
+
+  test('opens the workout form when a quick-start template is selected', () => {
+    render(
+      <WorkoutReportComposer
+        exercises={[]}
+        favoriteExerciseSlugs={[]}
+        templates={[
+          {
+            id: 'template-1',
+            name: 'Push A',
+            notes: null,
+            blockCount: 1,
+            exerciseCount: 1,
+            blocks: [],
+          },
+        ]}
+        translations={enMessages}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Push A' }));
+
+    expect(screen.getByText('Workout form body')).toBeInTheDocument();
+    expect(screen.getByText('Quick start')).toBeInTheDocument();
   });
 });

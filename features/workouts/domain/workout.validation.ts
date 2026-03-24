@@ -40,6 +40,27 @@ const workoutBlockSchema = z.object({
   entries: z.array(exerciseEntrySchema).min(1),
 });
 
+const workoutTemplateEntrySchema = z.object({
+  order: z.number().int().min(1),
+  exerciseId: z.string().trim().min(1),
+  exerciseSlug: z.string().trim().min(1),
+  variantId: z.string().trim().min(1).nullable(),
+  selectedGrip: z.string().trim().min(1).nullable(),
+  selectedStance: z.string().trim().min(1).nullable(),
+  selectedAttachment: z.string().trim().min(1).nullable(),
+  notes: z.string().trim().min(1).nullable(),
+  restAfterEntrySec: z.number().int().min(0).nullable(),
+});
+
+const workoutTemplateBlockSchema = z.object({
+  order: z.number().int().min(1),
+  type: z.enum(['single', 'superset', 'circuit', 'dropset']),
+  name: z.string().trim().min(1).nullable(),
+  rounds: z.number().int().min(1).nullable(),
+  restAfterBlockSec: z.number().int().min(0).nullable(),
+  entries: z.array(workoutTemplateEntrySchema).min(1),
+});
+
 const workoutLocationSnapshotSchema = z.object({
   provider: z.literal('google_places'),
   placeId: z.string().trim().min(1),
@@ -78,4 +99,12 @@ export const createWorkoutSessionSchema = z.object({
   locationSnapshot: workoutLocationSnapshotSchema.nullable(),
   weatherSnapshot: workoutWeatherSnapshotSchema.nullable(),
   blocks: z.array(workoutBlockSchema).min(1),
+});
+
+export const createWorkoutTemplateSchema = z.object({
+  tenantDbName: z.string().trim().min(1),
+  userId: z.string().trim().min(1),
+  name: z.string().trim().min(2),
+  notes: z.string().trim().min(1).nullable(),
+  blocks: z.array(workoutTemplateBlockSchema).min(1),
 });

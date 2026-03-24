@@ -5,8 +5,14 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 
-import { createWorkoutSession } from '../application/workout.service';
-import type { CreateWorkoutSessionInput } from '../domain/workout.types';
+import {
+  createWorkoutSession,
+  createWorkoutTemplate,
+} from '../application/workout.service';
+import type {
+  CreateWorkoutSessionInput,
+  CreateWorkoutTemplateInput,
+} from '../domain/workout.types';
 
 /**
  * Persists a structured workout report submitted from the mobile-friendly builder UI.
@@ -43,6 +49,38 @@ export async function createWorkoutReportAction(formData: FormData): Promise<voi
   }
 
   redirect('/workouts?status=workout-report-created');
+}
+
+/**
+ * Persists a reusable workout template submitted from the mobile-friendly builder UI.
+ * @param formData - Submitted form data containing a serialized workout-template payload.
+ * @returns A promise that resolves only through redirect handling.
+ */
+export async function createWorkoutTemplateAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const payload = String(formData.get('templatePayload') ?? '').trim();
+
+  try {
+    const parsedPayload = JSON.parse(payload) as Omit<
+      CreateWorkoutTemplateInput,
+      'tenantDbName' | 'userId'
+    >;
+
+    await createWorkoutTemplate({
+      ...parsedPayload,
+      tenantDbName: session.user.tenantDbName,
+      userId: session.user.id,
+    });
+  } catch (error) {
+    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+  }
+
+  redirect('/workouts?status=workout-template-created');
 }
 
 function getWorkoutErrorCode(error: unknown): string {

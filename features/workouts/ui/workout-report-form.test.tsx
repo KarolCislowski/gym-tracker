@@ -139,4 +139,76 @@ describe('WorkoutReportForm', () => {
     expect(screen.getByRole('option', { name: 'Bench Press' })).toBeInTheDocument();
     expect(screen.getByRole('option', { name: 'Lat Pulldown' })).toBeInTheDocument();
   });
+
+  test('prefills workout name and exercise from a selected template', () => {
+    render(
+      <WorkoutReportForm
+        exercises={[
+          {
+            id: 'exercise-1',
+            name: 'Bench Press',
+            slug: 'bench-press',
+            type: 'compound',
+            movementPattern: 'push',
+            difficulty: 'beginner',
+            muscles: [
+              {
+                muscleGroupId: 'pectorals',
+                role: 'primary',
+                activationLevel: 0.95,
+              },
+            ],
+            variants: [
+              {
+                id: 'variant-1',
+                name: 'Barbell Bench Press',
+                slug: 'barbell-bench-press',
+                equipment: ['barbell', 'bench'],
+                trackableMetrics: ['weight', 'reps'],
+              },
+            ],
+            isActive: true,
+          },
+        ]}
+        favoriteExerciseSlugs={[]}
+        initialTemplate={{
+          id: 'template-1',
+          name: 'Push A',
+          notes: 'Primary push day',
+          blockCount: 1,
+          exerciseCount: 1,
+          blocks: [
+            {
+              order: 1,
+              type: 'single',
+              name: 'Main press',
+              rounds: null,
+              restAfterBlockSec: 180,
+              entries: [
+                {
+                  order: 1,
+                  exerciseId: 'exercise-1',
+                  exerciseSlug: 'bench-press',
+                  variantId: 'variant-1',
+                  selectedGrip: null,
+                  selectedStance: null,
+                  selectedAttachment: null,
+                  notes: null,
+                  restAfterEntrySec: null,
+                },
+              ],
+            },
+          ],
+        }}
+        translations={enMessages}
+      />,
+    );
+
+    expect(screen.getByDisplayValue('Push A')).toBeInTheDocument();
+    const payloadField = document.querySelector(
+      'input[name="reportPayload"]',
+    ) as HTMLInputElement | null;
+
+    expect(payloadField?.value).toContain('"exerciseSlug":"bench-press"');
+  });
 });

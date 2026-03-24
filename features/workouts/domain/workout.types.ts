@@ -58,6 +58,27 @@ export interface WorkoutBlockInput {
   entries: ExerciseEntryInput[];
 }
 
+export interface WorkoutTemplateEntryInput {
+  order: number;
+  exerciseId: string;
+  exerciseSlug: string;
+  variantId: string | null;
+  selectedGrip: GripType | null;
+  selectedStance: StanceType | null;
+  selectedAttachment: AttachmentType | null;
+  notes: string | null;
+  restAfterEntrySec: number | null;
+}
+
+export interface WorkoutTemplateBlockInput {
+  order: number;
+  type: 'single' | 'superset' | 'circuit' | 'dropset';
+  name: string | null;
+  rounds: number | null;
+  restAfterBlockSec: number | null;
+  entries: WorkoutTemplateEntryInput[];
+}
+
 export interface CreateWorkoutSessionInput {
   tenantDbName: string;
   userId: string;
@@ -70,6 +91,21 @@ export interface CreateWorkoutSessionInput {
   locationSnapshot: ProfileLocationInput | null;
   weatherSnapshot: WorkoutWeatherSnapshotInput | null;
   blocks: WorkoutBlockInput[];
+}
+
+export interface CreateWorkoutTemplateInput {
+  tenantDbName: string;
+  userId: string;
+  name: string;
+  notes: string | null;
+  blocks: WorkoutTemplateBlockInput[];
+}
+
+export interface CreateWorkoutTemplateRecordInput {
+  userId: string;
+  name: string;
+  notes: string | null;
+  blocks: WorkoutTemplateBlockInput[];
 }
 
 export interface CreateWorkoutSessionRecordInput {
@@ -106,4 +142,13 @@ export interface WorkoutSessionAnalytics {
   id: string;
   performedAt: string;
   entries: WorkoutSessionAnalyticsEntry[];
+}
+
+export interface WorkoutTemplateSummary {
+  id: string;
+  name: string;
+  notes: string | null;
+  blockCount: number;
+  exerciseCount: number;
+  blocks: WorkoutTemplateBlockInput[];
 }

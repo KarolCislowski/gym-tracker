@@ -3,7 +3,10 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 import { listExerciseAtlas } from '@/features/exercises/application/exercise-atlas.service';
-import { listWorkoutSessions } from '@/features/workouts/application/workout.service';
+import {
+  listWorkoutSessions,
+  listWorkoutTemplates,
+} from '@/features/workouts/application/workout.service';
 import { WorkoutReportsPage } from '@/features/workouts/ui/workout-reports-page';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
@@ -30,10 +33,10 @@ export default async function WorkoutReportsRoutePage({
   );
   const translations = getTranslations(userSnapshot.settings?.language);
   const exercises = await listExerciseAtlas();
-  const reports = await listWorkoutSessions(
-    session.user.tenantDbName,
-    session.user.id,
-  );
+  const [reports, templates] = await Promise.all([
+    listWorkoutSessions(session.user.tenantDbName, session.user.id),
+    listWorkoutTemplates(session.user.tenantDbName, session.user.id),
+  ]);
 
   return (
     <WorkoutReportsPage
@@ -42,6 +45,7 @@ export default async function WorkoutReportsRoutePage({
       favoriteExerciseSlugs={userSnapshot.favoriteExerciseSlugs}
       reports={reports}
       status={params?.status}
+      templates={templates}
       translations={translations}
     />
   );

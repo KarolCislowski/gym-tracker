@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -20,11 +20,13 @@ import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import type { WorkoutTemplateSummary } from '../domain/workout.types';
 import { createWorkoutReportAction } from '../infrastructure/workout.actions';
 
 interface WorkoutReportFormProps {
   exercises: Exercise[];
   favoriteExerciseSlugs: string[];
+  initialTemplate?: WorkoutTemplateSummary | null;
   translations: TranslationDictionary;
 }
 
@@ -77,6 +79,7 @@ interface WorkoutBlockDraft {
 export function WorkoutReportForm({
   exercises,
   favoriteExerciseSlugs,
+  initialTemplate = null,
   translations,
 }: WorkoutReportFormProps) {
   const t = translations.workouts;
@@ -94,12 +97,22 @@ export function WorkoutReportForm({
       ),
     [exercises, favoriteExerciseSlugs],
   );
-  const [workoutName, setWorkoutName] = useState('');
+  const [workoutName, setWorkoutName] = useState(
+    initialTemplate?.name ?? '',
+  );
   const [performedAt, setPerformedAt] = useState(formatDateTimeLocal(new Date()));
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
-  const [notes, setNotes] = useState('');
-  const [blocks, setBlocks] = useState<WorkoutBlockDraft[]>([createBlockDraft(exercises)]);
+  const [notes, setNotes] = useState(initialTemplate?.notes ?? '');
+  const [blocks, setBlocks] = useState<WorkoutBlockDraft[]>(
+    createBlocksFromTemplate(exercises, initialTemplate),
+  );
+
+  useEffect(() => {
+    setWorkoutName(initialTemplate?.name ?? '');
+    setNotes(initialTemplate?.notes ?? '');
+    setBlocks(createBlocksFromTemplate(exercises, initialTemplate));
+  }, [exercises, initialTemplate]);
 
   const payload = useMemo(() => {
     return JSON.stringify({
@@ -780,6 +793,36 @@ function createBlockDraft(exercises: Exercise[]): WorkoutBlockDraft {
   };
 }
 
+function createBlocksFromTemplate(
+  exercises: Exercise[],
+  template?: WorkoutTemplateSummary | null,
+): WorkoutBlockDraft[] {
+  if (!template?.blocks.length) {
+    return [createBlockDraft(exercises)];
+  }
+
+  return template.blocks.map((block) => ({
+    id: crypto.randomUUID(),
+    type: block.type,
+    name: block.name ?? '',
+    rounds: block.rounds != null ? String(block.rounds) : '',
+    restAfterBlockSec:
+      block.restAfterBlockSec != null ? String(block.restAfterBlockSec) : '',
+    entries: block.entries.map((entry) => ({
+      id: crypto.randomUUID(),
+      exerciseSlug: entry.exerciseSlug,
+      variantId: entry.variantId ?? resolveVariantId(exercises, entry.exerciseSlug),
+      selectedGrip: entry.selectedGrip ?? '',
+      selectedStance: entry.selectedStance ?? '',
+      selectedAttachment: entry.selectedAttachment ?? '',
+      notes: entry.notes ?? '',
+      restAfterEntrySec:
+        entry.restAfterEntrySec != null ? String(entry.restAfterEntrySec) : '',
+      sets: [createSetDraft()],
+    })),
+  }));
+}
+
 function createEntryDraft(exercises: Exercise[]): WorkoutEntryDraft {
   const exercise = exercises[0];
   const variant = exercise?.variants[0];
@@ -795,6 +838,11 @@ function createEntryDraft(exercises: Exercise[]): WorkoutEntryDraft {
     restAfterEntrySec: '',
     sets: [createSetDraft()],
   };
+}
+
+function resolveVariantId(exercises: Exercise[], exerciseSlug: string): string {
+  const exercise = exercises.find((candidate) => candidate.slug === exerciseSlug);
+  return exercise?.variants[0]?.id ?? '';
 }
 
 function createSetDraft(): WorkoutSetDraft {
