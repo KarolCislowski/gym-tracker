@@ -99,6 +99,11 @@ export interface TranslationDictionary {
     chartSessions: string;
     chartExercises: string;
     chartSets: string;
+    chartViewLabel: string;
+    tableViewLabel: string;
+    periodLabel: string;
+    showAllLabel: string;
+    showLessLabel: string;
     noChartData: string;
     signOut: string;
   };

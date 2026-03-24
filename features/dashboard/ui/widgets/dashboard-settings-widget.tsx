@@ -28,9 +28,10 @@ export function DashboardSettingsWidget({
         border: 1,
         borderColor: 'divider',
         borderRadius: 6,
+        minWidth: 0,
       }}
     >
-      <Stack spacing={1.5}>
+      <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <SettingsRoundedIcon color='primary' fontSize='small' />
           <Typography component='h2' variant='h6'>

@@ -1,5 +1,7 @@
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -8,9 +10,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import Link from 'next/link';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -115,9 +117,15 @@ export function DailyReportsPage({
                           : translations.exercises.noLabel}
                     </TableCell>
                     <TableCell>
-                      <Link href={`/daily-reports/${report.id}`}>
-                        {t.viewDetailsLabel}
-                      </Link>
+                      <Tooltip title={t.viewDetailsLabel}>
+                        <IconButton
+                          aria-label={`${t.viewDetailsLabel}: ${new Date(report.reportDate).toLocaleDateString()}`}
+                          href={`/daily-reports/${report.id}`}
+                          size='small'
+                        >
+                          <VisibilityRoundedIcon fontSize='small' />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}

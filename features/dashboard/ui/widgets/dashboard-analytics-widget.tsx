@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import type { GridColDef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import type { MarkElementProps } from '@mui/x-charts/LineChart';
 import { MarkElement } from '@mui/x-charts/LineChart';
 import { BarChart, LineChart } from '@mui/x-charts';
 import {
   Box,
+  Button,
   Paper,
   Stack,
   Table,
@@ -16,6 +19,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -39,6 +43,14 @@ interface DashboardAnalyticsWidgetProps {
 
 const BODY_METRICS_CHART_GAP_PX = 16;
 const BODY_METRICS_SAFETY_BUFFER_PX = 20;
+const MOBILE_GOAL_COMPLIANCE_DAYS = 7;
+const MOBILE_WELLBEING_DAYS = 7;
+const MOBILE_BODY_METRICS_DAYS = 7;
+const MOBILE_WORKOUT_VOLUME_WEEKS = 6;
+const MOBILE_WORKOUT_VOLUME_SERIES = 3;
+const WELLBEING_MIN_CHART_WIDTH_PX = 520;
+const BODY_METRICS_MIN_CHART_WIDTH_PX = 420;
+const WORKOUT_VOLUME_MIN_CHART_WIDTH_PX = 520;
 
 /**
  * Dashboard analytics section rendering the four MVP charts for compliance, wellbeing, body metrics, and workout volume.
@@ -53,10 +65,20 @@ export function DashboardAnalyticsWidget({
   unitSystem,
 }: DashboardAnalyticsWidgetProps) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const t = translations.dashboard;
   const habitsT = translations.healthyHabits;
   const dailyT = translations.dailyReports;
-  const bodyMetricsDataset = analytics.bodyMetrics.map((point) => ({
+  const goalCompliancePoints = isMobile
+    ? analytics.goalCompliance.slice(-MOBILE_GOAL_COMPLIANCE_DAYS)
+    : analytics.goalCompliance;
+  const wellbeingDataset = isMobile
+    ? analytics.wellbeing.slice(-MOBILE_WELLBEING_DAYS)
+    : analytics.wellbeing;
+  const bodyMetricsSource = isMobile
+    ? analytics.bodyMetrics.slice(-MOBILE_BODY_METRICS_DAYS)
+    : analytics.bodyMetrics;
+  const bodyMetricsDataset = bodyMetricsSource.map((point) => ({
     ...point,
     bodyWeightKg:
       point.bodyWeightKg == null
@@ -106,6 +128,19 @@ export function DashboardAnalyticsWidget({
       colorGetter: () => theme.palette.secondary.main,
     },
   ];
+  const mobilePrimaryWellbeingSeries = wellbeingSeries.slice(0, 2);
+  const mobileSecondaryWellbeingSeries = wellbeingSeries.slice(2);
+  const workoutVolumeDataset = isMobile
+    ? analytics.workoutVolume.slice(-MOBILE_WORKOUT_VOLUME_WEEKS)
+    : analytics.workoutVolume;
+  const defaultWorkoutVolumeMuscleGroups = isMobile
+    ? analytics.workoutVolumeMuscleGroups.slice(0, MOBILE_WORKOUT_VOLUME_SERIES)
+    : analytics.workoutVolumeMuscleGroups.slice(0, 6);
+  const [showAllWorkoutVolumeGroups, setShowAllWorkoutVolumeGroups] = useState(false);
+  const workoutVolumeChartMuscleGroups = defaultWorkoutVolumeMuscleGroups;
+  const workoutVolumeMuscleGroups = showAllWorkoutVolumeGroups
+    ? analytics.workoutVolumeMuscleGroups
+    : defaultWorkoutVolumeMuscleGroups;
 
   return (
     <Stack
@@ -113,12 +148,16 @@ export function DashboardAnalyticsWidget({
         display: 'grid',
         gridTemplateColumns: { xs: '1fr', xl: 'repeat(2, minmax(0, 1fr))' },
         gap: 3,
+        '& > *': {
+          minWidth: 0,
+        },
       }}
     >
       <ChartCard title={t.goalComplianceChart}>
-        {analytics.goalCompliance.length ? (
+        {goalCompliancePoints.length ? (
           <GoalComplianceHeatmap
-            points={analytics.goalCompliance}
+            compact={isMobile}
+            points={goalCompliancePoints}
             translations={translations}
           />
         ) : (
@@ -126,28 +165,81 @@ export function DashboardAnalyticsWidget({
         )}
       </ChartCard>
 
-      <MeasuredChartCard minChartHeight={280} title={t.wellbeingChart}>
+      <MeasuredChartCard
+        chartViewLabel={t.chartViewLabel}
+        minChartHeight={isMobile ? 400 : 280}
+        minChartWidth={WELLBEING_MIN_CHART_WIDTH_PX}
+        renderTable={() => (
+          <AnalyticsDataGrid
+            columns={buildWellbeingColumns(dailyT, t)}
+            emptyMessage={t.noChartData}
+            rows={buildWellbeingRows(wellbeingDataset)}
+            title={t.wellbeingChart}
+          />
+        )}
+        tableViewLabel={t.tableViewLabel}
+        title={t.wellbeingChart}
+      >
         {(chartHeight) =>
-          analytics.wellbeing.length ? (
-            <LineChart
-              dataset={analytics.wellbeing}
-              height={chartHeight}
-              grid={{ horizontal: true }}
-              series={wellbeingSeries}
-              skipAnimation
-              slots={{ mark: OffsetWellbeingMark }}
-              xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
-              yAxis={[{ min: 0, max: 5 }]}
-            />
+          wellbeingDataset.length ? (
+            isMobile ? (
+              <Stack spacing={2}>
+                <LineChart
+                  dataset={wellbeingDataset}
+                  height={Math.max(180, Math.floor((chartHeight - 16) / 2))}
+                  grid={{ horizontal: true }}
+                  series={mobilePrimaryWellbeingSeries}
+                  skipAnimation
+                  slots={{ mark: OffsetWellbeingMark }}
+                  xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+                  yAxis={[{ min: 0, max: 5 }]}
+                />
+                <LineChart
+                  dataset={wellbeingDataset}
+                  height={Math.max(180, Math.floor((chartHeight - 16) / 2))}
+                  grid={{ horizontal: true }}
+                  series={mobileSecondaryWellbeingSeries}
+                  skipAnimation
+                  slots={{ mark: OffsetWellbeingMark }}
+                  xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+                  yAxis={[{ min: 0, max: 5 }]}
+                />
+              </Stack>
+            ) : (
+              <LineChart
+                dataset={wellbeingDataset}
+                height={chartHeight}
+                grid={{ horizontal: true }}
+                series={wellbeingSeries}
+                skipAnimation
+                slots={{ mark: OffsetWellbeingMark }}
+                xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+                yAxis={[{ min: 0, max: 5 }]}
+              />
+            )
           ) : (
             <EmptyChartState message={t.noChartData} />
           )
         }
       </MeasuredChartCard>
 
-      <MeasuredChartCard minChartHeight={456} title={t.bodyMetricsChart}>
+      <MeasuredChartCard
+        chartViewLabel={t.chartViewLabel}
+        minChartHeight={isMobile ? 400 : 456}
+        minChartWidth={BODY_METRICS_MIN_CHART_WIDTH_PX}
+        renderTable={() => (
+          <AnalyticsDataGrid
+            columns={buildBodyMetricsColumns(dailyT, t, bodyWeightLabel)}
+            emptyMessage={t.noChartData}
+            rows={buildBodyMetricsRows(bodyMetricsDataset)}
+            title={t.bodyMetricsChart}
+          />
+        )}
+        tableViewLabel={t.tableViewLabel}
+        title={t.bodyMetricsChart}
+      >
         {(chartHeight) =>
-          analytics.bodyMetrics.some(
+          bodyMetricsSource.some(
             (point) =>
               point.bodyWeightKg != null || point.restingHeartRate != null,
           ) ? (
@@ -173,14 +265,44 @@ export function DashboardAnalyticsWidget({
         }
       </MeasuredChartCard>
 
-      <MeasuredChartCard minChartHeight={280} title={t.workoutVolumeChart}>
+      <MeasuredChartCard
+        chartViewLabel={t.chartViewLabel}
+        minChartHeight={isMobile ? 232 : 280}
+        minChartWidth={WORKOUT_VOLUME_MIN_CHART_WIDTH_PX}
+        renderTable={() => (
+          <Stack spacing={1.5}>
+            {analytics.workoutVolumeMuscleGroups.length > defaultWorkoutVolumeMuscleGroups.length ? (
+              <Button
+                onClick={() => setShowAllWorkoutVolumeGroups((current) => !current)}
+                size='small'
+                sx={{ alignSelf: 'flex-start' }}
+                variant='outlined'
+              >
+                {showAllWorkoutVolumeGroups ? t.showLessLabel : t.showAllLabel}
+              </Button>
+            ) : null}
+            <AnalyticsDataGrid
+              columns={buildWorkoutVolumeColumns(
+                workoutVolumeMuscleGroups,
+                analytics.workoutVolumeMuscleGroupLabels,
+                t,
+              )}
+              emptyMessage={t.noChartData}
+              rows={buildWorkoutVolumeRows(workoutVolumeDataset, workoutVolumeMuscleGroups)}
+              title={t.workoutVolumeChart}
+            />
+          </Stack>
+        )}
+        tableViewLabel={t.tableViewLabel}
+        title={t.workoutVolumeChart}
+      >
         {(chartHeight) =>
-          analytics.workoutVolume.length &&
-          analytics.workoutVolumeMuscleGroups.length ? (
+          workoutVolumeDataset.length &&
+          workoutVolumeChartMuscleGroups.length ? (
             <BarChart
-              dataset={analytics.workoutVolume}
+              dataset={workoutVolumeDataset}
               height={chartHeight}
-              series={analytics.workoutVolumeMuscleGroups.map((muscleGroup) => ({
+              series={workoutVolumeChartMuscleGroups.map((muscleGroup) => ({
                 dataKey: muscleGroup,
                 label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
               }))}
@@ -212,19 +334,68 @@ function resolveBodyMetricsChartHeight(chartHeight: number): number {
 }
 
 function MeasuredChartCard({
+  chartViewLabel,
   children,
   minChartHeight,
+  minChartWidth = 0,
+  renderTable,
+  tableViewLabel,
   title,
 }: {
+  chartViewLabel: string;
   children: (chartHeight: number) => React.ReactNode;
   minChartHeight: number;
+  minChartWidth?: number;
+  renderTable?: () => React.ReactNode;
+  tableViewLabel: string;
   title: string;
 }) {
   const theme = useTheme();
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const chartFrameRef = useRef<HTMLDivElement | null>(null);
   const [chartHeight, setChartHeight] = useState(minChartHeight);
+  const [contentWidth, setContentWidth] = useState(0);
+  const [preferredView, setPreferredView] = useState<'chart' | 'table'>('chart');
+  const shouldForceTable = Boolean(renderTable) && contentWidth > 0 && contentWidth < minChartWidth;
+  const activeView = shouldForceTable ? 'table' : preferredView;
 
   useEffect(() => {
+    const contentElement = contentRef.current;
+
+    if (!contentElement) {
+      return undefined;
+    }
+
+    const updateWidth = () => {
+      const nextWidth = Math.floor(contentElement.getBoundingClientRect().width);
+
+      setContentWidth((currentWidth) =>
+        currentWidth === nextWidth ? currentWidth : nextWidth,
+      );
+    };
+
+    updateWidth();
+
+    if (typeof ResizeObserver === 'undefined') {
+      return undefined;
+    }
+
+    const observer = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    observer.observe(contentElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeView !== 'chart') {
+      return undefined;
+    }
+
     const frameElement = chartFrameRef.current;
 
     if (!frameElement) {
@@ -244,7 +415,7 @@ function MeasuredChartCard({
 
     updateHeight();
 
-    if (typeof ResizeObserver === "undefined") {
+    if (typeof ResizeObserver === 'undefined') {
       return undefined;
     }
 
@@ -257,7 +428,7 @@ function MeasuredChartCard({
     return () => {
       observer.disconnect();
     };
-  }, [minChartHeight, theme]);
+  }, [activeView, minChartHeight, theme]);
 
   return (
     <Paper
@@ -269,31 +440,61 @@ function MeasuredChartCard({
         borderRadius: 6,
         height: '100%',
         display: 'flex',
+        minWidth: 0,
       }}
     >
-      <Stack spacing={2} sx={{ flex: 1, minHeight: 0 }}>
-        <Typography component='h2' variant='h6'>
-          {title}
-        </Typography>
-        <Box
-          ref={chartFrameRef}
-          sx={{
-            position: 'relative',
-            flex: 1,
-            minHeight: minChartHeight,
-            overflow: 'visible',
-          }}
+      <Stack ref={contentRef} spacing={2} sx={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+        <Stack
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          direction={{ xs: 'column', sm: 'row' }}
+          justifyContent='space-between'
+          spacing={1}
         >
+          <Typography component='h2' variant='h6'>
+            {title}
+          </Typography>
+          {renderTable && !shouldForceTable ? (
+            <Stack direction='row' spacing={1}>
+              <Button
+                onClick={() => setPreferredView('chart')}
+                size='small'
+                variant={activeView === 'chart' ? 'contained' : 'outlined'}
+              >
+                {chartViewLabel}
+              </Button>
+              <Button
+                onClick={() => setPreferredView('table')}
+                size='small'
+                variant={activeView === 'table' ? 'contained' : 'outlined'}
+              >
+                {tableViewLabel}
+              </Button>
+            </Stack>
+          ) : null}
+        </Stack>
+        {activeView === 'table' && renderTable ? (
+          renderTable()
+        ) : (
           <Box
+            ref={chartFrameRef}
             sx={{
-              position: 'absolute',
-              inset: 0,
+              position: 'relative',
+              flex: 1,
               minHeight: minChartHeight,
+              overflow: 'visible',
             }}
           >
-            {children(chartHeight)}
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                minHeight: minChartHeight,
+              }}
+            >
+              {children(chartHeight)}
+            </Box>
           </Box>
-        </Box>
+        )}
       </Stack>
     </Paper>
   );
@@ -338,10 +539,154 @@ function OffsetWellbeingMark(props: MarkElementProps) {
   return <MarkElement {...props} x={x + xOffset} />;
 }
 
+function buildWellbeingColumns(
+  dailyT: TranslationDictionary['dailyReports'],
+  dashboardT: TranslationDictionary['dashboard'],
+): GridColDef[] {
+  return [
+    { field: 'label', headerName: dashboardT.periodLabel, flex: 1, minWidth: 96 },
+    { field: 'mood', headerName: dailyT.columnMood, flex: 1, minWidth: 88 },
+    { field: 'energy', headerName: dailyT.columnEnergy, flex: 1, minWidth: 88 },
+    { field: 'stress', headerName: dailyT.columnStress, flex: 1, minWidth: 88 },
+    { field: 'recovery', headerName: dailyT.columnRecovery, flex: 1, minWidth: 96 },
+  ];
+}
+
+function buildWellbeingRows(
+  dataset: DashboardAnalytics['wellbeing'],
+): Array<Record<string, number | string | null>> {
+  return dataset.map((point, index) => ({
+    id: `${point.label}-${index}`,
+    ...point,
+  }));
+}
+
+function buildBodyMetricsColumns(
+  dailyT: TranslationDictionary['dailyReports'],
+  dashboardT: TranslationDictionary['dashboard'],
+  bodyWeightLabel: string,
+): GridColDef[] {
+  return [
+    { field: 'label', headerName: dashboardT.periodLabel, flex: 1, minWidth: 96 },
+    { field: 'bodyWeightKg', headerName: bodyWeightLabel, flex: 1, minWidth: 120 },
+    {
+      field: 'restingHeartRate',
+      headerName: dailyT.restingHeartRateLabel,
+      flex: 1,
+      minWidth: 136,
+    },
+  ];
+}
+
+function buildBodyMetricsRows(
+  dataset: DashboardAnalytics['bodyMetrics'],
+): Array<Record<string, number | string>> {
+  return dataset.map((point, index) => ({
+    id: `${point.label}-${index}`,
+    label: point.label,
+    bodyWeightKg: point.bodyWeightKg ?? '—',
+    restingHeartRate:
+      point.restingHeartRate == null ? '—' : `${point.restingHeartRate} bpm`,
+  }));
+}
+
+function buildWorkoutVolumeColumns(
+  muscleGroups: string[],
+  labels: Record<string, string>,
+  dashboardT: TranslationDictionary['dashboard'],
+): GridColDef[] {
+  return [
+    { field: 'label', headerName: dashboardT.periodLabel, flex: 1, minWidth: 110 },
+    ...muscleGroups.map<GridColDef>((muscleGroup) => ({
+      field: muscleGroup,
+      headerName: labels[muscleGroup],
+      flex: 1,
+      minWidth: 116,
+    })),
+  ];
+}
+
+function buildWorkoutVolumeRows(
+  dataset: DashboardAnalytics['workoutVolume'],
+  muscleGroups: string[],
+): Array<Record<string, number | string>> {
+  return dataset.map((point, index) => {
+    const row: Record<string, number | string> = {
+      id: `${point.label}-${index}`,
+      label: point.label,
+    };
+
+    muscleGroups.forEach((muscleGroup) => {
+      row[muscleGroup] = typeof point[muscleGroup] === 'number' ? point[muscleGroup] : 0;
+    });
+
+    return row;
+  });
+}
+
+function AnalyticsDataGrid({
+  columns,
+  emptyMessage,
+  rows,
+  title,
+}: {
+  columns: GridColDef[];
+  emptyMessage: string;
+  rows: Array<Record<string, number | string | null>>;
+  title: string;
+}) {
+  return (
+    <Box
+      sx={{
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 4,
+        overflow: 'hidden',
+        minWidth: 0,
+        width: '100%',
+      }}
+    >
+      <DataGrid
+        aria-label={title}
+        autoHeight
+        columns={columns}
+        disableColumnMenu
+        disableRowSelectionOnClick
+        disableVirtualization
+        hideFooter
+        rows={rows}
+        sx={{
+          border: 0,
+          minWidth: 0,
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: 'background.default',
+          },
+          '& .MuiDataGrid-cell': {
+            alignItems: 'center',
+          },
+        }}
+        slots={{
+          noRowsOverlay: () => (
+            <Stack
+              alignItems='center'
+              justifyContent='center'
+              sx={{ minHeight: 160, px: 3 }}
+            >
+              <Typography color='text.secondary'>{emptyMessage}</Typography>
+            </Stack>
+          ),
+        }}
+      />
+    </Box>
+  );
+}
+
 function GoalComplianceHeatmap({
+  compact = false,
   points,
   translations,
 }: {
+  compact?: boolean;
   points: GoalComplianceChartPoint[];
   translations: TranslationDictionary;
 }) {
@@ -356,10 +701,12 @@ function GoalComplianceHeatmap({
     { key: 'protein', label: habitsT.proteinPerDayLabel },
     { key: 'cardio', label: habitsT.cardioMinutesPerWeekLabel },
   ] as const;
+  const stickyColumnWidth = compact ? 120 : 148;
+  const dayColumnWidth = compact ? 48 : 56;
 
   return (
     <Stack spacing={2}>
-      <Stack direction='row' flexWrap='wrap' gap={2}>
+      <Stack direction='row' flexWrap='wrap' gap={compact ? 1.5 : 2}>
         <HeatmapLegendItem
           color='success.main'
           label={exerciseT.yesLabel}
@@ -387,7 +734,7 @@ function GoalComplianceHeatmap({
                   left: 0,
                   zIndex: 2,
                   backgroundColor: 'background.paper',
-                  minWidth: 148,
+                  minWidth: stickyColumnWidth,
                 }}
               >
                 <Typography variant='body2' fontWeight={600}>
@@ -398,7 +745,7 @@ function GoalComplianceHeatmap({
                 <TableCell
                   align='center'
                   key={point.label}
-                  sx={{ minWidth: 56, whiteSpace: 'nowrap' }}
+                  sx={{ minWidth: dayColumnWidth, whiteSpace: 'nowrap' }}
                 >
                   {point.label}
                 </TableCell>
@@ -416,7 +763,7 @@ function GoalComplianceHeatmap({
                     left: 0,
                     zIndex: 1,
                     backgroundColor: 'background.paper',
-                    minWidth: 148,
+                    minWidth: stickyColumnWidth,
                   }}
                 >
                   {row.label}
@@ -498,9 +845,10 @@ function ChartCard({
         border: 1,
         borderColor: 'divider',
         borderRadius: 6,
+        minWidth: 0,
       }}
     >
-      <Stack spacing={2}>
+      <Stack spacing={2} sx={{ minWidth: 0 }}>
         <Typography component='h2' variant='h6'>
           {title}
         </Typography>

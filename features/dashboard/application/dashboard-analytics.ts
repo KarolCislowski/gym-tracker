@@ -148,7 +148,6 @@ function buildWorkoutVolumeSeries(
 
   const workoutVolumeMuscleGroups = Array.from(totalsByMuscleGroup.entries())
     .sort((left, right) => right[1] - left[1])
-    .slice(0, 6)
     .map(([muscleGroup]) => muscleGroup);
 
   const workoutVolume = Array.from(sessionsByWeek.entries())

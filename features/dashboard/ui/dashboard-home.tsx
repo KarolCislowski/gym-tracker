@@ -48,6 +48,9 @@ export function DashboardHome({
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', xl: 'repeat(2, 1fr)' },
           gap: 3,
+          '& > *': {
+            minWidth: 0,
+          },
         }}
       >
         {userSnapshot?.profile ? (

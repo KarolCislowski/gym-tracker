@@ -109,6 +109,11 @@ export const plMessages: TranslationDictionaryOverrides = {
     chartSessions: 'Sesje',
     chartExercises: 'Ćwiczenia',
     chartSets: 'Serie',
+    chartViewLabel: 'Wykres',
+    tableViewLabel: 'Tabela',
+    periodLabel: 'Okres',
+    showAllLabel: 'Pokaż wszystkie',
+    showLessLabel: 'Pokaż mniej',
     noChartData: 'Za mało danych.',
   },
   settings: {

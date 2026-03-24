@@ -109,6 +109,11 @@ export const svMessages: TranslationDictionaryOverrides = {
     chartSessions: 'Pass',
     chartExercises: 'Övningar',
     chartSets: 'Set',
+    chartViewLabel: 'Diagram',
+    tableViewLabel: 'Tabell',
+    periodLabel: 'Period',
+    showAllLabel: 'Visa alla',
+    showLessLabel: 'Visa mindre',
     noChartData: 'För lite data ännu.',
   },
   settings: {

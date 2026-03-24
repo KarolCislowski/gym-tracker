@@ -1,7 +1,7 @@
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
-  Button,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -44,9 +45,10 @@ export function DashboardFavoriteExercisesWidget({
         border: 1,
         borderColor: 'divider',
         borderRadius: 6,
+        minWidth: 0,
       }}
     >
-      <Stack spacing={1.5}>
+      <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <FavoriteRoundedIcon color='primary' fontSize='small' />
           <Typography component='h2' variant='h6'>
@@ -54,7 +56,7 @@ export function DashboardFavoriteExercisesWidget({
           </Typography>
         </Stack>
         {exercises.length ? (
-          <TableContainer>
+          <TableContainer sx={{ width: '100%', overflowX: 'auto' }}>
             <Table aria-label={dashboardTranslations.favoriteExercises} size='small'>
               <TableHead>
                 <TableRow>
@@ -73,15 +75,15 @@ export function DashboardFavoriteExercisesWidget({
                     <TableCell>{formatAtlasToken(exercise.type)}</TableCell>
                     <TableCell>{formatAtlasToken(exercise.difficulty)}</TableCell>
                     <TableCell align='right'>
-                      <Button
-                        aria-label={`${exerciseTranslations.viewDetails}: ${exercise.name}`}
-                        href={`/exercises/${exercise.slug}`}
-                        size='small'
-                        startIcon={<VisibilityRoundedIcon />}
-                        variant='outlined'
-                      >
-                        {exerciseTranslations.viewDetails}
-                      </Button>
+                      <Tooltip title={exerciseTranslations.viewDetails}>
+                        <IconButton
+                          aria-label={`${exerciseTranslations.viewDetails}: ${exercise.name}`}
+                          href={`/exercises/${exercise.slug}`}
+                          size='small'
+                        >
+                          <VisibilityRoundedIcon fontSize='small' />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}

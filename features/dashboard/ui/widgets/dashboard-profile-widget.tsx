@@ -42,9 +42,10 @@ export function DashboardProfileWidget({
         border: 1,
         borderColor: 'divider',
         borderRadius: 6,
+        minWidth: 0,
       }}
     >
-      <Stack spacing={1.5}>
+      <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={1.5}
