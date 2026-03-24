@@ -89,24 +89,32 @@ export function SupplementDetailsPage({
         </Stack>
       </Paper>
 
-      {!!supplement.benefits?.length && (
-        <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
-          <Stack spacing={1.5}>
-            <Typography variant='h5'>{t.benefitsLabel}</Typography>
-            {supplement.benefits.map((value) => (
-              <Typography key={value}>{value}</Typography>
-            ))}
-          </Stack>
-        </Paper>
-      )}
+          {!!supplement.benefits?.length && (
+            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
+              <Stack spacing={1.5}>
+                <Typography variant='h5'>{t.benefitsLabel}</Typography>
+                <Stack component='ul' spacing={1} sx={{ pl: 3, m: 0 }}>
+                  {supplement.benefits.map((value) => (
+                    <Typography component='li' key={value}>
+                      {value}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Stack>
+            </Paper>
+          )}
 
       {!!supplement.cautions?.length && (
         <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
           <Stack spacing={1.5}>
             <Typography variant='h5'>{t.cautionsLabel}</Typography>
-            {supplement.cautions.map((value) => (
-              <Typography key={value}>{value}</Typography>
-            ))}
+            <Stack component='ul' spacing={1} sx={{ pl: 3, m: 0 }}>
+              {supplement.cautions.map((value) => (
+                <Typography component='li' key={value}>
+                  {value}
+                </Typography>
+              ))}
+            </Stack>
           </Stack>
         </Paper>
       )}
@@ -128,7 +136,9 @@ export function SupplementDetailsPage({
               <TableBody>
                 {supplement.variants.map((variant) => (
                   <TableRow key={variant.id}>
-                    <TableCell>{variant.name}</TableCell>
+                    <TableCell component='th' scope='row'>
+                      {variant.name}
+                    </TableCell>
                     <TableCell>{formatSupplementToken(variant.form)}</TableCell>
                     <TableCell>{formatSupplementToken(variant.compoundType)}</TableCell>
                     <TableCell>{variant.typicalDose}</TableCell>

@@ -116,7 +116,7 @@ export function SupplementationPage({
                 <TableBody>
                   {stacks.map((stack) => (
                     <TableRow key={stack.id} hover>
-                      <TableCell>
+                      <TableCell component='th' scope='row'>
                         <Stack direction='row' spacing={1} alignItems='center' flexWrap='wrap'>
                           <Typography variant='body2'>{stack.name}</Typography>
                           {stack.isFavorite ? (
@@ -159,7 +159,9 @@ export function SupplementationPage({
                 <TableBody>
                   {reports.map((report) => (
                     <TableRow key={report.id} hover>
-                      <TableCell>{new Date(report.takenAt).toLocaleString()}</TableCell>
+                      <TableCell component='th' scope='row'>
+                        {new Date(report.takenAt).toLocaleString()}
+                      </TableCell>
                       <TableCell>{report.stackName}</TableCell>
                       <TableCell>{formatSupplementToken(report.context)}</TableCell>
                       <TableCell>{report.itemCount}</TableCell>

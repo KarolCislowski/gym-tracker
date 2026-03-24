@@ -262,6 +262,7 @@ export function WorkoutReportForm({
                 <Typography variant='subtitle1'>{`${t.blockTypeLabel} ${blockIndex + 1}`}</Typography>
                 {blocks.length > 1 ? (
                   <Button
+                    aria-label={`${t.removeBlock} ${blockIndex + 1}`}
                     color='error'
                     type='button'
                     onClick={() =>
@@ -336,6 +337,7 @@ export function WorkoutReportForm({
                         <Typography variant='subtitle2'>{`${t.exerciseLabel} ${entryIndex + 1}`}</Typography>
                         {block.entries.length > 1 ? (
                           <Button
+                            aria-label={`${t.removeEntry} ${entryIndex + 1}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                             color='error'
                             type='button'
                             onClick={() => removeEntry(block.id, entry.id)}
@@ -464,6 +466,7 @@ export function WorkoutReportForm({
                               <Typography variant='subtitle2'>{`Set ${setIndex + 1}`}</Typography>
                               {entry.sets.length > 1 ? (
                                 <Button
+                                  aria-label={`${t.removeSet} ${setIndex + 1}, ${t.exerciseLabel} ${entryIndex + 1}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                                   color='error'
                                   type='button'
                                   onClick={() => removeSet(block.id, entry.id, setDraft.id)}
@@ -539,6 +542,7 @@ export function WorkoutReportForm({
                       ))}
 
                       <Button
+                        aria-label={`${t.addSet}, ${t.exerciseLabel} ${entryIndex + 1}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                         type='button'
                         onClick={() => addSet(block.id, entry.id)}
                         startIcon={<AddRoundedIcon />}
@@ -553,6 +557,7 @@ export function WorkoutReportForm({
 
               {block.type !== 'single' ? (
                 <Button
+                  aria-label={`${t.addEntry}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                   type='button'
                   onClick={() => addEntry(block.id)}
                   startIcon={<AddRoundedIcon />}

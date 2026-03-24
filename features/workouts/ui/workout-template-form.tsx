@@ -152,6 +152,7 @@ export function WorkoutTemplateForm({
                 <Typography variant='subtitle1'>{`${t.blockTypeLabel} ${blockIndex + 1}`}</Typography>
                 {blocks.length > 1 ? (
                   <Button
+                    aria-label={`${t.removeBlock} ${blockIndex + 1}`}
                     color='error'
                     type='button'
                     onClick={() =>
@@ -228,6 +229,7 @@ export function WorkoutTemplateForm({
                         <Typography variant='subtitle2'>{`${t.exerciseLabel} ${entryIndex + 1}`}</Typography>
                         {block.entries.length > 1 ? (
                           <Button
+                            aria-label={`${t.removeEntry} ${entryIndex + 1}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                             color='error'
                             type='button'
                             onClick={() => removeEntry(block.id, entry.id)}
@@ -350,6 +352,7 @@ export function WorkoutTemplateForm({
 
               {block.type !== 'single' ? (
                 <Button
+                  aria-label={`${t.addEntry}, ${t.blockTypeLabel} ${blockIndex + 1}`}
                   type='button'
                   onClick={() => addEntry(block.id)}
                   startIcon={<AddRoundedIcon />}

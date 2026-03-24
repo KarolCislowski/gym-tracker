@@ -160,7 +160,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Dark')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'My favorite exercises' })).toBeInTheDocument();
     expect(screen.getByText('Bench Press')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'View details: Bench Press' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View details: Bench Press' })).toBeInTheDocument();
     expect(
       screen.getAllByRole('button', { name: 'Go to profile' }),
     ).toHaveLength(2);

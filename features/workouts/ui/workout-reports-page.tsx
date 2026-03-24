@@ -106,7 +106,9 @@ export function WorkoutReportsPage({
                 <TableBody>
                   {templates.map((template) => (
                     <TableRow key={template.id} hover>
-                      <TableCell>{template.name}</TableCell>
+                      <TableCell component='th' scope='row'>
+                        {template.name}
+                      </TableCell>
                       <TableCell>{template.blockCount}</TableCell>
                       <TableCell>{template.exerciseCount}</TableCell>
                       <TableCell>{template.notes ?? '—'}</TableCell>
@@ -138,7 +140,9 @@ export function WorkoutReportsPage({
               <TableBody>
                 {reports.map((report) => (
                   <TableRow key={report.id} hover>
-                    <TableCell>{report.workoutName}</TableCell>
+                    <TableCell component='th' scope='row'>
+                      {report.workoutName}
+                    </TableCell>
                     <TableCell>{new Date(report.performedAt).toLocaleString()}</TableCell>
                     <TableCell>
                       {report.durationMinutes != null ? `${report.durationMinutes} min` : '—'}

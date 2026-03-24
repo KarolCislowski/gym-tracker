@@ -94,7 +94,9 @@ export function DailyReportsPage({
               <TableBody>
                 {reports.map((report) => (
                   <TableRow key={report.id} hover>
-                    <TableCell>{new Date(report.reportDate).toLocaleDateString()}</TableCell>
+                    <TableCell component='th' scope='row'>
+                      {new Date(report.reportDate).toLocaleDateString()}
+                    </TableCell>
                     <TableCell>{report.wellbeing.mood ?? '—'}</TableCell>
                     <TableCell>{report.wellbeing.energy ?? '—'}</TableCell>
                     <TableCell>{report.wellbeing.stress ?? '—'}</TableCell>

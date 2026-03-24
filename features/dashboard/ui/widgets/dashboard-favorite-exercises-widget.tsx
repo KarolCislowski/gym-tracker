@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -68,20 +67,21 @@ export function DashboardFavoriteExercisesWidget({
               <TableBody>
                 {exercises.map((exercise) => (
                   <TableRow key={exercise.id} hover>
-                    <TableCell>{exercise.name}</TableCell>
+                    <TableCell component='th' scope='row'>
+                      {exercise.name}
+                    </TableCell>
                     <TableCell>{formatAtlasToken(exercise.type)}</TableCell>
                     <TableCell>{formatAtlasToken(exercise.difficulty)}</TableCell>
                     <TableCell align='right'>
-                      <Link href={`/exercises/${exercise.slug}`}>
-                        <Button
-                          aria-label={`${exerciseTranslations.viewDetails}: ${exercise.name}`}
-                          size='small'
-                          startIcon={<VisibilityRoundedIcon />}
-                          variant='outlined'
-                        >
-                          {exerciseTranslations.viewDetails}
-                        </Button>
-                      </Link>
+                      <Button
+                        aria-label={`${exerciseTranslations.viewDetails}: ${exercise.name}`}
+                        href={`/exercises/${exercise.slug}`}
+                        size='small'
+                        startIcon={<VisibilityRoundedIcon />}
+                        variant='outlined'
+                      >
+                        {exerciseTranslations.viewDetails}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

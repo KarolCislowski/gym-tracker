@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { Button, Chip, Collapse, Stack, Typography } from '@mui/material';
@@ -37,6 +37,8 @@ export function WorkoutReportComposer({
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const t = translations.workouts;
+  const buttonId = useId();
+  const panelId = useId();
   const selectedTemplate =
     templates.find((template) => template.id === selectedTemplateId) ?? null;
 
@@ -49,22 +51,30 @@ export function WorkoutReportComposer({
           </Typography>
           <Stack direction='row' spacing={1} useFlexGap flexWrap='wrap'>
             <Chip
+              aria-pressed={selectedTemplateId == null}
+              clickable
               color={selectedTemplateId == null ? 'primary' : 'default'}
+              component='button'
               label={t.blankWorkoutLabel}
               onClick={() => {
                 setSelectedTemplateId(null);
                 setIsOpen(true);
               }}
+              type='button'
             />
             {templates.map((template) => (
               <Chip
+                aria-pressed={selectedTemplateId === template.id}
+                clickable
                 color={selectedTemplateId === template.id ? 'primary' : 'default'}
+                component='button'
                 key={template.id}
                 label={template.name}
                 onClick={() => {
                   setSelectedTemplateId(template.id);
                   setIsOpen(true);
                 }}
+                type='button'
               />
             ))}
           </Stack>
@@ -72,6 +82,9 @@ export function WorkoutReportComposer({
       ) : null}
 
       <Button
+        aria-controls={panelId}
+        aria-expanded={isOpen}
+        id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'
         startIcon={isOpen ? <ExpandLessRoundedIcon /> : <AddRoundedIcon />}
@@ -81,7 +94,14 @@ export function WorkoutReportComposer({
         {isOpen ? t.closeComposerLabel : t.openComposerLabel}
       </Button>
 
-      <Collapse in={isOpen} timeout='auto' unmountOnExit>
+      <Collapse
+        aria-labelledby={buttonId}
+        id={panelId}
+        in={isOpen}
+        role='region'
+        timeout='auto'
+        unmountOnExit
+      >
         <WorkoutReportForm
           exercises={exercises}
           favoriteExerciseSlugs={favoriteExerciseSlugs}

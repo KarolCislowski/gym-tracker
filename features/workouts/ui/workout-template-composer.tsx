@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { Button, Collapse, Stack } from '@mui/material';
@@ -31,10 +31,15 @@ export function WorkoutTemplateComposer({
 }: WorkoutTemplateComposerProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const t = translations.workouts;
+  const buttonId = useId();
+  const panelId = useId();
 
   return (
     <Stack spacing={2}>
       <Button
+        aria-controls={panelId}
+        aria-expanded={isOpen}
+        id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'
         startIcon={isOpen ? <ExpandLessRoundedIcon /> : <AddRoundedIcon />}
@@ -44,7 +49,14 @@ export function WorkoutTemplateComposer({
         {isOpen ? t.closeTemplateComposerLabel : t.openTemplateComposerLabel}
       </Button>
 
-      <Collapse in={isOpen} timeout='auto' unmountOnExit>
+      <Collapse
+        aria-labelledby={buttonId}
+        id={panelId}
+        in={isOpen}
+        role='region'
+        timeout='auto'
+        unmountOnExit
+      >
         <WorkoutTemplateForm exercises={exercises} translations={translations} />
       </Collapse>
     </Stack>

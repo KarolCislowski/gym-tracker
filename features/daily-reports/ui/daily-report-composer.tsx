@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { Button, Collapse, Stack } from '@mui/material';
@@ -31,10 +31,15 @@ export function DailyReportComposer({
 }: DailyReportComposerProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const t = translations.dailyReports;
+  const buttonId = useId();
+  const panelId = useId();
 
   return (
     <Stack spacing={2}>
       <Button
+        aria-controls={panelId}
+        aria-expanded={isOpen}
+        id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'
         startIcon={isOpen ? <ExpandLessRoundedIcon /> : <AddRoundedIcon />}
@@ -44,7 +49,14 @@ export function DailyReportComposer({
         {isOpen ? t.closeComposerLabel : t.openComposerLabel}
       </Button>
 
-      <Collapse in={isOpen} timeout='auto' unmountOnExit>
+      <Collapse
+        aria-labelledby={buttonId}
+        id={panelId}
+        in={isOpen}
+        role='region'
+        timeout='auto'
+        unmountOnExit
+      >
         <DailyReportForm translations={translations} userSnapshot={userSnapshot} />
       </Collapse>
     </Stack>

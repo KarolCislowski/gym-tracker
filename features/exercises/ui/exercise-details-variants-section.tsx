@@ -58,7 +58,9 @@ export function ExerciseDetailsVariantsSection({
             <TableBody>
               {exercise.variants.map((variant) => (
                 <TableRow key={variant.id} hover>
-                  <TableCell>{variant.name}</TableCell>
+                  <TableCell component='th' scope='row'>
+                    {variant.name}
+                  </TableCell>
                   <TableCell>{joinTokens(variant.equipment)}</TableCell>
                   <TableCell>{joinTokens(variant.gripOptions)}</TableCell>
                   <TableCell>{joinTokens(variant.stanceOptions)}</TableCell>
@@ -89,11 +91,13 @@ export function ExerciseDetailsVariantsSection({
               variant.executionNotes?.length ? (
                 <Stack key={`${variant.id}-notes`} spacing={0.5}>
                   <Typography fontWeight={600}>{variant.name}</Typography>
-                  {variant.executionNotes.map((note) => (
-                    <Typography key={note} color='text.secondary'>
-                      • {note}
-                    </Typography>
-                  ))}
+                  <Stack component='ul' spacing={0.5} sx={{ pl: 3, m: 0 }}>
+                    {variant.executionNotes.map((note) => (
+                      <Typography component='li' key={note} color='text.secondary'>
+                        {note}
+                      </Typography>
+                    ))}
+                  </Stack>
                 </Stack>
               ) : null,
             )}

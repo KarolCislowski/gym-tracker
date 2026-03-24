@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import { Button, Collapse, Stack } from '@mui/material';
@@ -36,10 +36,15 @@ export function DailyReportEditor({
 }: DailyReportEditorProps) {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const t = translations.dailyReports;
+  const buttonId = useId();
+  const panelId = useId();
 
   return (
     <Stack spacing={2}>
       <Button
+        aria-controls={panelId}
+        aria-expanded={isOpen}
+        id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'
         startIcon={isOpen ? <ExpandLessRoundedIcon /> : <EditRoundedIcon />}
@@ -49,7 +54,14 @@ export function DailyReportEditor({
         {isOpen ? t.closeEditLabel : t.openEditLabel}
       </Button>
 
-      <Collapse in={isOpen} timeout='auto' unmountOnExit>
+      <Collapse
+        aria-labelledby={buttonId}
+        id={panelId}
+        in={isOpen}
+        role='region'
+        timeout='auto'
+        unmountOnExit
+      >
         <DailyReportForm
           formAction={updateDailyReportAction}
           initialReport={initialReport}
