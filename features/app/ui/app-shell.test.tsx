@@ -28,8 +28,8 @@ describe('AppShell', () => {
     );
 
     expect(screen.getByText('Dashboard body')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Sign out' })).toBeInTheDocument();
-    expect(screen.getAllByText('John Doe').length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('button', { name: 'Sign out' }).length).toBeGreaterThan(0);
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
   });
 
   /**

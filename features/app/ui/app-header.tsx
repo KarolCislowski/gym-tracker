@@ -8,10 +8,10 @@ import {
   Avatar,
   Box,
   Button,
-  Chip,
   IconButton,
   Stack,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -35,7 +35,7 @@ interface AppHeaderProps {
  * @remarks The header remains client-side because it forwards interaction callbacks to the shell state.
  */
 export function AppHeader({
-  displayName,
+  displayName: _displayName,
   logoutAction,
   onOpenMobileNavigation,
   translations,
@@ -54,7 +54,13 @@ export function AppHeader({
         backgroundColor: 'background.default',
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between', gap: 2 }}>
+      <Toolbar
+        sx={{
+          justifyContent: 'space-between',
+          gap: 2,
+          position: 'relative',
+        }}
+      >
         <Stack direction='row' spacing={1} alignItems='center'>
           <IconButton
             aria-label={t.openNavigation}
@@ -63,11 +69,20 @@ export function AppHeader({
           >
             <MenuRoundedIcon />
           </IconButton>
-          <Stack direction='row' spacing={1.5} alignItems='center'>
+          <Stack
+            direction='row'
+            spacing={1.5}
+            alignItems='center'
+            sx={{
+              position: { xs: 'absolute', sm: 'static' },
+              left: { xs: '50%', sm: 'auto' },
+              transform: { xs: 'translateX(-50%)', sm: 'none' },
+            }}
+          >
             <Avatar sx={{ bgcolor: 'primary.main' }}>
               <FitnessCenterRoundedIcon />
             </Avatar>
-            <Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               <Typography variant='subtitle1' fontWeight={700}>
                 {t.appName}
               </Typography>
@@ -78,12 +93,22 @@ export function AppHeader({
           </Stack>
         </Stack>
         <Stack direction='row' spacing={1.5} alignItems='center'>
-          <Chip label={displayName} variant='outlined' />
           <Box component='form' action={logoutAction}>
+            <Tooltip title={t.signOut}>
+              <IconButton
+                aria-label={t.signOut}
+                sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+                type='submit'
+              >
+                <LogoutRoundedIcon />
+              </IconButton>
+            </Tooltip>
             <Button
+              size='small'
               startIcon={<LogoutRoundedIcon />}
+              sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
               type='submit'
-              variant='contained'
+              variant='outlined'
             >
               {t.signOut}
             </Button>

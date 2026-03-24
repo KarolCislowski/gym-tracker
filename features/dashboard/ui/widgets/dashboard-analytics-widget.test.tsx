@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
@@ -38,14 +38,14 @@ describe('DashboardAnalyticsWidget', () => {
       screen.getByRole('table', { name: 'Goal compliance' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText('Sleep goal, 03/21: Yes'),
+      screen.getByText('Sleep goal, 03/21: Yes'),
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText('Steps per day, 03/21: No'),
+      screen.getByText('Steps per day, 03/21: No'),
     ).toBeInTheDocument();
   });
 
-  test('renders body weight chart label in imperial units when requested', () => {
+  test('renders body weight chart label in imperial units when requested', async () => {
     render(
       <DashboardAnalyticsWidget
         analytics={{
@@ -67,10 +67,16 @@ describe('DashboardAnalyticsWidget', () => {
       />,
     );
 
-    expect(screen.getByText('Body weight (lb)')).toBeInTheDocument();
+    const showAllButton = screen.queryByRole('button', { name: 'Show all' });
+
+    if (showAllButton) {
+      fireEvent.click(showAllButton);
+    }
+
+    expect(await screen.findByText('Body weight (lb)')).toBeInTheDocument();
   });
 
-  test('renders body weight chart label in stones for UK imperial units', () => {
+  test('renders body weight chart label in stones for UK imperial units', async () => {
     render(
       <DashboardAnalyticsWidget
         analytics={{
@@ -92,6 +98,12 @@ describe('DashboardAnalyticsWidget', () => {
       />,
     );
 
-    expect(screen.getByText('Body weight (st)')).toBeInTheDocument();
+    const showAllButton = screen.queryByRole('button', { name: 'Show all' });
+
+    if (showAllButton) {
+      fireEvent.click(showAllButton);
+    }
+
+    expect(await screen.findByText('Body weight (st)')).toBeInTheDocument();
   });
 });

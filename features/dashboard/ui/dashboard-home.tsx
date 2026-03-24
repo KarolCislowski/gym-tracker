@@ -5,8 +5,8 @@ import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type { DashboardAnalytics } from '../application/dashboard-analytics';
+import { DashboardAnalyticsLazyWidget } from './widgets/dashboard-analytics-lazy-widget';
 import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
-import { DashboardAnalyticsWidget } from './widgets/dashboard-analytics-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
@@ -37,7 +37,7 @@ export function DashboardHome({
         translations={translations.dashboard}
       />
 
-      <DashboardAnalyticsWidget
+      <DashboardAnalyticsLazyWidget
         analytics={analytics}
         translations={translations}
         unitSystem={userSnapshot?.settings?.unitSystem ?? 'metric'}
