@@ -12,6 +12,10 @@ interface SupplementAtlasPageProps {
 
 /**
  * Server-rendered page shell for the shared supplement atlas.
+ * @param props - Component props for the supplement atlas page.
+ * @param props.supplements - Supplements loaded from the shared Core atlas.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering the supplement atlas heading and data grid.
  */
 export function SupplementAtlasPage({
   supplements,

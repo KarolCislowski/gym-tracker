@@ -41,6 +41,11 @@ interface SupplementAtlasGridProps {
 
 /**
  * Client-side data grid for browsing the shared supplement atlas.
+ * @param props - Component props for the supplement atlas grid.
+ * @param props.supplements - Supplements already loaded on the server.
+ * @param props.translations - Localized labels used by the grid and filter controls.
+ * @returns A React element rendering filter controls and supplement rows.
+ * @remarks Filtering is handled fully on the client against the server-loaded atlas snapshot.
  */
 export function SupplementAtlasGrid({
   supplements,

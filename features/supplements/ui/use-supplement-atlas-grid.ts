@@ -21,6 +21,8 @@ export { formatSupplementToken } from '../application/supplement-atlas-grid';
 
 /**
  * Manages rows, filter state, and filtering for the supplement atlas grid.
+ * @param supplements - Shared supplement definitions loaded from the server.
+ * @returns Derived rows, filter options, state, and update handlers for the supplement atlas UI.
  */
 export function useSupplementAtlasGrid(supplements: Supplement[]) {
   const [search, setSearch] = useState('');
@@ -94,6 +96,8 @@ export function useSupplementAtlasGrid(supplements: Supplement[]) {
 
 /**
  * Normalizes multi-select values emitted by MUI select components.
+ * @param value - Raw value emitted by a multi-select input.
+ * @returns A normalized string array suitable for supplement filter state.
  */
 export function normalizeSupplementMultiSelectValue(value: unknown): string[] {
   if (typeof value === 'string') {

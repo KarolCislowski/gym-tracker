@@ -12,6 +12,7 @@ import type {
 
 /**
  * Loads all supplement definitions from the shared Core atlas.
+ * @returns A promise resolving to mapped supplement definitions from Core.
  */
 export async function findSupplements(): Promise<Supplement[]> {
   const CoreSupplementModel = await getCoreSupplementModel();
@@ -22,6 +23,8 @@ export async function findSupplements(): Promise<Supplement[]> {
 
 /**
  * Loads a single supplement definition from the shared Core atlas by slug.
+ * @param slug - Stable supplement slug.
+ * @returns A mapped supplement definition or `null` when it does not exist.
  */
 export async function findSupplementBySlug(
   slug: string,

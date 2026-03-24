@@ -45,6 +45,9 @@ export interface SupplementAtlasFiltersState {
 
 /**
  * Maps supplement definitions into grid-ready rows.
+ * @param supplements - Shared supplement definitions loaded from the Core atlas.
+ * @returns An array of rows prepared for supplement-grid presentation.
+ * @remarks Variant-level properties such as form and compound type are flattened into aggregated row values.
  */
 export function buildSupplementAtlasRows(
   supplements: Supplement[],
@@ -76,6 +79,8 @@ export function buildSupplementAtlasRows(
 
 /**
  * Builds available filter options for the supplement grid.
+ * @param rows - Grid-ready supplement rows.
+ * @returns Unique selectable values for each supplement filter control.
  */
 export function buildSupplementAtlasFilterOptions(
   rows: SupplementAtlasRow[],
@@ -97,6 +102,10 @@ export function buildSupplementAtlasFilterOptions(
 
 /**
  * Filters supplement atlas rows using the current client-side state.
+ * @param rows - Grid-ready supplement rows.
+ * @param filters - Current filter state from the supplement atlas UI.
+ * @returns The subset of rows matching the active search and multi-select filters.
+ * @remarks Filters behave as `OR` within the same field and `AND` across different fields.
  */
 export function filterSupplementAtlasRows(
   rows: SupplementAtlasRow[],
@@ -144,6 +153,8 @@ export function filterSupplementAtlasRows(
 
 /**
  * Builds localized data-grid columns for the supplement atlas table.
+ * @param translations - Localized supplement labels used for the grid headers.
+ * @returns Column definitions for the supplement atlas data grid.
  */
 export function buildSupplementAtlasGridColumns(
   translations: TranslationDictionary['supplements'],
@@ -197,6 +208,9 @@ export function buildSupplementAtlasGridColumns(
 
 /**
  * Normalizes enum tokens into human-readable labels.
+ * @param value - Raw supplement token such as a category, form, or compound type.
+ * @returns A title-cased token suitable for filter chips and table cells.
+ * @remarks This helper is presentation-oriented and should not be used as a persistence transform.
  */
 export function formatSupplementToken(value: string): string {
   return value

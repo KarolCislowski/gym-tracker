@@ -6,6 +6,11 @@ import { listSupplementAtlas } from '@/features/supplements/application/suppleme
 import { SupplementAtlasPage } from '@/features/supplements/ui/supplement-atlas-page';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
+/**
+ * Renders the authenticated supplement-atlas route.
+ * @returns The supplement atlas page for the active user session.
+ * @remarks The route resolves user language from the tenant snapshot before loading shared Core atlas data.
+ */
 export default async function SupplementsRoutePage() {
   const session = await auth();
 

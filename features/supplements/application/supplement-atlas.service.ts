@@ -6,6 +6,8 @@ import type { Supplement } from '../domain/supplement.types';
 
 /**
  * Returns active atlas supplements sorted by name.
+ * @returns A promise resolving to atlas supplements that should be visible in the UI.
+ * @remarks Inactive entries are filtered out here so callers can consume a presentation-ready list.
  */
 export async function listSupplementAtlas(): Promise<Supplement[]> {
   const supplements = await findSupplements();
@@ -17,6 +19,8 @@ export async function listSupplementAtlas(): Promise<Supplement[]> {
 
 /**
  * Returns a single active atlas supplement resolved by slug.
+ * @param slug - Stable supplement slug used by the details route.
+ * @returns The matching active supplement or `null` when the slug is missing or inactive.
  */
 export async function getSupplementAtlasDetails(
   slug: string,

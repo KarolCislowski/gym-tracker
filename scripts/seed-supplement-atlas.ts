@@ -2,6 +2,11 @@ import { supplementAtlasSupplements } from '@/features/supplements/infrastructur
 import { closeMongooseRootConnection } from '@/infrastructure/db/mongoose.client';
 import { getCoreSupplementModel } from '@/infrastructure/db/models/core-supplement.model';
 
+/**
+ * Seeds the shared Core supplement atlas from the curated supplement dataset.
+ * @returns A promise that resolves when all supplement entries have been upserted.
+ * @remarks Missing `isActive` flags are normalized to `true` during the seed step.
+ */
 async function seedSupplementAtlas(): Promise<void> {
   const CoreSupplementModel = await getCoreSupplementModel();
 

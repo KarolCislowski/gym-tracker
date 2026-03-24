@@ -135,6 +135,8 @@ const coreSupplementSchema = new Schema<CoreSupplement>(
 
 /**
  * Returns the shared Core supplement model used by the supplement atlas.
+ * @returns A Core supplement model bound to the shared Core connection.
+ * @remarks The collection stores atlas-level supplement definitions rather than tenant-specific plans.
  */
 export async function getCoreSupplementModel(): Promise<Model<CoreSupplement>> {
   const connection = await getCoreDbConnection();

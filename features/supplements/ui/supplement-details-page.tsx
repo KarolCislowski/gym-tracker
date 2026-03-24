@@ -26,6 +26,10 @@ interface SupplementDetailsPageProps {
 
 /**
  * Server-rendered details page for a single atlas supplement with variant comparison.
+ * @param props - Component props for the supplement details page.
+ * @param props.supplement - The atlas supplement to present.
+ * @param props.translations - The translation dictionary for the active language.
+ * @returns A React element rendering supplement overview, notes, and variant comparison.
  */
 export function SupplementDetailsPage({
   supplement,

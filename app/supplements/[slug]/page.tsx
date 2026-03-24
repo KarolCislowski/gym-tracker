@@ -12,6 +12,12 @@ interface SupplementDetailsRoutePageProps {
   }>;
 }
 
+/**
+ * Renders the authenticated supplement-details route.
+ * @param props - Route params containing the supplement slug to resolve.
+ * @returns The supplement details page for the requested atlas entry.
+ * @remarks Missing supplements resolve to Next.js `notFound()` after tenant-specific translations are prepared.
+ */
 export default async function SupplementDetailsRoutePage({
   params,
 }: SupplementDetailsRoutePageProps) {
