@@ -13,6 +13,7 @@
     "db:infra-smoke": "node --env-file=example.env.local --import tsx scripts/mongoose-infra-smoke.ts",
     "db:auth-smoke": "node --env-file=example.env.local --import tsx scripts/auth-register-smoke.ts",
     "db:seed:atlas": "node --env-file=example.env.local --import tsx scripts/seed-exercise-atlas.ts",
+    "db:seed:supplements": "node --env-file=example.env.local --import tsx scripts/seed-supplement-atlas.ts",
     "db:seed:demo-user": "node --env-file=.env.local --import tsx scripts/seed-demo-user.ts"
   },
   "dependencies": {

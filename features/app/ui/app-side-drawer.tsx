@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import FitnessCenterRoundedIcon from '@mui/icons-material/FitnessCenterRounded';
+import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
@@ -77,6 +78,12 @@ export function AppSideDrawer({
       href: '/exercises',
       icon: <FitnessCenterRoundedIcon />,
       label: t.exerciseAtlas,
+      secondary: t.workspace,
+    },
+    {
+      href: '/supplements',
+      icon: <ScienceRoundedIcon />,
+      label: t.supplementAtlas,
       secondary: t.workspace,
     },
     {
