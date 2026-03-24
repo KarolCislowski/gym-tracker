@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -76,7 +75,6 @@ export function SupplementAtlasGrid({
       <Tooltip title={translations.viewDetails}>
         <IconButton
           aria-label={`${translations.viewDetails}: ${row.name}`}
-          component={Link}
           href={`/supplements/${row.slug}`}
           size='small'
         >

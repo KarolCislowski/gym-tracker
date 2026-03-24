@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import {
   Button,
@@ -42,7 +41,6 @@ export function SupplementDetailsPage({
     <Stack spacing={3}>
       <Stack spacing={1.5}>
         <Button
-          component={Link}
           href='/supplements'
           startIcon={<ArrowBackRoundedIcon />}
           sx={{ alignSelf: 'flex-start' }}

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -92,7 +91,6 @@ export function ExerciseAtlasGrid({
           <Tooltip title={translations.viewDetails}>
             <IconButton
               aria-label={`${translations.viewDetails}: ${exercise.name}`}
-              component={Link}
               href={`/exercises/${exercise.slug}`}
               size='small'
             >
