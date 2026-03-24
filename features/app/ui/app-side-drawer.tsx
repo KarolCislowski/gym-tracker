@@ -87,6 +87,12 @@ export function AppSideDrawer({
       secondary: t.workspace,
     },
     {
+      href: '/supplementation',
+      icon: <ScienceRoundedIcon />,
+      label: t.supplementation,
+      secondary: t.workspace,
+    },
+    {
       href: '/workouts',
       icon: <TableChartRoundedIcon />,
       label: t.workoutReports,

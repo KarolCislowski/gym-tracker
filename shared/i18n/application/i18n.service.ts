@@ -63,6 +63,10 @@ export function getTranslations(
       ...enMessages.supplements,
       ...localized.supplements,
     },
+    supplementation: {
+      ...enMessages.supplementation,
+      ...localized.supplementation,
+    },
     workouts: {
       ...enMessages.workouts,
       ...localized.workouts,
