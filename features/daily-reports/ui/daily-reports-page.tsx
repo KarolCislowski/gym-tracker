@@ -17,8 +17,10 @@ import {
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type { DailyReportSummary } from '../domain/daily-report.types';
+import { deleteDailyReportAction } from '../infrastructure/daily-report.actions';
 import { DailyReportComposer } from './daily-report-composer';
 
 interface DailyReportsPageProps {
@@ -47,9 +49,11 @@ export function DailyReportsPage({
   const profileT = translations.profile;
   const feedback = status === 'daily-report-created'
     ? { severity: 'success' as const, message: t.reportCreated }
-    : error
-      ? { severity: 'error' as const, message: t.reportError }
-      : null;
+    : status === 'daily-report-deleted'
+      ? { severity: 'success' as const, message: t.reportDeleted }
+      : error
+        ? { severity: 'error' as const, message: t.reportError }
+        : null;
 
   return (
     <Stack spacing={3}>
@@ -134,15 +138,27 @@ export function DailyReportsPage({
                           : translations.exercises.noLabel}
                     </TableCell>
                     <TableCell>
-                      <Tooltip title={t.viewDetailsLabel}>
-                        <IconButton
-                          aria-label={`${t.viewDetailsLabel}: ${new Date(report.reportDate).toLocaleDateString()}`}
-                          href={`/daily-reports/${report.id}`}
-                          size='small'
-                        >
-                          <VisibilityRoundedIcon fontSize='small' />
-                        </IconButton>
-                      </Tooltip>
+                      <Stack direction='row' spacing={0.5}>
+                        <Tooltip title={t.viewDetailsLabel}>
+                          <IconButton
+                            aria-label={`${t.viewDetailsLabel}: ${new Date(report.reportDate).toLocaleDateString()}`}
+                            href={`/daily-reports/${report.id}`}
+                            size='small'
+                          >
+                            <VisibilityRoundedIcon fontSize='small' />
+                          </IconButton>
+                        </Tooltip>
+                        <DeleteConfirmationButton
+                          action={deleteDailyReportAction}
+                          ariaLabel={`${t.deleteReportLabel}: ${new Date(report.reportDate).toLocaleDateString()}`}
+                          cancelLabel={translations.profile.cancelEditing}
+                          confirmLabel={t.confirmDeleteLabel}
+                          description={t.deleteReportDescription}
+                          hiddenFields={{ reportId: report.id }}
+                          title={t.deleteReportTitle}
+                          tooltipLabel={t.deleteReportLabel}
+                        />
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}

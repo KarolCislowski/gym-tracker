@@ -577,6 +577,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     scoreHigh: 'Hög',
     reportCreated: 'Den dagliga rapporten sparades.',
     reportUpdated: 'Den dagliga rapporten uppdaterades.',
+    reportDeleted: 'Den dagliga rapporten togs bort.',
     reportError: 'Det gick inte att spara den dagliga rapporten.',
     emptyState: 'Inga dagliga rapporter har registrerats ännu.',
     columnDate: 'Datum',
@@ -602,6 +603,11 @@ export const svMessages: TranslationDictionaryOverrides = {
     openEditLabel: 'Redigera daglig rapport',
     closeEditLabel: 'Dölj redigeringsformuläret',
     updateReport: 'Spara rapportändringar',
+    confirmDeleteLabel: 'Ta bort',
+    deleteReportLabel: 'Ta bort daglig rapport',
+    deleteReportTitle: 'Ta bort den dagliga rapporten?',
+    deleteReportDescription:
+      'Den här åtgärden tar permanent bort den dagliga rapporten. Det går inte att ångra.',
     notFoundTitle: 'Daglig rapport hittades inte',
     notFoundDescription:
       'Den begärda dagliga rapporten kunde inte hittas för detta konto.',

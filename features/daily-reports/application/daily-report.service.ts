@@ -10,6 +10,7 @@ import {
 } from '../domain/daily-report.validation';
 import {
   createTenantDailyReportRecord,
+  deleteTenantDailyReportRecord,
   findTenantDailyReportRecordById,
   listTenantDailyReportRecords,
   updateTenantDailyReportRecord,
@@ -67,4 +68,12 @@ export async function updateDailyReport(
   updateDailyReportSchema.parse(input);
 
   await updateTenantDailyReportRecord(input);
+}
+
+export async function deleteDailyReport(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  await deleteTenantDailyReportRecord(tenantDbName, userId, reportId);
 }

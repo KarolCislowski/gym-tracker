@@ -7,6 +7,7 @@ import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.s
 
 import {
   createDailyReport,
+  deleteDailyReport,
   getDailyReportDetails,
   updateDailyReport,
 } from '../application/daily-report.service';
@@ -129,6 +130,28 @@ export async function updateDailyReportAction(formData: FormData): Promise<void>
   }
 
   redirect(`/daily-reports/${encodeURIComponent(reportId)}?status=daily-report-updated`);
+}
+
+export async function deleteDailyReportAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const reportId = String(formData.get('reportId') ?? '').trim();
+
+  try {
+    await deleteDailyReport(
+      session.user.tenantDbName,
+      session.user.id,
+      reportId,
+    );
+  } catch (error) {
+    redirect(`/daily-reports?error=${encodeURIComponent(getDailyReportErrorCode(error))}`);
+  }
+
+  redirect('/daily-reports?status=daily-report-deleted');
 }
 
 function getDailyReportErrorCode(error: unknown): string {

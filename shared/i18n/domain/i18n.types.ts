@@ -515,6 +515,7 @@ export interface TranslationDictionary {
     scoreHigh: string;
     reportCreated: string;
     reportUpdated: string;
+    reportDeleted: string;
     reportError: string;
     emptyState: string;
     columnDate: string;
@@ -539,6 +540,10 @@ export interface TranslationDictionary {
     openEditLabel: string;
     closeEditLabel: string;
     updateReport: string;
+    confirmDeleteLabel: string;
+    deleteReportLabel: string;
+    deleteReportTitle: string;
+    deleteReportDescription: string;
     notFoundTitle: string;
     notFoundDescription: string;
     modelTitle: string;

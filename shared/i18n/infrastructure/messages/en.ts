@@ -576,6 +576,7 @@ export const enMessages: TranslationDictionary = {
     scoreHigh: 'High',
     reportCreated: 'Daily report saved successfully.',
     reportUpdated: 'Daily report updated successfully.',
+    reportDeleted: 'Daily report deleted successfully.',
     reportError: 'Something went wrong while saving the daily report.',
     emptyState: 'No daily reports have been recorded yet.',
     columnDate: 'Date',
@@ -601,6 +602,11 @@ export const enMessages: TranslationDictionary = {
     openEditLabel: 'Edit daily report',
     closeEditLabel: 'Hide edit form',
     updateReport: 'Save report changes',
+    confirmDeleteLabel: 'Delete',
+    deleteReportLabel: 'Delete daily report',
+    deleteReportTitle: 'Delete daily report?',
+    deleteReportDescription:
+      'This action permanently deletes the daily report. This cannot be undone.',
     notFoundTitle: 'Daily report not found',
     notFoundDescription:
       'The requested daily report could not be found for this account.',

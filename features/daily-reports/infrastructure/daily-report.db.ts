@@ -55,6 +55,19 @@ export async function updateTenantDailyReportRecord(
   );
 }
 
+export async function deleteTenantDailyReportRecord(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  const TenantDailyReportModel = await getTenantDailyReportModel(tenantDbName);
+  const result = await TenantDailyReportModel.deleteOne({ _id: reportId, userId });
+
+  if (!result.deletedCount) {
+    throw new Error('DAILY_REPORT_NOT_FOUND');
+  }
+}
+
 /**
  * Lists persisted daily reports for a tenant-scoped user in reverse chronological order.
  * @param tenantDbName - Tenant database name.

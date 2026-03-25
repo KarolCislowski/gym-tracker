@@ -576,6 +576,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     scoreHigh: 'Wysoko',
     reportCreated: 'Raport dzienny został zapisany.',
     reportUpdated: 'Raport dzienny został zaktualizowany.',
+    reportDeleted: 'Raport dzienny został usunięty.',
     reportError: 'Nie udało się zapisać raportu dziennego.',
     emptyState: 'Nie zapisano jeszcze żadnych raportów dziennych.',
     columnDate: 'Data',
@@ -601,6 +602,11 @@ export const plMessages: TranslationDictionaryOverrides = {
     openEditLabel: 'Edytuj raport dzienny',
     closeEditLabel: 'Ukryj formularz edycji',
     updateReport: 'Zapisz zmiany raportu',
+    confirmDeleteLabel: 'Usuń',
+    deleteReportLabel: 'Usuń raport dzienny',
+    deleteReportTitle: 'Usunąć raport dzienny?',
+    deleteReportDescription:
+      'Ta operacja trwale usunie raport dzienny. Tego kroku nie można cofnąć.',
     notFoundTitle: 'Nie znaleziono raportu dziennego',
     notFoundDescription:
       'Nie udało się znaleźć wskazanego raportu dziennego dla tego konta.',

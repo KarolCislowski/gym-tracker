@@ -3,10 +3,12 @@ import { Alert, Paper, Stack, Typography } from '@mui/material';
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
+import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 import { convertHydrationFromMetricLiters } from '@/shared/units/application/unit-conversion';
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 import type { DailyReportDetails } from '../domain/daily-report.types';
+import { deleteDailyReportAction } from '../infrastructure/daily-report.actions';
 import { DailyReportEditor } from './daily-report-editor';
 
 interface DailyReportDetailsPageProps {
@@ -66,9 +68,26 @@ export function DailyReportDetailsPage({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography component='h1' variant='h3'>
-          {t.detailsTitle}
-        </Typography>
+        <Stack
+          alignItems='center'
+          direction='row'
+          justifyContent='space-between'
+          spacing={1.5}
+        >
+          <Typography component='h1' variant='h3'>
+            {t.detailsTitle}
+          </Typography>
+          <DeleteConfirmationButton
+            action={deleteDailyReportAction}
+            ariaLabel={`${t.deleteReportLabel}: ${new Date(report.reportDate).toLocaleDateString()}`}
+            cancelLabel={translations.profile.cancelEditing}
+            confirmLabel={t.confirmDeleteLabel}
+            description={t.deleteReportDescription}
+            hiddenFields={{ reportId: report.id }}
+            title={t.deleteReportTitle}
+            tooltipLabel={t.deleteReportLabel}
+          />
+        </Stack>
         <Typography color='text.secondary'>
           {new Date(report.reportDate).toLocaleDateString()}
         </Typography>
