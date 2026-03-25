@@ -36,6 +36,7 @@ export function DashboardHealthyHabitsWidget({
 
   return (
     <Paper
+      data-onboarding='dashboard-healthy-habits'
       elevation={0}
       sx={{
         p: 3,

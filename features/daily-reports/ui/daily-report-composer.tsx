@@ -39,6 +39,7 @@ export function DailyReportComposer({
       <Button
         aria-controls={panelId}
         aria-expanded={isOpen}
+        data-onboarding='daily-report-create-action'
         id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'

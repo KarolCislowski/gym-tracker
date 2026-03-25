@@ -109,6 +109,42 @@ export interface TranslationDictionary {
     showLessLabel: string;
     noChartData: string;
     signOut: string;
+    replayOnboarding: string;
+  };
+  onboarding: {
+    next: string;
+    previous: string;
+    done: string;
+    dashboardOverviewTitle: string;
+    dashboardOverviewDescription: string;
+    dashboardProfileTitle: string;
+    dashboardProfileDescription: string;
+    dashboardHealthyHabitsTitle: string;
+    dashboardHealthyHabitsDescription: string;
+    profileDetailsTitle: string;
+    profileDetailsDescription: string;
+    profileHealthyHabitsTitle: string;
+    profileHealthyHabitsDescription: string;
+    profileEditTitle: string;
+    profileEditDescription: string;
+    healthyHabitsEditTitle: string;
+    healthyHabitsEditDescription: string;
+    dailyReportsTitle: string;
+    dailyReportsDescription: string;
+    dailyReportsCreateTitle: string;
+    dailyReportsCreateDescription: string;
+    dailyReportsModelTitle: string;
+    dailyReportsModelDescription: string;
+    dailyReportsHistoryTitle: string;
+    dailyReportsHistoryDescription: string;
+    workoutsTitle: string;
+    workoutsDescription: string;
+    workoutsQuickStartTitle: string;
+    workoutsQuickStartDescription: string;
+    workoutsTemplatesTitle: string;
+    workoutsTemplatesDescription: string;
+    workoutsHistoryTitle: string;
+    workoutsHistoryDescription: string;
   };
   settings: {
     title: string;
@@ -520,6 +556,7 @@ export interface TranslationDictionary {
 export interface TranslationDictionaryOverrides {
   auth?: Partial<TranslationDictionary['auth']>;
   dashboard?: Partial<TranslationDictionary['dashboard']>;
+  onboarding?: Partial<TranslationDictionary['onboarding']>;
   settings?: Partial<TranslationDictionary['settings']>;
   profile?: Partial<TranslationDictionary['profile']>;
   exercises?: Partial<TranslationDictionary['exercises']>;

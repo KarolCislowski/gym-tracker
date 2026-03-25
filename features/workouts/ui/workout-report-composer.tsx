@@ -45,7 +45,7 @@ export function WorkoutReportComposer({
   return (
     <Stack spacing={2}>
       {templates.length ? (
-        <Stack spacing={1}>
+        <Stack data-onboarding='workout-quick-start' spacing={1}>
           <Typography component='h2' variant='h6'>
             {t.quickStartTitle}
           </Typography>
@@ -84,6 +84,7 @@ export function WorkoutReportComposer({
       <Button
         aria-controls={panelId}
         aria-expanded={isOpen}
+        data-onboarding='workout-create-action'
         id={buttonId}
         onClick={() => setIsOpen((current) => !current)}
         size='large'

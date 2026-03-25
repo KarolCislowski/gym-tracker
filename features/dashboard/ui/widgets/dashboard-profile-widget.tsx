@@ -36,6 +36,7 @@ export function DashboardProfileWidget({
 
   return (
     <Paper
+      data-onboarding='dashboard-profile'
       elevation={0}
       sx={{
         p: 3,

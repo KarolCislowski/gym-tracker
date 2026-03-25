@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
+import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type {
@@ -61,10 +62,18 @@ export function WorkoutReportsPage({
 
   return (
     <Stack spacing={3}>
-      <Stack spacing={1}>
-        <Typography component='h1' variant='h3'>
-          {t.title}
-        </Typography>
+      <Stack data-onboarding='workout-reports-page-header' spacing={1}>
+        <Stack
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
+          spacing={1.5}
+        >
+          <Typography component='h1' variant='h3'>
+            {t.title}
+          </Typography>
+          <OnboardingReplayButton label={translations.dashboard.replayOnboarding} />
+        </Stack>
         <Typography color='text.secondary'>{t.description}</Typography>
       </Stack>
 
@@ -89,7 +98,11 @@ export function WorkoutReportsPage({
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <Paper
+        data-onboarding='workout-templates-card'
+        elevation={0}
+        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
+      >
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
             {t.templatesTitle}
@@ -126,7 +139,11 @@ export function WorkoutReportsPage({
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <Paper
+        data-onboarding='workout-reports-history'
+        elevation={0}
+        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
+      >
         {reports.length ? (
           <TableContainer>
             <Table aria-label={t.title} size='small'>

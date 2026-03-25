@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 
+import { AppOnboarding } from '@/features/onboarding/ui/app-onboarding';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import { AppHeader } from './app-header';
@@ -44,6 +45,7 @@ export function AppShellClient({
         overflow: 'hidden',
       }}
     >
+      <AppOnboarding translations={translations} />
       <AppHeader
         displayName={displayName}
         logoutAction={logoutAction}

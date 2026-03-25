@@ -47,6 +47,7 @@ export function HealthyHabitsSection({
 
   return (
     <Paper
+      data-onboarding='healthy-habits-section'
       elevation={0}
       ref={sectionRef}
       sx={{
@@ -73,6 +74,7 @@ export function HealthyHabitsSection({
             <Tooltip title={t.editGoals}>
               <IconButton
                 aria-label={t.editGoals}
+                data-onboarding='healthy-habits-edit-action'
                 onClick={() => setMode('edit')}
                 sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' } }}
               >

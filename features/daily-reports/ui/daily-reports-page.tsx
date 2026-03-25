@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
+import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type { DailyReportSummary } from '../domain/daily-report.types';
@@ -52,10 +53,18 @@ export function DailyReportsPage({
 
   return (
     <Stack spacing={3}>
-      <Stack spacing={1}>
-        <Typography component='h1' variant='h3'>
-          {t.title}
-        </Typography>
+      <Stack data-onboarding='daily-reports-page-header' spacing={1}>
+        <Stack
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
+          spacing={1.5}
+        >
+          <Typography component='h1' variant='h3'>
+            {t.title}
+          </Typography>
+          <OnboardingReplayButton label={translations.dashboard.replayOnboarding} />
+        </Stack>
         <Typography color='text.secondary'>{t.description}</Typography>
       </Stack>
 
@@ -67,7 +76,11 @@ export function DailyReportsPage({
         userSnapshot={userSnapshot}
       />
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <Paper
+        data-onboarding='daily-reports-model-card'
+        elevation={0}
+        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
+      >
         <Stack spacing={1}>
           <Typography component='h2' variant='h6'>
             {t.modelTitle}
@@ -76,7 +89,11 @@ export function DailyReportsPage({
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <Paper
+        data-onboarding='daily-reports-history'
+        elevation={0}
+        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
+      >
         {reports.length ? (
           <TableContainer>
             <Table aria-label={t.title} size='small'>

@@ -119,6 +119,57 @@ export const plMessages: TranslationDictionaryOverrides = {
     showAllLabel: 'Pokaż wszystkie',
     showLessLabel: 'Pokaż mniej',
     noChartData: 'Za mało danych.',
+    replayOnboarding: 'Pokaż przewodnik',
+  },
+  onboarding: {
+    next: 'Dalej',
+    previous: 'Wstecz',
+    done: 'Rozumiem',
+    dashboardOverviewTitle: 'Zacznij tutaj',
+    dashboardOverviewDescription:
+      'Tutaj szybko sprawdzisz status, cele i ostatni postęp.',
+    dashboardProfileTitle: 'Uzupełnij profil',
+    dashboardProfileDescription:
+      'Uzupełnij profil, aby aplikacja lepiej dopasowała śledzenie do Ciebie.',
+    dashboardHealthyHabitsTitle: 'Ustaw cele',
+    dashboardHealthyHabitsDescription:
+      'Najpierw ustaw cele dla snu, kroków, nawodnienia i makro.',
+    profileDetailsTitle: 'Podstawy profilu',
+    profileDetailsDescription:
+      'Tutaj trzymasz swoje podstawowe dane zawsze pod ręką.',
+    profileHealthyHabitsTitle: 'Cele zdrowych nawyków',
+    profileHealthyHabitsDescription:
+      'Tutaj ustawiasz, jak ma wyglądać Twój dobry dzień.',
+    profileEditTitle: 'Edytuj profil',
+    profileEditDescription:
+      'Kliknij ołówek, aby szybko zaktualizować dane profilu.',
+    healthyHabitsEditTitle: 'Edytuj cele',
+    healthyHabitsEditDescription:
+      'Kliknij ołówek, gdy chcesz zmienić swoje dzienne cele.',
+    dailyReportsTitle: 'Raporty dzienne',
+    dailyReportsDescription:
+      'Tutaj zapisujesz najważniejsze dane z dnia w jednym szybkim check-inie.',
+    dailyReportsCreateTitle: 'Dodaj dzisiejszy raport',
+    dailyReportsCreateDescription:
+      'Dodaj sen, kroki, nawodnienie, makro i samopoczucie.',
+    dailyReportsModelTitle: 'Co jest śledzone',
+    dailyReportsModelDescription:
+      'Raport łączy liczby i samopoczucie w jeden dzienny obraz.',
+    dailyReportsHistoryTitle: 'Historia i przegląd',
+    dailyReportsHistoryDescription:
+      'Tutaj wrócisz do wcześniejszych wpisów i ich szczegółów.',
+    workoutsTitle: 'Raporty treningowe',
+    workoutsDescription:
+      'Tutaj zapisujesz wykonane treningi i wracasz do ich historii.',
+    workoutsQuickStartTitle: 'Szybki start treningu',
+    workoutsQuickStartDescription:
+      'Wybierz szablon albo zacznij pustą sesję.',
+    workoutsTemplatesTitle: 'Zapisane szablony',
+    workoutsTemplatesDescription:
+      'Szablony przyspieszają logowanie powtarzalnych sesji.',
+    workoutsHistoryTitle: 'Historia treningów',
+    workoutsHistoryDescription:
+      'Tutaj otworzysz i edytujesz zapisane sesje treningowe.',
   },
   settings: {
     title: 'Ustawienia',

@@ -47,6 +47,10 @@ export function getTranslations(
       ...enMessages.dashboard,
       ...localized.dashboard,
     },
+    onboarding: {
+      ...enMessages.onboarding,
+      ...localized.onboarding,
+    },
     settings: {
       ...enMessages.settings,
       ...localized.settings,

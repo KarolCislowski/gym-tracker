@@ -16,6 +16,7 @@ import {
 import { AppThemeProvider } from '@/shared/theme/app-theme-provider';
 
 import './globals.css';
+import 'driver.js/dist/driver.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

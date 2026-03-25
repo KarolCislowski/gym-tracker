@@ -2,6 +2,7 @@ import { Alert, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import { HealthyHabitsSection } from '@/features/healthy-habits/ui/healthy-habits-section';
+import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import { resolveProfileFeedback } from '@/features/profile/application/profile-feedback';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
@@ -38,9 +39,17 @@ export function ProfilePage({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography component='h1' variant='h3'>
-          {t.title}
-        </Typography>
+        <Stack
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
+          spacing={1.5}
+        >
+          <Typography component='h1' variant='h3'>
+            {t.title}
+          </Typography>
+          <OnboardingReplayButton label={translations.dashboard.replayOnboarding} />
+        </Stack>
         <Typography color='text.secondary'>{t.description}</Typography>
       </Stack>
 

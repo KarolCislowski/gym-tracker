@@ -122,6 +122,57 @@ export const enMessages: TranslationDictionary = {
     showLessLabel: 'Show less',
     noChartData: 'Not enough data yet.',
     signOut: 'Sign out',
+    replayOnboarding: 'Show guide',
+  },
+  onboarding: {
+    next: 'Next',
+    previous: 'Back',
+    done: 'Got it',
+    dashboardOverviewTitle: 'Start here',
+    dashboardOverviewDescription:
+      'Use this dashboard to check your status, goals and recent progress.',
+    dashboardProfileTitle: 'Complete your profile',
+    dashboardProfileDescription:
+      'Fill in your profile so the app can tailor tracking to you.',
+    dashboardHealthyHabitsTitle: 'Set your goals',
+    dashboardHealthyHabitsDescription:
+      'Set targets for sleep, steps, hydration and macro before you start logging.',
+    profileDetailsTitle: 'Profile basics',
+    profileDetailsDescription:
+      'Keep your core personal details up to date here.',
+    profileHealthyHabitsTitle: 'Healthy habits goals',
+    profileHealthyHabitsDescription:
+      'This is where you define what a good day looks like for you.',
+    profileEditTitle: 'Edit your profile',
+    profileEditDescription:
+      'Use the pencil icon to quickly update your profile.',
+    healthyHabitsEditTitle: 'Edit your goals',
+    healthyHabitsEditDescription:
+      'Use the pencil icon whenever your daily targets change.',
+    dailyReportsTitle: 'Daily reports',
+    dailyReportsDescription:
+      'Log the most important parts of your day in one quick check-in.',
+    dailyReportsCreateTitle: "Add today's report",
+    dailyReportsCreateDescription:
+      'Add sleep, steps, hydration, macro and wellbeing here.',
+    dailyReportsModelTitle: 'What gets tracked',
+    dailyReportsModelDescription:
+      'Each report combines hard numbers with how you felt that day.',
+    dailyReportsHistoryTitle: 'History and review',
+    dailyReportsHistoryDescription:
+      'Come back here to review previous entries and open details.',
+    workoutsTitle: 'Workout reports',
+    workoutsDescription:
+      'Log completed sessions here and keep your training history organized.',
+    workoutsQuickStartTitle: 'Quick start a workout',
+    workoutsQuickStartDescription:
+      'Pick a template or start a blank session.',
+    workoutsTemplatesTitle: 'Saved templates',
+    workoutsTemplatesDescription:
+      'Templates help you reuse common workout structures faster.',
+    workoutsHistoryTitle: 'Workout history',
+    workoutsHistoryDescription:
+      'Open any saved session here to review or edit it.',
   },
   settings: {
     title: 'Settings',

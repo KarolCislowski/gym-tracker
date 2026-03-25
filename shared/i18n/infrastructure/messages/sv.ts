@@ -119,6 +119,57 @@ export const svMessages: TranslationDictionaryOverrides = {
     showAllLabel: 'Visa alla',
     showLessLabel: 'Visa mindre',
     noChartData: 'För lite data ännu.',
+    replayOnboarding: 'Visa guide',
+  },
+  onboarding: {
+    next: 'Nästa',
+    previous: 'Tillbaka',
+    done: 'Förstått',
+    dashboardOverviewTitle: 'Börja här',
+    dashboardOverviewDescription:
+      'Här ser du snabbt din status, dina mål och din senaste utveckling.',
+    dashboardProfileTitle: 'Fyll i din profil',
+    dashboardProfileDescription:
+      'Fyll i din profil så att appen kan anpassa uppföljningen till dig.',
+    dashboardHealthyHabitsTitle: 'Ställ in dina mål',
+    dashboardHealthyHabitsDescription:
+      'Ställ först in mål för sömn, steg, vätska och makro.',
+    profileDetailsTitle: 'Profilgrunder',
+    profileDetailsDescription:
+      'Här håller du dina viktigaste personuppgifter uppdaterade.',
+    profileHealthyHabitsTitle: 'Mål för hälsosamma vanor',
+    profileHealthyHabitsDescription:
+      'Här bestämmer du hur en bra dag ska se ut för dig.',
+    profileEditTitle: 'Redigera din profil',
+    profileEditDescription:
+      'Använd pennikonen för att snabbt uppdatera profilen.',
+    healthyHabitsEditTitle: 'Redigera dina mål',
+    healthyHabitsEditDescription:
+      'Använd pennikonen när dina dagliga mål ändras.',
+    dailyReportsTitle: 'Dagliga rapporter',
+    dailyReportsDescription:
+      'Här loggar du dagens viktigaste delar i en snabb check-in.',
+    dailyReportsCreateTitle: 'Lägg till dagens rapport',
+    dailyReportsCreateDescription:
+      'Lägg till sömn, steg, vätska, makro och välbefinnande här.',
+    dailyReportsModelTitle: 'Vad som spåras',
+    dailyReportsModelDescription:
+      'Varje rapport kombinerar siffror med hur du kände dig den dagen.',
+    dailyReportsHistoryTitle: 'Historik och granskning',
+    dailyReportsHistoryDescription:
+      'Gå tillbaka hit för att granska tidigare poster och detaljer.',
+    workoutsTitle: 'Träningsrapporter',
+    workoutsDescription:
+      'Här loggar du genomförda pass och håller ordning på träningshistoriken.',
+    workoutsQuickStartTitle: 'Snabbstarta ett pass',
+    workoutsQuickStartDescription:
+      'Välj en mall eller starta ett tomt pass.',
+    workoutsTemplatesTitle: 'Sparade mallar',
+    workoutsTemplatesDescription:
+      'Mallar gör det snabbare att återanvända vanliga passupplägg.',
+    workoutsHistoryTitle: 'Träningshistorik',
+    workoutsHistoryDescription:
+      'Här kan du öppna och redigera sparade träningspass.',
   },
   settings: {
     title: 'Inställningar',

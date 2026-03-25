@@ -48,6 +48,7 @@ export function ProfileDetailsSection({
 
   return (
     <Paper
+      data-onboarding='profile-details-section'
       elevation={0}
       ref={sectionRef}
       sx={{
@@ -76,6 +77,7 @@ export function ProfileDetailsSection({
             <Tooltip title={t.editProfile}>
               <IconButton
                 aria-label={t.editProfile}
+                data-onboarding='profile-edit-action'
                 onClick={() => setMode('edit')}
                 sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' } }}
               >
