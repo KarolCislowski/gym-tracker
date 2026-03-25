@@ -12,6 +12,10 @@ vi.mock('./daily-report-editor', () => ({
   DailyReportEditor: () => <div>Edit daily report block</div>,
 }));
 
+vi.mock('../infrastructure/daily-report.actions', () => ({
+  deleteDailyReportAction: vi.fn(),
+}));
+
 describe('DailyReportDetailsPage', () => {
   test('renders the daily report details summary', () => {
     render(
