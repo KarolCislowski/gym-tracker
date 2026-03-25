@@ -388,6 +388,8 @@ export const enMessages: TranslationDictionary = {
     saveStackLabel: 'Save stack',
     saveReportLabel: 'Save supplement report',
     stackCreated: 'Supplement stack saved successfully.',
+    stackUpdated: 'Supplement stack updated successfully.',
+    stackDeleted: 'Supplement stack deleted successfully.',
     reportCreated: 'Supplement report saved successfully.',
     reportUpdated: 'Supplement report updated successfully.',
     reportDeleted: 'Supplement report deleted successfully.',
@@ -418,6 +420,7 @@ export const enMessages: TranslationDictionary = {
     columnTakenAt: 'Taken at',
     columnActions: 'Actions',
     viewDetailsLabel: 'View details',
+    stackViewDetailsLabel: 'View stack details',
     detailsTitle: 'Supplement report details',
     detailsDescription:
       'Review the historical snapshot of the supplements you took and update the report if needed.',
@@ -428,6 +431,19 @@ export const enMessages: TranslationDictionary = {
     notFoundTitle: 'Supplement report not found',
     notFoundDescription: 'This report does not exist or you do not have access to it.',
     confirmDeleteLabel: 'Delete',
+    stackDetailsTitle: 'Supplement stack details',
+    stackDetailsDescription:
+      'Review the saved stack, update its ingredients, and keep ready-made presets for faster logging.',
+    stackSummaryTitle: 'Stack summary',
+    openStackEditLabel: 'Edit supplement stack',
+    closeStackEditLabel: 'Hide stack editor',
+    updateStackLabel: 'Save stack changes',
+    stackNotFoundTitle: 'Supplement stack not found',
+    stackNotFoundDescription: 'This stack does not exist or you do not have access to it.',
+    deleteStackLabel: 'Delete supplement stack',
+    deleteStackTitle: 'Delete supplement stack?',
+    deleteStackDescription:
+      'This action permanently deletes the supplement stack. This cannot be undone.',
     deleteReportLabel: 'Delete supplement report',
     deleteReportTitle: 'Delete supplement report?',
     deleteReportDescription:

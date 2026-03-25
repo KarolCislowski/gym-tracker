@@ -389,6 +389,8 @@ export const svMessages: TranslationDictionaryOverrides = {
     saveStackLabel: 'Spara stack',
     saveReportLabel: 'Spara supplementrapport',
     stackCreated: 'Supplement-stacken sparades.',
+    stackUpdated: 'Supplement-stacken uppdaterades.',
+    stackDeleted: 'Supplement-stacken togs bort.',
     reportCreated: 'Supplementrapporten sparades.',
     reportUpdated: 'Supplementrapporten uppdaterades.',
     reportDeleted: 'Supplementrapporten togs bort.',
@@ -419,6 +421,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     columnTakenAt: 'Togs klockan',
     columnActions: 'Åtgärder',
     viewDetailsLabel: 'Visa detaljer',
+    stackViewDetailsLabel: 'Visa stackdetaljer',
     detailsTitle: 'Detaljer för supplementrapport',
     detailsDescription:
       'Granska den historiska snapshoten av vad du tog och uppdatera rapporten vid behov.',
@@ -429,6 +432,19 @@ export const svMessages: TranslationDictionaryOverrides = {
     notFoundTitle: 'Supplementrapporten hittades inte',
     notFoundDescription: 'Den här rapporten finns inte eller så har du inte åtkomst till den.',
     confirmDeleteLabel: 'Ta bort',
+    stackDetailsTitle: 'Detaljer för supplement-stack',
+    stackDetailsDescription:
+      'Granska den sparade stacken, uppdatera dess ingredienser och håll färdiga presets redo för snabbare loggning.',
+    stackSummaryTitle: 'Stacksammanfattning',
+    openStackEditLabel: 'Redigera supplement-stack',
+    closeStackEditLabel: 'Dölj stackredigering',
+    updateStackLabel: 'Spara stackändringar',
+    stackNotFoundTitle: 'Supplement-stacken hittades inte',
+    stackNotFoundDescription: 'Den här stacken finns inte eller så har du inte åtkomst till den.',
+    deleteStackLabel: 'Ta bort supplement-stack',
+    deleteStackTitle: 'Ta bort supplement-stacken?',
+    deleteStackDescription:
+      'Den här åtgärden tar permanent bort supplement-stacken. Det går inte att ångra.',
     deleteReportLabel: 'Ta bort supplementrapport',
     deleteReportTitle: 'Ta bort supplementrapporten?',
     deleteReportDescription:

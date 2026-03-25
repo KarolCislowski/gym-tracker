@@ -7,6 +7,7 @@ import type {
   SupplementIntakeReportSummary,
   SupplementStackSummary,
   UpdateSupplementIntakeReportInput,
+  UpdateSupplementStackInput,
 } from '../domain/supplementation.types';
 
 /**
@@ -67,6 +68,85 @@ export async function listTenantSupplementStackRecords(
       notes: item.notes ?? null,
     })),
   }));
+}
+
+export async function findTenantSupplementStackRecordById(
+  tenantDbName: string,
+  userId: string,
+  stackId: string,
+): Promise<SupplementStackSummary | null> {
+  const TenantSupplementStackModel = await getTenantSupplementStackModel(
+    tenantDbName,
+  );
+  const record = await TenantSupplementStackModel.findOne({
+    _id: stackId,
+    userId,
+  }).lean();
+
+  if (!record) {
+    return null;
+  }
+
+  return {
+    id: record._id.toString(),
+    name: record.name,
+    context: record.context,
+    notes: record.notes ?? null,
+    isFavorite: record.isFavorite,
+    itemCount: record.items.length,
+    items: record.items.map((item) => ({
+      order: item.order,
+      supplementId: item.supplementId,
+      supplementSlug: item.supplementSlug,
+      supplementName: item.supplementName,
+      variantId: item.variantId ?? null,
+      variantSlug: item.variantSlug ?? null,
+      variantName: item.variantName ?? null,
+      amount: item.amount,
+      unit: item.unit,
+      notes: item.notes ?? null,
+    })),
+  };
+}
+
+export async function updateTenantSupplementStackRecord(
+  input: UpdateSupplementStackInput,
+): Promise<void> {
+  const TenantSupplementStackModel = await getTenantSupplementStackModel(
+    input.tenantDbName,
+  );
+
+  const result = await TenantSupplementStackModel.updateOne(
+    { _id: input.stackId, userId: input.userId },
+    {
+      $set: {
+        name: input.name,
+        context: input.context,
+        notes: input.notes,
+        isFavorite: input.isFavorite,
+        items: input.items,
+      },
+    },
+  );
+
+  if (!result.matchedCount) {
+    throw new Error('SUPPLEMENT_STACK_NOT_FOUND');
+  }
+}
+
+export async function deleteTenantSupplementStackRecord(
+  tenantDbName: string,
+  userId: string,
+  stackId: string,
+): Promise<void> {
+  const TenantSupplementStackModel = await getTenantSupplementStackModel(
+    tenantDbName,
+  );
+  const result = await TenantSupplementStackModel.deleteOne({ _id: stackId, userId });
+
+  if (!result.deletedCount) {
+    throw new Error('SUPPLEMENT_STACK_NOT_FOUND');
+  }
 }
 
 /**

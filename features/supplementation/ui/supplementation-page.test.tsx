@@ -18,6 +18,7 @@ vi.mock('./supplement-stack-composer', () => ({
 
 vi.mock('../infrastructure/supplementation.actions', () => ({
   deleteSupplementIntakeReportAction: vi.fn(),
+  deleteSupplementStackAction: vi.fn(),
 }));
 
 describe('SupplementationPage', () => {

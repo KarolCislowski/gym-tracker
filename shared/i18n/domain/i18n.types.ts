@@ -338,6 +338,8 @@ export interface TranslationDictionary {
     saveStackLabel: string;
     saveReportLabel: string;
     stackCreated: string;
+    stackUpdated: string;
+    stackDeleted: string;
     reportCreated: string;
     reportUpdated: string;
     reportDeleted: string;
@@ -368,6 +370,7 @@ export interface TranslationDictionary {
     columnTakenAt: string;
     columnActions: string;
     viewDetailsLabel: string;
+    stackViewDetailsLabel: string;
     detailsTitle: string;
     detailsDescription: string;
     summaryTitle: string;
@@ -377,6 +380,17 @@ export interface TranslationDictionary {
     notFoundTitle: string;
     notFoundDescription: string;
     confirmDeleteLabel: string;
+    stackDetailsTitle: string;
+    stackDetailsDescription: string;
+    stackSummaryTitle: string;
+    openStackEditLabel: string;
+    closeStackEditLabel: string;
+    updateStackLabel: string;
+    stackNotFoundTitle: string;
+    stackNotFoundDescription: string;
+    deleteStackLabel: string;
+    deleteStackTitle: string;
+    deleteStackDescription: string;
     deleteReportLabel: string;
     deleteReportTitle: string;
     deleteReportDescription: string;

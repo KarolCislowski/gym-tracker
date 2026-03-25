@@ -35,6 +35,10 @@ export interface CreateSupplementStackInput {
   items: SupplementStackItemInput[];
 }
 
+export interface UpdateSupplementStackInput extends CreateSupplementStackInput {
+  stackId: string;
+}
+
 export interface SupplementStackSummary {
   id: string;
   name: string;

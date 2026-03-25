@@ -46,6 +46,10 @@ export const createSupplementStackSchema = z.object({
   items: z.array(supplementStackItemSchema).min(1),
 });
 
+export const updateSupplementStackSchema = createSupplementStackSchema.extend({
+  stackId: z.string().trim().min(1),
+});
+
 export const createSupplementIntakeReportSchema = z.object({
   tenantDbName: z.string().trim().min(1),
   userId: z.string().trim().min(1),

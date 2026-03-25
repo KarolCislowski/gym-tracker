@@ -389,6 +389,8 @@ export const plMessages: TranslationDictionaryOverrides = {
     saveStackLabel: 'Zapisz stack',
     saveReportLabel: 'Zapisz raport suplementacji',
     stackCreated: 'Stack suplementacyjny został zapisany.',
+    stackUpdated: 'Stack suplementacyjny został zaktualizowany.',
+    stackDeleted: 'Stack suplementacyjny został usunięty.',
     reportCreated: 'Raport suplementacji został zapisany.',
     reportUpdated: 'Raport suplementacji został zaktualizowany.',
     reportDeleted: 'Raport suplementacji został usunięty.',
@@ -419,6 +421,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     columnTakenAt: 'Przyjęto o',
     columnActions: 'Akcje',
     viewDetailsLabel: 'Pokaż szczegóły',
+    stackViewDetailsLabel: 'Pokaż szczegóły stacka',
     detailsTitle: 'Szczegóły raportu suplementacji',
     detailsDescription:
       'Przejrzyj historyczny snapshot przyjętych suplementów i popraw raport, jeśli tego potrzebujesz.',
@@ -429,6 +432,19 @@ export const plMessages: TranslationDictionaryOverrides = {
     notFoundTitle: 'Nie znaleziono raportu suplementacji',
     notFoundDescription: 'Ten raport nie istnieje albo nie masz do niego dostępu.',
     confirmDeleteLabel: 'Usuń',
+    stackDetailsTitle: 'Szczegóły stacka suplementacyjnego',
+    stackDetailsDescription:
+      'Przejrzyj zapisany stack, popraw jego skład i utrzymuj gotowe zestawy do szybkiego raportowania.',
+    stackSummaryTitle: 'Podsumowanie stacka',
+    openStackEditLabel: 'Edytuj stack suplementacyjny',
+    closeStackEditLabel: 'Ukryj edycję stacka',
+    updateStackLabel: 'Zapisz zmiany stacka',
+    stackNotFoundTitle: 'Nie znaleziono stacka suplementacyjnego',
+    stackNotFoundDescription: 'Ten stack nie istnieje albo nie masz do niego dostępu.',
+    deleteStackLabel: 'Usuń stack suplementacyjny',
+    deleteStackTitle: 'Usunąć stack suplementacyjny?',
+    deleteStackDescription:
+      'Ta operacja trwale usunie zapisany stack suplementacyjny. Tego kroku nie można cofnąć.',
     deleteReportLabel: 'Usuń raport suplementacji',
     deleteReportTitle: 'Usunąć raport suplementacji?',
     deleteReportDescription:

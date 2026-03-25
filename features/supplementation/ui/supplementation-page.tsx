@@ -25,7 +25,10 @@ import type {
   SupplementIntakeReportSummary,
   SupplementStackSummary,
 } from '../domain/supplementation.types';
-import { deleteSupplementIntakeReportAction } from '../infrastructure/supplementation.actions';
+import {
+  deleteSupplementIntakeReportAction,
+  deleteSupplementStackAction,
+} from '../infrastructure/supplementation.actions';
 import { SupplementIntakeComposer } from './supplement-intake-composer';
 import { SupplementStackComposer } from './supplement-stack-composer';
 
@@ -58,6 +61,8 @@ export function SupplementationPage({
   const t = translations.supplementation;
   const feedback = status === 'supplement-stack-created'
     ? { severity: 'success' as const, message: t.stackCreated }
+    : status === 'supplement-stack-deleted'
+      ? { severity: 'success' as const, message: t.stackDeleted }
     : status === 'supplement-report-created'
       ? { severity: 'success' as const, message: t.reportCreated }
       : status === 'supplement-report-deleted'
@@ -118,6 +123,7 @@ export function SupplementationPage({
                     <TableCell>{t.columnContext}</TableCell>
                     <TableCell>{t.columnItems}</TableCell>
                     <TableCell>{t.columnNotes}</TableCell>
+                    <TableCell>{t.columnActions}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -134,6 +140,29 @@ export function SupplementationPage({
                       <TableCell>{formatSupplementToken(stack.context)}</TableCell>
                       <TableCell>{stack.itemCount}</TableCell>
                       <TableCell>{stack.notes ?? translations.supplements.emptyValue}</TableCell>
+                      <TableCell>
+                        <Stack direction='row' spacing={0.5}>
+                          <Tooltip title={t.stackViewDetailsLabel}>
+                            <IconButton
+                              aria-label={`${t.stackViewDetailsLabel}: ${stack.name}`}
+                              href={`/supplementation/stacks/${stack.id}`}
+                              size='small'
+                            >
+                              <VisibilityRoundedIcon fontSize='small' />
+                            </IconButton>
+                          </Tooltip>
+                          <DeleteConfirmationButton
+                            action={deleteSupplementStackAction}
+                            ariaLabel={`${t.deleteStackLabel}: ${stack.name}`}
+                            cancelLabel={translations.profile.cancelEditing}
+                            confirmLabel={t.confirmDeleteLabel}
+                            description={t.deleteStackDescription}
+                            hiddenFields={{ stackId: stack.id }}
+                            title={t.deleteStackTitle}
+                            tooltipLabel={t.deleteStackLabel}
+                          />
+                        </Stack>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

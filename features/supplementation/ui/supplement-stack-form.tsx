@@ -21,11 +21,16 @@ import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import type {
   SupplementAmountUnit,
   SupplementStackContext,
+  SupplementStackSummary,
 } from '../domain/supplementation.types';
 import { createSupplementStackAction } from '../infrastructure/supplementation.actions';
 
 interface SupplementStackFormProps {
+  formAction?: (formData: FormData) => void | Promise<void>;
+  initialStack?: SupplementStackSummary | null;
+  stackId?: string;
   supplements: Supplement[];
+  submitLabel?: string;
   translations: TranslationDictionary;
 }
 
@@ -69,17 +74,25 @@ const supplementStackContexts: SupplementStackContext[] = [
  * @returns A React element rendering the supplement-stack builder.
  */
 export function SupplementStackForm({
+  formAction = createSupplementStackAction,
+  initialStack = null,
+  stackId,
   supplements,
+  submitLabel,
   translations,
 }: SupplementStackFormProps) {
   const t = translations.supplementation;
-  const [name, setName] = useState('');
-  const [context, setContext] = useState<SupplementStackContext>('pre_workout');
-  const [notes, setNotes] = useState('');
-  const [isFavorite, setIsFavorite] = useState(true);
-  const [items, setItems] = useState<SupplementStackItemDraft[]>([
-    createStackItemDraft(supplements),
-  ]);
+  const [name, setName] = useState(initialStack?.name ?? '');
+  const [context, setContext] = useState<SupplementStackContext>(
+    initialStack?.context ?? 'pre_workout',
+  );
+  const [notes, setNotes] = useState(initialStack?.notes ?? '');
+  const [isFavorite, setIsFavorite] = useState(initialStack?.isFavorite ?? true);
+  const [items, setItems] = useState<SupplementStackItemDraft[]>(
+    initialStack
+      ? mapStackItemsToDrafts(initialStack, supplements)
+      : [createStackItemDraft(supplements)],
+  );
 
   const payload = useMemo(
     () =>
@@ -114,7 +127,7 @@ export function SupplementStackForm({
   );
 
   return (
-    <Stack component='form' action={createSupplementStackAction} spacing={2.5}>
+    <Stack component='form' action={formAction} spacing={2.5}>
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
@@ -325,6 +338,7 @@ export function SupplementStackForm({
         })}
       </Stack>
 
+      {stackId ? <input hidden name='stackId' readOnly value={stackId} /> : null}
       <input hidden name='stackPayload' readOnly value={payload} />
 
       <Button
@@ -333,7 +347,7 @@ export function SupplementStackForm({
         type='submit'
         variant='contained'
       >
-        {t.saveStackLabel}
+        {submitLabel ?? t.saveStackLabel}
       </Button>
     </Stack>
   );
@@ -353,4 +367,31 @@ function createStackItemDraft(supplements: Supplement[]): SupplementStackItemDra
     unit: 'g',
     notes: '',
   };
+}
+
+function mapStackItemsToDrafts(
+  stack: SupplementStackSummary,
+  supplements: Supplement[],
+): SupplementStackItemDraft[] {
+  if (!stack.items.length) {
+    return [createStackItemDraft(supplements)];
+  }
+
+  return stack.items.map((item) => {
+    const supplement = supplements.find(
+      (candidate) => candidate.slug === item.supplementSlug,
+    );
+    const variant =
+      supplement?.variants.find((candidate) => candidate.id === item.variantId) ??
+      supplement?.variants[0];
+
+    return {
+      id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2),
+      supplementSlug: item.supplementSlug,
+      variantId: variant?.id ?? item.variantId ?? '',
+      amount: String(item.amount),
+      unit: item.unit,
+      notes: item.notes ?? '',
+    };
+  });
 }

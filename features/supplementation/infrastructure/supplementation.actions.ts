@@ -8,13 +8,17 @@ import {
   createSupplementIntakeReport,
   createSupplementStack,
   deleteSupplementIntakeReport,
+  deleteSupplementStack,
   getSupplementIntakeReportDetails,
+  getSupplementStackDetails,
   updateSupplementIntakeReport,
+  updateSupplementStack,
 } from '../application/supplementation.service';
 import type {
   CreateSupplementIntakeReportInput,
   CreateSupplementStackInput,
   UpdateSupplementIntakeReportInput,
+  UpdateSupplementStackInput,
 } from '../domain/supplementation.types';
 
 /**
@@ -51,6 +55,76 @@ export async function createSupplementStackAction(
   }
 
   redirect('/supplementation?status=supplement-stack-created');
+}
+
+export async function updateSupplementStackAction(
+  formData: FormData,
+): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const stackId = String(formData.get('stackId') ?? '').trim();
+  const payload = String(formData.get('stackPayload') ?? '').trim();
+
+  try {
+    const parsedPayload = JSON.parse(payload) as Omit<
+      UpdateSupplementStackInput,
+      'tenantDbName' | 'userId' | 'stackId'
+    >;
+    const existingStack = await getSupplementStackDetails(
+      session.user.tenantDbName,
+      session.user.id,
+      stackId,
+    );
+
+    if (!existingStack) {
+      throw new Error('SUPPLEMENT_STACK_NOT_FOUND');
+    }
+
+    await updateSupplementStack({
+      ...parsedPayload,
+      tenantDbName: session.user.tenantDbName,
+      userId: session.user.id,
+      stackId,
+    });
+  } catch (error) {
+    redirect(
+      `/supplementation/stacks/${encodeURIComponent(stackId)}?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+    );
+  }
+
+  redirect(
+    `/supplementation/stacks/${encodeURIComponent(stackId)}?status=supplement-stack-updated`,
+  );
+}
+
+export async function deleteSupplementStackAction(
+  formData: FormData,
+): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const stackId = String(formData.get('stackId') ?? '').trim();
+
+  try {
+    await deleteSupplementStack(
+      session.user.tenantDbName,
+      session.user.id,
+      stackId,
+    );
+  } catch (error) {
+    redirect(
+      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+    );
+  }
+
+  redirect('/supplementation?status=supplement-stack-deleted');
 }
 
 /**
