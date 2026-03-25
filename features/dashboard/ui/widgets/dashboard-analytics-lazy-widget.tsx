@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import dynamic from 'next/dynamic';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 import type { DashboardAnalytics } from '../../application/dashboard-analytics';
+import { DashboardAnalyticsMobileSummaryWidget } from './dashboard-analytics-mobile-summary-widget';
 
 const DashboardAnalyticsWidget = dynamic(
   () =>
@@ -50,11 +52,18 @@ export function DashboardAnalyticsLazyWidget({
   translations,
   unitSystem,
 }: DashboardAnalyticsLazyWidgetProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { noSsr: true });
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    if (shouldLoad) {
+    setHasMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasMounted || shouldLoad || isMobile) {
       return;
     }
 
@@ -79,7 +88,21 @@ export function DashboardAnalyticsLazyWidget({
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, [shouldLoad]);
+  }, [hasMounted, isMobile, shouldLoad]);
+
+  if (!hasMounted) {
+    return <AnalyticsWidgetPlaceholder />;
+  }
+
+  if (isMobile) {
+    return (
+      <DashboardAnalyticsMobileSummaryWidget
+        analytics={analytics}
+        translations={translations}
+        unitSystem={unitSystem}
+      />
+    );
+  }
 
   return (
     <Box ref={containerRef}>

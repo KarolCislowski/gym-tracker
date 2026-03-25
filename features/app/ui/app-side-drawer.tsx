@@ -39,6 +39,95 @@ interface AppSideDrawerProps {
 const expandedDrawerWidth = 280;
 const collapsedDrawerWidth = 88;
 
+interface NavigationItem {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  secondary: string;
+}
+
+export function resolveNavigationItems(
+  translations: TranslationDictionary['dashboard'],
+  displayName: string,
+): {
+  desktop: NavigationItem[];
+  mobile: NavigationItem[];
+} {
+  const workspaceItem = {
+    secondary: translations.workspace,
+  };
+
+  const overviewItem: NavigationItem = {
+    href: '/',
+    icon: <SpaceDashboardRoundedIcon />,
+    label: translations.overview,
+    secondary: workspaceItem.secondary,
+  };
+  const profileItem: NavigationItem = {
+    href: '/profile',
+    icon: <PersonRoundedIcon />,
+    label: translations.profile,
+    secondary: displayName,
+  };
+  const workoutReportsItem: NavigationItem = {
+    href: '/workouts',
+    icon: <TableChartRoundedIcon />,
+    label: translations.workoutReports,
+    secondary: workspaceItem.secondary,
+  };
+  const dailyReportsItem: NavigationItem = {
+    href: '/daily-reports',
+    icon: <TodayRoundedIcon />,
+    label: translations.dailyReports,
+    secondary: workspaceItem.secondary,
+  };
+  const exerciseAtlasItem: NavigationItem = {
+    href: '/exercises',
+    icon: <FitnessCenterRoundedIcon />,
+    label: translations.exerciseAtlas,
+    secondary: workspaceItem.secondary,
+  };
+  const supplementAtlasItem: NavigationItem = {
+    href: '/supplements',
+    icon: <ScienceRoundedIcon />,
+    label: translations.supplementAtlas,
+    secondary: workspaceItem.secondary,
+  };
+  const supplementationItem: NavigationItem = {
+    href: '/supplementation',
+    icon: <ScienceRoundedIcon />,
+    label: translations.supplementation,
+    secondary: workspaceItem.secondary,
+  };
+  const settingsItem: NavigationItem = {
+    href: '/settings',
+    icon: <SettingsRoundedIcon />,
+    label: translations.settings,
+    secondary: workspaceItem.secondary,
+  };
+
+  return {
+    mobile: [
+      overviewItem,
+      profileItem,
+      workoutReportsItem,
+      dailyReportsItem,
+      supplementationItem,
+      settingsItem,
+    ],
+    desktop: [
+      overviewItem,
+      profileItem,
+      workoutReportsItem,
+      dailyReportsItem,
+      supplementationItem,
+      exerciseAtlasItem,
+      supplementAtlasItem,
+      settingsItem,
+    ],
+  };
+}
+
 /**
  * Shared application side navigation with a collapsible desktop state.
  * @param props - Component props for the authenticated side drawer.
@@ -61,58 +150,9 @@ export function AppSideDrawer({
 }: AppSideDrawerProps) {
   const pathname = usePathname();
   const t = translations.dashboard;
-  const navigationItems = [
-    {
-      href: '/',
-      icon: <SpaceDashboardRoundedIcon />,
-      label: t.overview,
-      secondary: t.workspace,
-    },
-    {
-      href: '/profile',
-      icon: <PersonRoundedIcon />,
-      label: t.profile,
-      secondary: displayName,
-    },
-    {
-      href: '/exercises',
-      icon: <FitnessCenterRoundedIcon />,
-      label: t.exerciseAtlas,
-      secondary: t.workspace,
-    },
-    {
-      href: '/supplements',
-      icon: <ScienceRoundedIcon />,
-      label: t.supplementAtlas,
-      secondary: t.workspace,
-    },
-    {
-      href: '/supplementation',
-      icon: <ScienceRoundedIcon />,
-      label: t.supplementation,
-      secondary: t.workspace,
-    },
-    {
-      href: '/workouts',
-      icon: <TableChartRoundedIcon />,
-      label: t.workoutReports,
-      secondary: t.workspace,
-    },
-    {
-      href: '/daily-reports',
-      icon: <TodayRoundedIcon />,
-      label: t.dailyReports,
-      secondary: t.workspace,
-    },
-    {
-      href: '/settings',
-      icon: <SettingsRoundedIcon />,
-      label: t.settings,
-      secondary: t.workspace,
-    },
-  ];
+  const navigationItems = resolveNavigationItems(t, displayName);
 
-  const drawerContent = (
+  const renderDrawerContent = (items: NavigationItem[]) => (
     <Box
       sx={{
         height: '100%',
@@ -158,7 +198,7 @@ export function AppSideDrawer({
 
       <Box component='nav' aria-label={t.primaryNavigation}>
         <List sx={{ px: 1.5, py: 1 }}>
-        {navigationItems.map((item) => (
+        {items.map((item) => (
           <Tooltip
             key={item.href}
             placement='right'
@@ -220,7 +260,7 @@ export function AppSideDrawer({
         }}
         variant='temporary'
       >
-        {drawerContent}
+        {renderDrawerContent(navigationItems.mobile)}
       </Drawer>
 
       <Drawer
@@ -250,7 +290,7 @@ export function AppSideDrawer({
         }}
         variant='permanent'
       >
-        {drawerContent}
+        {renderDrawerContent(navigationItems.desktop)}
       </Drawer>
     </>
   );

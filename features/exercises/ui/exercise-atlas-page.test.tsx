@@ -21,6 +21,41 @@ vi.mock('./exercise-favorite-button', () => ({
 }));
 
 describe('ExerciseAtlasPage', () => {
+  test('shows a mobile portrait atlas notice instead of the table', async () => {
+    const originalMatchMedia = window.matchMedia;
+
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches:
+        query.includes('max-width') || query.includes('orientation: portrait'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    render(
+      <ExerciseAtlasPage
+        exercises={[]}
+        favoriteExerciseSlugs={[]}
+        translations={enMessages}
+      />,
+    );
+
+    expect(
+      await screen.findByText('Atlas available on larger screens'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'The full exercise atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
+      ),
+    ).toBeInTheDocument();
+
+    window.matchMedia = originalMatchMedia;
+  });
+
   /**
    * Verifies that the atlas page renders heading content and exercise rows.
    */

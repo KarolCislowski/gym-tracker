@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -12,7 +14,9 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
@@ -50,6 +54,10 @@ export function SupplementAtlasGrid({
   supplements,
   translations,
 }: SupplementAtlasGridProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { noSsr: true });
+  const isPortrait = useMediaQuery('(orientation: portrait)', { noSsr: true });
+  const [hasMounted, setHasMounted] = useState(false);
   const {
     filteredRows,
     filterOptions,
@@ -88,6 +96,23 @@ export function SupplementAtlasGrid({
       column.field === 'name' ? { ...column, pinnable: true } : column,
     )
     .flatMap((column) => (column.field === 'name' ? [column, actionColumn] : [column]));
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return <AtlasGridPlaceholder />;
+  }
+
+  if (isMobile && isPortrait) {
+    return (
+      <AtlasMobileNotice
+        description={translations.mobileAtlasDescription}
+        title={translations.mobileAtlasTitle}
+      />
+    );
+  }
 
   return (
     <Stack spacing={2.5}>
@@ -280,5 +305,44 @@ export function SupplementAtlasGrid({
         <Typography color='text.secondary'>{translations.emptyState}</Typography>
       ) : null}
     </Stack>
+  );
+}
+
+function AtlasMobileNotice({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        p: { xs: 3, md: 4 },
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 6,
+      }}
+    >
+      <Stack spacing={1}>
+        <Typography variant='h6'>{title}</Typography>
+        <Typography color='text.secondary'>{description}</Typography>
+      </Stack>
+    </Paper>
+  );
+}
+
+function AtlasGridPlaceholder() {
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        minHeight: 240,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 6,
+      }}
+    />
   );
 }

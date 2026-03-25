@@ -2,13 +2,47 @@
  * @vitest-environment jsdom
  */
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
 import { SupplementAtlasPage } from './supplement-atlas-page';
 
 describe('SupplementAtlasPage', () => {
+  test('shows a mobile portrait atlas notice instead of the table', async () => {
+    const originalMatchMedia = window.matchMedia;
+
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches:
+        query.includes('max-width') || query.includes('orientation: portrait'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    render(
+      <SupplementAtlasPage
+        supplements={[]}
+        translations={enMessages}
+      />,
+    );
+
+    expect(
+      await screen.findByText('Atlas available on larger screens'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'The full supplement atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
+      ),
+    ).toBeInTheDocument();
+
+    window.matchMedia = originalMatchMedia;
+  });
+
   /**
    * Verifies that the supplement atlas renders rows and heading content.
    */

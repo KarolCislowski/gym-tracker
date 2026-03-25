@@ -112,6 +112,10 @@ export const plMessages: TranslationDictionaryOverrides = {
     chartViewLabel: 'Wykres',
     tableViewLabel: 'Tabela',
     periodLabel: 'Okres',
+    quickStatusTitle: 'Szybki status',
+    analysisDesktopOnly:
+      'Szczegółowe wykresy i głębsza analiza są dostępne na większych ekranach.',
+    versusPreviousLabel: 'vs poprzedni okres',
     showAllLabel: 'Pokaż wszystkie',
     showLessLabel: 'Pokaż mniej',
     noChartData: 'Za mało danych.',
@@ -225,6 +229,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     clearFilters: 'Wyczyść filtry',
     allOptions: 'Wszystkie',
     emptyState: 'Brak ćwiczeń pasujących do wyszukiwania.',
+    mobileAtlasTitle: 'Atlas dostępny na większych ekranach',
+    mobileAtlasDescription:
+      'Pełny atlas ćwiczeń korzysta z szerokiej tabeli porównawczej, dlatego jest ukryty w mobilnym widoku pionowym.',
     columnExercise: 'Ćwiczenie',
     columnType: 'Typ',
     columnPattern: 'Wzorzec ruchu',
@@ -283,6 +290,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     filterCompoundTypeLabel: 'Typ wariantu',
     clearFilters: 'Wyczyść filtry',
     emptyState: 'Żadne suplementy nie pasują do aktualnych filtrów.',
+    mobileAtlasTitle: 'Atlas dostępny na większych ekranach',
+    mobileAtlasDescription:
+      'Pełny atlas suplementów korzysta z szerokiej tabeli porównawczej, dlatego jest ukryty w mobilnym widoku pionowym.',
     emptyValue: 'Nie podano',
     columnActions: 'Akcje',
     columnSubstance: 'Substancja',

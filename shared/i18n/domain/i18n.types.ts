@@ -102,6 +102,9 @@ export interface TranslationDictionary {
     chartViewLabel: string;
     tableViewLabel: string;
     periodLabel: string;
+    quickStatusTitle: string;
+    analysisDesktopOnly: string;
+    versusPreviousLabel: string;
     showAllLabel: string;
     showLessLabel: string;
     noChartData: string;
@@ -200,6 +203,8 @@ export interface TranslationDictionary {
     clearFilters: string;
     allOptions: string;
     emptyState: string;
+    mobileAtlasTitle: string;
+    mobileAtlasDescription: string;
     columnExercise: string;
     columnType: string;
     columnPattern: string;
@@ -254,6 +259,8 @@ export interface TranslationDictionary {
     filterCompoundTypeLabel: string;
     clearFilters: string;
     emptyState: string;
+    mobileAtlasTitle: string;
+    mobileAtlasDescription: string;
     emptyValue: string;
     columnActions: string;
     columnSubstance: string;

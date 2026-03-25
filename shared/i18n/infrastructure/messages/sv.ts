@@ -112,6 +112,10 @@ export const svMessages: TranslationDictionaryOverrides = {
     chartViewLabel: 'Diagram',
     tableViewLabel: 'Tabell',
     periodLabel: 'Period',
+    quickStatusTitle: 'Snabbstatus',
+    analysisDesktopOnly:
+      'Detaljerade diagram och djupare analys finns på större skärmar.',
+    versusPreviousLabel: 'jämfört med föregående',
     showAllLabel: 'Visa alla',
     showLessLabel: 'Visa mindre',
     noChartData: 'För lite data ännu.',
@@ -225,6 +229,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     clearFilters: 'Rensa filter',
     allOptions: 'Alla',
     emptyState: 'Inga övningar matchade sökningen.',
+    mobileAtlasTitle: 'Atlas tillgänglig på större skärmar',
+    mobileAtlasDescription:
+      'Den fullständiga övningsatlasen använder en bred jämförelsetabell och är därför dold i stående mobilvy.',
     columnExercise: 'Övning',
     columnType: 'Typ',
     columnPattern: 'Rörelsemönster',
@@ -283,6 +290,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     filterCompoundTypeLabel: 'Varianttyp',
     clearFilters: 'Rensa filter',
     emptyState: 'Inga tillskott matchar de aktuella filtren.',
+    mobileAtlasTitle: 'Atlas tillgänglig på större skärmar',
+    mobileAtlasDescription:
+      'Den fullständiga tillskottsatlasen använder en bred jämförelsetabell och är därför dold i stående mobilvy.',
     emptyValue: 'Ej angivet',
     columnActions: 'Åtgärder',
     columnSubstance: 'Substans',

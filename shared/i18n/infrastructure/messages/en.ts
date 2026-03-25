@@ -114,6 +114,10 @@ export const enMessages: TranslationDictionary = {
     chartViewLabel: 'Chart',
     tableViewLabel: 'Table',
     periodLabel: 'Period',
+    quickStatusTitle: 'Quick status',
+    analysisDesktopOnly:
+      'Detailed charts and deeper analysis are available on larger screens.',
+    versusPreviousLabel: 'vs previous',
     showAllLabel: 'Show all',
     showLessLabel: 'Show less',
     noChartData: 'Not enough data yet.',
@@ -224,6 +228,9 @@ export const enMessages: TranslationDictionary = {
     clearFilters: 'Clear filters',
     allOptions: 'All',
     emptyState: 'No exercises matched the current search.',
+    mobileAtlasTitle: 'Atlas available on larger screens',
+    mobileAtlasDescription:
+      'The full exercise atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
     columnExercise: 'Exercise',
     columnType: 'Type',
     columnPattern: 'Movement pattern',
@@ -282,6 +289,9 @@ export const enMessages: TranslationDictionary = {
     filterCompoundTypeLabel: 'Variant type',
     clearFilters: 'Clear filters',
     emptyState: 'No supplements match the current filters.',
+    mobileAtlasTitle: 'Atlas available on larger screens',
+    mobileAtlasDescription:
+      'The full supplement atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
     emptyValue: 'Not provided',
     columnActions: 'Actions',
     columnSubstance: 'Substance',
