@@ -59,14 +59,11 @@ export function DashboardHealthyHabitsWidget({
             </Typography>
           </Stack>
           <Tooltip title={habitsTranslations.goToProfile}>
-            <IconButton
-              aria-label={habitsTranslations.goToProfile}
-              component={Link}
-              href='/profile'
-              size='small'
-            >
-              <EditRoundedIcon fontSize='small' />
-            </IconButton>
+            <Link aria-label={habitsTranslations.goToProfile} href='/profile'>
+              <IconButton size='small'>
+                <EditRoundedIcon fontSize='small' />
+              </IconButton>
+            </Link>
           </Tooltip>
         </Stack>
         <Typography color='text.secondary'>

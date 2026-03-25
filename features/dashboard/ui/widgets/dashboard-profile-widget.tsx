@@ -59,14 +59,11 @@ export function DashboardProfileWidget({
             </Typography>
           </Stack>
           <Tooltip title={profileTranslations.goToProfile}>
-            <IconButton
-              aria-label={profileTranslations.goToProfile}
-              component={Link}
-              href='/profile'
-              size='small'
-            >
-              <EditRoundedIcon fontSize='small' />
-            </IconButton>
+            <Link aria-label={profileTranslations.goToProfile} href='/profile'>
+              <IconButton size='small'>
+                <EditRoundedIcon fontSize='small' />
+              </IconButton>
+            </Link>
           </Tooltip>
         </Stack>
         <Typography color='text.secondary'>
