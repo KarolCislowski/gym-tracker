@@ -101,6 +101,10 @@ export const createWorkoutSessionSchema = z.object({
   blocks: z.array(workoutBlockSchema).min(1),
 });
 
+export const updateWorkoutSessionSchema = createWorkoutSessionSchema.extend({
+  reportId: z.string().trim().min(1),
+});
+
 export const createWorkoutTemplateSchema = z.object({
   tenantDbName: z.string().trim().min(1),
   userId: z.string().trim().min(1),

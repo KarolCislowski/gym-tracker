@@ -50,8 +50,11 @@ export async function createDailyReportAction(formData: FormData): Promise<void>
           userSnapshot.healthyHabits?.regularSleepSchedule ?? null,
         stepsPerDay: userSnapshot.healthyHabits?.stepsPerDay ?? null,
         waterLitersPerDay: userSnapshot.healthyHabits?.waterLitersPerDay ?? null,
+        caloriesPerDay: userSnapshot.healthyHabits?.caloriesPerDay ?? null,
+        carbsGramsPerDay: userSnapshot.healthyHabits?.carbsGramsPerDay ?? null,
         proteinGramsPerDay:
           userSnapshot.healthyHabits?.proteinGramsPerDay ?? null,
+        fatGramsPerDay: userSnapshot.healthyHabits?.fatGramsPerDay ?? null,
         strengthWorkoutsPerWeek:
           userSnapshot.healthyHabits?.strengthWorkoutsPerWeek ?? null,
         cardioMinutesPerWeek:

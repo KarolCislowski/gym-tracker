@@ -20,6 +20,8 @@ const nullableMenstruationPhaseSchema = z.union([
 
 const nullableNumberSchema = z.number().min(0).nullable();
 const nullableBooleanSchema = z.boolean().nullable();
+const nullableOptionalNumberSchema = nullableNumberSchema.optional();
+const nullableOptionalBooleanSchema = nullableBooleanSchema.optional();
 
 export const createDailyReportSchema = z.object({
   tenantDbName: z.string().trim().min(1),
@@ -30,7 +32,10 @@ export const createDailyReportSchema = z.object({
     regularSleepSchedule: nullableBooleanSchema,
     stepsPerDay: nullableNumberSchema,
     waterLitersPerDay: nullableNumberSchema,
+    caloriesPerDay: nullableOptionalNumberSchema,
+    carbsGramsPerDay: nullableOptionalNumberSchema,
     proteinGramsPerDay: nullableNumberSchema,
+    fatGramsPerDay: nullableOptionalNumberSchema,
     strengthWorkoutsPerWeek: nullableNumberSchema,
     cardioMinutesPerWeek: nullableNumberSchema,
   }),
@@ -39,7 +44,10 @@ export const createDailyReportSchema = z.object({
     sleepScheduleKept: nullableBooleanSchema,
     steps: nullableNumberSchema,
     waterLiters: nullableNumberSchema,
+    calories: nullableOptionalNumberSchema,
+    carbsGrams: nullableOptionalNumberSchema,
     proteinGrams: nullableNumberSchema,
+    fatGrams: nullableOptionalNumberSchema,
     strengthWorkoutDone: nullableBooleanSchema,
     cardioMinutes: nullableNumberSchema,
   }),
@@ -77,7 +85,10 @@ export const createDailyReportSchema = z.object({
     sleepGoalMet: nullableBooleanSchema,
     stepsGoalMet: nullableBooleanSchema,
     waterGoalMet: nullableBooleanSchema,
+    caloriesGoalMet: nullableOptionalBooleanSchema,
+    carbsGoalMet: nullableOptionalBooleanSchema,
     proteinGoalMet: nullableBooleanSchema,
+    fatGoalMet: nullableOptionalBooleanSchema,
     cardioGoalMet: nullableBooleanSchema,
   }),
 });

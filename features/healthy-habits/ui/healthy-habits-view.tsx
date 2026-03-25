@@ -2,6 +2,8 @@ import { Box } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
+  getHealthyHabitsCaloriesLabel,
+  getHealthyHabitsMacroLabel,
   getHealthyHabitsProteinLabel,
   getHealthyHabitsWaterLabel,
 } from '@/features/healthy-habits/application/healthy-habits-view';
@@ -67,12 +69,24 @@ export function HealthyHabitsView({
         )}
       />
       <ProfileField
+        label={t.caloriesPerDayLabel}
+        value={getHealthyHabitsCaloriesLabel(t, habits ?? null)}
+      />
+      <ProfileField
+        label={t.carbsPerDayLabel}
+        value={getHealthyHabitsMacroLabel(t, habits?.carbsGramsPerDay ?? null)}
+      />
+      <ProfileField
         label={t.proteinPerDayLabel}
         value={getHealthyHabitsProteinLabel(
           t,
           habits?.proteinGramsPerDay ?? null,
           unitSystem,
         )}
+      />
+      <ProfileField
+        label={t.fatPerDayLabel}
+        value={getHealthyHabitsMacroLabel(t, habits?.fatGramsPerDay ?? null)}
       />
       <ProfileField
         label={t.strengthWorkoutsPerWeekLabel}

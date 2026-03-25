@@ -25,7 +25,9 @@ describe('healthy-habits.service', () => {
       stepsPerDay: 9000,
       waterLitersPerDay: null,
       waterFluidOuncesPerDay: 70.4,
+      carbsGramsPerDay: 320,
       proteinGramsPerDay: 150,
+      fatGramsPerDay: 80,
       strengthWorkoutsPerWeek: 3,
       cardioMinutesPerWeek: 120,
     });
@@ -36,7 +38,10 @@ describe('healthy-habits.service', () => {
       regularSleepSchedule: true,
       stepsPerDay: 9000,
       waterLitersPerDay: 2,
+      caloriesPerDay: 2600,
+      carbsGramsPerDay: 320,
       proteinGramsPerDay: 150,
+      fatGramsPerDay: 80,
       strengthWorkoutsPerWeek: 3,
       cardioMinutesPerWeek: 120,
     });

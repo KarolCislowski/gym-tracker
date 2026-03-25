@@ -38,7 +38,25 @@ const tenantHealthyHabitsSchema = new Schema<TenantHealthyHabits>(
       min: 0,
       default: null,
     },
+    caloriesPerDay: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
+    carbsGramsPerDay: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
     proteinGramsPerDay: {
+      type: Number,
+      required: false,
+      min: 0,
+      default: null,
+    },
+    fatGramsPerDay: {
       type: Number,
       required: false,
       min: 0,
@@ -85,7 +103,10 @@ export async function getTenantHealthyHabitsModel(
     const hasLatestSchemaFields =
       Boolean(existingModel.schema.path('averageSleepHoursPerDay')) &&
       Boolean(existingModel.schema.path('waterLitersPerDay')) &&
+      Boolean(existingModel.schema.path('caloriesPerDay')) &&
+      Boolean(existingModel.schema.path('carbsGramsPerDay')) &&
       Boolean(existingModel.schema.path('proteinGramsPerDay')) &&
+      Boolean(existingModel.schema.path('fatGramsPerDay')) &&
       Boolean(existingModel.schema.path('regularSleepSchedule'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {

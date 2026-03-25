@@ -1,6 +1,7 @@
 import {
   convertHydrationToMetricLiters,
 } from '@/shared/units/application/unit-conversion';
+import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
 
 import { updateHealthyHabitsSchema } from '../domain/healthy-habits.validation';
 import type { UpdateHealthyHabitsInput } from '../domain/healthy-habits.types';
@@ -21,12 +22,17 @@ export async function updateHealthyHabits(
     regularSleepSchedule: input.regularSleepSchedule,
     stepsPerDay: input.stepsPerDay,
     waterLitersPerDay: resolveWaterLiters(input),
+    carbsGramsPerDay: input.carbsGramsPerDay,
     proteinGramsPerDay: input.proteinGramsPerDay,
+    fatGramsPerDay: input.fatGramsPerDay,
     strengthWorkoutsPerWeek: input.strengthWorkoutsPerWeek,
     cardioMinutesPerWeek: input.cardioMinutesPerWeek,
   });
 
-  await updateTenantHealthyHabitsRecord(parsedInput);
+  await updateTenantHealthyHabitsRecord({
+    ...parsedInput,
+    caloriesPerDay: resolveCaloriesPerDay(input),
+  });
 }
 
 function resolveWaterLiters(input: UpdateHealthyHabitsInput): number | null {
@@ -41,5 +47,13 @@ function resolveWaterLiters(input: UpdateHealthyHabitsInput): number | null {
   return convertHydrationToMetricLiters({
     system: input.unitSystem,
     value: input.waterFluidOuncesPerDay,
+  });
+}
+
+function resolveCaloriesPerDay(input: UpdateHealthyHabitsInput): number | null {
+  return calculateCaloriesFromMacros({
+    proteinGrams: input.proteinGramsPerDay,
+    carbsGrams: input.carbsGramsPerDay,
+    fatGrams: input.fatGramsPerDay,
   });
 }

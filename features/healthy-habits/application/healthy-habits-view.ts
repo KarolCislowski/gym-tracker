@@ -1,5 +1,6 @@
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
 import {
   convertHydrationFromMetricLiters,
 } from '@/shared/units/application/unit-conversion';
@@ -46,4 +47,40 @@ export function getHealthyHabitsProteinLabel(
   }
 
   return `${value} g`;
+}
+
+export function getHealthyHabitsCaloriesLabel(
+  translations: HealthyHabitsTranslations,
+  habits: HealthyHabitsSnapshot | null,
+): string {
+  return formatCaloriesLabel(
+    translations,
+    calculateCaloriesFromMacros({
+      proteinGrams: habits?.proteinGramsPerDay,
+      carbsGrams: habits?.carbsGramsPerDay,
+      fatGrams: habits?.fatGramsPerDay,
+    }),
+  );
+}
+
+export function getHealthyHabitsMacroLabel(
+  translations: HealthyHabitsTranslations,
+  value: number | null,
+): string {
+  if (value == null) {
+    return translations.emptyValue;
+  }
+
+  return `${value} g`;
+}
+
+function formatCaloriesLabel(
+  translations: HealthyHabitsTranslations,
+  value: number | null,
+): string {
+  if (value == null) {
+    return translations.emptyValue;
+  }
+
+  return `${value} kcal`;
 }

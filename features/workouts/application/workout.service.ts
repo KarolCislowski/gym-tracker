@@ -2,6 +2,8 @@ import { createWorkoutSessionSchema } from '../domain/workout.validation';
 import type {
   CreateWorkoutTemplateInput,
   CreateWorkoutSessionInput,
+  UpdateWorkoutSessionInput,
+  WorkoutSessionDetails,
   WorkoutTemplateSummary,
   WorkoutSessionAnalytics,
   WorkoutSessionSummary,
@@ -9,11 +11,16 @@ import type {
 import {
   createTenantWorkoutTemplateRecord,
   createTenantWorkoutSessionRecord,
+  findTenantWorkoutSessionRecordById,
   listTenantWorkoutTemplateRecords,
   listTenantWorkoutSessionAnalyticsRecords,
   listTenantWorkoutSessionRecords,
+  updateTenantWorkoutSessionRecord,
 } from '../infrastructure/workout.db';
-import { createWorkoutTemplateSchema } from '../domain/workout.validation';
+import {
+  createWorkoutTemplateSchema,
+  updateWorkoutSessionSchema,
+} from '../domain/workout.validation';
 
 /**
  * Persists a workout session with the performed exercise entries and sets.
@@ -26,6 +33,22 @@ export async function createWorkoutSession(
   createWorkoutSessionSchema.parse(input);
 
   await createTenantWorkoutSessionRecord(input);
+}
+
+export async function getWorkoutSessionDetails(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<WorkoutSessionDetails | null> {
+  return findTenantWorkoutSessionRecordById(tenantDbName, userId, reportId);
+}
+
+export async function updateWorkoutSession(
+  input: UpdateWorkoutSessionInput,
+): Promise<void> {
+  updateWorkoutSessionSchema.parse(input);
+
+  await updateTenantWorkoutSessionRecord(input);
 }
 
 /**

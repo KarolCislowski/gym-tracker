@@ -3,7 +3,10 @@ export interface TenantDailyGoalsSnapshot {
   regularSleepSchedule?: boolean | null;
   stepsPerDay?: number | null;
   waterLitersPerDay?: number | null;
+  caloriesPerDay?: number | null;
+  carbsGramsPerDay?: number | null;
   proteinGramsPerDay?: number | null;
+  fatGramsPerDay?: number | null;
   strengthWorkoutsPerWeek?: number | null;
   cardioMinutesPerWeek?: number | null;
 }
@@ -13,7 +16,10 @@ export interface TenantDailyActuals {
   sleepScheduleKept?: boolean | null;
   steps?: number | null;
   waterLiters?: number | null;
+  calories?: number | null;
+  carbsGrams?: number | null;
   proteinGrams?: number | null;
+  fatGrams?: number | null;
   strengthWorkoutDone?: boolean | null;
   cardioMinutes?: number | null;
 }
@@ -61,7 +67,10 @@ export interface TenantDailyCompletion {
   sleepGoalMet?: boolean | null;
   stepsGoalMet?: boolean | null;
   waterGoalMet?: boolean | null;
+  caloriesGoalMet?: boolean | null;
+  carbsGoalMet?: boolean | null;
   proteinGoalMet?: boolean | null;
+  fatGoalMet?: boolean | null;
   cardioGoalMet?: boolean | null;
 }
 

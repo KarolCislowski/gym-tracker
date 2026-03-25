@@ -7,11 +7,14 @@ import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.s
 
 import {
   createWorkoutSession,
+  getWorkoutSessionDetails,
   createWorkoutTemplate,
+  updateWorkoutSession,
 } from '../application/workout.service';
 import type {
   CreateWorkoutSessionInput,
   CreateWorkoutTemplateInput,
+  UpdateWorkoutSessionInput,
 } from '../domain/workout.types';
 
 /**
@@ -81,6 +84,50 @@ export async function createWorkoutTemplateAction(formData: FormData): Promise<v
   }
 
   redirect('/workouts?status=workout-template-created');
+}
+
+export async function updateWorkoutReportAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const reportId = String(formData.get('reportId') ?? '').trim();
+  const payload = String(formData.get('reportPayload') ?? '').trim();
+
+  try {
+    const parsedPayload = JSON.parse(payload) as Omit<
+      UpdateWorkoutSessionInput,
+      'tenantDbName' | 'userId' | 'reportId' | 'locationSnapshot'
+    >;
+    const [existingReport, userSnapshot] = await Promise.all([
+      getWorkoutSessionDetails(
+        session.user.tenantDbName,
+        session.user.id,
+        reportId,
+      ),
+      getAuthenticatedUserSnapshot(session.user.tenantDbName, session.user.id),
+    ]);
+
+    if (!existingReport) {
+      throw new Error('WORKOUT_REPORT_NOT_FOUND');
+    }
+
+    await updateWorkoutSession({
+      ...normalizeWorkoutPayload(parsedPayload),
+      tenantDbName: session.user.tenantDbName,
+      userId: session.user.id,
+      reportId,
+      locationSnapshot: userSnapshot.profile?.location ?? existingReport.locationSnapshot,
+    });
+  } catch (error) {
+    redirect(
+      `/workouts/${encodeURIComponent(reportId)}?error=${encodeURIComponent(getWorkoutErrorCode(error))}`,
+    );
+  }
+
+  redirect(`/workouts/${encodeURIComponent(reportId)}?status=workout-report-updated`);
 }
 
 function getWorkoutErrorCode(error: unknown): string {

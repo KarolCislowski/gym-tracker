@@ -1,5 +1,7 @@
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -8,6 +10,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -135,6 +138,7 @@ export function WorkoutReportsPage({
                   <TableCell>{t.columnBlocks}</TableCell>
                   <TableCell>{t.columnExercises}</TableCell>
                   <TableCell>{t.columnNotes}</TableCell>
+                  <TableCell>{t.columnActions}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -150,6 +154,17 @@ export function WorkoutReportsPage({
                     <TableCell>{report.blockCount}</TableCell>
                     <TableCell>{report.exerciseCount}</TableCell>
                     <TableCell>{report.notes ?? '—'}</TableCell>
+                    <TableCell>
+                      <Tooltip title={t.viewDetailsLabel}>
+                        <IconButton
+                          aria-label={`${t.viewDetailsLabel}: ${report.workoutName}`}
+                          href={`/workouts/${report.id}`}
+                          size='small'
+                        >
+                          <VisibilityRoundedIcon fontSize='small' />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

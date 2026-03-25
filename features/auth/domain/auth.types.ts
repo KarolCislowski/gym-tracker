@@ -165,7 +165,10 @@ export interface TenantHealthyHabitsSnapshot {
   averageSleepHoursPerDay: number | null;
   stepsPerDay: number | null;
   waterLitersPerDay: number | null;
+  caloriesPerDay?: number | null;
+  carbsGramsPerDay?: number | null;
   proteinGramsPerDay: number | null;
+  fatGramsPerDay?: number | null;
   strengthWorkoutsPerWeek: number | null;
   cardioMinutesPerWeek: number | null;
   regularSleepSchedule: boolean;

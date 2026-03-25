@@ -2,7 +2,9 @@ import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 export interface UpdateHealthyHabitsInput {
   averageSleepHoursPerDay: number | null;
+  carbsGramsPerDay: number | null;
   cardioMinutesPerWeek: number | null;
+  fatGramsPerDay: number | null;
   proteinGramsPerDay: number | null;
   regularSleepSchedule: boolean;
   stepsPerDay: number | null;
@@ -15,7 +17,10 @@ export interface UpdateHealthyHabitsInput {
 
 export interface UpdateHealthyHabitsRecordInput {
   averageSleepHoursPerDay: number | null;
+  caloriesPerDay: number | null;
+  carbsGramsPerDay: number | null;
   cardioMinutesPerWeek: number | null;
+  fatGramsPerDay: number | null;
   proteinGramsPerDay: number | null;
   regularSleepSchedule: boolean;
   stepsPerDay: number | null;

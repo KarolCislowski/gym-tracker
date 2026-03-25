@@ -20,13 +20,20 @@ import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
-import type { WorkoutTemplateSummary } from '../domain/workout.types';
+import type {
+  WorkoutSessionDetails,
+  WorkoutTemplateSummary,
+} from '../domain/workout.types';
 import { createWorkoutReportAction } from '../infrastructure/workout.actions';
 
 interface WorkoutReportFormProps {
   exercises: Exercise[];
   favoriteExerciseSlugs: string[];
+  formAction?: (formData: FormData) => Promise<void>;
+  initialReport?: WorkoutSessionDetails | null;
   initialTemplate?: WorkoutTemplateSummary | null;
+  reportId?: string;
+  submitLabel?: string;
   translations: TranslationDictionary;
 }
 
@@ -79,7 +86,11 @@ interface WorkoutBlockDraft {
 export function WorkoutReportForm({
   exercises,
   favoriteExerciseSlugs,
+  formAction = createWorkoutReportAction,
+  initialReport = null,
   initialTemplate = null,
+  reportId,
+  submitLabel,
   translations,
 }: WorkoutReportFormProps) {
   const t = translations.workouts;
@@ -98,21 +109,46 @@ export function WorkoutReportForm({
     [exercises, favoriteExerciseSlugs],
   );
   const [workoutName, setWorkoutName] = useState(
-    initialTemplate?.name ?? '',
+    initialReport?.workoutName ?? initialTemplate?.name ?? '',
   );
-  const [performedAt, setPerformedAt] = useState(formatDateTimeLocal(new Date()));
-  const [startedAt, setStartedAt] = useState('');
-  const [endedAt, setEndedAt] = useState('');
-  const [notes, setNotes] = useState(initialTemplate?.notes ?? '');
+  const [performedAt, setPerformedAt] = useState(
+    initialReport?.performedAt
+      ? formatDateTimeLocal(new Date(initialReport.performedAt))
+      : formatDateTimeLocal(new Date()),
+  );
+  const [startedAt, setStartedAt] = useState(
+    initialReport?.startedAt
+      ? formatDateTimeLocal(new Date(initialReport.startedAt))
+      : '',
+  );
+  const [endedAt, setEndedAt] = useState(
+    initialReport?.endedAt ? formatDateTimeLocal(new Date(initialReport.endedAt)) : '',
+  );
+  const [notes, setNotes] = useState(
+    initialReport?.notes ?? initialTemplate?.notes ?? '',
+  );
   const [blocks, setBlocks] = useState<WorkoutBlockDraft[]>(
-    createBlocksFromTemplate(exercises, initialTemplate),
+    createBlocksFromSource(exercises, initialTemplate, initialReport),
   );
 
   useEffect(() => {
-    setWorkoutName(initialTemplate?.name ?? '');
-    setNotes(initialTemplate?.notes ?? '');
-    setBlocks(createBlocksFromTemplate(exercises, initialTemplate));
-  }, [exercises, initialTemplate]);
+    setWorkoutName(initialReport?.workoutName ?? initialTemplate?.name ?? '');
+    setPerformedAt(
+      initialReport?.performedAt
+        ? formatDateTimeLocal(new Date(initialReport.performedAt))
+        : formatDateTimeLocal(new Date()),
+    );
+    setStartedAt(
+      initialReport?.startedAt
+        ? formatDateTimeLocal(new Date(initialReport.startedAt))
+        : '',
+    );
+    setEndedAt(
+      initialReport?.endedAt ? formatDateTimeLocal(new Date(initialReport.endedAt)) : '',
+    );
+    setNotes(initialReport?.notes ?? initialTemplate?.notes ?? '');
+    setBlocks(createBlocksFromSource(exercises, initialTemplate, initialReport));
+  }, [exercises, initialReport, initialTemplate]);
 
   const payload = useMemo(() => {
     return JSON.stringify({
@@ -183,7 +219,7 @@ export function WorkoutReportForm({
   }, [blocks, endedAt, exercises, notes, performedAt, startedAt, workoutName]);
 
   return (
-    <Stack component='form' action={createWorkoutReportAction} spacing={2.5}>
+    <Stack component='form' action={formAction} spacing={2.5}>
       <Alert severity='info' variant='outlined'>
         {t.autoLocationHint}
       </Alert>
@@ -571,6 +607,7 @@ export function WorkoutReportForm({
         ))}
       </Stack>
 
+      {reportId ? <input name='reportId' type='hidden' value={reportId} /> : null}
       <input name='reportPayload' type='hidden' value={payload} />
 
       <Paper
@@ -586,7 +623,7 @@ export function WorkoutReportForm({
         }}
       >
         <Button fullWidth size='large' startIcon={<SaveRoundedIcon />} type='submit' variant='contained'>
-          {t.saveReport}
+          {submitLabel ?? t.saveReport}
         </Button>
       </Paper>
     </Stack>
@@ -798,10 +835,51 @@ function createBlockDraft(exercises: Exercise[]): WorkoutBlockDraft {
   };
 }
 
-function createBlocksFromTemplate(
+function createBlocksFromSource(
   exercises: Exercise[],
   template?: WorkoutTemplateSummary | null,
+  report?: WorkoutSessionDetails | null,
 ): WorkoutBlockDraft[] {
+  if (report?.blocks.length) {
+    return report.blocks.map((block) => ({
+      id: crypto.randomUUID(),
+      type: block.type,
+      name: block.name ?? '',
+      rounds: block.rounds != null ? String(block.rounds) : '',
+      restAfterBlockSec:
+        block.restAfterBlockSec != null ? String(block.restAfterBlockSec) : '',
+      entries: block.entries.map((entry) => ({
+        id: crypto.randomUUID(),
+        exerciseSlug: entry.exerciseSlug,
+        variantId: entry.variantId ?? resolveVariantId(exercises, entry.exerciseSlug),
+        selectedGrip: entry.selectedGrip ?? '',
+        selectedStance: entry.selectedStance ?? '',
+        selectedAttachment: entry.selectedAttachment ?? '',
+        notes: entry.notes ?? '',
+        restAfterEntrySec:
+          entry.restAfterEntrySec != null ? String(entry.restAfterEntrySec) : '',
+        sets: entry.sets.length
+          ? entry.sets.map((set) => ({
+              id: crypto.randomUUID(),
+              reps: set.reps != null ? String(set.reps) : '',
+              weight: set.weight != null ? String(set.weight) : '',
+              durationSec: set.durationSec != null ? String(set.durationSec) : '',
+              distanceMeters:
+                set.distanceMeters != null ? String(set.distanceMeters) : '',
+              calories: set.calories != null ? String(set.calories) : '',
+              rpe: set.rpe != null ? String(set.rpe) : '',
+              rir: set.rir != null ? String(set.rir) : '',
+              isWarmup: set.isWarmup,
+              isFailure: set.isFailure,
+              setKind: set.setKind,
+              parentSetOrder:
+                set.parentSetOrder != null ? String(set.parentSetOrder) : '',
+            }))
+          : [createSetDraft()],
+      })),
+    }));
+  }
+
   if (!template?.blocks.length) {
     return [createBlockDraft(exercises)];
   }

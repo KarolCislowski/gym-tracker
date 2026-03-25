@@ -392,6 +392,7 @@ export interface TranslationDictionary {
     failureLabel: string;
     autoLocationHint: string;
     reportCreated: string;
+    reportUpdated: string;
     templateCreated: string;
     reportError: string;
     emptyState: string;
@@ -403,6 +404,16 @@ export interface TranslationDictionary {
     columnBlocks: string;
     columnExercises: string;
     columnNotes: string;
+    columnActions: string;
+    viewDetailsLabel: string;
+    detailsTitle: string;
+    detailsDescription: string;
+    summaryTitle: string;
+    openEditLabel: string;
+    closeEditLabel: string;
+    updateReport: string;
+    notFoundTitle: string;
+    notFoundDescription: string;
     modelTitle: string;
     modelDescription: string;
   };
@@ -420,7 +431,11 @@ export interface TranslationDictionary {
     stepsLabel: string;
     waterLitersLabel: string;
     waterFluidOuncesLabel: string;
+    caloriesLabel: string;
+    caloriesAutoCalculatedHint: string;
+    carbsGramsLabel: string;
     proteinGramsLabel: string;
+    fatGramsLabel: string;
     strengthWorkoutDoneLabel: string;
     cardioMinutesLabel: string;
     bodyWeightLabel: string;
@@ -485,7 +500,11 @@ export interface TranslationDictionary {
     waterPerDayLabel: string;
     waterLitersPerDayLabel: string;
     waterFluidOuncesPerDayLabel: string;
+    caloriesPerDayLabel: string;
+    caloriesAutoCalculatedHint: string;
+    carbsPerDayLabel: string;
     proteinPerDayLabel: string;
+    fatPerDayLabel: string;
     strengthWorkoutsPerWeekLabel: string;
     cardioMinutesPerWeekLabel: string;
     editGoals: string;

@@ -1,3 +1,6 @@
+'use client';
+
+import { useMemo, useState } from 'react';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
   Box,
@@ -13,6 +16,7 @@ import {
   convertHydrationFromMetricLiters,
 } from '@/shared/units/application/unit-conversion';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
 
 import { updateHealthyHabitsAction } from '../infrastructure/healthy-habits.actions';
 
@@ -39,6 +43,24 @@ export function HealthyHabitsEditForm({
     habits?.waterLitersPerDay != null
       ? convertHydrationFromMetricLiters(habits.waterLitersPerDay, unitSystem)
       : null;
+  const [carbsGramsPerDay, setCarbsGramsPerDay] = useState(
+    habits?.carbsGramsPerDay != null ? String(habits.carbsGramsPerDay) : '',
+  );
+  const [proteinGramsPerDay, setProteinGramsPerDay] = useState(
+    habits?.proteinGramsPerDay != null ? String(habits.proteinGramsPerDay) : '',
+  );
+  const [fatGramsPerDay, setFatGramsPerDay] = useState(
+    habits?.fatGramsPerDay != null ? String(habits.fatGramsPerDay) : '',
+  );
+  const calculatedCaloriesPerDay = useMemo(
+    () =>
+      calculateCaloriesFromMacros({
+        proteinGrams: normalizeOptionalNumber(proteinGramsPerDay),
+        carbsGrams: normalizeOptionalNumber(carbsGramsPerDay),
+        fatGrams: normalizeOptionalNumber(fatGramsPerDay),
+      }),
+    [carbsGramsPerDay, fatGramsPerDay, proteinGramsPerDay],
+  );
 
   return (
     <Stack component='form' action={updateHealthyHabitsAction} spacing={2}>
@@ -99,11 +121,37 @@ export function HealthyHabitsEditForm({
           />
         )}
         <TextField
-          defaultValue={habits?.proteinGramsPerDay ?? ''}
+          helperText={t.caloriesAutoCalculatedHint}
+          label={t.caloriesPerDayLabel}
+          slotProps={{
+            input: { readOnly: true },
+          }}
+          type='number'
+          value={calculatedCaloriesPerDay ?? ''}
+        />
+        <TextField
+          label={t.carbsPerDayLabel}
+          name='carbsGramsPerDay'
+          onChange={(event) => setCarbsGramsPerDay(event.target.value)}
+          slotProps={{ htmlInput: { min: 0, max: 1500, step: 1 } }}
+          type='number'
+          value={carbsGramsPerDay}
+        />
+        <TextField
           label={t.proteinPerDayLabel}
           name='proteinGramsPerDay'
+          onChange={(event) => setProteinGramsPerDay(event.target.value)}
           slotProps={{ htmlInput: { min: 0, max: 1000, step: 1 } }}
           type='number'
+          value={proteinGramsPerDay}
+        />
+        <TextField
+          label={t.fatPerDayLabel}
+          name='fatGramsPerDay'
+          onChange={(event) => setFatGramsPerDay(event.target.value)}
+          slotProps={{ htmlInput: { min: 0, max: 500, step: 1 } }}
+          type='number'
+          value={fatGramsPerDay}
         />
         <TextField
           defaultValue={habits?.strengthWorkoutsPerWeek ?? ''}
@@ -126,4 +174,10 @@ export function HealthyHabitsEditForm({
       </Button>
     </Stack>
   );
+}
+
+function normalizeOptionalNumber(value: string): number | null {
+  const normalized = value.trim();
+
+  return normalized ? Number(normalized) : null;
 }

@@ -4,6 +4,9 @@ import { getTenantWorkoutTemplateModel } from '@/infrastructure/db/models/tenant
 import type {
   CreateWorkoutTemplateRecordInput,
   CreateWorkoutSessionRecordInput,
+  UpdateWorkoutSessionInput,
+  WorkoutBlockInput,
+  WorkoutSessionDetails,
   WorkoutTemplateSummary,
   WorkoutSessionAnalytics,
   WorkoutSessionSummary,
@@ -175,5 +178,121 @@ export async function listTenantWorkoutSessionAnalyticsRecords(
           setCount: entry.sets?.length ?? 0,
         })) ?? [],
       ) ?? [],
+  }));
+}
+
+export async function findTenantWorkoutSessionRecordById(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<WorkoutSessionDetails | null> {
+  const TenantWorkoutModel = await getTenantWorkoutModel(tenantDbName);
+  const session = await TenantWorkoutModel.findOne({ _id: reportId, userId }).lean();
+
+  if (!session) {
+    return null;
+  }
+
+  return {
+    id: session._id.toString(),
+    workoutName: session.workoutName,
+    startedAt: session.startedAt ? session.startedAt.toISOString() : null,
+    endedAt: session.endedAt ? session.endedAt.toISOString() : null,
+    durationMinutes: session.durationMinutes ?? null,
+    performedAt: session.performedAt.toISOString(),
+    notes: session.notes ?? null,
+    locationSnapshot: session.locationSnapshot
+      ? {
+          provider: 'google_places',
+          placeId: session.locationSnapshot.placeId,
+          displayName: session.locationSnapshot.displayName,
+          formattedAddress: session.locationSnapshot.formattedAddress,
+          latitude: session.locationSnapshot.latitude,
+          longitude: session.locationSnapshot.longitude,
+          countryCode: session.locationSnapshot.countryCode ?? null,
+          country: session.locationSnapshot.country ?? null,
+          region: session.locationSnapshot.region ?? null,
+          city: session.locationSnapshot.city ?? null,
+          locality: session.locationSnapshot.locality ?? null,
+          postalCode: session.locationSnapshot.postalCode ?? null,
+        }
+      : null,
+    weatherSnapshot: session.weatherSnapshot
+      ? {
+          provider: session.weatherSnapshot.provider,
+          temperatureC: session.weatherSnapshot.temperatureC ?? null,
+          apparentTemperatureC:
+            session.weatherSnapshot.apparentTemperatureC ?? null,
+          humidityPercent: session.weatherSnapshot.humidityPercent ?? null,
+          windSpeedKph: session.weatherSnapshot.windSpeedKph ?? null,
+          precipitationMm: session.weatherSnapshot.precipitationMm ?? null,
+          weatherCode: session.weatherSnapshot.weatherCode ?? null,
+          capturedAt: session.weatherSnapshot.capturedAt,
+        }
+      : null,
+    blocks: mapWorkoutBlocks(
+      (session.blocks as WorkoutBlockInput[] | undefined) ?? [],
+    ),
+  };
+}
+
+export async function updateTenantWorkoutSessionRecord(
+  input: UpdateWorkoutSessionInput,
+): Promise<void> {
+  const TenantWorkoutModel = await getTenantWorkoutModel(input.tenantDbName);
+
+  await TenantWorkoutModel.updateOne(
+    { _id: input.reportId, userId: input.userId },
+    {
+      $set: {
+        workoutName: input.workoutName,
+        startedAt: input.startedAt,
+        endedAt: input.endedAt,
+        durationMinutes: input.durationMinutes,
+        performedAt: input.performedAt,
+        notes: input.notes,
+        locationSnapshot: input.locationSnapshot,
+        weatherSnapshot: input.weatherSnapshot,
+        blocks: input.blocks,
+      },
+    },
+  );
+}
+
+function mapWorkoutBlocks(blocks: WorkoutBlockInput[]): WorkoutBlockInput[] {
+  return blocks.map((block) => ({
+    order: block.order,
+    type: block.type,
+    name: block.name ?? null,
+    rounds: block.rounds ?? null,
+    restAfterBlockSec: block.restAfterBlockSec ?? null,
+    entries: (block.entries ?? []).map((entry) => ({
+      order: entry.order,
+      exerciseId: entry.exerciseId,
+      exerciseSlug: entry.exerciseSlug,
+      variantId: entry.variantId ?? null,
+      trackableMetrics: entry.trackableMetrics ?? [],
+      selectedEquipment: entry.selectedEquipment ?? [],
+      selectedGrip: (entry.selectedGrip as GripType | null) ?? null,
+      selectedStance: (entry.selectedStance as StanceType | null) ?? null,
+      selectedAttachment: (entry.selectedAttachment as AttachmentType | null) ?? null,
+      notes: entry.notes ?? null,
+      restAfterEntrySec: entry.restAfterEntrySec ?? null,
+      sets: (entry.sets ?? []).map((set) => ({
+        order: set.order,
+        reps: set.reps ?? null,
+        weight: set.weight ?? null,
+        durationSec: set.durationSec ?? null,
+        distanceMeters: set.distanceMeters ?? null,
+        calories: set.calories ?? null,
+        rpe: set.rpe ?? null,
+        rir: set.rir ?? null,
+        isWarmup: set.isWarmup,
+        isFailure: set.isFailure,
+        setKind: set.setKind,
+        parentSetOrder: set.parentSetOrder ?? null,
+        completedAt: set.completedAt ?? null,
+      })),
+    })),
   }));
 }

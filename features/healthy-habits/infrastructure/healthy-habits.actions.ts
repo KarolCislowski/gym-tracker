@@ -34,7 +34,9 @@ export async function updateHealthyHabitsAction(formData: FormData): Promise<voi
       waterFluidOuncesPerDay: normalizeOptionalNumber(
         formData.get('waterFluidOuncesPerDay'),
       ),
+      carbsGramsPerDay: normalizeOptionalNumber(formData.get('carbsGramsPerDay')),
       proteinGramsPerDay: normalizeOptionalNumber(formData.get('proteinGramsPerDay')),
+      fatGramsPerDay: normalizeOptionalNumber(formData.get('fatGramsPerDay')),
       strengthWorkoutsPerWeek: normalizeOptionalNumber(
         formData.get('strengthWorkoutsPerWeek'),
       ),

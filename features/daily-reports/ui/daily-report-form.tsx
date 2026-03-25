@@ -16,6 +16,7 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
 import {
   convertHydrationFromMetricLiters,
   convertHydrationToMetricLiters,
@@ -91,8 +92,14 @@ export function DailyReportForm({
   const [waterAmount, setWaterAmount] = useState(
     formatInitialHydration(initialReport?.actuals.waterLiters, unitSystem),
   );
+  const [carbsGrams, setCarbsGrams] = useState(
+    formatInitialNumber(initialReport?.actuals.carbsGrams),
+  );
   const [proteinGrams, setProteinGrams] = useState(
     formatInitialNumber(initialReport?.actuals.proteinGrams),
+  );
+  const [fatGrams, setFatGrams] = useState(
+    formatInitialNumber(initialReport?.actuals.fatGrams),
   );
   const [strengthWorkoutDone, setStrengthWorkoutDone] = useState(
     initialReport?.actuals.strengthWorkoutDone ?? false,
@@ -119,6 +126,24 @@ export function DailyReportForm({
     motivation: formatInitialScore(initialReport?.wellbeing.motivation),
     recovery: formatInitialScore(initialReport?.wellbeing.recovery),
   });
+  const calculatedGoalCalories = useMemo(
+    () =>
+      calculateCaloriesFromMacros({
+        proteinGrams: goals?.proteinGramsPerDay,
+        carbsGrams: goals?.carbsGramsPerDay,
+        fatGrams: goals?.fatGramsPerDay,
+      }),
+    [goals?.carbsGramsPerDay, goals?.fatGramsPerDay, goals?.proteinGramsPerDay],
+  );
+  const calculatedActualCalories = useMemo(
+    () =>
+      calculateCaloriesFromMacros({
+        proteinGrams: normalizeOptionalNumber(proteinGrams),
+        carbsGrams: normalizeOptionalNumber(carbsGrams),
+        fatGrams: normalizeOptionalNumber(fatGrams),
+      }),
+    [carbsGrams, fatGrams, proteinGrams],
+  );
 
   const completion = useMemo(
     () => ({
@@ -128,10 +153,19 @@ export function DailyReportForm({
         goals?.waterLitersPerDay ?? null,
         resolveWaterLiters(waterAmount, unitSystem),
       ),
+      caloriesGoalMet: resolveNumericGoalMet(
+        calculatedGoalCalories,
+        calculatedActualCalories,
+      ),
+      carbsGoalMet: resolveNumericGoalMet(
+        goals?.carbsGramsPerDay ?? null,
+        carbsGrams,
+      ),
       proteinGoalMet: resolveNumericGoalMet(
         goals?.proteinGramsPerDay ?? null,
         proteinGrams,
       ),
+      fatGoalMet: resolveNumericGoalMet(goals?.fatGramsPerDay ?? null, fatGrams),
       cardioGoalMet: resolveNumericGoalMet(
         goals?.cardioMinutesPerWeek != null
           ? goals.cardioMinutesPerWeek / 7
@@ -140,7 +174,11 @@ export function DailyReportForm({
       ),
     }),
     [
+      calculatedActualCalories,
+      calculatedGoalCalories,
       cardioMinutes,
+      carbsGrams,
+      fatGrams,
       goals,
       proteinGrams,
       sleepHours,
@@ -161,7 +199,10 @@ export function DailyReportForm({
             goals?.regularSleepSchedule === true ? sleepScheduleKept : null,
           steps: normalizeOptionalNumber(steps),
           waterLiters: resolveWaterLiters(waterAmount, unitSystem),
+          calories: calculatedActualCalories,
+          carbsGrams: normalizeOptionalNumber(carbsGrams),
           proteinGrams: normalizeOptionalNumber(proteinGrams),
+          fatGrams: normalizeOptionalNumber(fatGrams),
           strengthWorkoutDone,
           cardioMinutes: normalizeOptionalNumber(cardioMinutes),
         },
@@ -193,8 +234,11 @@ export function DailyReportForm({
       }),
     [
       bodyWeightKg,
+      calculatedActualCalories,
       cardioMinutes,
       completion,
+      carbsGrams,
+      fatGrams,
       goals?.regularSleepSchedule,
       illness,
       menstruationPhase,
@@ -262,8 +306,20 @@ export function DailyReportForm({
               value={formatHydrationValue(goals?.waterLitersPerDay, unitSystem, profileT.emptyValue)}
             />
             <GoalSnapshotRow
+              label={habitsT.caloriesPerDayLabel}
+              value={formatGoalValue(calculatedGoalCalories, 'kcal', profileT.emptyValue)}
+            />
+            <GoalSnapshotRow
+              label={habitsT.carbsPerDayLabel}
+              value={formatGoalValue(goals?.carbsGramsPerDay, 'g', profileT.emptyValue)}
+            />
+            <GoalSnapshotRow
               label={habitsT.proteinPerDayLabel}
               value={formatGoalValue(goals?.proteinGramsPerDay, 'g', profileT.emptyValue)}
+            />
+            <GoalSnapshotRow
+              label={habitsT.fatPerDayLabel}
+              value={formatGoalValue(goals?.fatGramsPerDay, 'g', profileT.emptyValue)}
             />
             <GoalSnapshotRow
               label={habitsT.cardioMinutesPerWeekLabel}
@@ -293,10 +349,28 @@ export function DailyReportForm({
             onChange={setWaterAmount}
             value={waterAmount}
           />
+          <TextField
+            fullWidth
+            helperText={t.caloriesAutoCalculatedHint}
+            label={t.caloriesLabel}
+            slotProps={{ input: { readOnly: true } }}
+            type='number'
+            value={calculatedActualCalories ?? ''}
+          />
+          <NumberField
+            label={t.carbsGramsLabel}
+            onChange={setCarbsGrams}
+            value={carbsGrams}
+          />
           <NumberField
             label={t.proteinGramsLabel}
             onChange={setProteinGrams}
             value={proteinGrams}
+          />
+          <NumberField
+            label={t.fatGramsLabel}
+            onChange={setFatGrams}
+            value={fatGrams}
           />
           <SwitchField
             checked={strengthWorkoutDone}

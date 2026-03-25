@@ -2,6 +2,7 @@ import { Alert, Paper, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
 import { convertHydrationFromMetricLiters } from '@/shared/units/application/unit-conversion';
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
@@ -40,6 +41,16 @@ export function DailyReportDetailsPage({
       ? { severity: 'error' as const, message: t.reportError }
       : null;
   const unitSystem = userSnapshot?.settings?.unitSystem ?? 'metric';
+  const goalCalories = calculateCaloriesFromMacros({
+    proteinGrams: report?.goalsSnapshot.proteinGramsPerDay,
+    carbsGrams: report?.goalsSnapshot.carbsGramsPerDay,
+    fatGrams: report?.goalsSnapshot.fatGramsPerDay,
+  });
+  const actualCalories = calculateCaloriesFromMacros({
+    proteinGrams: report?.actuals.proteinGrams,
+    carbsGrams: report?.actuals.carbsGrams,
+    fatGrams: report?.actuals.fatGrams,
+  });
 
   if (!report) {
     return (
@@ -98,7 +109,10 @@ export function DailyReportDetailsPage({
                 : translations.healthyHabits.waterFluidOuncesPerDayLabel,
               formatHydration(report.goalsSnapshot.waterLitersPerDay, unitSystem, translations.profile.emptyValue),
             ],
+            [translations.healthyHabits.caloriesPerDayLabel, formatNumber(goalCalories, 'kcal', translations.profile.emptyValue)],
+            [translations.healthyHabits.carbsPerDayLabel, formatNumber(report.goalsSnapshot.carbsGramsPerDay ?? null, 'g', translations.profile.emptyValue)],
             [translations.healthyHabits.proteinPerDayLabel, formatNumber(report.goalsSnapshot.proteinGramsPerDay, 'g', translations.profile.emptyValue)],
+            [translations.healthyHabits.fatPerDayLabel, formatNumber(report.goalsSnapshot.fatGramsPerDay ?? null, 'g', translations.profile.emptyValue)],
             [translations.healthyHabits.cardioMinutesPerWeekLabel, formatNumber(report.goalsSnapshot.cardioMinutesPerWeek, 'min', translations.profile.emptyValue)],
           ]}
           title={t.goalsSectionTitle}
@@ -112,7 +126,10 @@ export function DailyReportDetailsPage({
               unitSystem === 'metric' ? t.waterLitersLabel : t.waterFluidOuncesLabel,
               formatHydration(report.actuals.waterLiters, unitSystem, translations.profile.emptyValue),
             ],
+            [t.caloriesLabel, formatNumber(actualCalories, 'kcal', translations.profile.emptyValue)],
+            [t.carbsGramsLabel, formatNumber(report.actuals.carbsGrams ?? null, 'g', translations.profile.emptyValue)],
             [t.proteinGramsLabel, formatNumber(report.actuals.proteinGrams, 'g', translations.profile.emptyValue)],
+            [t.fatGramsLabel, formatNumber(report.actuals.fatGrams ?? null, 'g', translations.profile.emptyValue)],
             [t.strengthWorkoutDoneLabel, formatBoolean(report.actuals.strengthWorkoutDone, translations)],
             [t.cardioMinutesLabel, formatNumber(report.actuals.cardioMinutes, 'min', translations.profile.emptyValue)],
           ]}
@@ -123,7 +140,10 @@ export function DailyReportDetailsPage({
             [t.columnSleepGoal, formatBoolean(report.completion.sleepGoalMet, translations)],
             [translations.healthyHabits.stepsPerDayLabel, formatBoolean(report.completion.stepsGoalMet, translations)],
             [translations.healthyHabits.waterLitersPerDayLabel, formatBoolean(report.completion.waterGoalMet, translations)],
+            [translations.healthyHabits.caloriesPerDayLabel, formatBoolean(report.completion.caloriesGoalMet ?? null, translations)],
+            [translations.healthyHabits.carbsPerDayLabel, formatBoolean(report.completion.carbsGoalMet ?? null, translations)],
             [translations.healthyHabits.proteinPerDayLabel, formatBoolean(report.completion.proteinGoalMet, translations)],
+            [translations.healthyHabits.fatPerDayLabel, formatBoolean(report.completion.fatGoalMet ?? null, translations)],
             [translations.healthyHabits.cardioMinutesPerWeekLabel, formatBoolean(report.completion.cardioGoalMet, translations)],
           ]}
           title={t.completionSectionTitle}

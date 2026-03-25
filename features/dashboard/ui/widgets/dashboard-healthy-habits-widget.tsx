@@ -5,6 +5,8 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
+  getHealthyHabitsCaloriesLabel,
+  getHealthyHabitsMacroLabel,
   getHealthyHabitsProteinLabel,
   getHealthyHabitsWaterLabel,
 } from '@/features/healthy-habits/application/healthy-habits-view';
@@ -101,12 +103,36 @@ export function DashboardHealthyHabitsWidget({
           </strong>
         </Typography>
         <Typography color='text.secondary'>
+          {habitsTranslations.caloriesPerDayLabel}:{' '}
+          <strong>
+            {getHealthyHabitsCaloriesLabel(habitsTranslations, healthyHabits)}
+          </strong>
+        </Typography>
+        <Typography color='text.secondary'>
+          {habitsTranslations.carbsPerDayLabel}:{' '}
+          <strong>
+            {getHealthyHabitsMacroLabel(
+              habitsTranslations,
+              healthyHabits.carbsGramsPerDay ?? null,
+            )}
+          </strong>
+        </Typography>
+        <Typography color='text.secondary'>
           {habitsTranslations.proteinPerDayLabel}:{' '}
           <strong>
             {getHealthyHabitsProteinLabel(
               habitsTranslations,
               healthyHabits.proteinGramsPerDay,
               unitSystem,
+            )}
+          </strong>
+        </Typography>
+        <Typography color='text.secondary'>
+          {habitsTranslations.fatPerDayLabel}:{' '}
+          <strong>
+            {getHealthyHabitsMacroLabel(
+              habitsTranslations,
+              healthyHabits.fatGramsPerDay ?? null,
             )}
           </strong>
         </Typography>

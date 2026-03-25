@@ -93,6 +93,10 @@ export interface CreateWorkoutSessionInput {
   blocks: WorkoutBlockInput[];
 }
 
+export interface UpdateWorkoutSessionInput extends CreateWorkoutSessionInput {
+  reportId: string;
+}
+
 export interface CreateWorkoutTemplateInput {
   tenantDbName: string;
   userId: string;
@@ -130,6 +134,19 @@ export interface WorkoutSessionSummary {
   blockCount: number;
   exerciseCount: number;
   setCount: number;
+}
+
+export interface WorkoutSessionDetails {
+  id: string;
+  workoutName: string;
+  startedAt: string | null;
+  endedAt: string | null;
+  durationMinutes: number | null;
+  performedAt: string;
+  notes: string | null;
+  locationSnapshot: ProfileLocationInput | null;
+  weatherSnapshot: WorkoutWeatherSnapshotInput | null;
+  blocks: WorkoutBlockInput[];
 }
 
 export interface WorkoutSessionAnalyticsEntry {
