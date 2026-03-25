@@ -7,13 +7,17 @@ import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.s
 
 import {
   createWorkoutSession,
-  getWorkoutSessionDetails,
   createWorkoutTemplate,
+  deleteWorkoutTemplate,
+  getWorkoutSessionDetails,
+  getWorkoutTemplateDetails,
+  updateWorkoutTemplate,
   updateWorkoutSession,
 } from '../application/workout.service';
 import type {
   CreateWorkoutSessionInput,
   CreateWorkoutTemplateInput,
+  UpdateWorkoutTemplateInput,
   UpdateWorkoutSessionInput,
 } from '../domain/workout.types';
 
@@ -128,6 +132,70 @@ export async function updateWorkoutReportAction(formData: FormData): Promise<voi
   }
 
   redirect(`/workouts/${encodeURIComponent(reportId)}?status=workout-report-updated`);
+}
+
+export async function updateWorkoutTemplateAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const templateId = String(formData.get('templateId') ?? '').trim();
+  const payload = String(formData.get('templatePayload') ?? '').trim();
+
+  try {
+    const parsedPayload = JSON.parse(payload) as Omit<
+      UpdateWorkoutTemplateInput,
+      'tenantDbName' | 'userId' | 'templateId'
+    >;
+    const existingTemplate = await getWorkoutTemplateDetails(
+      session.user.tenantDbName,
+      session.user.id,
+      templateId,
+    );
+
+    if (!existingTemplate) {
+      throw new Error('WORKOUT_TEMPLATE_NOT_FOUND');
+    }
+
+    await updateWorkoutTemplate({
+      ...parsedPayload,
+      tenantDbName: session.user.tenantDbName,
+      userId: session.user.id,
+      templateId,
+    });
+  } catch (error) {
+    redirect(
+      `/workouts/templates/${encodeURIComponent(templateId)}?error=${encodeURIComponent(getWorkoutErrorCode(error))}`,
+    );
+  }
+
+  redirect(
+    `/workouts/templates/${encodeURIComponent(templateId)}?status=workout-template-updated`,
+  );
+}
+
+export async function deleteWorkoutTemplateAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const templateId = String(formData.get('templateId') ?? '').trim();
+
+  try {
+    await deleteWorkoutTemplate(
+      session.user.tenantDbName,
+      session.user.id,
+      templateId,
+    );
+  } catch (error) {
+    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+  }
+
+  redirect('/workouts?status=workout-template-deleted');
 }
 
 function getWorkoutErrorCode(error: unknown): string {

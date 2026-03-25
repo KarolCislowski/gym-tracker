@@ -105,6 +105,10 @@ export interface CreateWorkoutTemplateInput {
   blocks: WorkoutTemplateBlockInput[];
 }
 
+export interface UpdateWorkoutTemplateInput extends CreateWorkoutTemplateInput {
+  templateId: string;
+}
+
 export interface CreateWorkoutTemplateRecordInput {
   userId: string;
   name: string;

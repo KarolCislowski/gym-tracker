@@ -17,11 +17,13 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
   WorkoutSessionSummary,
   WorkoutTemplateSummary,
 } from '../domain/workout.types';
+import { deleteWorkoutTemplateAction } from '../infrastructure/workout.actions';
 import { WorkoutReportComposer } from './workout-report-composer';
 import { WorkoutTemplateComposer } from './workout-template-composer';
 
@@ -56,9 +58,11 @@ export function WorkoutReportsPage({
     ? { severity: 'success' as const, message: t.reportCreated }
     : status === 'workout-template-created'
       ? { severity: 'success' as const, message: t.templateCreated }
-    : error
-      ? { severity: 'error' as const, message: t.reportError }
-      : null;
+      : status === 'workout-template-deleted'
+        ? { severity: 'success' as const, message: t.templateDeleted }
+        : error
+          ? { severity: 'error' as const, message: t.reportError }
+          : null;
 
   return (
     <Stack spacing={3}>
@@ -117,6 +121,7 @@ export function WorkoutReportsPage({
                     <TableCell>{t.columnBlocks}</TableCell>
                     <TableCell>{t.columnExercises}</TableCell>
                     <TableCell>{t.columnNotes}</TableCell>
+                    <TableCell>{t.columnActions}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -128,6 +133,29 @@ export function WorkoutReportsPage({
                       <TableCell>{template.blockCount}</TableCell>
                       <TableCell>{template.exerciseCount}</TableCell>
                       <TableCell>{template.notes ?? '—'}</TableCell>
+                      <TableCell>
+                        <Stack direction='row' spacing={0.5}>
+                          <Tooltip title={t.templateViewDetailsLabel}>
+                            <IconButton
+                              aria-label={`${t.templateViewDetailsLabel}: ${template.name}`}
+                              href={`/workouts/templates/${template.id}`}
+                              size='small'
+                            >
+                              <VisibilityRoundedIcon fontSize='small' />
+                            </IconButton>
+                          </Tooltip>
+                          <DeleteConfirmationButton
+                            action={deleteWorkoutTemplateAction}
+                            ariaLabel={`${t.deleteTemplateLabel}: ${template.name}`}
+                            cancelLabel={translations.profile.cancelEditing}
+                            confirmLabel={t.confirmDeleteLabel}
+                            description={t.deleteTemplateDescription}
+                            hiddenFields={{ templateId: template.id }}
+                            title={t.deleteTemplateTitle}
+                            tooltipLabel={t.deleteTemplateLabel}
+                          />
+                        </Stack>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

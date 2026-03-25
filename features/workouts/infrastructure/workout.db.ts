@@ -4,6 +4,7 @@ import { getTenantWorkoutTemplateModel } from '@/infrastructure/db/models/tenant
 import type {
   CreateWorkoutTemplateRecordInput,
   CreateWorkoutSessionRecordInput,
+  UpdateWorkoutTemplateInput,
   UpdateWorkoutSessionInput,
   WorkoutBlockInput,
   WorkoutSessionDetails,
@@ -150,6 +151,98 @@ export async function listTenantWorkoutTemplateRecords(
           })) ?? [],
       })) ?? [],
   }));
+}
+
+export async function findTenantWorkoutTemplateRecordById(
+  tenantDbName: string,
+  userId: string,
+  templateId: string,
+): Promise<WorkoutTemplateSummary | null> {
+  const TenantWorkoutTemplateModel = await getTenantWorkoutTemplateModel(
+    tenantDbName,
+  );
+  const template = await TenantWorkoutTemplateModel.findOne({
+    _id: templateId,
+    userId,
+  }).lean();
+
+  if (!template) {
+    return null;
+  }
+
+  return {
+    id: template._id.toString(),
+    name: template.name,
+    notes: template.notes ?? null,
+    blockCount: template.blocks?.length ?? 0,
+    exerciseCount:
+      template.blocks?.reduce(
+        (total, block) => total + (block.entries?.length ?? 0),
+        0,
+      ) ?? 0,
+    blocks:
+      template.blocks?.map((block) => ({
+        order: block.order,
+        type: block.type,
+        name: block.name ?? null,
+        rounds: block.rounds ?? null,
+        restAfterBlockSec: block.restAfterBlockSec ?? null,
+        entries:
+          block.entries?.map((entry) => ({
+            order: entry.order,
+            exerciseId: entry.exerciseId,
+            exerciseSlug: entry.exerciseSlug,
+            variantId: entry.variantId ?? null,
+            selectedGrip: (entry.selectedGrip as GripType | null) ?? null,
+            selectedStance: (entry.selectedStance as StanceType | null) ?? null,
+            selectedAttachment:
+              (entry.selectedAttachment as AttachmentType | null) ?? null,
+            notes: entry.notes ?? null,
+            restAfterEntrySec: entry.restAfterEntrySec ?? null,
+          })) ?? [],
+      })) ?? [],
+  };
+}
+
+export async function updateTenantWorkoutTemplateRecord(
+  input: UpdateWorkoutTemplateInput,
+): Promise<void> {
+  const TenantWorkoutTemplateModel = await getTenantWorkoutTemplateModel(
+    input.tenantDbName,
+  );
+
+  const result = await TenantWorkoutTemplateModel.updateOne(
+    { _id: input.templateId, userId: input.userId },
+    {
+      $set: {
+        name: input.name,
+        notes: input.notes,
+        blocks: input.blocks,
+      },
+    },
+  );
+
+  if (!result.matchedCount) {
+    throw new Error('WORKOUT_TEMPLATE_NOT_FOUND');
+  }
+}
+
+export async function deleteTenantWorkoutTemplateRecord(
+  tenantDbName: string,
+  userId: string,
+  templateId: string,
+): Promise<void> {
+  const TenantWorkoutTemplateModel = await getTenantWorkoutTemplateModel(
+    tenantDbName,
+  );
+  const result = await TenantWorkoutTemplateModel.deleteOne({
+    _id: templateId,
+    userId,
+  });
+
+  if (!result.deletedCount) {
+    throw new Error('WORKOUT_TEMPLATE_NOT_FOUND');
+  }
 }
 
 /**

@@ -17,10 +17,15 @@ import { formatAtlasToken } from '@/features/exercises/application/exercise-atla
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
+import type { WorkoutTemplateSummary } from '../domain/workout.types';
 import { createWorkoutTemplateAction } from '../infrastructure/workout.actions';
 
 interface WorkoutTemplateFormProps {
+  formAction?: (formData: FormData) => void | Promise<void>;
   exercises: Exercise[];
+  initialTemplate?: WorkoutTemplateSummary | null;
+  submitLabel?: string;
+  templateId?: string;
   translations: TranslationDictionary;
 }
 
@@ -54,15 +59,21 @@ interface WorkoutTemplateBlockDraft {
  * @returns A React element rendering the workout-template builder.
  */
 export function WorkoutTemplateForm({
+  formAction = createWorkoutTemplateAction,
   exercises,
+  initialTemplate = null,
+  submitLabel,
+  templateId,
   translations,
 }: WorkoutTemplateFormProps) {
   const t = translations.workouts;
-  const [name, setName] = useState('');
-  const [notes, setNotes] = useState('');
-  const [blocks, setBlocks] = useState<WorkoutTemplateBlockDraft[]>([
-    createTemplateBlockDraft(exercises),
-  ]);
+  const [name, setName] = useState(initialTemplate?.name ?? '');
+  const [notes, setNotes] = useState(initialTemplate?.notes ?? '');
+  const [blocks, setBlocks] = useState<WorkoutTemplateBlockDraft[]>(
+    initialTemplate
+      ? mapTemplateBlocksToDrafts(initialTemplate, exercises)
+      : [createTemplateBlockDraft(exercises)],
+  );
 
   const payload = useMemo(
     () =>
@@ -101,7 +112,7 @@ export function WorkoutTemplateForm({
   );
 
   return (
-    <Stack component='form' action={createWorkoutTemplateAction} spacing={2.5}>
+    <Stack component='form' action={formAction} spacing={2.5}>
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
@@ -366,10 +377,11 @@ export function WorkoutTemplateForm({
         ))}
       </Stack>
 
+      {templateId ? <input name='templateId' type='hidden' value={templateId} /> : null}
       <input name='templatePayload' type='hidden' value={payload} />
 
       <Button fullWidth size='large' startIcon={<SaveRoundedIcon />} type='submit' variant='contained'>
-        {t.saveTemplate}
+        {submitLabel ?? t.saveTemplate}
       </Button>
     </Stack>
   );
@@ -458,6 +470,40 @@ function createTemplateEntryDraft(exercises: Exercise[]): WorkoutTemplateEntryDr
     notes: '',
     restAfterEntrySec: '',
   };
+}
+
+function mapTemplateBlocksToDrafts(
+  template: WorkoutTemplateSummary,
+  exercises: Exercise[],
+): WorkoutTemplateBlockDraft[] {
+  return template.blocks.map((block) => ({
+    id: crypto.randomUUID(),
+    type: block.type,
+    name: block.name ?? '',
+    rounds: block.rounds != null ? String(block.rounds) : '',
+    restAfterBlockSec:
+      block.restAfterBlockSec != null ? String(block.restAfterBlockSec) : '',
+    entries: block.entries.map((entry) => {
+      const exercise = exercises.find(
+        (candidate) => candidate.slug === entry.exerciseSlug,
+      );
+      const variant =
+        exercise?.variants.find((candidate) => candidate.id === entry.variantId) ??
+        exercise?.variants[0];
+
+      return {
+        id: crypto.randomUUID(),
+        exerciseSlug: entry.exerciseSlug,
+        variantId: variant?.id ?? entry.variantId ?? '',
+        selectedGrip: entry.selectedGrip ?? '',
+        selectedStance: entry.selectedStance ?? '',
+        selectedAttachment: entry.selectedAttachment ?? '',
+        notes: entry.notes ?? '',
+        restAfterEntrySec:
+          entry.restAfterEntrySec != null ? String(entry.restAfterEntrySec) : '',
+      };
+    }),
+  }));
 }
 
 function normalizeOptionalInteger(value: string): number | null {

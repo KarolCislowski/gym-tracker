@@ -112,3 +112,7 @@ export const createWorkoutTemplateSchema = z.object({
   notes: z.string().trim().min(1).nullable(),
   blocks: z.array(workoutTemplateBlockSchema).min(1),
 });
+
+export const updateWorkoutTemplateSchema = createWorkoutTemplateSchema.extend({
+  templateId: z.string().trim().min(1),
+});

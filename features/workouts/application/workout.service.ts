@@ -2,6 +2,7 @@ import { createWorkoutSessionSchema } from '../domain/workout.validation';
 import type {
   CreateWorkoutTemplateInput,
   CreateWorkoutSessionInput,
+  UpdateWorkoutTemplateInput,
   UpdateWorkoutSessionInput,
   WorkoutSessionDetails,
   WorkoutTemplateSummary,
@@ -11,14 +12,18 @@ import type {
 import {
   createTenantWorkoutTemplateRecord,
   createTenantWorkoutSessionRecord,
+  deleteTenantWorkoutTemplateRecord,
+  findTenantWorkoutTemplateRecordById,
   findTenantWorkoutSessionRecordById,
   listTenantWorkoutTemplateRecords,
   listTenantWorkoutSessionAnalyticsRecords,
   listTenantWorkoutSessionRecords,
+  updateTenantWorkoutTemplateRecord,
   updateTenantWorkoutSessionRecord,
 } from '../infrastructure/workout.db';
 import {
   createWorkoutTemplateSchema,
+  updateWorkoutTemplateSchema,
   updateWorkoutSessionSchema,
 } from '../domain/workout.validation';
 
@@ -62,6 +67,30 @@ export async function createWorkoutTemplate(
   createWorkoutTemplateSchema.parse(input);
 
   await createTenantWorkoutTemplateRecord(input);
+}
+
+export async function getWorkoutTemplateDetails(
+  tenantDbName: string,
+  userId: string,
+  templateId: string,
+): Promise<WorkoutTemplateSummary | null> {
+  return findTenantWorkoutTemplateRecordById(tenantDbName, userId, templateId);
+}
+
+export async function updateWorkoutTemplate(
+  input: UpdateWorkoutTemplateInput,
+): Promise<void> {
+  updateWorkoutTemplateSchema.parse(input);
+
+  await updateTenantWorkoutTemplateRecord(input);
+}
+
+export async function deleteWorkoutTemplate(
+  tenantDbName: string,
+  userId: string,
+  templateId: string,
+): Promise<void> {
+  await deleteTenantWorkoutTemplateRecord(tenantDbName, userId, templateId);
 }
 
 /**
