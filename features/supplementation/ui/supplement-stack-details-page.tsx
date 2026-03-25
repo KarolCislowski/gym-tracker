@@ -1,4 +1,4 @@
-import { Alert, Chip, Paper, Stack, Typography } from '@mui/material';
+import { Alert, Paper, Stack, Typography } from '@mui/material';
 
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { Supplement } from '@/features/supplements/domain/supplement.types';
@@ -75,12 +75,7 @@ export function SupplementStackDetailsPage({
             tooltipLabel={t.deleteStackLabel}
           />
         </Stack>
-        <Stack alignItems='center' direction='row' flexWrap='wrap' spacing={1}>
-          <Typography color='text.secondary'>{stack.name}</Typography>
-          {stack.isFavorite ? (
-            <Chip color='warning' label={t.stackFavoriteLabel} size='small' />
-          ) : null}
-        </Stack>
+        <Typography color='text.secondary'>{stack.name}</Typography>
         <Typography color='text.secondary'>{t.stackDetailsDescription}</Typography>
       </Stack>
 

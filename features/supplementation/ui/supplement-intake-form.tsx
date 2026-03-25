@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import {
   Alert,
   Button,
@@ -125,7 +124,7 @@ export function SupplementIntakeForm({
               >
                 {sortedStacks.map((stack) => (
                   <MenuItem key={stack.id} value={stack.id}>
-                    {stack.isFavorite ? `★ ${stack.name}` : stack.name}
+                    {stack.name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -155,14 +154,6 @@ export function SupplementIntakeForm({
               <Typography component='h3' variant='subtitle1'>
                 {selectedStack.name}
               </Typography>
-              {selectedStack.isFavorite ? (
-                <Chip
-                  color='warning'
-                  icon={<StarRoundedIcon />}
-                  label={t.stackFavoriteLabel}
-                  size='small'
-                />
-              ) : null}
               <Chip
                 label={formatSupplementToken(selectedStack.context)}
                 size='small'

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
-  Chip,
   IconButton,
   Paper,
   Stack,
@@ -130,12 +129,7 @@ export function SupplementationPage({
                   {stacks.map((stack) => (
                     <TableRow key={stack.id} hover>
                       <TableCell component='th' scope='row'>
-                        <Stack direction='row' spacing={1} alignItems='center' flexWrap='wrap'>
-                          <Typography variant='body2'>{stack.name}</Typography>
-                          {stack.isFavorite ? (
-                            <Chip label={t.stackFavoriteLabel} size='small' color='warning' />
-                          ) : null}
-                        </Stack>
+                        <Typography variant='body2'>{stack.name}</Typography>
                       </TableCell>
                       <TableCell>{formatSupplementToken(stack.context)}</TableCell>
                       <TableCell>{stack.itemCount}</TableCell>
