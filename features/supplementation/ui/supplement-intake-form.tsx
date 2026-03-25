@@ -20,10 +20,17 @@ import {
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
-import type { SupplementStackSummary } from '../domain/supplementation.types';
+import type {
+  SupplementIntakeReportSummary,
+  SupplementStackSummary,
+} from '../domain/supplementation.types';
 import { createSupplementIntakeReportAction } from '../infrastructure/supplementation.actions';
 
 interface SupplementIntakeFormProps {
+  formAction?: (formData: FormData) => void | Promise<void>;
+  initialReport?: SupplementIntakeReportSummary | null;
+  reportId?: string;
+  submitLabel?: string;
   stacks: SupplementStackSummary[];
   translations: TranslationDictionary;
 }
@@ -36,6 +43,10 @@ interface SupplementIntakeFormProps {
  * @returns A React element rendering a quick stack-based intake logger.
  */
 export function SupplementIntakeForm({
+  formAction = createSupplementIntakeReportAction,
+  initialReport = null,
+  reportId,
+  submitLabel,
   stacks,
   translations,
 }: SupplementIntakeFormProps) {
@@ -51,10 +62,28 @@ export function SupplementIntakeForm({
       }),
     [stacks],
   );
-  const [stackId, setStackId] = useState(sortedStacks[0]?.id ?? '');
-  const [takenAt, setTakenAt] = useState(formatDateTimeLocal(new Date()));
-  const [notes, setNotes] = useState('');
-  const selectedStack = sortedStacks.find((stack) => stack.id === stackId) ?? null;
+  const [stackId, setStackId] = useState(
+    initialReport?.stackId ?? sortedStacks[0]?.id ?? '',
+  );
+  const [takenAt, setTakenAt] = useState(
+    initialReport
+      ? formatDateTimeLocal(new Date(initialReport.takenAt))
+      : formatDateTimeLocal(new Date()),
+  );
+  const [notes, setNotes] = useState(initialReport?.notes ?? '');
+  const selectedStack =
+    sortedStacks.find((stack) => stack.id === stackId) ??
+    (initialReport
+      ? {
+          id: initialReport.stackId ?? `report-${initialReport.id}`,
+          name: initialReport.stackName,
+          context: initialReport.context,
+          notes: initialReport.notes,
+          isFavorite: false,
+          itemCount: initialReport.itemCount,
+          items: initialReport.items,
+        }
+      : null);
 
   const payload = useMemo(
     () =>
@@ -73,7 +102,7 @@ export function SupplementIntakeForm({
   );
 
   return (
-    <Stack component='form' action={createSupplementIntakeReportAction} spacing={2.5}>
+    <Stack component='form' action={formAction} spacing={2.5}>
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
@@ -154,6 +183,7 @@ export function SupplementIntakeForm({
         </Paper>
       ) : null}
 
+      {reportId ? <input hidden name='reportId' readOnly value={reportId} /> : null}
       <input hidden name='reportPayload' readOnly value={payload} />
 
       <Button
@@ -163,7 +193,7 @@ export function SupplementIntakeForm({
         type='submit'
         variant='contained'
       >
-        {t.saveReportLabel}
+        {submitLabel ?? t.saveReportLabel}
       </Button>
     </Stack>
   );

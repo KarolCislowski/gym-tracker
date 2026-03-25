@@ -56,6 +56,10 @@ export interface CreateSupplementIntakeReportInput {
   items: SupplementStackItemInput[];
 }
 
+export interface UpdateSupplementIntakeReportInput extends CreateSupplementIntakeReportInput {
+  reportId: string;
+}
+
 export interface SupplementIntakeReportSummary {
   id: string;
   takenAt: string;

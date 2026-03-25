@@ -16,6 +16,10 @@ vi.mock('./supplement-stack-composer', () => ({
   SupplementStackComposer: () => <div>supplement-stack-composer</div>,
 }));
 
+vi.mock('../infrastructure/supplementation.actions', () => ({
+  deleteSupplementIntakeReportAction: vi.fn(),
+}));
+
 describe('SupplementationPage', () => {
   /**
    * Verifies that supplementation stacks and report history render on the page.

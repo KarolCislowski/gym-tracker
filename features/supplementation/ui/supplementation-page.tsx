@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
   Chip,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -10,17 +12,20 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { Supplement } from '@/features/supplements/domain/supplement.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
   SupplementIntakeReportSummary,
   SupplementStackSummary,
 } from '../domain/supplementation.types';
+import { deleteSupplementIntakeReportAction } from '../infrastructure/supplementation.actions';
 import { SupplementIntakeComposer } from './supplement-intake-composer';
 import { SupplementStackComposer } from './supplement-stack-composer';
 
@@ -55,9 +60,11 @@ export function SupplementationPage({
     ? { severity: 'success' as const, message: t.stackCreated }
     : status === 'supplement-report-created'
       ? { severity: 'success' as const, message: t.reportCreated }
-      : error
-        ? { severity: 'error' as const, message: t.errorGeneric }
-        : null;
+      : status === 'supplement-report-deleted'
+        ? { severity: 'success' as const, message: t.reportDeleted }
+        : error
+          ? { severity: 'error' as const, message: t.errorGeneric }
+          : null;
 
   return (
     <Stack spacing={3}>
@@ -154,6 +161,7 @@ export function SupplementationPage({
                     <TableCell>{t.columnContext}</TableCell>
                     <TableCell>{t.columnItems}</TableCell>
                     <TableCell>{t.columnNotes}</TableCell>
+                    <TableCell>{t.columnActions}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -166,6 +174,29 @@ export function SupplementationPage({
                       <TableCell>{formatSupplementToken(report.context)}</TableCell>
                       <TableCell>{report.itemCount}</TableCell>
                       <TableCell>{report.notes ?? translations.supplements.emptyValue}</TableCell>
+                      <TableCell>
+                        <Stack direction='row' spacing={0.5}>
+                          <Tooltip title={t.viewDetailsLabel}>
+                            <IconButton
+                              aria-label={`${t.viewDetailsLabel}: ${report.stackName}`}
+                              href={`/supplementation/reports/${report.id}`}
+                              size='small'
+                            >
+                              <VisibilityRoundedIcon fontSize='small' />
+                            </IconButton>
+                          </Tooltip>
+                          <DeleteConfirmationButton
+                            action={deleteSupplementIntakeReportAction}
+                            ariaLabel={`${t.deleteReportLabel}: ${report.stackName}`}
+                            cancelLabel={translations.profile.cancelEditing}
+                            confirmLabel={t.confirmDeleteLabel}
+                            description={t.deleteReportDescription}
+                            hiddenFields={{ reportId: report.id }}
+                            title={t.deleteReportTitle}
+                            tooltipLabel={t.deleteReportLabel}
+                          />
+                        </Stack>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

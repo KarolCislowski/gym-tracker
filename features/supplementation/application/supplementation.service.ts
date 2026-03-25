@@ -1,18 +1,23 @@
 import {
   createTenantSupplementIntakeReportRecord,
   createTenantSupplementStackRecord,
+  deleteTenantSupplementIntakeReportRecord,
+  findTenantSupplementIntakeReportRecordById,
   listTenantSupplementIntakeReportRecords,
   listTenantSupplementStackRecords,
+  updateTenantSupplementIntakeReportRecord,
 } from '../infrastructure/supplementation.db';
 import type {
   CreateSupplementIntakeReportInput,
   CreateSupplementStackInput,
   SupplementIntakeReportSummary,
   SupplementStackSummary,
+  UpdateSupplementIntakeReportInput,
 } from '../domain/supplementation.types';
 import {
   createSupplementIntakeReportSchema,
   createSupplementStackSchema,
+  updateSupplementIntakeReportSchema,
 } from '../domain/supplementation.validation';
 
 /**
@@ -48,6 +53,30 @@ export async function createSupplementIntakeReport(
   await createTenantSupplementIntakeReportRecord(
     createSupplementIntakeReportSchema.parse(input),
   );
+}
+
+export async function getSupplementIntakeReportDetails(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<SupplementIntakeReportSummary | null> {
+  return findTenantSupplementIntakeReportRecordById(tenantDbName, userId, reportId);
+}
+
+export async function updateSupplementIntakeReport(
+  input: UpdateSupplementIntakeReportInput,
+): Promise<void> {
+  updateSupplementIntakeReportSchema.parse(input);
+
+  await updateTenantSupplementIntakeReportRecord(input);
+}
+
+export async function deleteSupplementIntakeReport(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  await deleteTenantSupplementIntakeReportRecord(tenantDbName, userId, reportId);
 }
 
 /**

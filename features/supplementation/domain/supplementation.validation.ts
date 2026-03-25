@@ -56,3 +56,8 @@ export const createSupplementIntakeReportSchema = z.object({
   notes: z.string().trim().min(1).nullable(),
   items: z.array(supplementStackItemSchema).min(1),
 });
+
+export const updateSupplementIntakeReportSchema =
+  createSupplementIntakeReportSchema.extend({
+    reportId: z.string().trim().min(1),
+  });

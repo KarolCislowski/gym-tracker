@@ -6,6 +6,7 @@ import type {
   CreateSupplementStackInput,
   SupplementIntakeReportSummary,
   SupplementStackSummary,
+  UpdateSupplementIntakeReportInput,
 } from '../domain/supplementation.types';
 
 /**
@@ -88,6 +89,87 @@ export async function createTenantSupplementIntakeReportRecord(
     notes: input.notes,
     items: input.items,
   });
+}
+
+export async function findTenantSupplementIntakeReportRecordById(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<SupplementIntakeReportSummary | null> {
+  const TenantSupplementReportModel = await getTenantSupplementReportModel(
+    tenantDbName,
+  );
+  const record = await TenantSupplementReportModel.findOne({
+    _id: reportId,
+    userId,
+  }).lean();
+
+  if (!record) {
+    return null;
+  }
+
+  return {
+    id: record._id.toString(),
+    takenAt: record.takenAt.toISOString(),
+    stackId: record.stackId ?? null,
+    stackName: record.stackName,
+    context: record.context,
+    notes: record.notes ?? null,
+    itemCount: record.items.length,
+    items: record.items.map((item) => ({
+      order: item.order,
+      supplementId: item.supplementId,
+      supplementSlug: item.supplementSlug,
+      supplementName: item.supplementName,
+      variantId: item.variantId ?? null,
+      variantSlug: item.variantSlug ?? null,
+      variantName: item.variantName ?? null,
+      amount: item.amount,
+      unit: item.unit,
+      notes: item.notes ?? null,
+    })),
+  };
+}
+
+export async function updateTenantSupplementIntakeReportRecord(
+  input: UpdateSupplementIntakeReportInput,
+): Promise<void> {
+  const TenantSupplementReportModel = await getTenantSupplementReportModel(
+    input.tenantDbName,
+  );
+
+  const result = await TenantSupplementReportModel.updateOne(
+    { _id: input.reportId, userId: input.userId },
+    {
+      $set: {
+        takenAt: input.takenAt,
+        stackId: input.stackId,
+        stackName: input.stackName,
+        context: input.context,
+        notes: input.notes,
+        items: input.items,
+      },
+    },
+  );
+
+  if (!result.matchedCount) {
+    throw new Error('SUPPLEMENT_REPORT_NOT_FOUND');
+  }
+}
+
+export async function deleteTenantSupplementIntakeReportRecord(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  const TenantSupplementReportModel = await getTenantSupplementReportModel(
+    tenantDbName,
+  );
+  const result = await TenantSupplementReportModel.deleteOne({ _id: reportId, userId });
+
+  if (!result.deletedCount) {
+    throw new Error('SUPPLEMENT_REPORT_NOT_FOUND');
+  }
 }
 
 /**
