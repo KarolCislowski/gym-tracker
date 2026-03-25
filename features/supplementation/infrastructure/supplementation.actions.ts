@@ -57,6 +57,11 @@ export async function createSupplementStackAction(
   redirect('/supplementation?status=supplement-stack-created');
 }
 
+/**
+ * Updates a saved supplement stack for the authenticated user.
+ * @param formData - Submitted form data containing the stack identifier and serialized payload.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function updateSupplementStackAction(
   formData: FormData,
 ): Promise<void> {
@@ -101,6 +106,11 @@ export async function updateSupplementStackAction(
   );
 }
 
+/**
+ * Deletes a saved supplement stack owned by the authenticated user.
+ * @param formData - Submitted form data containing the stack identifier.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function deleteSupplementStackAction(
   formData: FormData,
 ): Promise<void> {
@@ -209,6 +219,11 @@ export async function updateSupplementIntakeReportAction(
   );
 }
 
+/**
+ * Deletes a historical supplement-intake report owned by the authenticated user.
+ * @param formData - Submitted form data containing the report identifier.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function deleteSupplementIntakeReportAction(
   formData: FormData,
 ): Promise<void> {

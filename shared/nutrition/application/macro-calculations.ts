@@ -4,6 +4,12 @@ export interface MacroInput {
   proteinGrams: number | null | undefined;
 }
 
+/**
+ * Calculates calories from protein, carbohydrate, and fat inputs using the
+ * standard 4/4/9 kcal-per-gram model.
+ * @param input - Candidate macro values that may be partially missing.
+ * @returns Rounded calories, or `null` when all macro inputs are empty or zero.
+ */
 export function calculateCaloriesFromMacros({
   carbsGrams,
   fatGrams,

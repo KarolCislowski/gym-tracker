@@ -17,6 +17,16 @@ interface SupplementStackDetailsPageProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Server-rendered detail page for a saved supplement stack with inline editing and deletion.
+ * @param props - Component props for the supplement-stack detail page.
+ * @param props.stack - Persisted stack details for the selected identifier.
+ * @param props.supplements - Atlas entries used to prefill stack editing controls.
+ * @param props.translations - Full translation dictionary for localized copy.
+ * @param props.status - Optional route status flag used for success feedback.
+ * @param props.error - Optional route error flag used for failure feedback.
+ * @returns A React element rendering the stack summary, items, and edit/delete actions.
+ */
 export function SupplementStackDetailsPage({
   error,
   stack,

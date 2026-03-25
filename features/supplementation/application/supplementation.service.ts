@@ -35,6 +35,13 @@ export async function createSupplementStack(
   await createTenantSupplementStackRecord(createSupplementStackSchema.parse(input));
 }
 
+/**
+ * Returns a single supplement stack owned by the authenticated user.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @param stackId - Persisted supplement-stack identifier.
+ * @returns Matching stack details or `null` when the stack is unavailable.
+ */
 export async function getSupplementStackDetails(
   tenantDbName: string,
   userId: string,
@@ -43,6 +50,10 @@ export async function getSupplementStackDetails(
   return findTenantSupplementStackRecordById(tenantDbName, userId, stackId);
 }
 
+/**
+ * Updates an existing reusable supplement stack.
+ * @param input - Candidate stack payload submitted from the UI.
+ */
 export async function updateSupplementStack(
   input: UpdateSupplementStackInput,
 ): Promise<void> {
@@ -51,6 +62,12 @@ export async function updateSupplementStack(
   await updateTenantSupplementStackRecord(input);
 }
 
+/**
+ * Deletes a reusable supplement stack owned by the authenticated user.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @param stackId - Persisted supplement-stack identifier.
+ */
 export async function deleteSupplementStack(
   tenantDbName: string,
   userId: string,
@@ -84,6 +101,13 @@ export async function createSupplementIntakeReport(
   );
 }
 
+/**
+ * Returns a single supplementation report owned by the authenticated user.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @param reportId - Persisted supplementation-report identifier.
+ * @returns Matching report details or `null` when the report is unavailable.
+ */
 export async function getSupplementIntakeReportDetails(
   tenantDbName: string,
   userId: string,
@@ -92,6 +116,10 @@ export async function getSupplementIntakeReportDetails(
   return findTenantSupplementIntakeReportRecordById(tenantDbName, userId, reportId);
 }
 
+/**
+ * Updates an existing supplementation report snapshot.
+ * @param input - Candidate intake-report payload submitted from the UI.
+ */
 export async function updateSupplementIntakeReport(
   input: UpdateSupplementIntakeReportInput,
 ): Promise<void> {
@@ -100,6 +128,12 @@ export async function updateSupplementIntakeReport(
   await updateTenantSupplementIntakeReportRecord(input);
 }
 
+/**
+ * Deletes a supplementation report owned by the authenticated user.
+ * @param tenantDbName - Tenant database name.
+ * @param userId - Authenticated user identifier.
+ * @param reportId - Persisted supplementation-report identifier.
+ */
 export async function deleteSupplementIntakeReport(
   tenantDbName: string,
   userId: string,

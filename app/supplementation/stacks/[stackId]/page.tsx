@@ -17,6 +17,11 @@ interface SupplementStackDetailsRoutePageProps {
   }>;
 }
 
+/**
+ * Renders the authenticated supplement-stack detail route.
+ * @param props - Route props containing dynamic stack id and optional feedback params.
+ * @returns The supplement-stack detail page for the active user session.
+ */
 export default async function SupplementStackDetailsRoutePage({
   params,
   searchParams,

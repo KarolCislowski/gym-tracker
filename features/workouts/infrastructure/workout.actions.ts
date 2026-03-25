@@ -135,6 +135,11 @@ export async function updateWorkoutReportAction(formData: FormData): Promise<voi
   redirect(`/workouts/${encodeURIComponent(reportId)}?status=workout-report-updated`);
 }
 
+/**
+ * Deletes a workout report owned by the authenticated user.
+ * @param formData - Submitted form data containing the report identifier.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function deleteWorkoutReportAction(formData: FormData): Promise<void> {
   const session = await auth();
 
@@ -157,6 +162,11 @@ export async function deleteWorkoutReportAction(formData: FormData): Promise<voi
   redirect('/workouts?status=workout-report-deleted');
 }
 
+/**
+ * Updates an existing workout template for the authenticated user.
+ * @param formData - Submitted form data containing the template identifier and serialized payload.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function updateWorkoutTemplateAction(formData: FormData): Promise<void> {
   const session = await auth();
 
@@ -199,6 +209,11 @@ export async function updateWorkoutTemplateAction(formData: FormData): Promise<v
   );
 }
 
+/**
+ * Deletes a workout template owned by the authenticated user.
+ * @param formData - Submitted form data containing the template identifier.
+ * @returns A promise that resolves only through redirect handling.
+ */
 export async function deleteWorkoutTemplateAction(formData: FormData): Promise<void> {
   const session = await auth();
 

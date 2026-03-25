@@ -19,6 +19,15 @@ interface SupplementStackEditorProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Client-side toggle wrapper that reveals supplement-stack editing only on demand.
+ * @param props - Component props for the supplement-stack editor.
+ * @param props.initialStack - Existing stack used to prefill the edit form.
+ * @param props.initiallyOpen - Whether the editor should start expanded after a failed submit.
+ * @param props.supplements - Atlas entries available for stack composition.
+ * @param props.translations - Full translation dictionary for localized labels.
+ * @returns A React element rendering the supplement-stack edit controls.
+ */
 export function SupplementStackEditor({
   initialStack,
   initiallyOpen = false,
