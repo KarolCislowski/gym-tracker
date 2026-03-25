@@ -329,6 +329,19 @@ export async function findTenantWorkoutSessionRecordById(
   };
 }
 
+export async function deleteTenantWorkoutSessionRecord(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  const TenantWorkoutModel = await getTenantWorkoutModel(tenantDbName);
+  const result = await TenantWorkoutModel.deleteOne({ _id: reportId, userId });
+
+  if (!result.deletedCount) {
+    throw new Error('WORKOUT_REPORT_NOT_FOUND');
+  }
+}
+
 export async function updateTenantWorkoutSessionRecord(
   input: UpdateWorkoutSessionInput,
 ): Promise<void> {

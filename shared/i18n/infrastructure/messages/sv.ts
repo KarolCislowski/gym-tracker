@@ -484,6 +484,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     autoLocationHint: 'Rapporten använder automatiskt din sparade profilplats när den finns.',
     reportCreated: 'Träningsrapporten sparades.',
     reportUpdated: 'Träningsrapporten uppdaterades.',
+    reportDeleted: 'Träningsrapporten togs bort.',
     templateCreated: 'Träningsmallen sparades.',
     templateUpdated: 'Träningsmallen uppdaterades.',
     templateDeleted: 'Träningsmallen togs bort.',
@@ -507,6 +508,10 @@ export const svMessages: TranslationDictionaryOverrides = {
     openEditLabel: 'Redigera träningsrapport',
     closeEditLabel: 'Dölj träningsredigeraren',
     updateReport: 'Uppdatera träningsrapport',
+    deleteReportLabel: 'Ta bort träningsrapport',
+    deleteReportTitle: 'Ta bort träningsrapporten?',
+    deleteReportDescription:
+      'Den här åtgärden tar permanent bort träningsrapporten. Det går inte att ångra.',
     templateDetailsTitle: 'Detaljer för träningsmall',
     templateDetailsDescription:
       'Granska sparade block och övningar och uppdatera mallen om något behöver ändras.',

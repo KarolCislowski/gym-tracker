@@ -484,6 +484,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     autoLocationHint: 'Raport automatycznie użyje zapisanej lokalizacji z profilu, jeśli jest dostępna.',
     reportCreated: 'Raport treningu został zapisany.',
     reportUpdated: 'Raport treningu został zaktualizowany.',
+    reportDeleted: 'Raport treningu został usunięty.',
     templateCreated: 'Template treningu został zapisany.',
     templateUpdated: 'Template treningu został zaktualizowany.',
     templateDeleted: 'Template treningu został usunięty.',
@@ -506,6 +507,10 @@ export const plMessages: TranslationDictionaryOverrides = {
     openEditLabel: 'Edytuj raport treningu',
     closeEditLabel: 'Ukryj edycję raportu',
     updateReport: 'Zaktualizuj raport treningu',
+    deleteReportLabel: 'Usuń raport treningu',
+    deleteReportTitle: 'Usunąć raport treningu?',
+    deleteReportDescription:
+      'Ta operacja trwale usunie raport treningu. Tego kroku nie można cofnąć.',
     templateDetailsTitle: 'Szczegóły templateki treningowej',
     templateDetailsDescription:
       'Przejrzyj zapisane bloki i ćwiczenia, a potem popraw templatkę, jeśli wymaga zmian.',

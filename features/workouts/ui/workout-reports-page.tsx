@@ -23,7 +23,10 @@ import type {
   WorkoutSessionSummary,
   WorkoutTemplateSummary,
 } from '../domain/workout.types';
-import { deleteWorkoutTemplateAction } from '../infrastructure/workout.actions';
+import {
+  deleteWorkoutReportAction,
+  deleteWorkoutTemplateAction,
+} from '../infrastructure/workout.actions';
 import { WorkoutReportComposer } from './workout-report-composer';
 import { WorkoutTemplateComposer } from './workout-template-composer';
 
@@ -56,6 +59,8 @@ export function WorkoutReportsPage({
   const t = translations.workouts;
   const feedback = status === 'workout-report-created'
     ? { severity: 'success' as const, message: t.reportCreated }
+    : status === 'workout-report-deleted'
+      ? { severity: 'success' as const, message: t.reportDeleted }
     : status === 'workout-template-created'
       ? { severity: 'success' as const, message: t.templateCreated }
       : status === 'workout-template-deleted'
@@ -200,15 +205,27 @@ export function WorkoutReportsPage({
                     <TableCell>{report.exerciseCount}</TableCell>
                     <TableCell>{report.notes ?? '—'}</TableCell>
                     <TableCell>
-                      <Tooltip title={t.viewDetailsLabel}>
-                        <IconButton
-                          aria-label={`${t.viewDetailsLabel}: ${report.workoutName}`}
-                          href={`/workouts/${report.id}`}
-                          size='small'
-                        >
-                          <VisibilityRoundedIcon fontSize='small' />
-                        </IconButton>
-                      </Tooltip>
+                      <Stack direction='row' spacing={0.5}>
+                        <Tooltip title={t.viewDetailsLabel}>
+                          <IconButton
+                            aria-label={`${t.viewDetailsLabel}: ${report.workoutName}`}
+                            href={`/workouts/${report.id}`}
+                            size='small'
+                          >
+                            <VisibilityRoundedIcon fontSize='small' />
+                          </IconButton>
+                        </Tooltip>
+                        <DeleteConfirmationButton
+                          action={deleteWorkoutReportAction}
+                          ariaLabel={`${t.deleteReportLabel}: ${report.workoutName}`}
+                          cancelLabel={translations.profile.cancelEditing}
+                          confirmLabel={t.confirmDeleteLabel}
+                          description={t.deleteReportDescription}
+                          hiddenFields={{ reportId: report.id }}
+                          title={t.deleteReportTitle}
+                          tooltipLabel={t.deleteReportLabel}
+                        />
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}

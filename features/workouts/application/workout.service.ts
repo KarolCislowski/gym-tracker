@@ -12,6 +12,7 @@ import type {
 import {
   createTenantWorkoutTemplateRecord,
   createTenantWorkoutSessionRecord,
+  deleteTenantWorkoutSessionRecord,
   deleteTenantWorkoutTemplateRecord,
   findTenantWorkoutTemplateRecordById,
   findTenantWorkoutSessionRecordById,
@@ -54,6 +55,14 @@ export async function updateWorkoutSession(
   updateWorkoutSessionSchema.parse(input);
 
   await updateTenantWorkoutSessionRecord(input);
+}
+
+export async function deleteWorkoutSession(
+  tenantDbName: string,
+  userId: string,
+  reportId: string,
+): Promise<void> {
+  await deleteTenantWorkoutSessionRecord(tenantDbName, userId, reportId);
 }
 
 /**

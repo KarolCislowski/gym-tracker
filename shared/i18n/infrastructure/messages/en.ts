@@ -483,6 +483,7 @@ export const enMessages: TranslationDictionary = {
     autoLocationHint: 'The report will automatically use your saved profile location when available.',
     reportCreated: 'Workout report saved successfully.',
     reportUpdated: 'Workout report updated successfully.',
+    reportDeleted: 'Workout report deleted successfully.',
     templateCreated: 'Workout template saved successfully.',
     templateUpdated: 'Workout template updated successfully.',
     templateDeleted: 'Workout template deleted successfully.',
@@ -506,6 +507,10 @@ export const enMessages: TranslationDictionary = {
     openEditLabel: 'Edit workout report',
     closeEditLabel: 'Hide workout editor',
     updateReport: 'Update workout report',
+    deleteReportLabel: 'Delete workout report',
+    deleteReportTitle: 'Delete workout report?',
+    deleteReportDescription:
+      'This action permanently deletes the workout report. This cannot be undone.',
     templateDetailsTitle: 'Workout template details',
     templateDetailsDescription:
       'Review the saved blocks and exercises, then update the template if anything needs changing.',

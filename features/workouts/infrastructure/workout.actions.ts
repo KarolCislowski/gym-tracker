@@ -6,6 +6,7 @@ import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 
 import {
+  deleteWorkoutSession,
   createWorkoutSession,
   createWorkoutTemplate,
   deleteWorkoutTemplate,
@@ -132,6 +133,28 @@ export async function updateWorkoutReportAction(formData: FormData): Promise<voi
   }
 
   redirect(`/workouts/${encodeURIComponent(reportId)}?status=workout-report-updated`);
+}
+
+export async function deleteWorkoutReportAction(formData: FormData): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.tenantDbName) {
+    redirect('/login');
+  }
+
+  const reportId = String(formData.get('reportId') ?? '').trim();
+
+  try {
+    await deleteWorkoutSession(
+      session.user.tenantDbName,
+      session.user.id,
+      reportId,
+    );
+  } catch (error) {
+    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+  }
+
+  redirect('/workouts?status=workout-report-deleted');
 }
 
 export async function updateWorkoutTemplateAction(formData: FormData): Promise<void> {

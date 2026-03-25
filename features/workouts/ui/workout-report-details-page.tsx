@@ -2,12 +2,14 @@ import { Alert, Paper, Stack, Typography } from '@mui/material';
 
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
   WorkoutBlockInput,
   WorkoutSessionDetails,
   WorkoutTemplateSummary,
 } from '../domain/workout.types';
+import { deleteWorkoutReportAction } from '../infrastructure/workout.actions';
 import { WorkoutReportEditor } from './workout-report-editor';
 
 interface WorkoutReportDetailsPageProps {
@@ -50,9 +52,26 @@ export function WorkoutReportDetailsPage({
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography component='h1' variant='h3'>
-          {t.detailsTitle}
-        </Typography>
+        <Stack
+          alignItems='center'
+          direction='row'
+          justifyContent='space-between'
+          spacing={1.5}
+        >
+          <Typography component='h1' variant='h3'>
+            {t.detailsTitle}
+          </Typography>
+          <DeleteConfirmationButton
+            action={deleteWorkoutReportAction}
+            ariaLabel={`${t.deleteReportLabel}: ${report.workoutName}`}
+            cancelLabel={translations.profile.cancelEditing}
+            confirmLabel={t.confirmDeleteLabel}
+            description={t.deleteReportDescription}
+            hiddenFields={{ reportId: report.id }}
+            title={t.deleteReportTitle}
+            tooltipLabel={t.deleteReportLabel}
+          />
+        </Stack>
         <Typography color='text.secondary'>{report.workoutName}</Typography>
         <Typography color='text.secondary'>
           {new Date(report.performedAt).toLocaleString()}

@@ -429,6 +429,7 @@ export interface TranslationDictionary {
     autoLocationHint: string;
     reportCreated: string;
     reportUpdated: string;
+    reportDeleted: string;
     templateCreated: string;
     templateUpdated: string;
     templateDeleted: string;
@@ -451,6 +452,9 @@ export interface TranslationDictionary {
     openEditLabel: string;
     closeEditLabel: string;
     updateReport: string;
+    deleteReportLabel: string;
+    deleteReportTitle: string;
+    deleteReportDescription: string;
     templateDetailsTitle: string;
     templateDetailsDescription: string;
     templateSummaryTitle: string;
