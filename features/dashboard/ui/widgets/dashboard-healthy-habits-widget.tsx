@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -58,15 +58,16 @@ export function DashboardHealthyHabitsWidget({
               {dashboardTranslations.healthyHabits}
             </Typography>
           </Stack>
-          <Link href='/profile'>
-            <Button
+          <Tooltip title={habitsTranslations.goToProfile}>
+            <IconButton
+              aria-label={habitsTranslations.goToProfile}
+              component={Link}
+              href='/profile'
               size='small'
-              startIcon={<EditRoundedIcon />}
-              variant='outlined'
             >
-              {habitsTranslations.goToProfile}
-            </Button>
-          </Link>
+              <EditRoundedIcon fontSize='small' />
+            </IconButton>
+          </Tooltip>
         </Stack>
         <Typography color='text.secondary'>
           {habitsTranslations.averageSleepHoursPerDayLabel}:{' '}

@@ -86,9 +86,6 @@ export function AppHeader({
               <Typography variant='subtitle1' fontWeight={700}>
                 {t.appName}
               </Typography>
-              <Typography variant='body2' color='text.secondary'>
-                {t.workspace}
-              </Typography>
             </Box>
           </Stack>
         </Stack>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { Button, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -70,14 +70,15 @@ export function HealthyHabitsSection({
             <Typography color='text.secondary'>{t.description}</Typography>
           </Stack>
           {mode === 'view' ? (
-            <Button
-              onClick={() => setMode('edit')}
-              startIcon={<EditRoundedIcon />}
-              sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' } }}
-              variant='contained'
-            >
-              {t.editGoals}
-            </Button>
+            <Tooltip title={t.editGoals}>
+              <IconButton
+                aria-label={t.editGoals}
+                onClick={() => setMode('edit')}
+                sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' } }}
+              >
+                <EditRoundedIcon />
+              </IconButton>
+            </Tooltip>
           ) : (
             <Button
               onClick={() => setMode('view')}

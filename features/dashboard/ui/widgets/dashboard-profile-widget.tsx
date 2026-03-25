@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -58,15 +58,16 @@ export function DashboardProfileWidget({
               {dashboardTranslations.profile}
             </Typography>
           </Stack>
-          <Link href='/profile'>
-            <Button
+          <Tooltip title={profileTranslations.goToProfile}>
+            <IconButton
+              aria-label={profileTranslations.goToProfile}
+              component={Link}
+              href='/profile'
               size='small'
-              startIcon={<EditRoundedIcon />}
-              variant='outlined'
             >
-              {profileTranslations.goToProfile}
-            </Button>
-          </Link>
+              <EditRoundedIcon fontSize='small' />
+            </IconButton>
+          </Tooltip>
         </Stack>
         <Typography color='text.secondary'>
           {dashboardTranslations.profileName}: <strong>{profile.firstName} {profile.lastName}</strong>

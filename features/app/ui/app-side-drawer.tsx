@@ -43,7 +43,7 @@ interface NavigationItem {
   href: string;
   icon: React.ReactNode;
   label: string;
-  secondary: string;
+  secondary?: string;
 }
 
 export function resolveNavigationItems(
@@ -53,15 +53,10 @@ export function resolveNavigationItems(
   desktop: NavigationItem[];
   mobile: NavigationItem[];
 } {
-  const workspaceItem = {
-    secondary: translations.workspace,
-  };
-
   const overviewItem: NavigationItem = {
     href: '/',
     icon: <SpaceDashboardRoundedIcon />,
     label: translations.overview,
-    secondary: workspaceItem.secondary,
   };
   const profileItem: NavigationItem = {
     href: '/profile',
@@ -73,37 +68,31 @@ export function resolveNavigationItems(
     href: '/workouts',
     icon: <TableChartRoundedIcon />,
     label: translations.workoutReports,
-    secondary: workspaceItem.secondary,
   };
   const dailyReportsItem: NavigationItem = {
     href: '/daily-reports',
     icon: <TodayRoundedIcon />,
     label: translations.dailyReports,
-    secondary: workspaceItem.secondary,
   };
   const exerciseAtlasItem: NavigationItem = {
     href: '/exercises',
     icon: <FitnessCenterRoundedIcon />,
     label: translations.exerciseAtlas,
-    secondary: workspaceItem.secondary,
   };
   const supplementAtlasItem: NavigationItem = {
     href: '/supplements',
     icon: <ScienceRoundedIcon />,
     label: translations.supplementAtlas,
-    secondary: workspaceItem.secondary,
   };
   const supplementationItem: NavigationItem = {
     href: '/supplementation',
     icon: <ScienceRoundedIcon />,
     label: translations.supplementation,
-    secondary: workspaceItem.secondary,
   };
   const settingsItem: NavigationItem = {
     href: '/settings',
     icon: <SettingsRoundedIcon />,
     label: translations.settings,
-    secondary: workspaceItem.secondary,
   };
 
   return {
@@ -233,7 +222,11 @@ export function AppSideDrawer({
                     secondary={item.secondary}
                     slotProps={{
                       primary: { noWrap: true },
-                      secondary: { noWrap: true },
+                      ...(item.secondary
+                        ? {
+                            secondary: { noWrap: true },
+                          }
+                        : {}),
                     }}
                   />
                 ) : null}
