@@ -1,21 +1,18 @@
-import { Chip, Paper, Stack, Typography } from '@mui/material';
+import { Paper, Stack, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 interface DashboardOverviewWidgetProps {
-  tenantDbName: string;
   translations: TranslationDictionary['dashboard'];
 }
 
 /**
  * Summary widget shown at the top of the dashboard.
  * @param props - Component props for the overview widget.
- * @param props.tenantDbName - The current tenant database name.
  * @param props.translations - The localized dashboard translation subset.
  * @returns A React element rendering the dashboard overview widget.
  */
 export function DashboardOverviewWidget({
-  tenantDbName,
   translations,
 }: DashboardOverviewWidgetProps) {
   return (
@@ -36,12 +33,6 @@ export function DashboardOverviewWidget({
           {translations.welcomeBack}
         </Typography>
         <Typography color='text.secondary'>{translations.workspaceReady}</Typography>
-        <Chip
-          label={`${translations.tenantDatabase}: ${tenantDbName}`}
-          color='secondary'
-          variant='outlined'
-          sx={{ alignSelf: 'flex-start', mt: 1 }}
-        />
       </Stack>
     </Paper>
   );

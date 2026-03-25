@@ -55,7 +55,6 @@ export default async function Page() {
       <DashboardHome
         analytics={analytics}
         favoriteExercises={favoriteExercises}
-        tenantDbName={session.user.tenantDbName}
         translations={t}
         userSnapshot={userSnapshot}
       />

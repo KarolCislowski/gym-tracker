@@ -91,7 +91,6 @@ describe('DashboardHome', () => {
             isActive: true,
           },
         ]}
-        tenantDbName='tenant_john_123'
         translations={enMessages}
         userSnapshot={{
           profile: {
@@ -143,7 +142,6 @@ describe('DashboardHome', () => {
     expect(
       screen.getByRole('heading', { name: 'Welcome back' }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/tenant database: tenant_john_123/i)).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
     expect(screen.getByText('Stockholm, Sweden')).toBeInTheDocument();
     expect(screen.getByText('31')).toBeInTheDocument();
@@ -162,7 +160,7 @@ describe('DashboardHome', () => {
     expect(screen.getByText('Bench Press')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'View details: Bench Press' })).toBeInTheDocument();
     expect(
-      screen.getAllByRole('button', { name: 'Go to profile' }),
+      screen.getAllByRole('link', { name: 'Go to profile' }),
     ).toHaveLength(2);
   });
 });

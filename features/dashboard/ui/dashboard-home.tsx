@@ -15,7 +15,6 @@ import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
 interface DashboardHomeProps {
   analytics: DashboardAnalytics;
   favoriteExercises: Exercise[];
-  tenantDbName: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
 }
@@ -26,22 +25,12 @@ interface DashboardHomeProps {
 export function DashboardHome({
   analytics,
   favoriteExercises,
-  tenantDbName,
   translations,
   userSnapshot,
 }: DashboardHomeProps) {
   return (
     <Stack spacing={3}>
-      <DashboardOverviewWidget
-        tenantDbName={tenantDbName}
-        translations={translations.dashboard}
-      />
-
-      <DashboardAnalyticsLazyWidget
-        analytics={analytics}
-        translations={translations}
-        unitSystem={userSnapshot?.settings?.unitSystem ?? 'metric'}
-      />
+      <DashboardOverviewWidget translations={translations.dashboard} />
 
       <Box
         sx={{
@@ -81,6 +70,12 @@ export function DashboardHome({
           />
         ) : null}
       </Box>
+
+      <DashboardAnalyticsLazyWidget
+        analytics={analytics}
+        translations={translations}
+        unitSystem={userSnapshot?.settings?.unitSystem ?? 'metric'}
+      />
     </Stack>
   );
 }
