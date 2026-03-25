@@ -1,0 +1,505 @@
+@startuml
+!pragma layout smetana
+title Gym Tracker - Current Database UML
+
+hide methods
+hide stereotypes
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+legend left
+  == Scope ==
+  Core DB: shared cross-tenant catalog and authentication data
+  Tenant DB: one isolated database per tenant/workspace
+
+  == Notation ==
+  * fields shown here are the product-significant subset
+  * nested documents are modeled explicitly when they carry domain structure
+  * userId / tenantDbName / slugs are logical references, not Mongo foreign keys
+endlegend
+
+package "Core DB" {
+  entity "CoreUser" as CoreUser {
+    * _id: ObjectId
+    --
+    email: string
+    password: string
+    isActive: boolean
+    tenantDbName: string
+    emailVerifiedAt: Date?
+    emailVerificationTokenHash: string?
+    passwordResetTokenHash: string?
+    createdAt: Date
+  }
+
+  entity "CoreMuscleGroup" as CoreMuscleGroup {
+    * _id: ObjectId
+    --
+    name: string
+    slug: string
+    parentGroupId: string?
+    level: number
+    category: upper_body|lower_body|core|full_body
+    isTrackableVolume: boolean
+    order: number
+  }
+
+  entity "CoreExercise" as CoreExercise {
+    * _id: ObjectId
+    --
+    name: string
+    slug: string
+    type: compound|isolation
+    movementPattern: enum
+    difficulty: enum
+    description: string?
+    variants: CoreExerciseVariant[]
+    muscles: CoreExerciseMuscleActivation[]
+    goals: goal[]
+    tags: string[]
+    isActive: boolean
+  }
+
+  entity "CoreExerciseVariant" as CoreExerciseVariant {
+    * _id: ObjectId
+    --
+    name: string
+    slug: string
+    equipment: string[]
+    gripOptions: string[]
+    stanceOptions: string[]
+    attachmentOptions: string[]
+    bodyPosition: enum?
+    limbMode: enum?
+    musclesOverride: CoreExerciseMuscleActivation[]
+    trackableMetrics: string[]
+    isDefault: boolean
+  }
+
+  entity "CoreExerciseMuscleActivation" as CoreExerciseMuscleActivation {
+    * muscleGroupId: string
+    --
+    role: primary|secondary|stabilizer
+    activationLevel: number
+  }
+
+  entity "CoreSupplement" as CoreSupplement {
+    * _id: ObjectId
+    --
+    name: string
+    slug: string
+    category: enum
+    evidenceLevel: strong|moderate|emerging|limited
+    variants: CoreSupplementVariant[]
+    goals: goal[]
+    benefits: string[]
+    cautions: string[]
+    tags: string[]
+    isActive: boolean
+  }
+
+  entity "CoreSupplementVariant" as CoreSupplementVariant {
+    * _id: ObjectId
+    --
+    name: string
+    slug: string
+    form: enum
+    compoundType: enum
+    typicalDose: string
+    timing: timing[]
+    notes: string[]
+    isDefault: boolean
+  }
+}
+
+package "Tenant DB" {
+  entity "TenantMetadata" as TenantMetadata {
+    * _id: ObjectId
+    --
+    tenantDbName: string
+    createdAt: Date
+  }
+
+  entity "TenantSettings" as TenantSettings {
+    * _id: ObjectId
+    --
+    scope: tenant
+    language: string
+    isDarkMode: boolean
+    unitSystem: metric|imperial
+    trackMenstrualCycle: boolean
+    trackLibido: boolean
+    createdAt: Date
+  }
+
+  entity "TenantProfile" as TenantProfile {
+    * _id: ObjectId
+    --
+    userId: string
+    email: string
+    firstName: string
+    lastName: string
+    birthDate: Date?
+    favoriteExerciseSlugs: string[]
+    location: TenantProfileLocation?
+    heightCm: number?
+    gender: enum?
+    activityLevel: enum?
+    createdAt: Date
+  }
+
+  entity "TenantProfileLocation" as TenantProfileLocation {
+    * provider: google_places
+    --
+    placeId: string
+    displayName: string
+    formattedAddress: string
+    latitude: number
+    longitude: number
+    countryCode: string?
+    country: string?
+    region: string?
+    city: string?
+    locality: string?
+    postalCode: string?
+  }
+
+  entity "TenantHealthyHabits" as TenantHealthyHabits {
+    * _id: ObjectId
+    --
+    scope: tenant
+    averageSleepHoursPerDay: number?
+    regularSleepSchedule: boolean
+    stepsPerDay: number?
+    waterLitersPerDay: number?
+    caloriesPerDay: number?
+    carbsGramsPerDay: number?
+    proteinGramsPerDay: number?
+    fatGramsPerDay: number?
+    strengthWorkoutsPerWeek: number?
+    cardioMinutesPerWeek: number?
+    createdAt: Date
+  }
+
+  entity "TenantDailyReport" as TenantDailyReport {
+    * reportDate: Date
+    --
+    userId: string
+    goalsSnapshot: TenantDailyGoalsSnapshot
+    actuals: TenantDailyActuals
+    wellbeing: TenantDailyWellbeing
+    body: TenantDailyBodySnapshot
+    dayContext: TenantDailyContext
+    completion: TenantDailyCompletion
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  entity "TenantDailyGoalsSnapshot" as TenantDailyGoalsSnapshot {
+    averageSleepHoursPerDay: number?
+    regularSleepSchedule: boolean?
+    stepsPerDay: number?
+    waterLitersPerDay: number?
+    caloriesPerDay: number?
+    carbsGramsPerDay: number?
+    proteinGramsPerDay: number?
+    fatGramsPerDay: number?
+    strengthWorkoutsPerWeek: number?
+    cardioMinutesPerWeek: number?
+  }
+
+  entity "TenantDailyActuals" as TenantDailyActuals {
+    sleepHours: number?
+    sleepScheduleKept: boolean?
+    steps: number?
+    waterLiters: number?
+    calories: number?
+    carbsGrams: number?
+    proteinGrams: number?
+    fatGrams: number?
+    strengthWorkoutDone: boolean?
+    cardioMinutes: number?
+  }
+
+  entity "TenantDailyWellbeing" as TenantDailyWellbeing {
+    mood: 1..5?
+    energy: 1..5?
+    stress: 1..5?
+    soreness: 1..5?
+    libido: 1..5?
+    motivation: 1..5?
+    recovery: 1..5?
+  }
+
+  entity "TenantDailyBodySnapshot" as TenantDailyBodySnapshot {
+    bodyWeightKg: number?
+    restingHeartRate: number?
+  }
+
+  entity "TenantDailyContext" as TenantDailyContext {
+    weatherSnapshot: TenantDailyWeatherSnapshot?
+    menstruationPhase: enum?
+    illness: boolean?
+    notes: string?
+  }
+
+  entity "TenantDailyWeatherSnapshot" as TenantDailyWeatherSnapshot {
+    provider: string
+    temperatureC: number?
+    apparentTemperatureC: number?
+    humidityPercent: number?
+    windSpeedKph: number?
+    precipitationMm: number?
+    weatherCode: string?
+    capturedAt: Date
+  }
+
+  entity "TenantDailyCompletion" as TenantDailyCompletion {
+    sleepGoalMet: boolean?
+    stepsGoalMet: boolean?
+    waterGoalMet: boolean?
+    caloriesGoalMet: boolean?
+    carbsGoalMet: boolean?
+    proteinGoalMet: boolean?
+    fatGoalMet: boolean?
+    cardioGoalMet: boolean?
+  }
+
+  entity "TenantWorkoutTemplate" as TenantWorkoutTemplate {
+    * name: string
+    --
+    userId: string
+    notes: string?
+    blocks: TenantWorkoutTemplateBlock[]
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  entity "TenantWorkoutTemplateBlock" as TenantWorkoutTemplateBlock {
+    * order: number
+    --
+    type: single|superset|circuit|dropset
+    name: string?
+    rounds: number?
+    restAfterBlockSec: number?
+    entries: TenantWorkoutTemplateEntry[]
+  }
+
+  entity "TenantWorkoutTemplateEntry" as TenantWorkoutTemplateEntry {
+    * order: number
+    --
+    exerciseId: string
+    exerciseSlug: string
+    variantId: string?
+    selectedGrip: string?
+    selectedStance: string?
+    selectedAttachment: string?
+    notes: string?
+    restAfterEntrySec: number?
+  }
+
+  entity "TenantWorkout" as TenantWorkout {
+    * performedAt: Date
+    --
+    userId: string
+    workoutName: string
+    startedAt: Date?
+    endedAt: Date?
+    durationMinutes: number?
+    notes: string?
+    locationSnapshot: TenantWorkoutLocationSnapshot?
+    weatherSnapshot: TenantWorkoutWeatherSnapshot?
+    blocks: TenantWorkoutBlock[]
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  entity "TenantWorkoutBlock" as TenantWorkoutBlock {
+    * order: number
+    --
+    type: single|superset|circuit|dropset
+    name: string?
+    rounds: number?
+    restAfterBlockSec: number?
+    entries: TenantWorkoutExerciseEntry[]
+  }
+
+  entity "TenantWorkoutExerciseEntry" as TenantWorkoutExerciseEntry {
+    * order: number
+    --
+    exerciseId: string
+    exerciseSlug: string
+    variantId: string?
+    selectedEquipment: string[]
+    selectedGrip: string?
+    selectedStance: string?
+    selectedAttachment: string?
+    notes: string?
+    restAfterEntrySec: number?
+    sets: TenantWorkoutSet[]
+  }
+
+  entity "TenantWorkoutSet" as TenantWorkoutSet {
+    * order: number
+    --
+    reps: number?
+    weight: number?
+    durationSec: number?
+    distanceMeters: number?
+    calories: number?
+    rpe: number?
+    rir: number?
+    isWarmup: boolean
+    isFailure: boolean
+    setKind: normal|drop|backoff|top
+    parentSetOrder: number?
+    completedAt: Date?
+  }
+
+  entity "TenantWorkoutLocationSnapshot" as TenantWorkoutLocationSnapshot {
+    * provider: google_places
+    --
+    placeId: string
+    displayName: string
+    formattedAddress: string
+    latitude: number
+    longitude: number
+    countryCode: string?
+    country: string?
+    region: string?
+    city: string?
+    locality: string?
+    postalCode: string?
+  }
+
+  entity "TenantWorkoutWeatherSnapshot" as TenantWorkoutWeatherSnapshot {
+    provider: string
+    temperatureC: number?
+    apparentTemperatureC: number?
+    humidityPercent: number?
+    windSpeedKph: number?
+    precipitationMm: number?
+    weatherCode: string?
+    capturedAt: Date
+  }
+
+  entity "TenantSupplementStack" as TenantSupplementStack {
+    * name: string
+    --
+    userId: string
+    context: timing|custom
+    notes: string?
+    isFavorite: boolean
+    items: TenantSupplementStackItem[]
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  entity "TenantSupplementStackItem" as TenantSupplementStackItem {
+    * order: number
+    --
+    supplementId: string
+    supplementSlug: string
+    supplementName: string
+    variantId: string?
+    variantSlug: string?
+    variantName: string?
+    amount: number
+    unit: mg|g|mcg|ml|capsule|tablet|scoop|softgel
+    notes: string?
+  }
+
+  entity "TenantSupplementReport" as TenantSupplementReport {
+    * takenAt: Date
+    --
+    userId: string
+    stackId: string?
+    stackName: string
+    context: timing|custom
+    notes: string?
+    items: TenantSupplementReportItem[]
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  entity "TenantSupplementReportItem" as TenantSupplementReportItem {
+    * order: number
+    --
+    supplementId: string
+    supplementSlug: string
+    supplementName: string
+    variantId: string?
+    variantSlug: string?
+    variantName: string?
+    amount: number
+    unit: mg|g|mcg|ml|capsule|tablet|scoop|softgel
+    notes: string?
+  }
+}
+
+' Core DB composition
+CoreExercise ||--o{ CoreExerciseVariant
+CoreExercise ||--o{ CoreExerciseMuscleActivation
+CoreExerciseMuscleActivation }o--|| CoreMuscleGroup : muscleGroupId -> slug/id
+CoreSupplement ||--o{ CoreSupplementVariant
+CoreMuscleGroup }o--o| CoreMuscleGroup : parentGroupId
+CoreUser ||--|| TenantMetadata : tenantDbName
+
+' Tenant DB composition
+TenantProfile ||--|| TenantProfileLocation
+TenantDailyReport ||--|| TenantDailyGoalsSnapshot
+TenantDailyReport ||--|| TenantDailyActuals
+TenantDailyReport ||--|| TenantDailyWellbeing
+TenantDailyReport ||--|| TenantDailyBodySnapshot
+TenantDailyReport ||--|| TenantDailyContext
+TenantDailyContext ||--o| TenantDailyWeatherSnapshot
+TenantDailyReport ||--|| TenantDailyCompletion
+
+TenantWorkoutTemplate ||--o{ TenantWorkoutTemplateBlock
+TenantWorkoutTemplateBlock ||--o{ TenantWorkoutTemplateEntry
+
+TenantWorkout ||--o{ TenantWorkoutBlock
+TenantWorkoutBlock ||--o{ TenantWorkoutExerciseEntry
+TenantWorkoutExerciseEntry ||--o{ TenantWorkoutSet
+TenantWorkout ||--o| TenantWorkoutLocationSnapshot
+TenantWorkout ||--o| TenantWorkoutWeatherSnapshot
+
+TenantSupplementStack ||--o{ TenantSupplementStackItem
+TenantSupplementReport ||--o{ TenantSupplementReportItem
+
+' Logical references
+CoreUser ||--o| TenantProfile : userId
+CoreUser ||--o| TenantHealthyHabits : tenant scope
+CoreUser ||--o| TenantSettings : tenant scope
+CoreUser ||--o{ TenantDailyReport : userId
+CoreUser ||--o{ TenantWorkoutTemplate : userId
+CoreUser ||--o{ TenantWorkout : userId
+CoreUser ||--o{ TenantSupplementStack : userId
+CoreUser ||--o{ TenantSupplementReport : userId
+
+TenantProfile }o--o{ CoreExercise : favoriteExerciseSlugs
+TenantWorkoutTemplateEntry }o--|| CoreExercise : exerciseId / exerciseSlug
+TenantWorkoutExerciseEntry }o--|| CoreExercise : exerciseId / exerciseSlug
+TenantSupplementStackItem }o--|| CoreSupplement : supplementId / supplementSlug
+TenantSupplementReportItem }o--|| CoreSupplement : supplementId / supplementSlug
+TenantSupplementReport }o--o| TenantSupplementStack : stackId snapshot origin
+TenantDailyReport }o--|| TenantHealthyHabits : goalsSnapshot derived from habits
+
+note right of TenantSupplementReport
+  Reports keep a historical snapshot of stack name,
+  context, and item composition.
+  The stack link is optional and not required for replay.
+end note
+
+note right of TenantWorkout
+  Workout reports store executed sets and context snapshots.
+  Templates are separate reusable blueprints.
+end note
+
+note right of TenantDailyReport
+  Daily reports denormalize goalsSnapshot and completion
+  so analytics can replay historical targets.
+end note
+
+@enduml
