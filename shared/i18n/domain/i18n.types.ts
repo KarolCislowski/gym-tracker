@@ -343,6 +343,8 @@ export interface TranslationDictionary {
     reportCreated: string;
     reportUpdated: string;
     reportDeleted: string;
+    stackError: string;
+    reportError: string;
     errorGeneric: string;
     stackNameLabel: string;
     stackContextLabel: string;
@@ -464,6 +466,7 @@ export interface TranslationDictionary {
     templateUpdated: string;
     templateDeleted: string;
     reportError: string;
+    templateError: string;
     emptyState: string;
     templatesTitle: string;
     templatesEmptyState: string;

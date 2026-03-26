@@ -30,7 +30,7 @@ export function WorkoutTemplateDetailsPage({
   const feedback = status === 'workout-template-updated'
     ? { severity: 'success' as const, message: t.templateUpdated }
     : error
-      ? { severity: 'error' as const, message: t.reportError }
+      ? { severity: 'error' as const, message: t.templateError }
       : null;
 
   if (!template) {

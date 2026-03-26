@@ -53,7 +53,9 @@ export async function createWorkoutReportAction(formData: FormData): Promise<voi
       locationSnapshot: userSnapshot.profile?.location ?? null,
     });
   } catch (error) {
-    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+    redirect(
+      `/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_REPORT_ERROR_GENERIC'))}`,
+    );
   }
 
   redirect('/workouts?status=workout-report-created');
@@ -85,7 +87,9 @@ export async function createWorkoutTemplateAction(formData: FormData): Promise<v
       userId: session.user.id,
     });
   } catch (error) {
-    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+    redirect(
+      `/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_TEMPLATE_ERROR_GENERIC'))}`,
+    );
   }
 
   redirect('/workouts?status=workout-template-created');
@@ -128,7 +132,7 @@ export async function updateWorkoutReportAction(formData: FormData): Promise<voi
     });
   } catch (error) {
     redirect(
-      `/workouts/${encodeURIComponent(reportId)}?error=${encodeURIComponent(getWorkoutErrorCode(error))}`,
+      `/workouts/${encodeURIComponent(reportId)}?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_REPORT_ERROR_GENERIC'))}`,
     );
   }
 
@@ -156,7 +160,9 @@ export async function deleteWorkoutReportAction(formData: FormData): Promise<voi
       reportId,
     );
   } catch (error) {
-    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+    redirect(
+      `/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_REPORT_ERROR_GENERIC'))}`,
+    );
   }
 
   redirect('/workouts?status=workout-report-deleted');
@@ -200,7 +206,7 @@ export async function updateWorkoutTemplateAction(formData: FormData): Promise<v
     });
   } catch (error) {
     redirect(
-      `/workouts/templates/${encodeURIComponent(templateId)}?error=${encodeURIComponent(getWorkoutErrorCode(error))}`,
+      `/workouts/templates/${encodeURIComponent(templateId)}?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_TEMPLATE_ERROR_GENERIC'))}`,
     );
   }
 
@@ -230,18 +236,20 @@ export async function deleteWorkoutTemplateAction(formData: FormData): Promise<v
       templateId,
     );
   } catch (error) {
-    redirect(`/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error))}`);
+    redirect(
+      `/workouts?error=${encodeURIComponent(getWorkoutErrorCode(error, 'WORKOUT_TEMPLATE_ERROR_GENERIC'))}`,
+    );
   }
 
   redirect('/workouts?status=workout-template-deleted');
 }
 
-function getWorkoutErrorCode(error: unknown): string {
+function getWorkoutErrorCode(error: unknown, fallbackCode: string): string {
   if (error instanceof Error && error.message) {
     return error.message;
   }
 
-  return 'WORKOUT_REPORT_ERROR_GENERIC';
+  return fallbackCode;
 }
 
 function normalizeWorkoutPayload(

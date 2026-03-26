@@ -38,7 +38,7 @@ export function SupplementStackDetailsPage({
   const feedback = status === 'supplement-stack-updated'
     ? { severity: 'success' as const, message: t.stackUpdated }
     : error
-      ? { severity: 'error' as const, message: t.errorGeneric }
+      ? { severity: 'error' as const, message: t.stackError }
       : null;
 
   if (!stack) {

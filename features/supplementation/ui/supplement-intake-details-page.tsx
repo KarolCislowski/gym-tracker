@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from '@mui/material';
+import { Alert, Paper, Stack, Typography } from '@mui/material';
 
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -19,6 +19,16 @@ interface SupplementIntakeDetailsPageProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Server-rendered detail page for a supplementation report with inline editing and deletion.
+ * @param props - Component props for the supplementation-report detail page.
+ * @param props.report - Persisted supplementation report details for the selected identifier.
+ * @param props.stacks - Saved supplement stacks available to prefill report editing controls.
+ * @param props.translations - Full translation dictionary for localized copy.
+ * @param props.status - Optional route status flag used for success feedback.
+ * @param props.error - Optional route error flag used for failure feedback.
+ * @returns A React element rendering the report summary, taken items, and edit/delete actions.
+ */
 export function SupplementIntakeDetailsPage({
   error,
   report,
@@ -28,9 +38,9 @@ export function SupplementIntakeDetailsPage({
 }: SupplementIntakeDetailsPageProps) {
   const t = translations.supplementation;
   const feedback = status === 'supplement-report-updated'
-    ? t.reportUpdated
+    ? { severity: 'success' as const, message: t.reportUpdated }
     : error
-      ? t.errorGeneric
+      ? { severity: 'error' as const, message: t.reportError }
       : null;
 
   if (!report) {
@@ -73,11 +83,7 @@ export function SupplementIntakeDetailsPage({
         <Typography color='text.secondary'>{t.detailsDescription}</Typography>
       </Stack>
 
-      {feedback ? (
-        <Paper elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 4, p: 2 }}>
-          <Typography>{feedback}</Typography>
-        </Paper>
-      ) : null}
+      {feedback ? <Alert severity={feedback.severity}>{feedback.message}</Alert> : null}
 
       <SupplementIntakeEditor
         initialReport={report}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import {
   Box,
@@ -26,6 +26,19 @@ interface DeleteConfirmationButtonProps {
   tooltipLabel: string;
 }
 
+/**
+ * Renders a reusable destructive-action icon button with a confirmation dialog.
+ * @param props - Component props for the delete confirmation flow.
+ * @param props.action - Server action executed after confirmation.
+ * @param props.ariaLabel - Optional accessible label overriding the tooltip label.
+ * @param props.cancelLabel - Label for dismissing the confirmation dialog.
+ * @param props.confirmLabel - Label for the destructive submit action.
+ * @param props.description - Explanatory text describing what will be deleted.
+ * @param props.hiddenFields - Hidden form values required by the delete action.
+ * @param props.title - Dialog title shown before confirmation.
+ * @param props.tooltipLabel - Tooltip text shown on the trigger button.
+ * @returns A React element rendering the trigger button and confirmation dialog.
+ */
 export function DeleteConfirmationButton({
   action,
   ariaLabel,
@@ -37,6 +50,7 @@ export function DeleteConfirmationButton({
   tooltipLabel,
 }: DeleteConfirmationButtonProps) {
   const [open, setOpen] = useState(false);
+  const descriptionId = useId();
 
   return (
     <>
@@ -51,10 +65,12 @@ export function DeleteConfirmationButton({
         </IconButton>
       </Tooltip>
 
-      <Dialog onClose={() => setOpen(false)} open={open}>
+      <Dialog aria-describedby={descriptionId} onClose={() => setOpen(false)} open={open}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <Typography color='text.secondary'>{description}</Typography>
+          <Typography color='text.secondary' id={descriptionId}>
+            {description}
+          </Typography>
         </DialogContent>
         <Box action={action} component='form'>
           <DialogActions sx={{ px: 3, pb: 3 }}>

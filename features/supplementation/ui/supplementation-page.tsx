@@ -58,6 +58,13 @@ export function SupplementationPage({
   translations,
 }: SupplementationPageProps) {
   const t = translations.supplementation;
+  const errorMessage = !error
+    ? null
+    : error.startsWith('SUPPLEMENT_STACK_')
+      ? t.stackError
+      : error.startsWith('SUPPLEMENT_REPORT_')
+        ? t.reportError
+        : t.errorGeneric;
   const feedback = status === 'supplement-stack-created'
     ? { severity: 'success' as const, message: t.stackCreated }
     : status === 'supplement-stack-deleted'
@@ -66,8 +73,8 @@ export function SupplementationPage({
       ? { severity: 'success' as const, message: t.reportCreated }
       : status === 'supplement-report-deleted'
         ? { severity: 'success' as const, message: t.reportDeleted }
-        : error
-          ? { severity: 'error' as const, message: t.errorGeneric }
+        : errorMessage
+          ? { severity: 'error' as const, message: errorMessage }
           : null;
 
   return (

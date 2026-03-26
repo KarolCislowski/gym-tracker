@@ -57,6 +57,11 @@ export function WorkoutReportsPage({
   translations,
 }: WorkoutReportsPageProps) {
   const t = translations.workouts;
+  const errorMessage = !error
+    ? null
+    : error.startsWith('WORKOUT_TEMPLATE_')
+      ? t.templateError
+      : t.reportError;
   const feedback = status === 'workout-report-created'
     ? { severity: 'success' as const, message: t.reportCreated }
     : status === 'workout-report-deleted'
@@ -65,8 +70,8 @@ export function WorkoutReportsPage({
       ? { severity: 'success' as const, message: t.templateCreated }
       : status === 'workout-template-deleted'
         ? { severity: 'success' as const, message: t.templateDeleted }
-        : error
-          ? { severity: 'error' as const, message: t.reportError }
+        : errorMessage
+          ? { severity: 'error' as const, message: errorMessage }
           : null;
 
   return (

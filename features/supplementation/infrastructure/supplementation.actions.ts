@@ -50,7 +50,7 @@ export async function createSupplementStackAction(
     });
   } catch (error) {
     redirect(
-      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_STACK_ERROR_GENERIC'))}`,
     );
   }
 
@@ -97,7 +97,7 @@ export async function updateSupplementStackAction(
     });
   } catch (error) {
     redirect(
-      `/supplementation/stacks/${encodeURIComponent(stackId)}?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation/stacks/${encodeURIComponent(stackId)}?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_STACK_ERROR_GENERIC'))}`,
     );
   }
 
@@ -130,7 +130,7 @@ export async function deleteSupplementStackAction(
     );
   } catch (error) {
     redirect(
-      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_STACK_ERROR_GENERIC'))}`,
     );
   }
 
@@ -167,7 +167,7 @@ export async function createSupplementIntakeReportAction(
     });
   } catch (error) {
     redirect(
-      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_REPORT_ERROR_GENERIC'))}`,
     );
   }
 
@@ -210,7 +210,7 @@ export async function updateSupplementIntakeReportAction(
     });
   } catch (error) {
     redirect(
-      `/supplementation/reports/${encodeURIComponent(reportId)}?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation/reports/${encodeURIComponent(reportId)}?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_REPORT_ERROR_GENERIC'))}`,
     );
   }
 
@@ -243,17 +243,17 @@ export async function deleteSupplementIntakeReportAction(
     );
   } catch (error) {
     redirect(
-      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error))}`,
+      `/supplementation?error=${encodeURIComponent(getSupplementationErrorCode(error, 'SUPPLEMENT_REPORT_ERROR_GENERIC'))}`,
     );
   }
 
   redirect('/supplementation?status=supplement-report-deleted');
 }
 
-function getSupplementationErrorCode(error: unknown): string {
+function getSupplementationErrorCode(error: unknown, fallbackCode: string): string {
   if (error instanceof Error && error.message) {
     return error.message;
   }
 
-  return 'SUPPLEMENTATION_ERROR_GENERIC';
+  return fallbackCode;
 }
