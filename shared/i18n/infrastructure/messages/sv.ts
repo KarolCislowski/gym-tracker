@@ -1,6 +1,10 @@
 import type { TranslationDictionaryOverrides } from '../../domain/i18n.types';
 
 export const svMessages: TranslationDictionaryOverrides = {
+  common: {
+    unsavedChangesWarning:
+      'Du har osparade ändringar. Vill du lämna sidan?',
+  },
   auth: {
     homeTitle: 'Hem',
     aboutTitle: 'Om appen',

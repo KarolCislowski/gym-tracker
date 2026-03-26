@@ -1,6 +1,10 @@
 import type { TranslationDictionary } from '../../domain/i18n.types';
 
 export const enMessages: TranslationDictionary = {
+  common: {
+    unsavedChangesWarning:
+      'You have unsaved changes. Do you want to leave this page?',
+  },
   auth: {
     appName: 'Gym Tracker',
     homeTitle: 'Home',

@@ -1,6 +1,10 @@
 import type { TranslationDictionaryOverrides } from '../../domain/i18n.types';
 
 export const plMessages: TranslationDictionaryOverrides = {
+  common: {
+    unsavedChangesWarning:
+      'Masz niezapisane zmiany. Czy chcesz opuścić tę stronę?',
+  },
   auth: {
     homeTitle: 'Strona główna',
     aboutTitle: 'O aplikacji',

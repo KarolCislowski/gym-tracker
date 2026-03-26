@@ -39,6 +39,10 @@ export function getTranslations(
   const localized = messageCatalog[activeLanguage];
 
   return {
+    common: {
+      ...enMessages.common,
+      ...localized.common,
+    },
     auth: {
       ...enMessages.auth,
       ...localized.auth,

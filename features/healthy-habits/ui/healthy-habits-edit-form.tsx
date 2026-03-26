@@ -17,6 +17,7 @@ import {
 } from '@/shared/units/application/unit-conversion';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
+import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import { updateHealthyHabitsAction } from '../infrastructure/healthy-habits.actions';
 
@@ -37,6 +38,9 @@ export function HealthyHabitsEditForm({
   userSnapshot,
 }: HealthyHabitsEditFormProps) {
   const t = translations.healthyHabits;
+  const { formRef, markSubmitted } = useUnsavedChangesWarning({
+    message: translations.common.unsavedChangesWarning,
+  });
   const habits = userSnapshot?.healthyHabits;
   const unitSystem = userSnapshot?.settings?.unitSystem ?? 'metric';
   const waterValue =
@@ -63,7 +67,13 @@ export function HealthyHabitsEditForm({
   );
 
   return (
-    <Stack component='form' action={updateHealthyHabitsAction} spacing={2}>
+    <Stack
+      component='form'
+      action={updateHealthyHabitsAction}
+      onSubmitCapture={markSubmitted}
+      ref={formRef}
+      spacing={2}
+    >
       <input type='hidden' name='unitSystem' value={unitSystem} />
       <Box
         sx={{

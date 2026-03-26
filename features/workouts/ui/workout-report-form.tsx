@@ -19,6 +19,7 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type {
   WorkoutSessionDetails,
@@ -94,6 +95,9 @@ export function WorkoutReportForm({
   translations,
 }: WorkoutReportFormProps) {
   const t = translations.workouts;
+  const { formRef, markSubmitted } = useUnsavedChangesWarning({
+    message: translations.common.unsavedChangesWarning,
+  });
   const favoriteExercises = useMemo(
     () =>
       exercises.filter((exercise) =>
@@ -219,7 +223,13 @@ export function WorkoutReportForm({
   }, [blocks, endedAt, exercises, notes, performedAt, startedAt, workoutName]);
 
   return (
-    <Stack component='form' action={formAction} spacing={2.5}>
+    <Stack
+      component='form'
+      action={formAction}
+      onSubmitCapture={markSubmitted}
+      ref={formRef}
+      spacing={2.5}
+    >
       <Alert severity='info' variant='outlined'>
         {t.autoLocationHint}
       </Alert>

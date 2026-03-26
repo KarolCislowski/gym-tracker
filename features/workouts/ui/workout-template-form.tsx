@@ -16,6 +16,7 @@ import {
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type { WorkoutTemplateSummary } from '../domain/workout.types';
 import { createWorkoutTemplateAction } from '../infrastructure/workout.actions';
@@ -67,6 +68,9 @@ export function WorkoutTemplateForm({
   translations,
 }: WorkoutTemplateFormProps) {
   const t = translations.workouts;
+  const { formRef, markSubmitted } = useUnsavedChangesWarning({
+    message: translations.common.unsavedChangesWarning,
+  });
   const [name, setName] = useState(initialTemplate?.name ?? '');
   const [notes, setNotes] = useState(initialTemplate?.notes ?? '');
   const [blocks, setBlocks] = useState<WorkoutTemplateBlockDraft[]>(
@@ -112,7 +116,13 @@ export function WorkoutTemplateForm({
   );
 
   return (
-    <Stack component='form' action={formAction} spacing={2.5}>
+    <Stack
+      component='form'
+      action={formAction}
+      onSubmitCapture={markSubmitted}
+      ref={formRef}
+      spacing={2.5}
+    >
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>

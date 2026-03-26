@@ -1,3 +1,5 @@
+'use client';
+
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
   Box,
@@ -9,6 +11,7 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 import { convertHeightFromMetric } from '@/shared/units/application/unit-conversion';
 
 import { formatBirthDateForDateInput } from '../application/profile-view';
@@ -33,6 +36,9 @@ export function ProfileEditForm({
   userSnapshot,
 }: ProfileEditFormProps) {
   const t = translations.profile;
+  const { formRef, markSubmitted } = useUnsavedChangesWarning({
+    message: translations.common.unsavedChangesWarning,
+  });
   const profile = userSnapshot?.profile;
   const unitSystem = userSnapshot?.settings?.unitSystem ?? 'metric';
   const biologicalSexHelpId = 'biological-sex-help';
@@ -42,7 +48,13 @@ export function ProfileEditForm({
       : null;
 
   return (
-    <Stack component='form' action={updateProfileAction} spacing={2}>
+    <Stack
+      component='form'
+      action={updateProfileAction}
+      onSubmitCapture={markSubmitted}
+      ref={formRef}
+      spacing={2}
+    >
       <Box
         sx={{
           display: 'grid',

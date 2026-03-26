@@ -17,6 +17,7 @@ import {
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { Supplement } from '@/features/supplements/domain/supplement.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type {
   SupplementAmountUnit,
@@ -82,6 +83,9 @@ export function SupplementStackForm({
   translations,
 }: SupplementStackFormProps) {
   const t = translations.supplementation;
+  const { formRef, markSubmitted } = useUnsavedChangesWarning({
+    message: translations.common.unsavedChangesWarning,
+  });
   const [name, setName] = useState(initialStack?.name ?? '');
   const [context, setContext] = useState<SupplementStackContext>(
     initialStack?.context ?? 'pre_workout',
@@ -127,7 +131,13 @@ export function SupplementStackForm({
   );
 
   return (
-    <Stack component='form' action={formAction} spacing={2.5}>
+    <Stack
+      component='form'
+      action={formAction}
+      onSubmitCapture={markSubmitted}
+      ref={formRef}
+      spacing={2.5}
+    >
       <Paper elevation={0} sx={{ p: 2.5, border: 1, borderColor: 'divider', borderRadius: 6 }}>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>

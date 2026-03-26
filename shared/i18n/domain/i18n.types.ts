@@ -3,6 +3,9 @@ export const supportedLanguages = ['en', 'pl', 'sv'] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export interface TranslationDictionary {
+  common: {
+    unsavedChangesWarning: string;
+  };
   auth: {
     appName: string;
     homeTitle: string;
@@ -614,6 +617,7 @@ export interface TranslationDictionary {
 }
 
 export interface TranslationDictionaryOverrides {
+  common?: Partial<TranslationDictionary['common']>;
   auth?: Partial<TranslationDictionary['auth']>;
   dashboard?: Partial<TranslationDictionary['dashboard']>;
   onboarding?: Partial<TranslationDictionary['onboarding']>;
