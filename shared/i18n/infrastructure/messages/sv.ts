@@ -119,6 +119,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     showAllLabel: 'Visa alla',
     showLessLabel: 'Visa mindre',
     noChartData: 'För lite data ännu.',
+    startFirstEntry: 'Börja med din första registrering.',
+    noDataInPeriod: 'Ingen data under den här perioden.',
+    notEnoughDataForTrend: 'För lite data för att visa en trend ännu.',
     replayOnboarding: 'Visa guide',
   },
   onboarding: {

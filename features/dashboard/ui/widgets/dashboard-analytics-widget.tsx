@@ -26,6 +26,10 @@ import type {
   DashboardAnalytics,
   GoalComplianceChartPoint,
 } from '../../application/dashboard-analytics';
+import {
+  resolveAnalyticsStateMessage,
+  resolveGoalComplianceState,
+} from '../../application/dashboard-analytics-state';
 
 interface DashboardAnalyticsWidgetProps {
   analytics: DashboardAnalytics;
@@ -64,6 +68,7 @@ export function DashboardAnalyticsWidget({
   const goalCompliancePoints = isMobile
     ? analytics.goalCompliance.slice(-MOBILE_GOAL_COMPLIANCE_DAYS)
     : analytics.goalCompliance;
+  const goalComplianceState = resolveGoalComplianceState(goalCompliancePoints);
   const [showExpandedCharts, setShowExpandedCharts] = useState(!isMobile);
 
   return (
@@ -78,14 +83,14 @@ export function DashboardAnalyticsWidget({
       }}
     >
       <ChartCard title={t.goalComplianceChart}>
-        {goalCompliancePoints.length ? (
+        {goalComplianceState === 'ready' ? (
           <GoalComplianceHeatmap
             compact={isMobile}
             points={goalCompliancePoints}
             translations={translations}
           />
         ) : (
-          <EmptyChartState message={t.noChartData} />
+          <EmptyChartState message={resolveAnalyticsStateMessage(goalComplianceState, t)} />
         )}
       </ChartCard>
       {showExpandedCharts ? (

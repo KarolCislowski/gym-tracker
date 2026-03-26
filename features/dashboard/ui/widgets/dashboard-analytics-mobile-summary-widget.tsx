@@ -13,6 +13,16 @@ import type {
   WellbeingChartPoint,
   WorkoutVolumeChartPoint,
 } from '../../application/dashboard-analytics';
+import {
+  getLatestBodyWeightTrendPoints,
+  getLatestWellbeingTrendPoints,
+  getLatestWorkoutVolumeTrendPoints,
+  resolveAnalyticsStateMessage,
+  resolveBodyMetricsState,
+  resolveGoalComplianceState,
+  resolveWellbeingState,
+  resolveWorkoutVolumeState,
+} from '../../application/dashboard-analytics-state';
 
 interface DashboardAnalyticsMobileSummaryWidgetProps {
   analytics: DashboardAnalytics;
@@ -27,12 +37,32 @@ export function DashboardAnalyticsMobileSummaryWidget({
 }: DashboardAnalyticsMobileSummaryWidgetProps) {
   const t = translations.dashboard;
   const latestGoalCompliance = analytics.goalCompliance.at(-1);
-  const latestWellbeing = analytics.wellbeing.at(-1);
-  const previousWellbeing = analytics.wellbeing.at(-2);
-  const latestBodyMetrics = analytics.bodyMetrics.at(-1);
-  const previousBodyMetrics = analytics.bodyMetrics.at(-2);
-  const latestWorkoutVolume = analytics.workoutVolume.at(-1);
-  const previousWorkoutVolume = analytics.workoutVolume.at(-2);
+  const goalComplianceState = resolveGoalComplianceState(analytics.goalCompliance);
+  const wellbeingState = resolveWellbeingState(analytics.wellbeing);
+  const bodyMetricsState = resolveBodyMetricsState(analytics.bodyMetrics);
+  const workoutVolumeState = resolveWorkoutVolumeState(
+    analytics.workoutVolume,
+    analytics.workoutVolumeMuscleGroups,
+  );
+  const [latestWellbeing, previousWellbeing] = getLatestWellbeingTrendPoints(
+    analytics.wellbeing,
+  );
+  const [latestBodyMetrics, previousBodyMetrics] = getLatestBodyWeightTrendPoints(
+    analytics.bodyMetrics,
+  );
+  const [latestWorkoutVolume, previousWorkoutVolume] =
+    getLatestWorkoutVolumeTrendPoints(analytics.workoutVolume);
+  const allStates = [
+    goalComplianceState,
+    wellbeingState,
+    bodyMetricsState,
+    workoutVolumeState,
+  ];
+  const overallMessage = allStates.every((state) => state === 'start')
+    ? t.startFirstEntry
+    : allStates.every((state) => state !== 'ready')
+      ? t.notEnoughDataForTrend
+      : t.analysisDesktopOnly;
 
   return (
     <Paper
@@ -50,44 +80,60 @@ export function DashboardAnalyticsMobileSummaryWidget({
             {t.quickStatusTitle}
           </Typography>
           <Typography color='text.secondary' variant='body2'>
-            {t.analysisDesktopOnly}
+            {overallMessage}
           </Typography>
         </Stack>
 
         <Stack spacing={1.5}>
           <SummaryRow
             label={t.goalComplianceChart}
-            value={formatGoalCompliance(latestGoalCompliance, t.noChartData)}
+            value={
+              goalComplianceState === 'ready'
+                ? formatGoalCompliance(latestGoalCompliance, t.noChartData)
+                : resolveAnalyticsStateMessage(goalComplianceState, t)
+            }
           />
           <SummaryRow
             label={t.wellbeingChart}
-            value={formatNumericDelta(
-              computeWellbeingAverage(latestWellbeing),
-              computeWellbeingAverage(previousWellbeing),
-              '',
-              t.versusPreviousLabel,
-              t.noChartData,
-            )}
+            value={
+              wellbeingState === 'ready'
+                ? formatNumericDelta(
+                    computeWellbeingAverage(latestWellbeing),
+                    computeWellbeingAverage(previousWellbeing),
+                    '',
+                    t.versusPreviousLabel,
+                    t.noChartData,
+                  )
+                : resolveAnalyticsStateMessage(wellbeingState, t)
+            }
           />
           <SummaryRow
             label={t.bodyMetricsChart}
-            value={formatBodyWeightDelta(
-              latestBodyMetrics,
-              previousBodyMetrics,
-              unitSystem,
-              t.versusPreviousLabel,
-              t.noChartData,
-            )}
+            value={
+              bodyMetricsState === 'ready'
+                ? formatBodyWeightDelta(
+                    latestBodyMetrics,
+                    previousBodyMetrics,
+                    unitSystem,
+                    t.versusPreviousLabel,
+                    t.noChartData,
+                  )
+                : resolveAnalyticsStateMessage(bodyMetricsState, t)
+            }
           />
           <SummaryRow
             label={t.workoutVolumeChart}
-            value={formatNumericDelta(
-              computeWorkoutVolumeTotal(latestWorkoutVolume),
-              computeWorkoutVolumeTotal(previousWorkoutVolume),
-              ` ${t.chartSets.toLowerCase()}`,
-              t.versusPreviousLabel,
-              t.noChartData,
-            )}
+            value={
+              workoutVolumeState === 'ready'
+                ? formatNumericDelta(
+                    computeWorkoutVolumeTotal(latestWorkoutVolume),
+                    computeWorkoutVolumeTotal(previousWorkoutVolume),
+                    ` ${t.chartSets.toLowerCase()}`,
+                    t.versusPreviousLabel,
+                    t.noChartData,
+                  )
+                : resolveAnalyticsStateMessage(workoutVolumeState, t)
+            }
           />
         </Stack>
       </Stack>

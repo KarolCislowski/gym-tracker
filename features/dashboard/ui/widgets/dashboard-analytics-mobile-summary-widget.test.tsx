@@ -85,4 +85,25 @@ describe('DashboardAnalyticsMobileSummaryWidget', () => {
     expect(screen.getByText('+1.5 kg vs previous')).toBeInTheDocument();
     expect(screen.getByText('+4 sets vs previous')).toBeInTheDocument();
   });
+
+  test('renders onboarding-style empty states when analytics have no entries yet', () => {
+    render(
+      <DashboardAnalyticsMobileSummaryWidget
+        analytics={{
+          goalCompliance: [],
+          wellbeing: [],
+          bodyMetrics: [],
+          workoutVolume: [],
+          workoutVolumeMuscleGroups: [],
+          workoutVolumeMuscleGroupLabels: {},
+        }}
+        translations={enMessages}
+        unitSystem='metric'
+      />,
+    );
+
+    expect(
+      screen.getAllByText('Start with your first entry.').length,
+    ).toBeGreaterThan(1);
+  });
 });

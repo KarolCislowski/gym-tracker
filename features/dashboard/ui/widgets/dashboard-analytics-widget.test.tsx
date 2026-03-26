@@ -53,6 +53,11 @@ describe('DashboardAnalyticsWidget', () => {
           wellbeing: [],
           bodyMetrics: [
             {
+              label: '03/20',
+              bodyWeightKg: 80,
+              restingHeartRate: 55,
+            },
+            {
               label: '03/21',
               bodyWeightKg: 81.5,
               restingHeartRate: 54,
@@ -84,6 +89,11 @@ describe('DashboardAnalyticsWidget', () => {
           wellbeing: [],
           bodyMetrics: [
             {
+              label: '03/20',
+              bodyWeightKg: 80,
+              restingHeartRate: 55,
+            },
+            {
               label: '03/21',
               bodyWeightKg: 81.5,
               restingHeartRate: 54,
@@ -105,5 +115,49 @@ describe('DashboardAnalyticsWidget', () => {
     }
 
     expect(await screen.findByText('Body weight (st)')).toBeInTheDocument();
+  });
+
+  test('renders clearer empty-state messages for missing and insufficient analytics data', async () => {
+    render(
+      <DashboardAnalyticsWidget
+        analytics={{
+          goalCompliance: [],
+          wellbeing: [
+            {
+              label: '03/21',
+              mood: 4,
+              energy: null,
+              stress: null,
+              recovery: null,
+            },
+          ],
+          bodyMetrics: [
+            {
+              label: '03/21',
+              bodyWeightKg: 81.5,
+              restingHeartRate: null,
+            },
+          ],
+          workoutVolume: [],
+          workoutVolumeMuscleGroups: [],
+          workoutVolumeMuscleGroupLabels: {},
+        }}
+        translations={enMessages}
+        unitSystem='metric'
+      />,
+    );
+
+    const showAllButton = screen.queryByRole('button', { name: 'Show all' });
+
+    if (showAllButton) {
+      fireEvent.click(showAllButton);
+    }
+
+    expect(
+      screen.getAllByText('Start with your first entry.').length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText('Not enough data to show a trend yet.').length,
+    ).toBeGreaterThan(0);
   });
 });

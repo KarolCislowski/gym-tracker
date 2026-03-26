@@ -108,6 +108,9 @@ export interface TranslationDictionary {
     showAllLabel: string;
     showLessLabel: string;
     noChartData: string;
+    startFirstEntry: string;
+    noDataInPeriod: string;
+    notEnoughDataForTrend: string;
     signOut: string;
     replayOnboarding: string;
   };

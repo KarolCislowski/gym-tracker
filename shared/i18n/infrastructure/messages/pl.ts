@@ -119,6 +119,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     showAllLabel: 'Pokaż wszystkie',
     showLessLabel: 'Pokaż mniej',
     noChartData: 'Za mało danych.',
+    startFirstEntry: 'Zacznij od pierwszego wpisu.',
+    noDataInPeriod: 'Brak danych w tym okresie.',
+    notEnoughDataForTrend: 'Za mało danych, aby pokazać trend.',
     replayOnboarding: 'Pokaż przewodnik',
   },
   onboarding: {

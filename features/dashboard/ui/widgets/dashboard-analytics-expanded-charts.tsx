@@ -28,6 +28,12 @@ import {
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 import type { DashboardAnalytics } from '../../application/dashboard-analytics';
+import {
+  resolveAnalyticsStateMessage,
+  resolveBodyMetricsState,
+  resolveWellbeingState,
+  resolveWorkoutVolumeState,
+} from '../../application/dashboard-analytics-state';
 
 interface DashboardAnalyticsExpandedChartsProps {
   analytics: DashboardAnalytics;
@@ -64,9 +70,11 @@ export function DashboardAnalyticsExpandedCharts({
   const wellbeingDataset = isMobile
     ? analytics.wellbeing.slice(-MOBILE_WELLBEING_DAYS)
     : analytics.wellbeing;
+  const wellbeingState = resolveWellbeingState(wellbeingDataset);
   const bodyMetricsSource = isMobile
     ? analytics.bodyMetrics.slice(-MOBILE_BODY_METRICS_DAYS)
     : analytics.bodyMetrics;
+  const bodyMetricsState = resolveBodyMetricsState(bodyMetricsSource);
   const bodyMetricsDataset = bodyMetricsSource.map((point) => ({
     ...point,
     bodyWeightKg:
@@ -130,6 +138,10 @@ export function DashboardAnalyticsExpandedCharts({
   const workoutVolumeMuscleGroups = showAllWorkoutVolumeGroups
     ? analytics.workoutVolumeMuscleGroups
     : defaultWorkoutVolumeMuscleGroups;
+  const workoutVolumeState = resolveWorkoutVolumeState(
+    workoutVolumeDataset,
+    workoutVolumeChartMuscleGroups,
+  );
 
   return (
     <>
@@ -149,7 +161,7 @@ export function DashboardAnalyticsExpandedCharts({
         title={t.wellbeingChart}
       >
         {(chartHeight) =>
-          wellbeingDataset.length ? (
+          wellbeingState === 'ready' ? (
             isMobile ? (
               <Stack spacing={2}>
                 <LineChart
@@ -186,7 +198,7 @@ export function DashboardAnalyticsExpandedCharts({
               />
             )
           ) : (
-            <EmptyChartState message={t.noChartData} />
+            <EmptyChartState message={resolveAnalyticsStateMessage(wellbeingState, t)} />
           )
         }
       </MeasuredChartCard>
@@ -207,10 +219,7 @@ export function DashboardAnalyticsExpandedCharts({
         title={t.bodyMetricsChart}
       >
         {(chartHeight) =>
-          bodyMetricsSource.some(
-            (point) =>
-              point.bodyWeightKg != null || point.restingHeartRate != null,
-          ) ? (
+          bodyMetricsState === 'ready' ? (
             <Stack spacing={2}>
               <LineChart
                 dataset={bodyMetricsDataset}
@@ -233,7 +242,7 @@ export function DashboardAnalyticsExpandedCharts({
               />
             </Stack>
           ) : (
-            <EmptyChartState message={t.noChartData} />
+            <EmptyChartState message={resolveAnalyticsStateMessage(bodyMetricsState, t)} />
           )
         }
       </MeasuredChartCard>
@@ -274,8 +283,7 @@ export function DashboardAnalyticsExpandedCharts({
         title={t.workoutVolumeChart}
       >
         {(chartHeight) =>
-          workoutVolumeDataset.length &&
-          workoutVolumeChartMuscleGroups.length ? (
+          workoutVolumeState === 'ready' ? (
             <BarChart
               dataset={workoutVolumeDataset}
               height={chartHeight}
@@ -287,7 +295,7 @@ export function DashboardAnalyticsExpandedCharts({
               xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
             />
           ) : (
-            <EmptyChartState message={t.noChartData} />
+            <EmptyChartState message={resolveAnalyticsStateMessage(workoutVolumeState, t)} />
           )
         }
       </MeasuredChartCard>
