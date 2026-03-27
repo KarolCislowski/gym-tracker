@@ -77,7 +77,7 @@ const DEMO_GOALS = {
 };
 
 const DEMO_SETTINGS = {
-  language: 'pl',
+  language: 'en',
   isDarkMode: false,
   unitSystem: 'metric' as const,
   trackMenstrualCycle: true,
