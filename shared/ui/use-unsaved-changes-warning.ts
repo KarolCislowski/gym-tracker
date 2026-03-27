@@ -8,11 +8,15 @@ interface UseUnsavedChangesWarningOptions {
 }
 
 /**
- * Warns the user before leaving the current screen when a form contains unsaved changes.
+ * Warns the user before losing unsaved form changes during browser unloads and link-based navigation.
  * @param options - Configuration for the unsaved-changes guard.
  * @param options.enabled - Whether the guard should be active for the current form.
  * @param options.message - Localized confirmation message shown before navigation.
- * @returns A form ref and submit marker that can be attached to editable forms.
+ * @returns Guard helpers for editable forms.
+ * Returns `formRef`, which should be attached to the guarded form, and `markSubmitted`,
+ * which should be called during submit capture so successful submits do not trigger the warning.
+ * @remarks The current implementation intercepts `beforeunload` and anchor clicks.
+ * It does not independently guard every possible client-side navigation mechanism.
  */
 export function useUnsavedChangesWarning({
   enabled = true,
