@@ -11,6 +11,16 @@ Cypress.Commands.add('findByLabel', (label: string) => {
     .first();
 });
 
+/**
+ * Returns a checkbox-like control by its accessible label.
+ * Useful for MUI switches and checkboxes rendered through FormControlLabel.
+ */
+Cypress.Commands.add('findCheckboxByLabel', (label: string) => {
+  return cy.contains('label', label)
+    .find('input[type="checkbox"]')
+    .first();
+});
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -18,6 +28,11 @@ declare global {
        * Finds a form control through its visible label text.
        */
       findByLabel(label: string): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Finds a checkbox or switch through its visible label text.
+       */
+      findCheckboxByLabel(label: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
