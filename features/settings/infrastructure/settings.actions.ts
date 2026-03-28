@@ -39,7 +39,7 @@ export async function updateSettingsAction(formData: FormData): Promise<void> {
     redirect(`/settings?error=${encodeURIComponent(getSettingsErrorCode(error))}`);
   }
 
-  redirect('/settings?status=preferences-updated');
+  redirect('/settings?status=preferences-updated&refreshShell=1');
 }
 
 /**

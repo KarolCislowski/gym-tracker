@@ -28,10 +28,14 @@ import { cypressUser } from '../../shared/testing/cypress-user';
 //
 
 Cypress.Commands.add('loginAsCypressUser', () => {
-  cy.visit('/login');
+  cy.visit(`/login?lang=${cypressUser.language}`);
   cy.get('#email').type(cypressUser.email);
   cy.get('#password').type(cypressUser.password);
   cy.get('form').find('button[type="submit"]').first().click();
+  cy.location('pathname', { timeout: 10000 }).should('not.eq', '/login');
+  cy.request('/api/auth/session')
+    .its('body.user.email')
+    .should('eq', cypressUser.email);
 });
 
 declare global {

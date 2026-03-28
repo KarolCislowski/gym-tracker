@@ -8,6 +8,7 @@ import { getTranslations } from '@/shared/i18n/application/i18n.service';
 interface SettingsRoutePageProps {
   searchParams?: Promise<{
     error?: string;
+    refreshShell?: string;
     status?: string;
   }>;
 }
@@ -32,6 +33,7 @@ export default async function SettingsRoutePage({
     <SettingsPage
       email={session.user.email}
       error={params?.error}
+      refreshShell={params?.refreshShell === '1'}
       status={params?.status}
       translations={translations}
       userSnapshot={userSnapshot}

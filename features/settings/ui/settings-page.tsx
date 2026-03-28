@@ -9,10 +9,12 @@ import { SettingsDeleteAccountForm } from './settings-delete-account-form';
 import { SettingsFeedbackAlert } from './settings-feedback-alert';
 import { SettingsPasswordForm } from './settings-password-form';
 import { SettingsPreferencesForm } from './settings-preferences-form';
+import { SettingsShellRefresh } from './settings-shell-refresh';
 
 interface SettingsPageProps {
   email: string;
   error?: string;
+  refreshShell?: boolean;
   status?: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
@@ -32,6 +34,7 @@ interface SettingsPageProps {
 export function SettingsPage({
   email,
   error,
+  refreshShell = false,
   status,
   translations,
   userSnapshot,
@@ -41,6 +44,7 @@ export function SettingsPage({
 
   return (
     <Stack spacing={3}>
+      <SettingsShellRefresh shouldRefreshShell={refreshShell} />
       {activeSettings ? (
         <ThemeModeSync
           mode={getColorModeFromSettings(activeSettings.isDarkMode)}
