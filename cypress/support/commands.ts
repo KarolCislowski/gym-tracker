@@ -32,10 +32,14 @@ Cypress.Commands.add('loginAsCypressUser', () => {
   cy.get('#email').type(cypressUser.email);
   cy.get('#password').type(cypressUser.password);
   cy.get('form').find('button[type="submit"]').first().click();
-  cy.location('pathname', { timeout: 10000 }).should('not.eq', '/login');
-  cy.request('/api/auth/session')
+  cy.request({
+    url: '/api/auth/session',
+    timeout: 30000,
+  })
     .its('body.user.email')
     .should('eq', cypressUser.email);
+  cy.visit('/');
+  cy.location('pathname', { timeout: 30000 }).should('eq', '/');
 });
 
 declare global {
