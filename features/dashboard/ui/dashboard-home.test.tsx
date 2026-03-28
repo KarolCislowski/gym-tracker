@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
+import { resolveDashboardNextAction } from '../application/dashboard-next-action';
 import { DashboardHome } from './dashboard-home';
 
 describe('DashboardHome', () => {
@@ -91,6 +92,54 @@ describe('DashboardHome', () => {
             isActive: true,
           },
         ]}
+        nextAction={resolveDashboardNextAction({
+          dailyReports: [],
+          userSnapshot: {
+            profile: {
+              email: 'john@example.com',
+              firstName: 'John',
+              lastName: 'Doe',
+              birthDate: '1995-03-22T00:00:00.000Z',
+              age: 31,
+              favoriteExerciseSlugs: [],
+              location: {
+                provider: 'google_places',
+                placeId: 'place-1',
+                displayName: 'Stockholm',
+                formattedAddress: 'Stockholm, Sweden',
+                latitude: 59.3293,
+                longitude: 18.0686,
+                countryCode: 'SE',
+                country: 'Sweden',
+                region: 'Stockholm County',
+                city: 'Stockholm',
+                locality: null,
+                postalCode: null,
+              },
+              heightCm: 180,
+              gender: 'male',
+              activityLevel: 'moderately_active',
+            },
+            settings: {
+              language: 'sv',
+              isDarkMode: true,
+              unitSystem: 'imperial_uk',
+              trackMenstrualCycle: false,
+              trackLibido: false,
+            },
+            healthyHabits: {
+              averageSleepHoursPerDay: 7.5,
+              stepsPerDay: 9000,
+              waterLitersPerDay: 2,
+              proteinGramsPerDay: 150,
+              strengthWorkoutsPerWeek: 3,
+              cardioMinutesPerWeek: 120,
+              regularSleepSchedule: true,
+            },
+            favoriteExerciseSlugs: [],
+          },
+          workoutSessions: [],
+        })}
         translations={enMessages}
         userSnapshot={{
           profile: {
@@ -141,6 +190,12 @@ describe('DashboardHome', () => {
 
     expect(
       screen.getByRole('heading', { name: 'Welcome back' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Next action' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Add daily report' }),
     ).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
     expect(screen.getByText('Stockholm, Sweden')).toBeInTheDocument();

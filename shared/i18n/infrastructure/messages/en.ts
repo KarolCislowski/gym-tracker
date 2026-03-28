@@ -127,6 +127,35 @@ export const enMessages: TranslationDictionary = {
     startFirstEntry: 'Start with your first entry.',
     noDataInPeriod: 'No data in this period.',
     notEnoughDataForTrend: 'Not enough data to show a trend yet.',
+    nextActionTitle: 'Next action',
+    nextActionProfileTitle: 'Finish your profile',
+    nextActionProfileDescription:
+      'Add the core details that make tracking and recommendations more useful.',
+    nextActionProfileCta: 'Complete profile',
+    nextActionGoalsTitle: 'Set your daily goals',
+    nextActionGoalsDescription:
+      'Define sleep, steps, hydration, training, and macro targets before you start logging.',
+    nextActionGoalsCta: 'Set goals',
+    nextActionFirstDailyReportTitle: 'Add your first daily report',
+    nextActionFirstDailyReportDescription:
+      'Start building your baseline with one quick daily check-in.',
+    nextActionFirstDailyReportCta: 'Add daily report',
+    nextActionFirstWorkoutTitle: 'Log your first workout',
+    nextActionFirstWorkoutDescription:
+      'Record your first session so training history and volume tracking can begin.',
+    nextActionFirstWorkoutCta: 'Add workout',
+    nextActionTodayDailyReportTitle: 'Log today’s check-in',
+    nextActionTodayDailyReportDescription:
+      'Keep your streak and daily context up to date with a quick report for today.',
+    nextActionTodayDailyReportCta: 'Log today',
+    nextActionThisWeekWorkoutTitle: 'Log your next workout',
+    nextActionThisWeekWorkoutDescription:
+      'You have daily data coming in. Add a workout to keep progress and volume trends moving.',
+    nextActionThisWeekWorkoutCta: 'Log workout',
+    nextActionReviewProgressTitle: 'Review your progress',
+    nextActionReviewProgressDescription:
+      'You have enough data to start spotting patterns in habits, recovery, and training.',
+    nextActionReviewProgressCta: 'Review analytics',
     signOut: 'Sign out',
     replayOnboarding: 'Show guide',
   },

@@ -125,6 +125,35 @@ export const plMessages: TranslationDictionaryOverrides = {
     startFirstEntry: 'Zacznij od pierwszego wpisu.',
     noDataInPeriod: 'Brak danych w tym okresie.',
     notEnoughDataForTrend: 'Za mało danych, aby pokazać trend.',
+    nextActionTitle: 'Następny krok',
+    nextActionProfileTitle: 'Uzupełnij profil',
+    nextActionProfileDescription:
+      'Dodaj podstawowe dane, aby śledzenie i podpowiedzi były bardziej trafne.',
+    nextActionProfileCta: 'Uzupełnij profil',
+    nextActionGoalsTitle: 'Ustaw cele dzienne',
+    nextActionGoalsDescription:
+      'Zdefiniuj cele dla snu, kroków, nawodnienia, treningu i makro, zanim zaczniesz raportować.',
+    nextActionGoalsCta: 'Ustaw cele',
+    nextActionFirstDailyReportTitle: 'Dodaj pierwszy raport dzienny',
+    nextActionFirstDailyReportDescription:
+      'Zbuduj punkt wyjścia jednym krótkim check-inem dnia.',
+    nextActionFirstDailyReportCta: 'Dodaj raport dzienny',
+    nextActionFirstWorkoutTitle: 'Dodaj pierwszy trening',
+    nextActionFirstWorkoutDescription:
+      'Zapisz pierwszą sesję, aby zacząć budować historię treningową i analizę objętości.',
+    nextActionFirstWorkoutCta: 'Dodaj trening',
+    nextActionTodayDailyReportTitle: 'Uzupełnij dzisiejszy check-in',
+    nextActionTodayDailyReportDescription:
+      'Podtrzymaj ciągłość danych i uzupełnij szybki raport za dzisiaj.',
+    nextActionTodayDailyReportCta: 'Uzupełnij dziś',
+    nextActionThisWeekWorkoutTitle: 'Zapisz kolejny trening',
+    nextActionThisWeekWorkoutDescription:
+      'Masz już dane dzienne. Dodaj trening, aby utrzymać postęp i trendy objętości.',
+    nextActionThisWeekWorkoutCta: 'Zapisz trening',
+    nextActionReviewProgressTitle: 'Sprawdź postępy',
+    nextActionReviewProgressDescription:
+      'Masz już dość danych, by zacząć wyłapywać wzorce w nawykach, regeneracji i treningu.',
+    nextActionReviewProgressCta: 'Zobacz analitykę',
     replayOnboarding: 'Pokaż przewodnik',
   },
   onboarding: {

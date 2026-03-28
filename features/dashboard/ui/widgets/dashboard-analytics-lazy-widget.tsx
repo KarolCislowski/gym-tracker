@@ -96,16 +96,18 @@ export function DashboardAnalyticsLazyWidget({
 
   if (isMobile) {
     return (
-      <DashboardAnalyticsMobileSummaryWidget
-        analytics={analytics}
-        translations={translations}
-        unitSystem={unitSystem}
-      />
+      <Box id='dashboard-analytics'>
+        <DashboardAnalyticsMobileSummaryWidget
+          analytics={analytics}
+          translations={translations}
+          unitSystem={unitSystem}
+        />
+      </Box>
     );
   }
 
   return (
-    <Box ref={containerRef}>
+    <Box id='dashboard-analytics' ref={containerRef}>
       {shouldLoad ? (
         <DashboardAnalyticsWidget
           analytics={analytics}

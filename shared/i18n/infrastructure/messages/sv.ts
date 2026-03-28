@@ -125,6 +125,35 @@ export const svMessages: TranslationDictionaryOverrides = {
     startFirstEntry: 'Börja med din första registrering.',
     noDataInPeriod: 'Ingen data under den här perioden.',
     notEnoughDataForTrend: 'För lite data för att visa en trend ännu.',
+    nextActionTitle: 'Nästa steg',
+    nextActionProfileTitle: 'Fyll i din profil',
+    nextActionProfileDescription:
+      'Lägg till grunduppgifter så att uppföljning och rekommendationer blir mer relevanta.',
+    nextActionProfileCta: 'Fyll i profil',
+    nextActionGoalsTitle: 'Ställ in dina dagliga mål',
+    nextActionGoalsDescription:
+      'Definiera mål för sömn, steg, vätska, träning och makro innan du börjar logga.',
+    nextActionGoalsCta: 'Ställ in mål',
+    nextActionFirstDailyReportTitle: 'Lägg till din första dagliga rapport',
+    nextActionFirstDailyReportDescription:
+      'Bygg din utgångspunkt med en snabb daglig check-in.',
+    nextActionFirstDailyReportCta: 'Lägg till daglig rapport',
+    nextActionFirstWorkoutTitle: 'Logga ditt första träningspass',
+    nextActionFirstWorkoutDescription:
+      'Registrera ditt första pass så att träningshistorik och volymspårning kan börja.',
+    nextActionFirstWorkoutCta: 'Lägg till pass',
+    nextActionTodayDailyReportTitle: 'Logga dagens check-in',
+    nextActionTodayDailyReportDescription:
+      'Håll datan uppdaterad och lägg till en snabb rapport för idag.',
+    nextActionTodayDailyReportCta: 'Logga idag',
+    nextActionThisWeekWorkoutTitle: 'Logga ditt nästa pass',
+    nextActionThisWeekWorkoutDescription:
+      'Du har redan daglig data. Lägg till ett träningspass för att hålla framsteg och volymtrender igång.',
+    nextActionThisWeekWorkoutCta: 'Logga pass',
+    nextActionReviewProgressTitle: 'Granska dina framsteg',
+    nextActionReviewProgressDescription:
+      'Du har nu tillräckligt med data för att börja se mönster i vanor, återhämtning och träning.',
+    nextActionReviewProgressCta: 'Visa analys',
     replayOnboarding: 'Visa guide',
   },
   onboarding: {

@@ -16,6 +16,7 @@ import {
   listWorkoutSessionsForAnalytics,
 } from '@/features/workouts/application/workout.service';
 import { DashboardHome } from '@/features/dashboard/ui/dashboard-home';
+import { resolveDashboardNextAction } from '@/features/dashboard/application/dashboard-next-action';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
 export default async function Page() {
@@ -49,12 +50,18 @@ export default async function Page() {
     workoutSessionsForAnalytics,
     exerciseAtlas,
   );
+  const nextAction = resolveDashboardNextAction({
+    dailyReports,
+    userSnapshot,
+    workoutSessions,
+  });
 
   if (session?.user) {
     return (
       <DashboardHome
         analytics={analytics}
         favoriteExercises={favoriteExercises}
+        nextAction={nextAction}
         translations={t}
         userSnapshot={userSnapshot}
       />

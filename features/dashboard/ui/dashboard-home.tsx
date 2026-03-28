@@ -5,9 +5,11 @@ import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
 import type { DashboardAnalytics } from '../application/dashboard-analytics';
+import type { DashboardNextAction } from '../application/dashboard-next-action';
 import { DashboardAnalyticsLazyWidget } from './widgets/dashboard-analytics-lazy-widget';
 import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
+import { DashboardNextActionWidget } from './widgets/dashboard-next-action-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
@@ -15,6 +17,7 @@ import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
 interface DashboardHomeProps {
   analytics: DashboardAnalytics;
   favoriteExercises: Exercise[];
+  nextAction: DashboardNextAction;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
 }
@@ -25,12 +28,18 @@ interface DashboardHomeProps {
 export function DashboardHome({
   analytics,
   favoriteExercises,
+  nextAction,
   translations,
   userSnapshot,
 }: DashboardHomeProps) {
   return (
     <Stack spacing={3}>
       <DashboardOverviewWidget translations={translations.dashboard} />
+
+      <DashboardNextActionWidget
+        action={nextAction}
+        translations={translations.dashboard}
+      />
 
       <Box
         sx={{
