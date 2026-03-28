@@ -68,6 +68,18 @@ async function ensureCypressUser(
       isDarkMode: generated.settings.isDarkMode,
     });
 
+    await CoreUserModel.updateOne(
+      { _id: registeredUser.id },
+      {
+        $set: {
+          isActive: true,
+          emailVerifiedAt: new Date(),
+          emailVerificationTokenHash: null,
+          emailVerificationTokenExpiresAt: null,
+        },
+      },
+    );
+
     return {
       id: registeredUser.id,
       tenantDbName: registeredUser.tenantDbName,
@@ -82,6 +94,9 @@ async function ensureCypressUser(
       $set: {
         password: passwordHash,
         isActive: true,
+        emailVerifiedAt: new Date(),
+        emailVerificationTokenHash: null,
+        emailVerificationTokenExpiresAt: null,
       },
     },
   );
