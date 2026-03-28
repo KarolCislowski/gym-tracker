@@ -10,7 +10,7 @@ export const enMessages: TranslationDictionary = {
     homeTitle: 'Home',
     aboutTitle: 'About',
     signedInAs: 'Signed in as',
-    tenantDatabase: 'Tenant database',
+    tenantDatabase: 'Account',
     profileTitle: 'Profile',
     profileName: 'Name',
     profileEmail: 'Email',
@@ -24,7 +24,7 @@ export const enMessages: TranslationDictionary = {
     createAccount: 'Create account',
     signInTitle: 'Sign in',
     signInDescription:
-      'Use your email address and password to access your tenant workspace.',
+      'Use your email address and password to access your account.',
     forgotPasswordTitle: 'Forgot password',
     forgotPasswordDescription:
       'Enter your email address and we will send a reset link if the account is eligible for password recovery.',
@@ -64,7 +64,7 @@ export const enMessages: TranslationDictionary = {
     createAccountLink: 'Create an account',
     registerTitle: 'Create account',
     registerDescription:
-      'A Core user record and a dedicated tenant database will be created for your account.',
+      'Create your account and start tracking training, recovery, and daily habits.',
     firstNameLabel: 'First name',
     lastNameLabel: 'Last name',
     languageLabel: 'Language',
@@ -85,15 +85,14 @@ export const enMessages: TranslationDictionary = {
     supplementAtlas: 'Supplement atlas',
     workoutReports: 'Workout reports',
     dailyReports: 'Daily reports',
-    workspace: 'Workspace',
+    workspace: 'Dashboard',
     openNavigation: 'Open navigation',
     primaryNavigation: 'Primary navigation',
     collapseNavigation: 'Collapse navigation',
     expandNavigation: 'Expand navigation',
     welcomeBack: 'Welcome back',
-    workspaceReady:
-      'Your tenant workspace is connected and ready for the next training block.',
-    tenantDatabase: 'Tenant database',
+    workspaceReady: 'Everything is ready for your next training block.',
+    tenantDatabase: 'Account',
     profileName: 'Name',
     profileEmail: 'Email',
     favoriteExercises: 'My favorite exercises',
@@ -183,9 +182,9 @@ export const enMessages: TranslationDictionary = {
   },
   settings: {
     title: 'Settings',
-    description: 'Manage your tenant preferences, password, and account lifecycle.',
+    description: 'Manage your preferences, password, and account.',
     preferencesTitle: 'Preferences',
-    preferencesDescription: 'Update language and interface mode for your workspace.',
+    preferencesDescription: 'Choose your language and interface mode.',
     languageLabel: 'Language',
     unitSystemLabel: 'Preferred measurement system',
     unitSystemMetric: 'Metric',
@@ -209,7 +208,7 @@ export const enMessages: TranslationDictionary = {
     passwordUpdated: 'Password updated successfully.',
     dangerZoneTitle: 'Delete account',
     dangerZoneDescription:
-      'Deleting your account permanently removes your Core account and tenant database.',
+      'Deleting your account permanently removes all of your saved data.',
     deleteAccountWarning:
       'This action cannot be undone. Please confirm with your current password and email address.',
     confirmationEmailLabel: 'Confirm email address',
@@ -226,7 +225,7 @@ export const enMessages: TranslationDictionary = {
   },
   profile: {
     title: 'Profile',
-    description: 'Review and update the personal details used across your workspace.',
+    description: 'Review and update the personal details used throughout the app.',
     personalInfoTitle: 'Personal information',
     personalInfoDescription:
       'Keep these values up to date so your recommendations and calculations stay relevant.',
@@ -271,7 +270,7 @@ export const enMessages: TranslationDictionary = {
     detailsTitle: 'Exercise details',
     detailsDescription:
       'Review the movement profile and compare available execution variants side by side.',
-    backToAtlas: 'Back to atlas',
+    backToAtlas: 'Back to exercise list',
     viewDetails: 'View details',
     addToFavorites: 'Add to favorites',
     removeFromFavorites: 'Remove from favorites',
@@ -286,7 +285,7 @@ export const enMessages: TranslationDictionary = {
     clearFilters: 'Clear filters',
     allOptions: 'All',
     emptyState: 'No exercises matched the current search.',
-    mobileAtlasTitle: 'Atlas available on larger screens',
+    mobileAtlasTitle: 'Exercise library available on larger screens',
     mobileAtlasDescription:
       'The full exercise atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
     columnExercise: 'Exercise',
@@ -299,7 +298,7 @@ export const enMessages: TranslationDictionary = {
     sectionOverview: 'Overview',
     sectionMuscleEngagement: 'Muscle engagement',
     muscleEngagementDisclaimer:
-      'Heuristic model (estimate), based on biomechanics + EMG + training practice.',
+      'Estimated from biomechanics, EMG research, and coaching practice.',
     sectionInstructions: 'Instructions',
     sectionTips: 'Coaching tips',
     sectionMistakes: 'Common mistakes',
@@ -328,7 +327,7 @@ export const enMessages: TranslationDictionary = {
     noLabel: 'No',
     notFoundTitle: 'Exercise not found',
     notFoundDescription:
-      'The requested exercise could not be found in the shared atlas.',
+      'The requested exercise could not be found in the shared library.',
   },
   supplements: {
     title: 'Supplement atlas',
@@ -337,7 +336,7 @@ export const enMessages: TranslationDictionary = {
     detailsTitle: 'Supplement details',
     detailsDescription:
       'Review practical use notes and compare available supplement variants side by side.',
-    backToAtlas: 'Back to atlas',
+    backToAtlas: 'Back to supplement list',
     viewDetails: 'View details',
     searchPlaceholder: 'Search supplements',
     filterCategoryLabel: 'Category',
@@ -347,7 +346,7 @@ export const enMessages: TranslationDictionary = {
     filterCompoundTypeLabel: 'Variant type',
     clearFilters: 'Clear filters',
     emptyState: 'No supplements match the current filters.',
-    mobileAtlasTitle: 'Atlas available on larger screens',
+    mobileAtlasTitle: 'Supplement library available on larger screens',
     mobileAtlasDescription:
       'The full supplement atlas uses a wide comparison table, so it is hidden in portrait mobile view.',
     emptyValue: 'Not provided',
@@ -376,7 +375,7 @@ export const enMessages: TranslationDictionary = {
     columnTiming: 'Timing',
     notFoundTitle: 'Supplement not found',
     notFoundDescription:
-      'The requested supplement could not be found in the shared atlas.',
+      'The requested supplement could not be found in the shared library.',
   },
   supplementation: {
     title: 'Supplementation',
@@ -387,7 +386,7 @@ export const enMessages: TranslationDictionary = {
       'Save your recurring combinations once, then reuse them whenever you need to log intake.',
     addReportTitle: 'Log supplement intake',
     addReportDescription:
-      'Pick one of your saved stacks and store a historical snapshot of what you actually took.',
+      'Pick one of your saved stacks and log what you actually took.',
     openStackComposerLabel: 'Add supplement stack',
     closeStackComposerLabel: 'Hide stack form',
     openReportComposerLabel: 'Add supplement report',
@@ -432,7 +431,7 @@ export const enMessages: TranslationDictionary = {
     stackViewDetailsLabel: 'View stack details',
     detailsTitle: 'Supplement report details',
     detailsDescription:
-      'Review the historical snapshot of the supplements you took and update the report if needed.',
+      'Review what you took that day and update the report if needed.',
     summaryTitle: 'Report summary',
     openEditLabel: 'Edit supplement report',
     closeEditLabel: 'Hide supplement report editor',
@@ -457,9 +456,9 @@ export const enMessages: TranslationDictionary = {
     deleteReportTitle: 'Delete supplement report?',
     deleteReportDescription:
       'This action permanently deletes the supplement report. This cannot be undone.',
-    modelTitle: 'How stack-based logging works',
+    modelTitle: 'How stack logging works',
     modelDescription:
-      'Stacks stay editable for the future, while each report stores a snapshot of the exact ingredients and doses taken on that day.',
+      'You can keep adjusting stacks for future use, while each report keeps its own record of the ingredients and doses taken that day.',
   },
   workouts: {
     title: 'Workout reports',
@@ -571,9 +570,9 @@ export const enMessages: TranslationDictionary = {
       'This action permanently deletes the workout template. This cannot be undone.',
     notFoundTitle: 'Workout report not found',
     notFoundDescription: 'This report does not exist or you do not have access to it.',
-    modelTitle: 'Training report model',
+    modelTitle: 'How workout logging works',
     modelDescription:
-      'Reports support single exercises, supersets, circuits, and dropsets through nested workout blocks and richly tracked sets.',
+      'Workout reports support single exercises, supersets, circuits, and dropsets with flexible blocks and detailed set tracking.',
   },
   dailyReports: {
     title: 'Daily reports',
@@ -613,7 +612,7 @@ export const enMessages: TranslationDictionary = {
     actualsTitle: 'Daily actuals',
     bodyTitle: 'Body metrics',
     contextTitle: 'Day context',
-    goalsSnapshotTitle: 'Current goals snapshot',
+    goalsSnapshotTitle: 'Current goals',
     sorenessLabel: 'Soreness',
     motivationLabel: 'Motivation',
     scoreLow: 'Low',
@@ -635,9 +634,9 @@ export const enMessages: TranslationDictionary = {
     viewDetailsLabel: 'View details',
     detailsTitle: 'Daily report details',
     detailsDescription:
-      'Review the stored snapshot for this day and reopen the editor when you need to refine it.',
+      'Review this day’s saved data and reopen the editor if anything needs updating.',
     summaryTitle: 'Daily summary',
-    goalsSectionTitle: 'Goals snapshot',
+    goalsSectionTitle: 'Goals at the time',
     actualsSectionTitle: 'Actuals',
     completionSectionTitle: 'Goals completion',
     wellbeingSectionTitle: 'Wellbeing',
@@ -654,9 +653,9 @@ export const enMessages: TranslationDictionary = {
     notFoundTitle: 'Daily report not found',
     notFoundDescription:
       'The requested daily report could not be found for this account.',
-    modelTitle: 'Daily report model',
+    modelTitle: 'What each daily report stores',
     modelDescription:
-      'Each daily report stores a goals snapshot, actual completion, wellbeing scores, body metrics, and contextual notes for that day.',
+      'Each daily report stores your goals for that day, actual completion, wellbeing, body metrics, and context notes.',
   },
   healthyHabits: {
     title: 'Healthy habits goals',

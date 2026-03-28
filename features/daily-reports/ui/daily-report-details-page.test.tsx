@@ -88,7 +88,7 @@ describe('DailyReportDetailsPage', () => {
       screen.getByRole('heading', { name: 'Daily report details' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Daily summary')).toBeInTheDocument();
-    expect(screen.getByText('Goals snapshot')).toBeInTheDocument();
+    expect(screen.getByText('Goals at the time')).toBeInTheDocument();
     expect(screen.getByText('Edit daily report block')).toBeInTheDocument();
     expect(screen.getByText('Good energy throughout the day.')).toBeInTheDocument();
   });

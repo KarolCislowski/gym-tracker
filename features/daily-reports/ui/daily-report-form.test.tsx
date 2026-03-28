@@ -47,7 +47,7 @@ describe('DailyReportForm', () => {
       screen.getByRole('heading', { name: 'Daily check-in' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Current goals snapshot' }),
+      screen.getByRole('heading', { name: 'Current goals' }),
     ).toBeInTheDocument();
     expect(screen.getByText('8 h')).toBeInTheDocument();
     expect(

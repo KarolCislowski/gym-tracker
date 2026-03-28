@@ -9,7 +9,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     homeTitle: 'Strona główna',
     aboutTitle: 'O aplikacji',
     signedInAs: 'Zalogowano jako',
-    tenantDatabase: 'Baza tenantowa',
+    tenantDatabase: 'Konto',
     profileTitle: 'Profil',
     profileName: 'Imię i nazwisko',
     profileEmail: 'Email',
@@ -23,7 +23,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     createAccount: 'Utwórz konto',
     signInTitle: 'Logowanie',
     signInDescription:
-      'Użyj adresu email i hasła, aby uzyskać dostęp do swojej przestrzeni tenantowej.',
+      'Użyj adresu email i hasła, aby zalogować się do swojego konta.',
     forgotPasswordTitle: 'Nie pamiętasz hasła',
     forgotPasswordDescription:
       'Wpisz swój adres email, a wyślemy link do resetu hasła, jeśli konto kwalifikuje się do odzyskania dostępu.',
@@ -63,7 +63,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     createAccountLink: 'Utwórz konto',
     registerTitle: 'Utwórz konto',
     registerDescription:
-      'Dla Twojego konta zostanie utworzony rekord w Core oraz osobna baza tenantowa.',
+      'Utwórz konto i zacznij śledzić trening, regenerację oraz codzienne nawyki.',
     firstNameLabel: 'Imię',
     lastNameLabel: 'Nazwisko',
     languageLabel: 'Język',
@@ -84,15 +84,14 @@ export const plMessages: TranslationDictionaryOverrides = {
     supplementAtlas: 'Atlas suplementów',
     workoutReports: 'Raporty treningowe',
     dailyReports: 'Raporty dzienne',
-    workspace: 'Przestrzeń',
+    workspace: 'Dashboard',
     openNavigation: 'Otwórz nawigację',
     primaryNavigation: 'Nawigacja główna',
     collapseNavigation: 'Zwiń nawigację',
     expandNavigation: 'Rozwiń nawigację',
     welcomeBack: 'Witamy ponownie',
-    workspaceReady:
-      'Twoja przestrzeń tenantowa jest połączona i gotowa na kolejny blok treningowy.',
-    tenantDatabase: 'Baza tenantowa',
+    workspaceReady: 'Wszystko jest gotowe na kolejny blok treningowy.',
+    tenantDatabase: 'Konto',
     profileName: 'Imię i nazwisko',
     profileEmail: 'Email',
     favoriteExercises: 'Moje ulubione ćwiczenia',
@@ -181,10 +180,10 @@ export const plMessages: TranslationDictionaryOverrides = {
   settings: {
     title: 'Ustawienia',
     description:
-      'Zarządzaj preferencjami tenantowymi, hasłem i cyklem życia konta.',
+      'Zarządzaj preferencjami, hasłem i swoim kontem.',
     preferencesTitle: 'Preferencje',
     preferencesDescription:
-      'Zaktualizuj język i tryb interfejsu dla swojej przestrzeni.',
+      'Wybierz język i tryb interfejsu.',
     languageLabel: 'Język',
     unitSystemLabel: 'Preferowany system miar',
     unitSystemMetric: 'Metryczny',
@@ -209,7 +208,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     passwordUpdated: 'Hasło zostało zmienione.',
     dangerZoneTitle: 'Usuń konto',
     dangerZoneDescription:
-      'Usunięcie konta trwale usuwa konto Core oraz tenantową bazę danych.',
+      'Usunięcie konta trwale usuwa wszystkie zapisane dane.',
     deleteAccountWarning:
       'Tej operacji nie można cofnąć. Potwierdź ją aktualnym hasłem i adresem email.',
     confirmationEmailLabel: 'Potwierdź adres email',
@@ -227,7 +226,7 @@ export const plMessages: TranslationDictionaryOverrides = {
   profile: {
     title: 'Profil',
     description:
-      'Przeglądaj i aktualizuj dane osobowe używane w całej Twojej przestrzeni.',
+      'Przeglądaj i aktualizuj dane osobowe używane w całej aplikacji.',
     personalInfoTitle: 'Dane osobowe',
     personalInfoDescription:
       'Dbaj o aktualność tych wartości, aby rekomendacje i obliczenia pozostawały trafne.',
@@ -272,7 +271,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     detailsTitle: 'Szczegóły ćwiczenia',
     detailsDescription:
       'Przejrzyj profil ruchu ćwiczenia i porównaj dostępne warianty wykonania obok siebie.',
-    backToAtlas: 'Powrót do atlasu',
+    backToAtlas: 'Powrót do listy ćwiczeń',
     viewDetails: 'Zobacz szczegóły',
     addToFavorites: 'Dodaj do ulubionych',
     removeFromFavorites: 'Usuń z ulubionych',
@@ -287,7 +286,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     clearFilters: 'Wyczyść filtry',
     allOptions: 'Wszystkie',
     emptyState: 'Brak ćwiczeń pasujących do wyszukiwania.',
-    mobileAtlasTitle: 'Atlas dostępny na większych ekranach',
+    mobileAtlasTitle: 'Biblioteka ćwiczeń dostępna na większych ekranach',
     mobileAtlasDescription:
       'Pełny atlas ćwiczeń korzysta z szerokiej tabeli porównawczej, dlatego jest ukryty w mobilnym widoku pionowym.',
     columnExercise: 'Ćwiczenie',
@@ -300,7 +299,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     sectionOverview: 'Przegląd',
     sectionMuscleEngagement: 'Zaangażowanie mięśni',
     muscleEngagementDisclaimer:
-      'Model heurystyczny (oszacowanie), oparty na biomechanice + EMG + praktyce treningowej.',
+      'Szacunek oparty na biomechanice, badaniach EMG i praktyce treningowej.',
     sectionInstructions: 'Instrukcje',
     sectionTips: 'Wskazówki',
     sectionMistakes: 'Najczęstsze błędy',
@@ -329,7 +328,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     noLabel: 'Nie',
     notFoundTitle: 'Nie znaleziono ćwiczenia',
     notFoundDescription:
-      'Nie udało się znaleźć wskazanego ćwiczenia we wspólnym atlasie.',
+      'Nie udało się znaleźć wskazanego ćwiczenia we wspólnej bibliotece.',
   },
   supplements: {
     title: 'Atlas suplementów',
@@ -338,7 +337,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     detailsTitle: 'Szczegóły suplementu',
     detailsDescription:
       'Sprawdź praktyczne notatki i porównaj dostępne warianty suplementu obok siebie.',
-    backToAtlas: 'Powrót do atlasu',
+    backToAtlas: 'Powrót do listy suplementów',
     viewDetails: 'Zobacz szczegóły',
     searchPlaceholder: 'Szukaj suplementów',
     filterCategoryLabel: 'Kategoria',
@@ -348,7 +347,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     filterCompoundTypeLabel: 'Typ wariantu',
     clearFilters: 'Wyczyść filtry',
     emptyState: 'Żadne suplementy nie pasują do aktualnych filtrów.',
-    mobileAtlasTitle: 'Atlas dostępny na większych ekranach',
+    mobileAtlasTitle: 'Biblioteka suplementów dostępna na większych ekranach',
     mobileAtlasDescription:
       'Pełny atlas suplementów korzysta z szerokiej tabeli porównawczej, dlatego jest ukryty w mobilnym widoku pionowym.',
     emptyValue: 'Nie podano',
@@ -377,7 +376,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     columnTiming: 'Timing',
     notFoundTitle: 'Nie znaleziono suplementu',
     notFoundDescription:
-      'Nie udało się znaleźć wskazanego suplementu we wspólnym atlasie.',
+      'Nie udało się znaleźć wskazanego suplementu we wspólnej bibliotece.',
   },
   supplementation: {
     title: 'Suplementacja',
@@ -388,7 +387,7 @@ export const plMessages: TranslationDictionaryOverrides = {
       'Zapisz swoje powtarzalne kombinacje raz i używaj ich później do szybkiego raportowania.',
     addReportTitle: 'Zaraportuj suplementację',
     addReportDescription:
-      'Wybierz jeden z zapisanych stacków i zachowaj historyczny snapshot tego, co faktycznie zostało przyjęte.',
+      'Wybierz jeden z zapisanych stacków i zapisz to, co faktycznie zostało przyjęte.',
     openStackComposerLabel: 'Dodaj stack suplementacyjny',
     closeStackComposerLabel: 'Ukryj formularz stacka',
     openReportComposerLabel: 'Dodaj raport suplementacji',
@@ -433,7 +432,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     stackViewDetailsLabel: 'Pokaż szczegóły stacka',
     detailsTitle: 'Szczegóły raportu suplementacji',
     detailsDescription:
-      'Przejrzyj historyczny snapshot przyjętych suplementów i popraw raport, jeśli tego potrzebujesz.',
+      'Przejrzyj, co zostało przyjęte tego dnia, i popraw raport, jeśli trzeba.',
     summaryTitle: 'Podsumowanie raportu',
     openEditLabel: 'Edytuj raport suplementacji',
     closeEditLabel: 'Ukryj edycję raportu',
@@ -458,9 +457,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     deleteReportTitle: 'Usunąć raport suplementacji?',
     deleteReportDescription:
       'Ta operacja trwale usunie raport suplementacji. Tego kroku nie można cofnąć.',
-    modelTitle: 'Jak działa raportowanie stackami',
+    modelTitle: 'Jak działa logowanie stacków',
     modelDescription:
-      'Stacki możesz zmieniać na przyszłość, a każdy raport zachowuje snapshot dokładnych składników i dawek z dnia przyjęcia.',
+      'Możesz dalej zmieniać stacki na przyszłość, a każdy raport zachowuje własny zapis składników i dawek z danego dnia.',
   },
   workouts: {
     title: 'Raporty treningowe',
@@ -571,9 +570,9 @@ export const plMessages: TranslationDictionaryOverrides = {
       'Ta operacja trwale usunie templatkę treningową. Tego kroku nie można cofnąć.',
     notFoundTitle: 'Nie znaleziono raportu treningowego',
     notFoundDescription: 'Ten raport nie istnieje albo nie masz do niego dostępu.',
-    modelTitle: 'Model raportu treningowego',
+    modelTitle: 'Jak działa logowanie treningów',
     modelDescription:
-      'Raporty wspierają pojedyncze ćwiczenia, superserie, obwody i dropsety dzięki zagnieżdżonym blokom treningowym oraz szczegółowym seriom.',
+      'Raporty treningowe obsługują pojedyncze ćwiczenia, superserie, obwody i dropsety dzięki elastycznym blokom oraz szczegółowym seriom.',
   },
   dailyReports: {
     title: 'Raporty dzienne',
@@ -613,7 +612,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     actualsTitle: 'Wykonanie dnia',
     bodyTitle: 'Parametry ciała',
     contextTitle: 'Kontekst dnia',
-    goalsSnapshotTitle: 'Aktualny snapshot celów',
+    goalsSnapshotTitle: 'Aktualne cele',
     sorenessLabel: 'Obolałość',
     motivationLabel: 'Motywacja',
     scoreLow: 'Nisko',
@@ -635,9 +634,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     viewDetailsLabel: 'Zobacz detale',
     detailsTitle: 'Detale raportu dziennego',
     detailsDescription:
-      'Przejrzyj zapisany snapshot dnia i otwórz edycję, gdy chcesz go doprecyzować.',
+      'Przejrzyj zapisane dane z tego dnia i otwórz edycję, jeśli chcesz coś poprawić.',
     summaryTitle: 'Podsumowanie dnia',
-    goalsSectionTitle: 'Snapshot celów',
+    goalsSectionTitle: 'Cele z tamtego dnia',
     actualsSectionTitle: 'Wykonanie',
     completionSectionTitle: 'Realizacja celów',
     wellbeingSectionTitle: 'Samopoczucie',
@@ -654,9 +653,9 @@ export const plMessages: TranslationDictionaryOverrides = {
     notFoundTitle: 'Nie znaleziono raportu dziennego',
     notFoundDescription:
       'Nie udało się znaleźć wskazanego raportu dziennego dla tego konta.',
-    modelTitle: 'Model raportu dziennego',
+    modelTitle: 'Co zapisuje raport dzienny',
     modelDescription:
-      'Każdy raport dzienny zapisuje snapshot celów, faktyczne wykonanie, wskaźniki samopoczucia, metryki ciała i notatki kontekstowe dla danego dnia.',
+      'Każdy raport dzienny zapisuje cele z danego dnia, faktyczne wykonanie, samopoczucie, parametry ciała i notatki kontekstowe.',
   },
   healthyHabits: {
     title: 'Cele zdrowych nawyków',

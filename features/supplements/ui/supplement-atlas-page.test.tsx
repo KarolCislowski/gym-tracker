@@ -32,7 +32,7 @@ describe('SupplementAtlasPage', () => {
     );
 
     expect(
-      await screen.findByText('Atlas available on larger screens'),
+      await screen.findByText('Supplement library available on larger screens'),
     ).toBeInTheDocument();
     expect(
       screen.getByText(

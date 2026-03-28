@@ -45,7 +45,7 @@ describe('ExerciseAtlasPage', () => {
     );
 
     expect(
-      await screen.findByText('Atlas available on larger screens'),
+      await screen.findByText('Exercise library available on larger screens'),
     ).toBeInTheDocument();
     expect(
       screen.getByText(

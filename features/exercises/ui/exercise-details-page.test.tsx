@@ -88,7 +88,7 @@ describe('ExerciseDetailsPage', () => {
     expect(screen.getByText('Muscle engagement')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Heuristic model (estimate), based on biomechanics + EMG + training practice.',
+        'Estimated from biomechanics, EMG research, and coaching practice.',
       ),
     ).toBeInTheDocument();
     expect(screen.getByText('Secondary muscles')).toBeInTheDocument();

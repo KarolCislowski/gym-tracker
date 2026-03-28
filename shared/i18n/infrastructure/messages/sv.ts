@@ -9,7 +9,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     homeTitle: 'Hem',
     aboutTitle: 'Om appen',
     signedInAs: 'Inloggad som',
-    tenantDatabase: 'Tenantdatabas',
+    tenantDatabase: 'Konto',
     profileTitle: 'Profil',
     profileName: 'Namn',
     profileEmail: 'E-post',
@@ -23,7 +23,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     createAccount: 'Skapa konto',
     signInTitle: 'Logga in',
     signInDescription:
-      'Använd din e-postadress och ditt lösenord för att komma åt din tenantyta.',
+      'Använd din e-postadress och ditt lösenord för att logga in på ditt konto.',
     forgotPasswordTitle: 'Glömt lösenord',
     forgotPasswordDescription:
       'Ange din e-postadress så skickar vi en återställningslänk om kontot kan återställas.',
@@ -63,7 +63,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     createAccountLink: 'Skapa ett konto',
     registerTitle: 'Skapa konto',
     registerDescription:
-      'Ett Core-användarkonto och en dedikerad tenantdatabas skapas för ditt konto.',
+      'Skapa ett konto och börja följa träning, återhämtning och dagliga vanor.',
     firstNameLabel: 'Förnamn',
     lastNameLabel: 'Efternamn',
     languageLabel: 'Språk',
@@ -84,15 +84,14 @@ export const svMessages: TranslationDictionaryOverrides = {
     supplementAtlas: 'Tillskottsatlas',
     workoutReports: 'Träningsrapporter',
     dailyReports: 'Dagliga rapporter',
-    workspace: 'Arbetsyta',
+    workspace: 'Dashboard',
     openNavigation: 'Öppna navigering',
     primaryNavigation: 'Primär navigering',
     collapseNavigation: 'Fäll ihop navigering',
     expandNavigation: 'Expandera navigering',
     welcomeBack: 'Välkommen tillbaka',
-    workspaceReady:
-      'Din tenantarbetsyta är ansluten och redo för nästa träningsblock.',
-    tenantDatabase: 'Tenantdatabas',
+    workspaceReady: 'Allt är klart för nästa träningsblock.',
+    tenantDatabase: 'Konto',
     profileName: 'Namn',
     profileEmail: 'E-post',
     favoriteExercises: 'Mina favoritövningar',
@@ -181,10 +180,10 @@ export const svMessages: TranslationDictionaryOverrides = {
   settings: {
     title: 'Inställningar',
     description:
-      'Hantera tenantinställningar, lösenord och kontots livscykel.',
+      'Hantera dina inställningar, ditt lösenord och ditt konto.',
     preferencesTitle: 'Preferenser',
     preferencesDescription:
-      'Uppdatera språk och gränssnittsläge för din arbetsyta.',
+      'Välj språk och gränssnittsläge.',
     languageLabel: 'Språk',
     unitSystemLabel: 'Föredraget måttsystem',
     unitSystemMetric: 'Metriskt',
@@ -209,7 +208,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     passwordUpdated: 'Lösenordet har uppdaterats.',
     dangerZoneTitle: 'Radera konto',
     dangerZoneDescription:
-      'Att radera kontot tar permanent bort ditt Core-konto och tenantdatabas.',
+      'Att radera kontot tar permanent bort all din sparade data.',
     deleteAccountWarning:
       'Den här åtgärden kan inte ångras. Bekräfta med ditt nuvarande lösenord och din e-postadress.',
     confirmationEmailLabel: 'Bekräfta e-postadress',
@@ -227,7 +226,7 @@ export const svMessages: TranslationDictionaryOverrides = {
   profile: {
     title: 'Profil',
     description:
-      'Granska och uppdatera personuppgifter som används i hela din arbetsyta.',
+      'Granska och uppdatera personuppgifter som används i hela appen.',
     personalInfoTitle: 'Personuppgifter',
     personalInfoDescription:
       'Håll dessa värden uppdaterade så att rekommendationer och beräkningar förblir relevanta.',
@@ -272,7 +271,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     detailsTitle: 'Övningsdetaljer',
     detailsDescription:
       'Granska övningens rörelseprofil och jämför tillgängliga utförandevarianter sida vid sida.',
-    backToAtlas: 'Tillbaka till atlasen',
+    backToAtlas: 'Tillbaka till övningslistan',
     viewDetails: 'Visa detaljer',
     addToFavorites: 'Lägg till i favoriter',
     removeFromFavorites: 'Ta bort från favoriter',
@@ -287,7 +286,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     clearFilters: 'Rensa filter',
     allOptions: 'Alla',
     emptyState: 'Inga övningar matchade sökningen.',
-    mobileAtlasTitle: 'Atlas tillgänglig på större skärmar',
+    mobileAtlasTitle: 'Övningsbibliotek på större skärmar',
     mobileAtlasDescription:
       'Den fullständiga övningsatlasen använder en bred jämförelsetabell och är därför dold i stående mobilvy.',
     columnExercise: 'Övning',
@@ -300,7 +299,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     sectionOverview: 'Översikt',
     sectionMuscleEngagement: 'Muskelaktivering',
     muscleEngagementDisclaimer:
-      'Heuristisk modell (uppskattning), baserad på biomekanik + EMG + träningspraktik.',
+      'Uppskattning baserad på biomekanik, EMG-forskning och träningspraktik.',
     sectionInstructions: 'Instruktioner',
     sectionTips: 'Tips',
     sectionMistakes: 'Vanliga misstag',
@@ -329,7 +328,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     noLabel: 'Nej',
     notFoundTitle: 'Övningen hittades inte',
     notFoundDescription:
-      'Den begärda övningen kunde inte hittas i det delade atlasbiblioteket.',
+      'Den begärda övningen kunde inte hittas i det delade biblioteket.',
   },
   supplements: {
     title: 'Tillskottsatlas',
@@ -338,7 +337,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     detailsTitle: 'Tillskottsdetaljer',
     detailsDescription:
       'Granska praktiska anteckningar och jämför tillgängliga varianter sida vid sida.',
-    backToAtlas: 'Tillbaka till atlasen',
+    backToAtlas: 'Tillbaka till tillskottslistan',
     viewDetails: 'Visa detaljer',
     searchPlaceholder: 'Sök tillskott',
     filterCategoryLabel: 'Kategori',
@@ -348,7 +347,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     filterCompoundTypeLabel: 'Varianttyp',
     clearFilters: 'Rensa filter',
     emptyState: 'Inga tillskott matchar de aktuella filtren.',
-    mobileAtlasTitle: 'Atlas tillgänglig på större skärmar',
+    mobileAtlasTitle: 'Tillskottsbibliotek på större skärmar',
     mobileAtlasDescription:
       'Den fullständiga tillskottsatlasen använder en bred jämförelsetabell och är därför dold i stående mobilvy.',
     emptyValue: 'Ej angivet',
@@ -377,7 +376,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     columnTiming: 'Timing',
     notFoundTitle: 'Tillskottet hittades inte',
     notFoundDescription:
-      'Det begärda tillskottet kunde inte hittas i det delade atlasbiblioteket.',
+      'Det begärda tillskottet kunde inte hittas i det delade biblioteket.',
   },
   supplementation: {
     title: 'Supplementering',
@@ -388,7 +387,7 @@ export const svMessages: TranslationDictionaryOverrides = {
       'Spara dina återkommande kombinationer en gång och använd dem senare för snabb loggning.',
     addReportTitle: 'Logga supplementintag',
     addReportDescription:
-      'Välj en av dina sparade stackar och spara en historisk snapshot av vad du faktiskt tog.',
+      'Välj en av dina sparade stackar och logga vad du faktiskt tog.',
     openStackComposerLabel: 'Lägg till supplement-stack',
     closeStackComposerLabel: 'Dölj stack-formulär',
     openReportComposerLabel: 'Lägg till supplementrapport',
@@ -433,7 +432,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     stackViewDetailsLabel: 'Visa stackdetaljer',
     detailsTitle: 'Detaljer för supplementrapport',
     detailsDescription:
-      'Granska den historiska snapshoten av vad du tog och uppdatera rapporten vid behov.',
+      'Granska vad du tog den dagen och uppdatera rapporten vid behov.',
     summaryTitle: 'Rapportsammanfattning',
     openEditLabel: 'Redigera supplementrapport',
     closeEditLabel: 'Dölj redigering av supplementrapport',
@@ -458,9 +457,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     deleteReportTitle: 'Ta bort supplementrapporten?',
     deleteReportDescription:
       'Den här åtgärden tar permanent bort supplementrapporten. Det går inte att ångra.',
-    modelTitle: 'Hur stack-baserad loggning fungerar',
+    modelTitle: 'Hur stackloggning fungerar',
     modelDescription:
-      'Stackar kan ändras för framtiden medan varje rapport sparar en snapshot av exakta ingredienser och doser för den dagen.',
+      'Du kan fortsätta ändra stackar för framtiden, medan varje rapport behåller sin egen post över ingredienser och doser för den dagen.',
   },
   workouts: {
     title: 'Träningsrapporter',
@@ -572,9 +571,9 @@ export const svMessages: TranslationDictionaryOverrides = {
       'Den här åtgärden tar permanent bort träningsmallen. Det går inte att ångra.',
     notFoundTitle: 'Träningsrapporten hittades inte',
     notFoundDescription: 'Den här rapporten finns inte eller så har du inte åtkomst till den.',
-    modelTitle: 'Modell för träningsrapport',
+    modelTitle: 'Hur träningsloggning fungerar',
     modelDescription:
-      'Rapporter stöder enskilda övningar, superset, cirklar och dropset genom nästlade träningsblock och detaljerade set.',
+      'Träningsrapporter stöder enskilda övningar, superset, cirklar och dropset med flexibla block och detaljerad setloggning.',
   },
   dailyReports: {
     title: 'Dagliga rapporter',
@@ -614,7 +613,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     actualsTitle: 'Dagens utfall',
     bodyTitle: 'Kroppsmått',
     contextTitle: 'Dagskontext',
-    goalsSnapshotTitle: 'Aktuell mål-snapshot',
+    goalsSnapshotTitle: 'Aktuella mål',
     sorenessLabel: 'Ömhet',
     motivationLabel: 'Motivation',
     scoreLow: 'Låg',
@@ -638,7 +637,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     detailsDescription:
       'Granska den sparade dagsbilden och öppna redigering när du vill justera något.',
     summaryTitle: 'Dagssammanfattning',
-    goalsSectionTitle: 'Mål-snapshot',
+    goalsSectionTitle: 'Mål vid den tiden',
     actualsSectionTitle: 'Utfall',
     completionSectionTitle: 'Måluppfyllelse',
     wellbeingSectionTitle: 'Välbefinnande',
@@ -655,9 +654,9 @@ export const svMessages: TranslationDictionaryOverrides = {
     notFoundTitle: 'Daglig rapport hittades inte',
     notFoundDescription:
       'Den begärda dagliga rapporten kunde inte hittas för detta konto.',
-    modelTitle: 'Modell för daglig rapport',
+    modelTitle: 'Vad varje daglig rapport sparar',
     modelDescription:
-      'Varje daglig rapport sparar en mål-snapshot, faktiskt utförande, välbefinnandepoäng, kroppsmått och kontextanteckningar för dagen.',
+      'Varje daglig rapport sparar dina mål för dagen, faktiskt utförande, välbefinnande, kroppsmått och kontextanteckningar.',
   },
   healthyHabits: {
     title: 'Mål för hälsosamma vanor',
