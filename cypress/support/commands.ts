@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { cypressUser } from '../../shared/testing/cypress-user';
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -25,13 +26,23 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+Cypress.Commands.add('loginAsCypressUser', () => {
+  cy.visit('/login');
+  cy.get('#email').type(cypressUser.email);
+  cy.get('#password').type(cypressUser.password);
+  cy.get('form').find('button[type="submit"]').first().click();
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Signs in using the seeded Cypress account.
+       */
+      loginAsCypressUser(): Chainable<void>;
+    }
+  }
+}
+
+export {};

@@ -31,8 +31,12 @@ export function AppOnboarding({ translations }: AppOnboardingProps) {
   const isInternalCleanupRef = useRef(false);
 
   useEffect(() => {
+    const isCypressRuntime =
+      typeof window !== 'undefined' && 'Cypress' in window;
+
     if (
       typeof window === 'undefined' ||
+      isCypressRuntime ||
       process.env.NODE_ENV === 'test' ||
       !pathname
     ) {

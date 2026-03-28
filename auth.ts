@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import { authenticateUser } from '@/features/auth/application/auth.service';
+import { findTenantSettings } from '@/features/auth/infrastructure/auth.db';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -29,10 +30,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
+        const settings = await findTenantSettings(user.tenantDbName);
+
         return {
           id: user.id,
           email: user.email,
           isActive: user.isActive,
+          language: settings?.language ?? 'en',
           tenantDbName: user.tenantDbName,
         };
       },
@@ -44,6 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.userId = user.id;
         token.tenantDbName = user.tenantDbName;
         token.isActive = user.isActive;
+        token.language = user.language;
       }
 
       return token;
@@ -53,6 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = String(token.userId ?? token.sub ?? '');
         session.user.tenantDbName = String(token.tenantDbName ?? '');
         session.user.isActive = Boolean(token.isActive);
+        session.user.language = String(token.language ?? 'en');
       }
 
       return session;

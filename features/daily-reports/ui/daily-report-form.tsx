@@ -148,6 +148,7 @@ export function DailyReportForm({
       }),
     [carbsGrams, fatGrams, proteinGrams],
   );
+  const reportDateIso = useMemo(() => resolveReportDateIso(reportDate), [reportDate]);
 
   const completion = useMemo(
     () => ({
@@ -195,8 +196,9 @@ export function DailyReportForm({
 
   const payload = useMemo(
     () =>
-      JSON.stringify({
-        reportDate: new Date(`${reportDate}T12:00:00`).toISOString(),
+      reportDateIso
+        ? JSON.stringify({
+        reportDate: reportDateIso,
         actuals: {
           sleepHours: normalizeOptionalNumber(sleepHours),
           sleepScheduleKept:
@@ -235,7 +237,8 @@ export function DailyReportForm({
           notes: notes.trim() || null,
         },
         completion,
-      }),
+      })
+        : '',
     [
       bodyWeightKg,
       calculatedActualCalories,
@@ -249,6 +252,7 @@ export function DailyReportForm({
       notes,
       proteinGrams,
       reportDate,
+      reportDateIso,
       restingHeartRate,
       sleepHours,
       sleepScheduleKept,
@@ -520,6 +524,7 @@ export function DailyReportForm({
         }}
       >
         <Button
+          disabled={!reportDateIso}
           fullWidth
           size='large'
           startIcon={<SaveRoundedIcon />}
@@ -734,6 +739,16 @@ function normalizeOptionalNumber(value: string): number | null {
   const normalized = value.trim();
 
   return normalized ? Number(normalized) : null;
+}
+
+function resolveReportDateIso(value: string): string | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return null;
+  }
+
+  const parsed = new Date(`${value}T12:00:00`);
+
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
 }
 
 function normalizeOptionalScore(value: DailyScoreDraft): 1 | 2 | 3 | 4 | 5 | null {

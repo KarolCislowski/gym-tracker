@@ -33,9 +33,10 @@ import { getTenantProfileModel } from '@/infrastructure/db/models/tenant-profile
 import { getTenantSettingsModel } from '@/infrastructure/db/models/tenant-settings.model';
 import { getTenantWorkoutModel } from '@/infrastructure/db/models/tenant-workout.model';
 import { initializeTenantDatabase } from '@/infrastructure/db/tenant-database.service';
+import { demoUser } from '@/shared/testing/demo-user';
 
-const DEMO_EMAIL = 'user@test.com';
-const DEMO_PASSWORD = 'pass1234';
+const DEMO_EMAIL = demoUser.email;
+const DEMO_PASSWORD = demoUser.password;
 
 const DEMO_PROFILE = {
   firstName: 'Anna',
@@ -77,7 +78,7 @@ const DEMO_GOALS = {
 };
 
 const DEMO_SETTINGS = {
-  language: 'en',
+  language: demoUser.language,
   isDarkMode: false,
   unitSystem: 'metric' as const,
   trackMenstrualCycle: true,

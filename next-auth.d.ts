@@ -5,6 +5,7 @@ declare module 'next-auth' {
     user: DefaultSession['user'] & {
       id: string;
       isActive: boolean;
+      language: string;
       tenantDbName: string;
     };
   }
@@ -12,6 +13,7 @@ declare module 'next-auth' {
   interface User {
     id: string;
     isActive: boolean;
+    language: string;
     tenantDbName: string;
   }
 }
@@ -20,6 +22,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     userId?: string;
     isActive?: boolean;
+    language?: string;
     tenantDbName?: string;
   }
 }

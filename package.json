@@ -14,7 +14,8 @@
     "db:auth-smoke": "node --env-file=example.env.local --import tsx scripts/auth-register-smoke.ts",
     "db:seed:atlas": "node --env-file=example.env.local --import tsx scripts/seed-exercise-atlas.ts",
     "db:seed:supplements": "node --env-file=example.env.local --import tsx scripts/seed-supplement-atlas.ts",
-    "db:seed:demo-user": "node --env-file=.env.local --import tsx scripts/seed-demo-user.ts"
+    "db:seed:demo-user": "node --env-file=.env.local --import tsx scripts/seed-demo-user.ts",
+    "db:seed:cypress-user": "node --env-file=.env.local --import tsx scripts/seed-cypress-user.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

@@ -201,6 +201,27 @@ Email: user@test.com
 Password: pass1234
 ```
 
+If you want a dedicated end-to-end testing account for Cypress, seed it separately:
+
+```bash
+npm run db:seed:cypress-user
+```
+
+This script uses:
+
+```text
+.env.local
+```
+
+The Cypress-user seed creates a clean English-speaking account with randomized profile and goals, then clears tenant report/template/stack history so each test run can start from a predictable state.
+
+Seeded Cypress account credentials:
+
+```text
+Email: cypress@test.com
+Password: cypress123
+```
+
 ## Useful Commands
 
 ```bash
