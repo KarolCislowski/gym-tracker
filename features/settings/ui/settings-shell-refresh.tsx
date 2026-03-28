@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 interface SettingsShellRefreshProps {
   shouldRefreshShell: boolean;
@@ -17,9 +16,7 @@ interface SettingsShellRefreshProps {
 export function SettingsShellRefresh({
   shouldRefreshShell,
 }: SettingsShellRefreshProps) {
-  const router = useRouter();
   const hasRefreshed = useRef(false);
-  const [, startTransition] = useTransition();
 
   useEffect(() => {
     if (!shouldRefreshShell || hasRefreshed.current) {
@@ -27,12 +24,8 @@ export function SettingsShellRefresh({
     }
 
     hasRefreshed.current = true;
-
-    startTransition(() => {
-      router.replace('/settings?status=preferences-updated');
-      router.refresh();
-    });
-  }, [router, shouldRefreshShell, startTransition]);
+    window.location.replace('/settings?status=preferences-updated');
+  }, [shouldRefreshShell]);
 
   return null;
 }

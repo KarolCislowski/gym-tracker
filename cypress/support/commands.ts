@@ -28,30 +28,10 @@ import { cypressUser } from '../../shared/testing/cypress-user';
 //
 
 Cypress.Commands.add('loginAsCypressUser', () => {
-  cy.request('/api/auth/csrf')
-    .its('body.csrfToken')
-    .then((csrfToken) => {
-      cy.request({
-        url: '/api/auth/callback/credentials',
-        method: 'POST',
-        form: true,
-        body: {
-          email: cypressUser.email,
-          password: cypressUser.password,
-          csrfToken,
-          callbackUrl: '/',
-          json: 'true',
-        },
-      });
-    });
-
-  cy.request({
-    url: '/api/auth/session',
-    timeout: 30000,
-  })
-    .its('body.user.email')
-    .should('eq', cypressUser.email);
-  cy.visit('/');
+  cy.visit(`/login?lang=${cypressUser.language}`);
+  cy.get('#email').should('be.visible').clear().type(cypressUser.email);
+  cy.get('#password').should('be.visible').clear().type(cypressUser.password);
+  cy.get('form').find('button[type="submit"]').first().click();
   cy.location('pathname', { timeout: 30000 }).should('eq', '/');
 });
 
