@@ -58,6 +58,15 @@ const WELLBEING_MIN_CHART_WIDTH_PX = 520;
 const BODY_METRICS_MIN_CHART_WIDTH_PX = 420;
 const WORKOUT_VOLUME_MIN_CHART_WIDTH_PX = 520;
 
+/**
+ * Expanded analytics section rendering wellbeing, body-metrics, and workout-volume trend cards.
+ * @param props - Component props for the expanded analytics section.
+ * @param props.analytics - Precomputed dashboard analytics series.
+ * @param props.isMobile - Whether the current viewport should use compact chart subsets.
+ * @param props.translations - Translation dictionary for localized chart titles and labels.
+ * @param props.unitSystem - Active unit system used for body-weight conversion.
+ * @returns A React element rendering the expanded analytics chart group.
+ */
 export function DashboardAnalyticsExpandedCharts({
   analytics,
   isMobile,
@@ -308,12 +317,23 @@ export function DashboardAnalyticsExpandedCharts({
   );
 }
 
+/**
+ * Builds a chart label with a normalized unit suffix.
+ * @param label - Base label that may already include a parenthesized unit.
+ * @param unit - Unit suffix to append.
+ * @returns A normalized label formatted as `Label (unit)`.
+ */
 function buildChartUnitLabel(label: string, unit: string): string {
   const baseLabel = label.replace(/\s*\(.+\)\s*$/, '');
 
   return `${baseLabel} (${unit})`;
 }
 
+/**
+ * Splits the available card height between the two body-metrics charts.
+ * @param chartHeight - Total measured height available to the card content.
+ * @returns A safe chart height for each body-metrics line chart.
+ */
 function resolveBodyMetricsChartHeight(chartHeight: number): number {
   return Math.max(
     172,
@@ -323,6 +343,18 @@ function resolveBodyMetricsChartHeight(chartHeight: number): number {
   );
 }
 
+/**
+ * Responsive analytics card that can switch between chart and table modes.
+ * @param props - Component props for the measured analytics card.
+ * @param props.chartViewLabel - Localized label for the chart toggle button.
+ * @param props.children - Render prop that receives the measured chart height.
+ * @param props.minChartHeight - Minimum vertical space reserved for chart rendering.
+ * @param props.minChartWidth - Minimum width before the card forces table mode.
+ * @param props.renderTable - Optional table renderer used as a compact fallback.
+ * @param props.tableViewLabel - Localized label for the table toggle button.
+ * @param props.title - Card title used in the header and remount key.
+ * @returns A React element rendering a stable analytics card container.
+ */
 function MeasuredChartCard({
   chartViewLabel,
   children,
@@ -490,6 +522,12 @@ function MeasuredChartCard({
   );
 }
 
+/**
+ * Converts metric body weight into the active display unit used by the chart.
+ * @param kilograms - Body weight stored in kilograms.
+ * @param unitSystem - Active unit system for the signed-in user.
+ * @returns A converted numeric value ready for chart plotting.
+ */
 function convertBodyWeightForChart(
   kilograms: number,
   unitSystem: UnitSystem,
@@ -507,6 +545,11 @@ function convertBodyWeightForChart(
   return { value: convertMassFromMetric(kilograms, unitSystem).value };
 }
 
+/**
+ * Resolves the short chart unit label for body weight.
+ * @param unitSystem - Active unit system for the signed-in user.
+ * @returns A short unit label suitable for chart legends and headers.
+ */
 function resolveBodyWeightChartUnit(unitSystem: UnitSystem): string {
   if (unitSystem === 'imperial_uk') {
     return 'st';
@@ -515,6 +558,11 @@ function resolveBodyWeightChartUnit(unitSystem: UnitSystem): string {
   return unitSystem === 'metric' ? 'kg' : 'lb';
 }
 
+/**
+ * Offsets wellbeing series markers so overlapping points remain distinguishable.
+ * @param props - MUI X mark element props for the current data point.
+ * @returns A React element rendering the shifted mark.
+ */
 function OffsetWellbeingMark(props: MarkElementProps) {
   const offsetBySeries: Record<string, number> = {
     mood: -6,
@@ -594,6 +642,12 @@ function buildWorkoutVolumeColumns(
   ];
 }
 
+/**
+ * Builds table rows for the workout-volume fallback view.
+ * @param dataset - Workout-volume chart dataset.
+ * @param muscleGroups - Muscle-group keys currently visible in the chart/table.
+ * @returns Table rows normalized for the analytics data grid.
+ */
 function buildWorkoutVolumeRows(
   dataset: DashboardAnalytics['workoutVolume'],
   muscleGroups: string[],
@@ -612,6 +666,15 @@ function buildWorkoutVolumeRows(
   });
 }
 
+/**
+ * Compact analytics table used when chart space is insufficient or table mode is selected.
+ * @param props - Component props for the analytics data grid.
+ * @param props.columns - Column definitions for the rendered table.
+ * @param props.emptyMessage - Message shown when no rows are available.
+ * @param props.rows - Row data already normalized for presentation.
+ * @param props.title - Accessible table label and heading text.
+ * @returns A React element rendering the analytics table fallback.
+ */
 function AnalyticsDataGrid({
   columns,
   emptyMessage,
@@ -690,6 +753,12 @@ function AnalyticsDataGrid({
   );
 }
 
+/**
+ * Lightweight empty state shown when an analytics card cannot render meaningful data yet.
+ * @param props - Component props for the empty chart state.
+ * @param props.message - Localized explanation of the current empty-data condition.
+ * @returns A React element rendering muted explanatory text.
+ */
 function EmptyChartState({ message }: { message: string }) {
   return (
     <Box

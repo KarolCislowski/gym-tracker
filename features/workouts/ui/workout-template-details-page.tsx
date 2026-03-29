@@ -20,6 +20,16 @@ interface WorkoutTemplateDetailsPageProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Server-rendered detail page for a saved workout template with inline editing and deletion.
+ * @param props - Component props for the workout-template detail page.
+ * @param props.template - Persisted template details for the selected identifier.
+ * @param props.exercises - Exercise atlas entries used to resolve display names and editor inputs.
+ * @param props.translations - Full translation dictionary for localized copy.
+ * @param props.status - Optional route status flag used for success feedback.
+ * @param props.error - Optional route error flag used for failure feedback.
+ * @returns A React element rendering the template summary, blocks, and edit/delete actions.
+ */
 export function WorkoutTemplateDetailsPage({
   error,
   exercises,
@@ -119,6 +129,13 @@ export function WorkoutTemplateDetailsPage({
   );
 }
 
+/**
+ * Summary card used on the workout-template detail page for key-value rows.
+ * @param props - Component props for the reusable details section.
+ * @param props.rows - Ordered label/value pairs to render.
+ * @param props.title - Section title displayed above the rows.
+ * @returns A React element rendering the summary section.
+ */
 function DetailsSection({
   rows,
   title,
@@ -153,6 +170,14 @@ function DetailsSection({
   );
 }
 
+/**
+ * Renders a single template block with its exercise entries.
+ * @param props - Component props for the template block details section.
+ * @param props.block - Workout template block snapshot being displayed.
+ * @param props.exercises - Exercise atlas entries used to resolve exercise names.
+ * @param props.translations - Full translation dictionary for localized labels.
+ * @returns A React element rendering block metadata and template entries.
+ */
 function TemplateBlockDetails({
   block,
   exercises,
@@ -199,6 +224,12 @@ function TemplateBlockDetails({
   );
 }
 
+/**
+ * Maps a stored workout template block type to a localized label.
+ * @param type - Stored workout template block type.
+ * @param translations - Workout translation slice containing block labels.
+ * @returns A localized block type label.
+ */
 function resolveBlockTypeLabel(
   type: WorkoutTemplateBlockInput['type'],
   translations: TranslationDictionary['workouts'],

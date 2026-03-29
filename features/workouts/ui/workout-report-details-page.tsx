@@ -23,6 +23,18 @@ interface WorkoutReportDetailsPageProps {
   translations: TranslationDictionary;
 }
 
+/**
+ * Server-rendered detail page for a single workout report with inline editing and deletion.
+ * @param props - Component props for the workout-report detail page.
+ * @param props.report - Persisted workout report details for the selected identifier.
+ * @param props.exercises - Exercise atlas entries used to resolve display names and editor inputs.
+ * @param props.favoriteExerciseSlugs - Favorite exercise identifiers used by the inline editor.
+ * @param props.templates - Saved workout templates available to prefill edits.
+ * @param props.translations - Full translation dictionary for localized copy.
+ * @param props.status - Optional route status flag used for success feedback.
+ * @param props.error - Optional route error flag used for failure feedback.
+ * @returns A React element rendering report summary, block details, and edit/delete actions.
+ */
 export function WorkoutReportDetailsPage({
   error,
   exercises,
@@ -133,6 +145,13 @@ export function WorkoutReportDetailsPage({
   );
 }
 
+/**
+ * Summary card used on the workout-report detail page for key-value rows.
+ * @param props - Component props for the reusable details section.
+ * @param props.rows - Ordered label/value pairs to render.
+ * @param props.title - Section title displayed above the rows.
+ * @returns A React element rendering the summary section.
+ */
 function DetailsSection({
   rows,
   title,
@@ -167,6 +186,14 @@ function DetailsSection({
   );
 }
 
+/**
+ * Renders a single workout block with its entries and logged sets.
+ * @param props - Component props for the block details section.
+ * @param props.block - Workout block snapshot being displayed.
+ * @param props.exercises - Exercise atlas entries used to resolve exercise names.
+ * @param props.translations - Full translation dictionary for localized labels.
+ * @returns A React element rendering block metadata and entry details.
+ */
 function BlockDetails({
   block,
   exercises,
@@ -222,6 +249,12 @@ function BlockDetails({
   );
 }
 
+/**
+ * Maps a stored workout block type to a localized label.
+ * @param type - Stored workout block type.
+ * @param translations - Workout translation slice containing block labels.
+ * @returns A localized block type label.
+ */
 function resolveBlockTypeLabel(
   type: WorkoutBlockInput['type'],
   translations: TranslationDictionary['workouts'],
@@ -240,6 +273,12 @@ function resolveBlockTypeLabel(
   }
 }
 
+/**
+ * Formats a single logged set into a concise human-readable summary line.
+ * @param set - Logged set snapshot to format.
+ * @param translations - Full translation dictionary for localized empty values and labels.
+ * @returns A string describing the set contents.
+ */
 function formatSetLine(
   set: WorkoutBlockInput['entries'][number]['sets'][number],
   translations: TranslationDictionary,

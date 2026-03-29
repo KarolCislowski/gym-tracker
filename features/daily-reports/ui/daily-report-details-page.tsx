@@ -204,6 +204,13 @@ export function DailyReportDetailsPage({
   );
 }
 
+/**
+ * Summary card used on the daily-report detail page for key-value rows.
+ * @param props - Component props for the reusable details section.
+ * @param props.rows - Ordered label/value pairs to render.
+ * @param props.title - Section title displayed above the rows.
+ * @returns A React element rendering the summary section.
+ */
 function DetailsSection({
   rows,
   title,
@@ -238,6 +245,12 @@ function DetailsSection({
   );
 }
 
+/**
+ * Formats a nullable boolean into a localized yes/no/empty label.
+ * @param value - Boolean value to render.
+ * @param translations - Full translation dictionary for localized labels.
+ * @returns A localized string representation of the boolean state.
+ */
 function formatBoolean(
   value: boolean | null,
   translations: TranslationDictionary,
@@ -249,6 +262,13 @@ function formatBoolean(
   return value ? translations.exercises.yesLabel : translations.exercises.noLabel;
 }
 
+/**
+ * Formats a nullable number with an optional unit suffix.
+ * @param value - Numeric value to render.
+ * @param suffix - Optional unit suffix appended after the value.
+ * @param emptyValue - Fallback text used when the value is missing.
+ * @returns A formatted string ready for display.
+ */
 function formatNumber(
   value: number | null,
   suffix: string,
@@ -261,10 +281,23 @@ function formatNumber(
   return suffix ? `${value} ${suffix}` : String(value);
 }
 
+/**
+ * Formats a nullable wellbeing score on the app's five-point scale.
+ * @param value - Score to render.
+ * @param emptyValue - Fallback text used when the score is missing.
+ * @returns A formatted score string such as `4/5`.
+ */
 function formatScore(value: number | null, emptyValue: string): string {
   return value == null ? emptyValue : `${value}/5`;
 }
 
+/**
+ * Maps the stored menstruation phase to localized UI copy.
+ * @param value - Stored menstruation phase value.
+ * @param translations - Daily-report translation slice containing phase labels.
+ * @param emptyValue - Fallback text used when the phase is missing.
+ * @returns A localized menstruation phase label.
+ */
 function formatMenstruationPhase(
   value: DailyReportDetails['dayContext']['menstruationPhase'],
   translations: TranslationDictionary['dailyReports'],
@@ -286,6 +319,13 @@ function formatMenstruationPhase(
   }
 }
 
+/**
+ * Formats stored hydration in liters using the active unit system.
+ * @param liters - Hydration value stored in liters.
+ * @param unitSystem - Active unit system for the signed-in user.
+ * @param emptyValue - Fallback text used when hydration is missing.
+ * @returns A formatted hydration string with converted unit.
+ */
 function formatHydration(
   liters: number | null,
   unitSystem: UnitSystem,
