@@ -4,10 +4,12 @@ import { Paper } from '@mui/material';
 import type { ReactNode } from 'react';
 
 type DashboardWidgetDensity = 'dense' | 'feature' | 'hero' | 'summary';
+type DashboardWidgetHeight = 'auto' | 'compact' | 'regular' | 'tall' | 'hero';
 
 interface DashboardWidgetShellProps {
   children: ReactNode;
   density?: DashboardWidgetDensity;
+  height?: DashboardWidgetHeight;
   onboardingId?: string;
 }
 
@@ -16,12 +18,14 @@ interface DashboardWidgetShellProps {
  * @param props - Component props for the widget shell.
  * @param props.children - Widget body content.
  * @param props.density - Visual density token used to tune spacing and minimum height.
+ * @param props.height - Height token used to keep dashboard widgets on a shared vertical rhythm.
  * @param props.onboardingId - Optional onboarding target id.
  * @returns A React element rendering a styled dashboard widget container.
  */
 export function DashboardWidgetShell({
   children,
   density = 'feature',
+  height = 'auto',
   onboardingId,
 }: DashboardWidgetShellProps) {
   return (
@@ -33,7 +37,7 @@ export function DashboardWidgetShell({
         border: 1,
         borderColor: 'divider',
         borderRadius: getDensityRadius(density),
-        minHeight: getDensityMinHeight(density),
+        minHeight: getWidgetMinHeight(height, density),
         minWidth: 0,
         width: '100%',
         alignSelf: 'stretch',
@@ -82,5 +86,24 @@ function getDensityMinHeight(density: DashboardWidgetDensity) {
     case 'feature':
     default:
       return 240;
+  }
+}
+
+function getWidgetMinHeight(
+  height: DashboardWidgetHeight,
+  density: DashboardWidgetDensity,
+) {
+  switch (height) {
+    case 'compact':
+      return 180;
+    case 'regular':
+      return { xs: 220, md: 240 };
+    case 'tall':
+      return { xs: 260, md: 320 };
+    case 'hero':
+      return { xs: 300, md: 340 };
+    case 'auto':
+    default:
+      return getDensityMinHeight(density);
   }
 }

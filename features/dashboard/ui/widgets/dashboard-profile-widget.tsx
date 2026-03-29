@@ -36,7 +36,11 @@ export function DashboardProfileWidget({
   const profileTranslations = translations.profile;
 
   return (
-    <DashboardWidgetShell density='feature' onboardingId='dashboard-profile'>
+    <DashboardWidgetShell
+      density='feature'
+      height='tall'
+      onboardingId='dashboard-profile'
+    >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}

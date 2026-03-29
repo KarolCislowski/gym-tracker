@@ -38,6 +38,7 @@ export function DashboardHealthyHabitsWidget({
   return (
     <DashboardWidgetShell
       density='feature'
+      height='regular'
       onboardingId='dashboard-healthy-habits'
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>

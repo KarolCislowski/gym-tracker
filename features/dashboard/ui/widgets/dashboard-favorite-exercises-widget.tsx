@@ -38,7 +38,7 @@ export function DashboardFavoriteExercisesWidget({
   const exerciseTranslations = translations.exercises;
 
   return (
-    <DashboardWidgetShell density='dense'>
+    <DashboardWidgetShell density='dense' height='compact'>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <FavoriteRoundedIcon color='primary' fontSize='small' />
