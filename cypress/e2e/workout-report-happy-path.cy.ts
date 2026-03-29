@@ -2,8 +2,9 @@ import { getTranslations } from '../../shared/i18n/application/i18n.service';
 
 describe('Workout report happy path', () => {
   it('creates, reviews, edits, and deletes a workout report', () => {
-    const createdWorkoutName = 'Cypress workout report';
-    const updatedWorkoutName = 'Cypress workout report updated';
+    const runId = Date.now();
+    const createdWorkoutName = `Cypress workout report ${runId}`;
+    const updatedWorkoutName = `Cypress workout report updated ${runId}`;
     const createdNotes = 'Cypress workout session notes';
     const updatedNotes = 'Cypress workout session notes updated';
 
@@ -64,8 +65,9 @@ describe('Workout report happy path', () => {
 
       cy.contains('h1', t.title).should('exist');
       cy.contains(t.reportDeleted).should('be.visible');
-      cy.contains(`table[aria-label="${t.title}"] tbody tr`, updatedWorkoutName).should(
-        'not.exist',
+      cy.get(`table[aria-label="${t.title}"] tbody`).should(
+        'not.contain',
+        updatedWorkoutName,
       );
     });
   });
