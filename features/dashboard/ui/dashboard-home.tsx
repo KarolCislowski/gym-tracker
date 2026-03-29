@@ -13,6 +13,7 @@ import { DashboardNextActionWidget } from './widgets/dashboard-next-action-widge
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
+import { DashboardGrid, DashboardGridItem } from './layout/dashboard-grid';
 
 interface DashboardHomeProps {
   analytics: DashboardAnalytics;
@@ -38,100 +39,64 @@ export function DashboardHome({
 }: DashboardHomeProps) {
   return (
     <Stack spacing={3}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            lg: 'minmax(0, 1.6fr) minmax(320px, 0.95fr)',
-          },
-          gap: 3,
-          alignItems: 'stretch',
-          '& > *': {
-            minWidth: 0,
-          },
-        }}
-      >
-        <DashboardOverviewWidget
-          analytics={analytics}
-          dailyReportCount={dailyReportCount}
-          favoriteExerciseCount={favoriteExercises.length}
-          profileName={userSnapshot?.profile?.firstName ?? null}
-          translations={translations.dashboard}
-          workoutReportCount={workoutReportCount}
-        />
+      <DashboardGrid>
+        <DashboardGridItem cols={{ xs: 1, md: 6, xl: 8 }}>
+          <DashboardOverviewWidget
+            analytics={analytics}
+            dailyReportCount={dailyReportCount}
+            favoriteExerciseCount={favoriteExercises.length}
+            profileName={userSnapshot?.profile?.firstName ?? null}
+            translations={translations.dashboard}
+            workoutReportCount={workoutReportCount}
+          />
+        </DashboardGridItem>
 
-        <DashboardNextActionWidget
-          action={nextAction}
-          translations={translations.dashboard}
-        />
-      </Box>
+        <DashboardGridItem cols={{ xs: 1, md: 6, xl: 4 }}>
+          <DashboardNextActionWidget
+            action={nextAction}
+            translations={translations.dashboard}
+          />
+        </DashboardGridItem>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            md: 'repeat(2, minmax(0, 1fr))',
-            xl: 'minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 0.9fr)',
-          },
-          gridTemplateRows: { xl: 'repeat(2, minmax(0, auto))' },
-          gap: 3,
-          '& > *': {
-            minWidth: 0,
-          },
-        }}
-      >
         {userSnapshot?.profile ? (
-          <Box sx={{ gridColumn: { xl: '1 / 2' }, gridRow: { xl: '1 / 3' } }}>
+          <DashboardGridItem
+            cols={{ xs: 1, md: 3, xl: 4 }}
+            rows={{ xs: 1, md: 1, xl: 2 }}
+          >
             <DashboardProfileWidget
               profile={userSnapshot.profile}
               unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
               translations={translations}
             />
-          </Box>
+          </DashboardGridItem>
         ) : null}
 
         {userSnapshot?.healthyHabits ? (
-          <Box sx={{ gridColumn: { xl: '2 / 4' }, gridRow: { xl: '1 / 2' } }}>
+          <DashboardGridItem cols={{ xs: 1, md: 3, xl: 8 }}>
             <DashboardHealthyHabitsWidget
               healthyHabits={userSnapshot.healthyHabits}
               translations={translations}
               unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
             />
-          </Box>
+          </DashboardGridItem>
         ) : null}
 
-        <Box
-          sx={{
-            gridColumn: { xl: '2 / 3' },
-            gridRow: { xl: '2 / 3' },
-            justifySelf: { xl: 'start' },
-            width: '100%',
-          }}
-        >
+        <DashboardGridItem cols={{ xs: 1, md: 4, xl: 5 }}>
           <DashboardFavoriteExercisesWidget
             exercises={favoriteExercises}
             translations={translations}
           />
-        </Box>
+        </DashboardGridItem>
 
         {userSnapshot?.settings ? (
-          <Box
-            sx={{
-              gridColumn: { xl: '3 / 4' },
-              gridRow: { xl: '2 / 3' },
-              justifySelf: { xl: 'start' },
-              width: '100%',
-            }}
-          >
+          <DashboardGridItem cols={{ xs: 1, md: 2, xl: 3 }}>
             <DashboardSettingsWidget
               settings={userSnapshot.settings}
               translations={translations.dashboard}
             />
-          </Box>
+          </DashboardGridItem>
         ) : null}
-      </Box>
+      </DashboardGrid>
 
       <DashboardAnalyticsLazyWidget
         analytics={analytics}

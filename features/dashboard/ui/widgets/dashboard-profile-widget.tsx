@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { Box, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -12,6 +12,7 @@ import {
   getProfileSexLabel,
 } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardProfileWidgetProps {
   profile: NonNullable<AuthenticatedUserSnapshot['profile']>;
@@ -35,20 +36,7 @@ export function DashboardProfileWidget({
   const profileTranslations = translations.profile;
 
   return (
-    <Paper
-      data-onboarding='dashboard-profile'
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-        width: '100%',
-        maxWidth: { xl: 560 },
-        alignSelf: 'flex-start',
-      }}
-    >
+    <DashboardWidgetShell density='feature' onboardingId='dashboard-profile'>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
@@ -119,7 +107,7 @@ export function DashboardProfileWidget({
           </Box>
         </Box>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }
 

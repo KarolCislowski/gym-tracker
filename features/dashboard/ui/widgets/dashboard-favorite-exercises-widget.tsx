@@ -2,7 +2,6 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   IconButton,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardFavoriteExercisesWidgetProps {
   exercises: Exercise[];
@@ -38,19 +38,7 @@ export function DashboardFavoriteExercisesWidget({
   const exerciseTranslations = translations.exercises;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-        width: '100%',
-        maxWidth: { xl: 480 },
-        alignSelf: 'flex-start',
-      }}
-    >
+    <DashboardWidgetShell density='dense'>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <FavoriteRoundedIcon color='primary' fontSize='small' />
@@ -99,6 +87,6 @@ export function DashboardFavoriteExercisesWidget({
           </Typography>
         )}
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }

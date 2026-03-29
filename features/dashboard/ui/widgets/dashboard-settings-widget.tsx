@@ -1,8 +1,9 @@
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import { Paper, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardSettingsWidgetProps {
   settings: NonNullable<AuthenticatedUserSnapshot['settings']>;
@@ -21,19 +22,7 @@ export function DashboardSettingsWidget({
   translations,
 }: DashboardSettingsWidgetProps) {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-        width: '100%',
-        maxWidth: { xl: 360 },
-        alignSelf: 'flex-start',
-      }}
-    >
+    <DashboardWidgetShell density='dense'>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <SettingsRoundedIcon color='primary' fontSize='small' />
@@ -59,6 +48,6 @@ export function DashboardSettingsWidget({
           <strong>{settings.isDarkMode ? translations.themeDark : translations.themeLight}</strong>
         </Typography>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }

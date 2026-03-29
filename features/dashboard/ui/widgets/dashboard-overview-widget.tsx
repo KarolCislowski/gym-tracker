@@ -57,6 +57,7 @@ export function DashboardOverviewWidget({
         border: 1,
         borderColor: 'divider',
         borderRadius: 8,
+        minHeight: { xs: 300, md: 340 },
         background:
           'linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(26,78,59,0.92) 58%, rgba(234,179,8,0.16) 100%)',
         color: 'common.white',

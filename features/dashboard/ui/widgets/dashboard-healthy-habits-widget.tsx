@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Box, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -11,6 +11,7 @@ import {
   getHealthyHabitsWaterLabel,
 } from '@/features/healthy-habits/application/healthy-habits-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardHealthyHabitsWidgetProps {
   healthyHabits: NonNullable<AuthenticatedUserSnapshot['healthyHabits']>;
@@ -35,19 +36,9 @@ export function DashboardHealthyHabitsWidget({
   const habitsTranslations = translations.healthyHabits;
 
   return (
-    <Paper
-      data-onboarding='dashboard-healthy-habits'
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-        width: '100%',
-        maxWidth: { xl: 840 },
-        alignSelf: 'flex-start',
-      }}
+    <DashboardWidgetShell
+      density='feature'
+      onboardingId='dashboard-healthy-habits'
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
@@ -160,7 +151,7 @@ export function DashboardHealthyHabitsWidget({
           />
         </Box>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }
 

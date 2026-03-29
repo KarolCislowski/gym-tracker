@@ -33,6 +33,7 @@ export function DashboardNextActionWidget({
       elevation={0}
       sx={(theme) => ({
         display: 'flex',
+        height: '100%',
         p: 3,
         border: 1,
         borderColor:
@@ -41,6 +42,7 @@ export function DashboardNextActionWidget({
             : alpha(theme.palette.common.black, 0.08),
         borderRadius: 8,
         minWidth: 0,
+        minHeight: { xs: 300, md: 340 },
         background:
           theme.palette.mode === 'dark'
             ? `linear-gradient(180deg, ${alpha(theme.palette.primary.dark, 0.3)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`
@@ -51,7 +53,10 @@ export function DashboardNextActionWidget({
             : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
       })}
     >
-      <Stack spacing={2.5} sx={{ width: '100%' }}>
+      <Stack
+        spacing={2.5}
+        sx={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
+      >
         <Stack direction='row' spacing={1} alignItems='center'>
           <FlagRoundedIcon color='primary' fontSize='small' />
           <Typography component='h2' variant='h6'>
@@ -70,6 +75,7 @@ export function DashboardNextActionWidget({
           <Button
             endIcon={<ArrowForwardRoundedIcon />}
             sx={{
+              alignSelf: 'flex-start',
               px: 2,
               py: 1.1,
               borderRadius: 999,
