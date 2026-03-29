@@ -141,6 +141,7 @@ export interface TranslationDictionary {
     customizeDashboardTitle: string;
     customizeDashboardDescription: string;
     visibleLabel: string;
+    sizePresetLabel: string;
     lockedWidgetLabel: string;
     moveUpLabel: string;
     moveDownLabel: string;

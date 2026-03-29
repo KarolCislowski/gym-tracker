@@ -160,6 +160,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     customizeDashboardDescription:
       'Välj vilka widgetar som ska synas, justera deras storlek och ordna dem så att de passar hur du följer dina framsteg.',
     visibleLabel: 'Synlig',
+    sizePresetLabel: 'Widgetstorlek',
     lockedWidgetLabel: 'Visas alltid',
     moveUpLabel: 'Flytta widget upp',
     moveDownLabel: 'Flytta widget ner',

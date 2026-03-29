@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
@@ -47,6 +47,7 @@ export function DashboardLayoutCustomizer({
 }: DashboardLayoutCustomizerProps) {
   const [open, setOpen] = useState(false);
   const [draftItems, setDraftItems] = useState(items);
+  const descriptionId = useId();
 
   const serializedItems = useMemo(
     () =>
@@ -78,6 +79,7 @@ export function DashboardLayoutCustomizer({
       </Stack>
 
       <Dialog
+        aria-describedby={descriptionId}
         fullWidth
         maxWidth='md'
         onClose={() => setOpen(false)}
@@ -86,11 +88,14 @@ export function DashboardLayoutCustomizer({
         <DialogTitle>{translations.customizeDashboardTitle}</DialogTitle>
         <DialogContent>
           <Stack spacing={2.5}>
-            <Typography color='text.secondary'>
+            <Typography color='text.secondary' id={descriptionId}>
               {translations.customizeDashboardDescription}
             </Typography>
 
-            {draftItems.map((item, index) => (
+            {draftItems.map((item, index) => {
+              const widgetLabel = getDashboardWidgetLabel(item.widgetId, translations);
+
+              return (
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
                 key={item.widgetId}
@@ -105,7 +110,7 @@ export function DashboardLayoutCustomizer({
               >
                 <Stack spacing={0.5} sx={{ flex: 1 }}>
                   <Typography variant='subtitle2'>
-                    {getDashboardWidgetLabel(item.widgetId, translations)}
+                    {widgetLabel}
                   </Typography>
                   {item.pinned ? (
                     <Typography color='text.secondary' variant='caption'>
@@ -135,6 +140,7 @@ export function DashboardLayoutCustomizer({
 
                 <FormControl size='small' sx={{ minWidth: 160 }}>
                   <Select
+                    aria-label={`${translations.sizePresetLabel}: ${widgetLabel}`}
                     displayEmpty
                     onChange={(event) => {
                       setDraftItems((currentItems) =>
@@ -160,7 +166,7 @@ export function DashboardLayoutCustomizer({
 
                 <Stack direction='row' spacing={0.5}>
                   <IconButton
-                    aria-label={translations.moveUpLabel}
+                    aria-label={`${translations.moveUpLabel}: ${widgetLabel}`}
                     disabled={index === 0}
                     onClick={() => setDraftItems((currentItems) => moveItem(currentItems, index, -1))}
                     size='small'
@@ -168,7 +174,7 @@ export function DashboardLayoutCustomizer({
                     <KeyboardArrowUpRoundedIcon fontSize='small' />
                   </IconButton>
                   <IconButton
-                    aria-label={translations.moveDownLabel}
+                    aria-label={`${translations.moveDownLabel}: ${widgetLabel}`}
                     disabled={index === draftItems.length - 1}
                     onClick={() => setDraftItems((currentItems) => moveItem(currentItems, index, 1))}
                     size='small'
@@ -177,7 +183,8 @@ export function DashboardLayoutCustomizer({
                   </IconButton>
                 </Stack>
               </Stack>
-            ))}
+            );
+            })}
           </Stack>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3 }}>

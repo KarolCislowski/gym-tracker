@@ -160,6 +160,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     customizeDashboardDescription:
       'Wybierz widoczne widgety, dopasuj ich rozmiar i ułóż je tak, jak najwygodniej analizujesz postępy.',
     visibleLabel: 'Widoczny',
+    sizePresetLabel: 'Rozmiar widgetu',
     lockedWidgetLabel: 'Zawsze widoczny',
     moveUpLabel: 'Przesuń widget wyżej',
     moveDownLabel: 'Przesuń widget niżej',

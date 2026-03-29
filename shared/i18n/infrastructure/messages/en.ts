@@ -162,6 +162,7 @@ export const enMessages: TranslationDictionary = {
     customizeDashboardDescription:
       'Choose which widgets to show, adjust their size, and reorder them to fit the way you review progress.',
     visibleLabel: 'Visible',
+    sizePresetLabel: 'Widget size',
     lockedWidgetLabel: 'Always shown',
     moveUpLabel: 'Move widget up',
     moveDownLabel: 'Move widget down',

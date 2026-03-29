@@ -92,8 +92,32 @@ function DeleteSubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
 
   return (
-    <Button color='error' disabled={pending} type='submit' variant='contained'>
-      {label}
-    </Button>
+    <>
+      <Button
+        aria-busy={pending}
+        color='error'
+        disabled={pending}
+        type='submit'
+        variant='contained'
+      >
+        {label}
+      </Button>
+      <Box
+        aria-live='polite'
+        sx={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          p: 0,
+          m: -1,
+          overflow: 'hidden',
+          clip: 'rect(0 0 0 0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {pending ? `${label}...` : ''}
+      </Box>
+    </>
   );
 }
