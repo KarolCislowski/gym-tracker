@@ -60,10 +60,12 @@ export default async function Page() {
     return (
       <DashboardHome
         analytics={analytics}
+        dailyReportCount={dailyReports.length}
         favoriteExercises={favoriteExercises}
         nextAction={nextAction}
         translations={t}
         userSnapshot={userSnapshot}
+        workoutReportCount={workoutSessions.length}
       />
     );
   }

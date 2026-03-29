@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -44,6 +44,9 @@ export function DashboardHealthyHabitsWidget({
         borderColor: 'divider',
         borderRadius: 6,
         minWidth: 0,
+        width: '100%',
+        maxWidth: { xl: 840 },
+        alignSelf: 'flex-start',
       }}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
@@ -67,91 +70,125 @@ export function DashboardHealthyHabitsWidget({
             </Link>
           </Tooltip>
         </Stack>
-        <Typography color='text.secondary'>
-          {habitsTranslations.averageSleepHoursPerDayLabel}:{' '}
-          <strong>
-            {healthyHabits.averageSleepHoursPerDay != null
-              ? `${healthyHabits.averageSleepHoursPerDay} h`
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.regularSleepScheduleLabel}:{' '}
-          <strong>
-            {healthyHabits.regularSleepSchedule
-              ? habitsTranslations.regularSleepScheduleEnabled
-              : habitsTranslations.regularSleepScheduleDisabled}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.stepsPerDayLabel}:{' '}
-          <strong>
-            {healthyHabits.stepsPerDay != null
-              ? String(healthyHabits.stepsPerDay)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.waterPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsWaterLabel(
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              xl: 'repeat(3, minmax(0, 1fr))',
+            },
+            gap: 1.25,
+          }}
+        >
+          <HealthyHabitsDataTile
+            label={habitsTranslations.averageSleepHoursPerDayLabel}
+            value={
+              healthyHabits.averageSleepHoursPerDay != null
+                ? `${healthyHabits.averageSleepHoursPerDay} h`
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.regularSleepScheduleLabel}
+            value={
+              healthyHabits.regularSleepSchedule
+                ? habitsTranslations.regularSleepScheduleEnabled
+                : habitsTranslations.regularSleepScheduleDisabled
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.stepsPerDayLabel}
+            value={
+              healthyHabits.stepsPerDay != null
+                ? String(healthyHabits.stepsPerDay)
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.waterPerDayLabel}
+            value={getHealthyHabitsWaterLabel(
               habitsTranslations,
               healthyHabits.waterLitersPerDay,
               unitSystem,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.caloriesPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsCaloriesLabel(habitsTranslations, healthyHabits)}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.carbsPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsMacroLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.caloriesPerDayLabel}
+            value={getHealthyHabitsCaloriesLabel(
+              habitsTranslations,
+              healthyHabits,
+            )}
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.carbsPerDayLabel}
+            value={getHealthyHabitsMacroLabel(
               habitsTranslations,
               healthyHabits.carbsGramsPerDay ?? null,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.proteinPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsProteinLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.proteinPerDayLabel}
+            value={getHealthyHabitsProteinLabel(
               habitsTranslations,
               healthyHabits.proteinGramsPerDay,
               unitSystem,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.fatPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsMacroLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.fatPerDayLabel}
+            value={getHealthyHabitsMacroLabel(
               habitsTranslations,
               healthyHabits.fatGramsPerDay ?? null,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.strengthWorkoutsPerWeekLabel}:{' '}
-          <strong>
-            {healthyHabits.strengthWorkoutsPerWeek != null
-              ? String(healthyHabits.strengthWorkoutsPerWeek)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.cardioMinutesPerWeekLabel}:{' '}
-          <strong>
-            {healthyHabits.cardioMinutesPerWeek != null
-              ? String(healthyHabits.cardioMinutesPerWeek)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.strengthWorkoutsPerWeekLabel}
+            value={
+              healthyHabits.strengthWorkoutsPerWeek != null
+                ? String(healthyHabits.strengthWorkoutsPerWeek)
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.cardioMinutesPerWeekLabel}
+            value={
+              healthyHabits.cardioMinutesPerWeek != null
+                ? String(healthyHabits.cardioMinutesPerWeek)
+                : habitsTranslations.emptyValue
+            }
+          />
+        </Box>
       </Stack>
     </Paper>
+  );
+}
+
+function HealthyHabitsDataTile({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Stack
+      spacing={0.35}
+      sx={{
+        p: 1.25,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 3,
+        minWidth: 0,
+        bgcolor: 'background.default',
+      }}
+    >
+      <Typography color='text.secondary' variant='caption'>
+        {label}
+      </Typography>
+      <Typography sx={{ wordBreak: 'break-word' }} variant='body2'>
+        {value}
+      </Typography>
+    </Stack>
   );
 }

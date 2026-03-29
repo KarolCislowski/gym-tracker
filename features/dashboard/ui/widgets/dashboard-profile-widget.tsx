@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -44,6 +44,9 @@ export function DashboardProfileWidget({
         borderColor: 'divider',
         borderRadius: 6,
         minWidth: 0,
+        width: '100%',
+        maxWidth: { xl: 560 },
+        alignSelf: 'flex-start',
       }}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
@@ -67,36 +70,84 @@ export function DashboardProfileWidget({
             </Link>
           </Tooltip>
         </Stack>
-        <Typography color='text.secondary'>
-          {dashboardTranslations.profileName}: <strong>{profile.firstName} {profile.lastName}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {dashboardTranslations.profileEmail}: <strong>{profile.email}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.locationLabel}:{' '}
-          <strong>{getProfileLocationLabel(profileTranslations, profile.location)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.ageLabel}:{' '}
-          <strong>
-            {calculateAgeFromBirthDate(profile.birthDate) ??
-              profileTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.heightLabel}:{' '}
-          <strong>{getProfileHeightLabel(profileTranslations, profile.heightCm, unitSystem)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.biologicalSexLabel}:{' '}
-          <strong>{getProfileSexLabel(profileTranslations, profile.gender)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.activityLevelLabel}:{' '}
-          <strong>{getProfileActivityLabel(profileTranslations, profile.activityLevel)}</strong>
-        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+            gap: 1.25,
+          }}
+        >
+          <ProfileDataTile
+            label={dashboardTranslations.profileName}
+            value={`${profile.firstName} ${profile.lastName}`}
+          />
+          <ProfileDataTile
+            label={dashboardTranslations.profileEmail}
+            value={profile.email}
+          />
+          <ProfileDataTile
+            label={profileTranslations.locationLabel}
+            value={getProfileLocationLabel(profileTranslations, profile.location)}
+          />
+          <ProfileDataTile
+            label={profileTranslations.ageLabel}
+            value={String(
+              calculateAgeFromBirthDate(profile.birthDate) ??
+                profileTranslations.emptyValue,
+            )}
+          />
+          <ProfileDataTile
+            label={profileTranslations.heightLabel}
+            value={getProfileHeightLabel(
+              profileTranslations,
+              profile.heightCm,
+              unitSystem,
+            )}
+          />
+          <ProfileDataTile
+            label={profileTranslations.biologicalSexLabel}
+            value={getProfileSexLabel(profileTranslations, profile.gender)}
+          />
+          <Box sx={{ gridColumn: { sm: '1 / -1' } }}>
+            <ProfileDataTile
+              label={profileTranslations.activityLevelLabel}
+              value={getProfileActivityLabel(
+                profileTranslations,
+                profile.activityLevel,
+              )}
+            />
+          </Box>
+        </Box>
       </Stack>
     </Paper>
+  );
+}
+
+function ProfileDataTile({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Stack
+      spacing={0.35}
+      sx={{
+        p: 1.25,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 3,
+        minWidth: 0,
+        bgcolor: 'background.default',
+      }}
+    >
+      <Typography color='text.secondary' variant='caption'>
+        {label}
+      </Typography>
+      <Typography sx={{ wordBreak: 'break-word' }} variant='body2'>
+        {value}
+      </Typography>
+    </Stack>
   );
 }

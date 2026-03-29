@@ -29,6 +29,9 @@ export function DashboardSettingsWidget({
         borderColor: 'divider',
         borderRadius: 6,
         minWidth: 0,
+        width: '100%',
+        maxWidth: { xl: 360 },
+        alignSelf: 'flex-start',
       }}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>

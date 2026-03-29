@@ -65,6 +65,7 @@ describe('DashboardHome', () => {
             lats: 'Lats',
           },
         }}
+        dailyReportCount={1}
         favoriteExercises={[
           {
             id: 'exercise-1',
@@ -185,6 +186,7 @@ describe('DashboardHome', () => {
           },
           favoriteExerciseSlugs: [],
         }}
+        workoutReportCount={1}
       />,
     );
 
