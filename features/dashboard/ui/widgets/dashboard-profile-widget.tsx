@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
@@ -129,16 +131,28 @@ function ProfileDataTile({
   return (
     <Stack
       spacing={0.35}
-      sx={{
+      sx={(theme) => ({
         p: 1.5,
         border: 1,
-        borderColor: 'rgba(148, 163, 184, 0.18)',
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(148, 163, 184, 0.18)'
+            : 'rgba(148, 163, 184, 0.2)',
         borderRadius: 3.5,
         minWidth: 0,
-        bgcolor: 'rgba(255, 255, 255, 0.04)',
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.04)'
+            : 'rgba(255, 255, 255, 0.64)',
         backgroundImage:
-          'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
-      }}
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88))',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? 'none'
+            : '0 8px 22px rgba(148, 163, 184, 0.08)',
+      })}
     >
       <Typography
         color='text.secondary'

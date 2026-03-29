@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 type BreakpointSpan = {
   md?: number;
@@ -36,8 +36,28 @@ export function DashboardGrid({ children }: DashboardGridProps) {
         gridAutoFlow: 'dense',
         gridAutoRows: 'minmax(120px, auto)',
         gap: 3,
-        '& > *': {
+        '& > [data-dashboard-grid-item]': {
           minWidth: 0,
+          gridColumn:
+            'span var(--dashboard-cols-xs) / span var(--dashboard-cols-xs)',
+          gridRow:
+            'span var(--dashboard-rows-xs) / span var(--dashboard-rows-xs)',
+        },
+        '@media (min-width: 900px)': {
+          '& > [data-dashboard-grid-item]': {
+            gridColumn:
+              'span var(--dashboard-cols-md) / span var(--dashboard-cols-md)',
+            gridRow:
+              'span var(--dashboard-rows-md) / span var(--dashboard-rows-md)',
+          },
+        },
+        '@media (min-width: 1536px)': {
+          '& > [data-dashboard-grid-item]': {
+            gridColumn:
+              'span var(--dashboard-cols-xl) / span var(--dashboard-cols-xl)',
+            gridRow:
+              'span var(--dashboard-rows-xl) / span var(--dashboard-rows-xl)',
+          },
         },
       }}
     >
@@ -59,27 +79,37 @@ export function DashboardGridItem({
   cols,
   rows = 1,
 }: DashboardGridItemProps) {
+  const resolvedCols = resolveResponsiveSpan(cols);
+  const resolvedRows = resolveResponsiveSpan(rows);
+
   return (
-    <Box
-      sx={{
-        gridColumn: resolveGridSpan(cols),
-        gridRow: resolveGridSpan(rows),
-        minWidth: 0,
-      }}
+    <div
+      data-dashboard-grid-item='true'
+      style={
+        {
+          '--dashboard-cols-xs': String(resolvedCols.xs),
+          '--dashboard-cols-md': String(resolvedCols.md),
+          '--dashboard-cols-xl': String(resolvedCols.xl),
+          '--dashboard-rows-xs': String(resolvedRows.xs),
+          '--dashboard-rows-md': String(resolvedRows.md),
+          '--dashboard-rows-xl': String(resolvedRows.xl),
+          minWidth: 0,
+        } as CSSProperties
+      }
     >
       {children}
-    </Box>
+    </div>
   );
 }
 
-function resolveGridSpan(span: number | BreakpointSpan) {
+function resolveResponsiveSpan(span: number | BreakpointSpan) {
   if (typeof span === 'number') {
-    return `span ${span} / span ${span}`;
+    return { xs: span, md: span, xl: span };
   }
 
   return {
-    xs: `span ${span.xs ?? 1} / span ${span.xs ?? 1}`,
-    md: `span ${span.md ?? span.xs ?? 1} / span ${span.md ?? span.xs ?? 1}`,
-    xl: `span ${span.xl ?? span.md ?? span.xs ?? 1} / span ${span.xl ?? span.md ?? span.xs ?? 1}`,
+    xs: span.xs ?? 1,
+    md: span.md ?? span.xs ?? 1,
+    xl: span.xl ?? span.md ?? span.xs ?? 1,
   };
 }

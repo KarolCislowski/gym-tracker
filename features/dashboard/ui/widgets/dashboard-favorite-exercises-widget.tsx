@@ -1,3 +1,5 @@
+'use client';
+
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -51,14 +53,24 @@ export function DashboardFavoriteExercisesWidget({
         </Stack>
         {exercises.length ? (
           <TableContainer
-            sx={{
+            sx={(theme) => ({
               width: '100%',
               overflowX: 'auto',
               borderRadius: 3,
               border: 1,
-              borderColor: 'rgba(148, 163, 184, 0.14)',
-              bgcolor: 'rgba(255, 255, 255, 0.03)',
-            }}
+              borderColor:
+                theme.palette.mode === 'dark'
+                  ? 'rgba(148, 163, 184, 0.14)'
+                  : 'rgba(148, 163, 184, 0.18)',
+              bgcolor:
+                theme.palette.mode === 'dark'
+                  ? 'rgba(255, 255, 255, 0.03)'
+                  : 'rgba(255, 255, 255, 0.62)',
+              boxShadow:
+                theme.palette.mode === 'dark'
+                  ? 'none'
+                  : '0 10px 24px rgba(148, 163, 184, 0.08)',
+            })}
           >
             <Table aria-label={dashboardTranslations.favoriteExercises} size='small'>
               <TableHead>

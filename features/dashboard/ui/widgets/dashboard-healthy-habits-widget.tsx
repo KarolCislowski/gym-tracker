@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -170,16 +172,28 @@ function HealthyHabitsDataTile({
   return (
     <Stack
       spacing={0.35}
-      sx={{
+      sx={(theme) => ({
         p: 1.4,
         border: 1,
-        borderColor: 'rgba(125, 211, 252, 0.16)',
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(125, 211, 252, 0.16)'
+            : 'rgba(59, 130, 246, 0.18)',
         borderRadius: 3.5,
         minWidth: 0,
-        bgcolor: 'rgba(255, 255, 255, 0.04)',
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.04)'
+            : 'rgba(255, 255, 255, 0.62)',
         backgroundImage:
-          'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
-      }}
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.92), rgba(239,246,255,0.82))',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? 'none'
+            : '0 10px 24px rgba(59, 130, 246, 0.08)',
+      })}
     >
       <Typography
         color='text.secondary'

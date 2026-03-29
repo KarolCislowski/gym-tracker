@@ -1,3 +1,5 @@
+'use client';
+
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { Stack, Typography } from '@mui/material';
 
@@ -78,8 +80,18 @@ function SettingsRow({
         py: 1,
         borderRadius: 3,
         border: 1,
-        borderColor: 'rgba(148, 163, 184, 0.16)',
-        bgcolor: 'rgba(255, 255, 255, 0.04)',
+        borderColor: (theme) =>
+          theme.palette.mode === 'dark'
+            ? 'rgba(148, 163, 184, 0.16)'
+            : 'rgba(148, 163, 184, 0.2)',
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.04)'
+            : 'rgba(255, 255, 255, 0.58)',
+        boxShadow: (theme) =>
+          theme.palette.mode === 'dark'
+            ? 'none'
+            : '0 6px 18px rgba(148, 163, 184, 0.08)',
       }}
     >
       <Typography color='text.secondary' variant='body2'>

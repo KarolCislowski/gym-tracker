@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode } from 'react';
 
 import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
@@ -50,17 +52,29 @@ export function DashboardOverviewWidget({
     <Paper
       data-onboarding='dashboard-overview'
       elevation={0}
-      sx={{
+      sx={(theme) => ({
         position: 'relative',
         overflow: 'hidden',
         p: { xs: 3, md: 4 },
         border: 1,
-        borderColor: 'divider',
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? alpha(theme.palette.common.white, 0.1)
+            : alpha(theme.palette.primary.main, 0.2),
         borderRadius: 8,
         minHeight: { xs: 300, md: 340 },
         background:
-          'linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(26,78,59,0.92) 58%, rgba(234,179,8,0.16) 100%)',
-        color: 'common.white',
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(26,78,59,0.92) 58%, rgba(234,179,8,0.16) 100%)'
+            : 'linear-gradient(135deg, #16324f 0%, #1d5c63 46%, #d8a72c 100%)',
+        color:
+          theme.palette.mode === 'dark'
+            ? theme.palette.common.white
+            : '#f8fafc',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? '0 22px 56px rgba(2, 6, 23, 0.42)'
+            : '0 22px 48px rgba(30, 41, 59, 0.2)',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -69,7 +83,9 @@ export function DashboardOverviewWidget({
           height: 220,
           borderRadius: '50%',
           background:
-            'radial-gradient(circle, rgba(250,204,21,0.28) 0%, rgba(250,204,21,0) 72%)',
+            theme.palette.mode === 'dark'
+              ? 'radial-gradient(circle, rgba(250,204,21,0.28) 0%, rgba(250,204,21,0) 72%)'
+              : 'radial-gradient(circle, rgba(254,240,138,0.42) 0%, rgba(254,240,138,0) 72%)',
         },
         '&::after': {
           content: '""',
@@ -80,9 +96,11 @@ export function DashboardOverviewWidget({
           height: 220,
           borderRadius: '50%',
           background:
-            'radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 72%)',
+            theme.palette.mode === 'dark'
+              ? 'radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 72%)'
+              : 'radial-gradient(circle, rgba(191,219,254,0.32) 0%, rgba(191,219,254,0) 72%)',
         },
-      }}
+      })}
     >
       <Stack spacing={3} sx={{ position: 'relative', zIndex: 1 }}>
         <Stack
@@ -99,14 +117,17 @@ export function DashboardOverviewWidget({
                 borderRadius: '50%',
                 display: 'grid',
                 placeItems: 'center',
-                bgcolor: alpha('#ffffff', 0.14),
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? alpha('#ffffff', 0.14)
+                    : alpha('#ffffff', 0.16),
                 border: '1px solid',
-                borderColor: alpha('#ffffff', 0.18),
+                borderColor: alpha('#ffffff', 0.22),
               }}
             >
               <InsightsRoundedIcon fontSize='small' />
             </Box>
-            <Typography variant='overline' sx={{ color: alpha('#ffffff', 0.82) }}>
+            <Typography variant='overline' sx={{ color: alpha('#ffffff', 0.84) }}>
               {translations.overview}
             </Typography>
           </Stack>
@@ -115,7 +136,7 @@ export function DashboardOverviewWidget({
 
         <Stack spacing={1.25}>
           {profileName ? (
-            <Typography sx={{ color: alpha('#ffffff', 0.72) }} variant='body2'>
+            <Typography sx={{ color: alpha('#ffffff', 0.78) }} variant='body2'>
               {profileName}
             </Typography>
           ) : null}
@@ -123,7 +144,7 @@ export function DashboardOverviewWidget({
             {translations.welcomeBack}
           </Typography>
           <Typography
-            sx={{ color: alpha('#ffffff', 0.78), maxWidth: 720 }}
+            sx={{ color: alpha('#ffffff', 0.84), maxWidth: 720 }}
             variant='body1'
           >
             {translations.workspaceReady}
@@ -182,16 +203,19 @@ function HeroMetricCard({
         p: 1.5,
         borderRadius: 4,
         minWidth: 0,
-        bgcolor: alpha('#ffffff', 0.08),
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark'
+            ? alpha('#ffffff', 0.08)
+            : alpha('#ffffff', 0.12),
         border: '1px solid',
-        borderColor: alpha('#ffffff', 0.14),
+        borderColor: alpha('#ffffff', 0.18),
         backdropFilter: 'blur(12px)',
       }}
     >
       <Stack direction='row' alignItems='center' spacing={0.75}>
-        <Box sx={{ color: alpha('#ffffff', 0.78), lineHeight: 0 }}>{icon}</Box>
+        <Box sx={{ color: alpha('#ffffff', 0.84), lineHeight: 0 }}>{icon}</Box>
         <Typography
-          sx={{ color: alpha('#ffffff', 0.72) }}
+          sx={{ color: alpha('#ffffff', 0.78) }}
           variant='caption'
         >
           {label}
