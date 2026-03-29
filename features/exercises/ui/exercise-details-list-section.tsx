@@ -1,4 +1,6 @@
-import { Paper, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+
+import { AppCard } from '@/shared/ui/app-card';
 
 interface ExerciseDetailsListSectionProps {
   title: string;
@@ -17,10 +19,7 @@ export function ExerciseDetailsListSection({
   values,
 }: ExerciseDetailsListSectionProps) {
   return (
-    <Paper
-      elevation={0}
-      sx={{ p: { xs: 3, md: 4 }, border: 1, borderColor: 'divider', borderRadius: 6 }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack spacing={1.25}>
         <Typography component='h2' variant='h6'>
           {title}
@@ -31,6 +30,6 @@ export function ExerciseDetailsListSection({
           </Typography>
         ))}
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }

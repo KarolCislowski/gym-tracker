@@ -83,15 +83,15 @@ function SettingsRow({
         borderColor: (theme) =>
           theme.palette.mode === 'dark'
             ? 'rgba(148, 163, 184, 0.16)'
-            : 'rgba(148, 163, 184, 0.2)',
+            : 'rgba(148, 163, 184, 0.16)',
         bgcolor: (theme) =>
           theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, 0.04)'
-            : 'rgba(255, 255, 255, 0.58)',
+            : 'rgba(255, 255, 255, 0.72)',
         boxShadow: (theme) =>
           theme.palette.mode === 'dark'
             ? 'none'
-            : '0 6px 18px rgba(148, 163, 184, 0.08)',
+            : '0 8px 20px rgba(148, 163, 184, 0.06)',
       }}
     >
       <Typography color='text.secondary' variant='body2'>

@@ -9,7 +9,6 @@ import {
   Chip,
   IconButton,
   MenuItem,
-  Paper,
   Stack,
   TextField,
   Tooltip,
@@ -19,6 +18,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import {
   buildSupplementAtlasGridColumns,
@@ -279,10 +279,7 @@ export function SupplementAtlasGrid({
         </Button>
       </Stack>
 
-      <Paper
-        elevation={0}
-        sx={{ border: 1, borderColor: 'divider', borderRadius: 4, overflow: 'hidden' }}
-      >
+      <AppCard padding='sm' radius='lg' tone='standard'>
         <DataGrid
           autoHeight
           columns={columns}
@@ -299,7 +296,7 @@ export function SupplementAtlasGrid({
             },
           }}
         />
-      </Paper>
+      </AppCard>
 
       {!filteredRows.length ? (
         <Typography color='text.secondary'>{translations.emptyState}</Typography>
@@ -316,33 +313,15 @@ function AtlasMobileNotice({
   description: string;
 }) {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: { xs: 3, md: 4 },
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack spacing={1}>
         <Typography variant='h6'>{title}</Typography>
         <Typography color='text.secondary'>{description}</Typography>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 
 function AtlasGridPlaceholder() {
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        minHeight: 240,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    />
-  );
+  return <AppCard minHeight={240} padding='sm' radius='lg' tone='standard' />;
 }

@@ -137,21 +137,21 @@ function ProfileDataTile({
         borderColor:
           theme.palette.mode === 'dark'
             ? 'rgba(148, 163, 184, 0.18)'
-            : 'rgba(148, 163, 184, 0.2)',
+            : 'rgba(148, 163, 184, 0.16)',
         borderRadius: 3.5,
         minWidth: 0,
         bgcolor:
           theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, 0.04)'
-            : 'rgba(255, 255, 255, 0.64)',
+            : 'rgba(255, 255, 255, 0.72)',
         backgroundImage:
           theme.palette.mode === 'dark'
             ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88))',
+            : 'linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.9))',
         boxShadow:
           theme.palette.mode === 'dark'
             ? 'none'
-            : '0 8px 22px rgba(148, 163, 184, 0.08)',
+            : '0 8px 20px rgba(148, 163, 184, 0.06)',
       })}
     >
       <Typography

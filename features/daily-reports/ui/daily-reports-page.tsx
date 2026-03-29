@@ -2,7 +2,6 @@ import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
   IconButton,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type { DailyReportSummary } from '../domain/daily-report.types';
@@ -80,24 +80,16 @@ export function DailyReportsPage({
         userSnapshot={userSnapshot}
       />
 
-      <Paper
-        data-onboarding='daily-reports-model-card'
-        elevation={0}
-        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
-      >
+      <AppCard onboardingId='daily-reports-model-card' padding='md' radius='lg' tone='standard'>
         <Stack spacing={1}>
           <Typography component='h2' variant='h6'>
             {t.modelTitle}
           </Typography>
           <Typography color='text.secondary'>{t.modelDescription}</Typography>
         </Stack>
-      </Paper>
+      </AppCard>
 
-      <Paper
-        data-onboarding='daily-reports-history'
-        elevation={0}
-        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
-      >
+      <AppCard onboardingId='daily-reports-history' padding='md' radius='lg' tone='standard'>
         {reports.length ? (
           <TableContainer>
             <Table aria-label={t.title} size='small'>
@@ -168,7 +160,7 @@ export function DailyReportsPage({
         ) : (
           <Typography color='text.secondary'>{t.emptyState}</Typography>
         )}
-      </Paper>
+      </AppCard>
     </Stack>
   );
 }

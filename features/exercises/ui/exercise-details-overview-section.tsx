@@ -1,6 +1,7 @@
-import { Box, Paper, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import type { Exercise } from '../domain/exercise.types';
 import { formatAtlasToken } from '../application/exercise-atlas-grid';
@@ -34,10 +35,7 @@ export function ExerciseDetailsOverviewSection({
     exercise.variants.find((variant) => variant.isDefault)?.name ?? '—';
 
   return (
-    <Paper
-      elevation={0}
-      sx={{ p: { xs: 3, md: 4 }, border: 1, borderColor: 'divider', borderRadius: 6 }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack spacing={2}>
         <Typography component='h2' variant='h6'>
           {translations.sectionOverview}
@@ -106,7 +104,7 @@ export function ExerciseDetailsOverviewSection({
           values={availableMetrics}
         />
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 

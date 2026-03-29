@@ -2,7 +2,6 @@ import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
   IconButton,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { OnboardingReplayButton } from '@/features/onboarding/ui/onboarding-replay-button';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
@@ -103,20 +103,16 @@ export function WorkoutReportsPage({
 
       <WorkoutTemplateComposer exercises={exercises} translations={translations} />
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <AppCard padding='md' radius='lg' tone='standard'>
         <Stack spacing={1}>
           <Typography component='h2' variant='h6'>
             {t.modelTitle}
           </Typography>
           <Typography color='text.secondary'>{t.modelDescription}</Typography>
         </Stack>
-      </Paper>
+      </AppCard>
 
-      <Paper
-        data-onboarding='workout-templates-card'
-        elevation={0}
-        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
-      >
+      <AppCard onboardingId='workout-templates-card' padding='md' radius='lg' tone='standard'>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
             {t.templatesTitle}
@@ -175,13 +171,9 @@ export function WorkoutReportsPage({
             <Typography color='text.secondary'>{t.templatesEmptyState}</Typography>
           )}
         </Stack>
-      </Paper>
+      </AppCard>
 
-      <Paper
-        data-onboarding='workout-reports-history'
-        elevation={0}
-        sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}
-      >
+      <AppCard onboardingId='workout-reports-history' padding='md' radius='lg' tone='standard'>
         {reports.length ? (
           <TableContainer>
             <Table aria-label={t.title} size='small'>
@@ -240,7 +232,7 @@ export function WorkoutReportsPage({
         ) : (
           <Typography color='text.secondary'>{t.emptyState}</Typography>
         )}
-      </Paper>
+      </AppCard>
     </Stack>
   );
 }

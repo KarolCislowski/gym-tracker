@@ -292,6 +292,11 @@ export function DashboardAnalyticsExpandedCharts({
                 label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
               }))}
               skipAnimation
+              sx={{
+                '& .MuiChartsSurface-root': {
+                  backgroundColor: 'transparent',
+                },
+              }}
               xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
             />
           ) : (

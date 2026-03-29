@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Button, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import { HealthyHabitsEditForm } from './healthy-habits-edit-form';
 import { HealthyHabitsView } from './healthy-habits-view';
@@ -46,18 +47,8 @@ export function HealthyHabitsSection({
   }, [mode]);
 
   return (
-    <Paper
-      data-onboarding='healthy-habits-section'
-      elevation={0}
-      ref={sectionRef}
-      sx={{
-        p: { xs: 3, md: 4 },
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    >
-      <Stack spacing={2.5}>
+    <AppCard onboardingId='healthy-habits-section' padding='lg' radius='lg' tone='accent'>
+      <Stack ref={sectionRef} spacing={2.5}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           alignItems={{ xs: 'stretch', sm: 'flex-start' }}
@@ -104,6 +95,6 @@ export function HealthyHabitsSection({
           />
         )}
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }

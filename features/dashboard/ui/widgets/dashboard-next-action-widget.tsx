@@ -39,18 +39,18 @@ export function DashboardNextActionWidget({
         borderColor:
           theme.palette.mode === 'dark'
             ? alpha(theme.palette.common.white, 0.08)
-            : alpha(theme.palette.common.black, 0.08),
+            : alpha(theme.palette.primary.main, 0.16),
         borderRadius: 8,
         minWidth: 0,
         minHeight: { xs: 300, md: 340 },
         background:
           theme.palette.mode === 'dark'
             ? `linear-gradient(180deg, ${alpha(theme.palette.primary.dark, 0.3)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`
-            : `linear-gradient(180deg, ${alpha(theme.palette.primary.light, 0.16)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`,
+            : `linear-gradient(180deg, ${alpha(theme.palette.primary.light, 0.18)} 0%, ${alpha('#f8fbff', 0.98)} 100%)`,
         boxShadow:
           theme.palette.mode === 'dark'
             ? `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.04)}`
-            : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
+            : `0 16px 34px ${alpha(theme.palette.primary.main, 0.08)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
       })}
     >
       <Stack

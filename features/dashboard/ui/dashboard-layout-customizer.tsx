@@ -158,31 +158,6 @@ export function DashboardLayoutCustomizer({
                   </Select>
                 </FormControl>
 
-                <FormControl size='small' sx={{ minWidth: 160 }}>
-                  <Select
-                    displayEmpty
-                    onChange={(event) => {
-                      setDraftItems((currentItems) =>
-                        currentItems.map((currentItem) =>
-                          currentItem.widgetId === item.widgetId
-                            ? {
-                                ...currentItem,
-                                tone: String(event.target.value) as typeof currentItem.tone,
-                              }
-                            : currentItem,
-                        ),
-                      );
-                    }}
-                    value={item.tone}
-                  >
-                    {item.allowedTones.map((tone) => (
-                      <MenuItem key={tone} value={tone}>
-                        {getToneLabel(tone, translations)}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
                 <Stack direction='row' spacing={0.5}>
                   <IconButton
                     aria-label={translations.moveUpLabel}
@@ -283,21 +258,5 @@ function getSizePresetLabel(
       return t.heroSizeLabel;
     case 'summary':
       return t.summarySizeLabel;
-  }
-}
-
-function getToneLabel(
-  tone: ResolvedDashboardLayoutItem['tone'],
-  t: TranslationDictionary['dashboard'],
-) {
-  switch (tone) {
-    case 'accent':
-      return t.accentToneLabel;
-    case 'glass':
-      return t.glassToneLabel;
-    case 'soft':
-      return t.softToneLabel;
-    case 'neutral':
-      return t.neutralToneLabel;
   }
 }

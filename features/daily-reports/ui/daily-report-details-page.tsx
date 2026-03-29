@@ -1,8 +1,9 @@
-import { Alert, Paper, Stack, Typography } from '@mui/material';
+import { Alert, Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
+import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 import { convertHydrationFromMetricLiters } from '@/shared/units/application/unit-conversion';
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
@@ -211,7 +212,7 @@ function DetailsSection({
   title: string;
 }) {
   return (
-    <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+    <AppCard padding='md' radius='lg' tone='standard'>
       <Stack spacing={1.5}>
         <Typography component='h2' variant='h6'>
           {title}
@@ -233,7 +234,7 @@ function DetailsSection({
           </Stack>
         ))}
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 

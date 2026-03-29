@@ -178,21 +178,21 @@ function HealthyHabitsDataTile({
         borderColor:
           theme.palette.mode === 'dark'
             ? 'rgba(125, 211, 252, 0.16)'
-            : 'rgba(59, 130, 246, 0.18)',
+            : 'rgba(148, 163, 184, 0.16)',
         borderRadius: 3.5,
         minWidth: 0,
         bgcolor:
           theme.palette.mode === 'dark'
             ? 'rgba(255, 255, 255, 0.04)'
-            : 'rgba(255, 255, 255, 0.62)',
+            : 'rgba(255, 255, 255, 0.72)',
         backgroundImage:
           theme.palette.mode === 'dark'
             ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.92), rgba(239,246,255,0.82))',
+            : 'linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,252,0.9))',
         boxShadow:
           theme.palette.mode === 'dark'
             ? 'none'
-            : '0 10px 24px rgba(59, 130, 246, 0.08)',
+            : '0 8px 20px rgba(148, 163, 184, 0.06)',
       })}
     >
       <Typography

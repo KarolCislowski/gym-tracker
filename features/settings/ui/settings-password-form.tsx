@@ -1,6 +1,7 @@
-import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import { changePasswordAction } from '../infrastructure/settings.actions';
 
@@ -21,10 +22,7 @@ export function SettingsPasswordForm({
   const t = translations.settings;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{ p: { xs: 3, md: 4 }, border: 1, borderColor: 'divider', borderRadius: 6 }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack component='form' action={changePasswordAction} spacing={2}>
         <Stack spacing={0.5}>
           <Typography variant='h6'>{t.securityTitle}</Typography>
@@ -55,6 +53,6 @@ export function SettingsPasswordForm({
           {t.changePassword}
         </Button>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
