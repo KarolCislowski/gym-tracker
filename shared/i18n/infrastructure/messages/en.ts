@@ -174,6 +174,10 @@ export const enMessages: TranslationDictionary = {
     tallSizeLabel: 'Tall',
     heroSizeLabel: 'Hero',
     summarySizeLabel: 'Summary',
+    neutralToneLabel: 'Neutral',
+    softToneLabel: 'Soft',
+    accentToneLabel: 'Accent',
+    glassToneLabel: 'Glass',
     dashboardLayoutUpdated: 'Dashboard layout updated.',
     dashboardLayoutReset: 'Dashboard layout reset to default.',
     dashboardLayoutErrorGeneric:

@@ -1,11 +1,13 @@
 import type {
   DashboardWidgetId,
   DashboardWidgetSizePreset,
+  DashboardWidgetTone,
 } from '../application/dashboard-widget-registry';
 
 export interface DashboardLayoutPreferenceItem {
   order: number;
   sizePreset: DashboardWidgetSizePreset;
+  tone: DashboardWidgetTone;
   visible: boolean;
   widgetId: DashboardWidgetId;
 }
@@ -30,6 +32,7 @@ export interface DashboardLayoutRecord {
 
 export interface ResolvedDashboardLayoutItem extends DashboardLayoutPreferenceItem {
   allowedSizePresets: DashboardWidgetSizePreset[];
+  allowedTones: DashboardWidgetTone[];
   cols: { md: number; xs: number; xl: number };
   pinned: boolean;
   removable: boolean;

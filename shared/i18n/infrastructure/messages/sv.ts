@@ -172,6 +172,10 @@ export const svMessages: TranslationDictionaryOverrides = {
     tallSizeLabel: 'Hög',
     heroSizeLabel: 'Hero',
     summarySizeLabel: 'Sammanfattning',
+    neutralToneLabel: 'Neutral',
+    softToneLabel: 'Mjuk',
+    accentToneLabel: 'Accent',
+    glassToneLabel: 'Glas',
     dashboardLayoutUpdated: 'Dashboard-layouten har uppdaterats.',
     dashboardLayoutReset: 'Dashboard-layouten återställdes till standard.',
     dashboardLayoutErrorGeneric:

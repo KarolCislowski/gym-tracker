@@ -153,6 +153,10 @@ export interface TranslationDictionary {
     tallSizeLabel: string;
     heroSizeLabel: string;
     summarySizeLabel: string;
+    neutralToneLabel: string;
+    softToneLabel: string;
+    accentToneLabel: string;
+    glassToneLabel: string;
     dashboardLayoutUpdated: string;
     dashboardLayoutReset: string;
     dashboardLayoutErrorGeneric: string;

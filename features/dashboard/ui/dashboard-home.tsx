@@ -128,6 +128,7 @@ function renderDashboardWidget({
       return userSnapshot?.profile ? (
         <DashboardProfileWidget
           profile={userSnapshot.profile}
+          tone={item.tone}
           unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
           translations={translations}
         />
@@ -136,6 +137,7 @@ function renderDashboardWidget({
       return userSnapshot?.healthyHabits ? (
         <DashboardHealthyHabitsWidget
           healthyHabits={userSnapshot.healthyHabits}
+          tone={item.tone}
           translations={translations}
           unitSystem={userSnapshot.settings?.unitSystem ?? 'metric'}
         />
@@ -144,6 +146,7 @@ function renderDashboardWidget({
       return (
         <DashboardFavoriteExercisesWidget
           exercises={favoriteExercises}
+          tone={item.tone}
           translations={translations}
         />
       );
@@ -151,6 +154,7 @@ function renderDashboardWidget({
       return userSnapshot?.settings ? (
         <DashboardSettingsWidget
           settings={userSnapshot.settings}
+          tone={item.tone}
           translations={translations.dashboard}
         />
       ) : null;

@@ -1,6 +1,10 @@
 import { Schema, type HydratedDocument, type Model } from 'mongoose';
 
-import { dashboardWidgetIds, dashboardWidgetSizePresets } from '@/features/dashboard/application/dashboard-widget-registry';
+import {
+  dashboardWidgetIds,
+  dashboardWidgetSizePresets,
+  dashboardWidgetTones,
+} from '@/features/dashboard/application/dashboard-widget-registry';
 
 import { getTenantDbConnection } from '../mongoose.client';
 import type { TenantDashboardLayout } from './tenant-dashboard-layout.types';
@@ -28,6 +32,11 @@ const tenantDashboardLayoutItemSchema = new Schema(
       type: String,
       required: true,
       enum: dashboardWidgetSizePresets,
+    },
+    tone: {
+      type: String,
+      required: true,
+      enum: dashboardWidgetTones,
     },
     cols: {
       type: Number,
@@ -86,7 +95,8 @@ export async function getTenantDashboardLayoutModel(
   if (existingModel) {
     const hasLatestSchemaFields =
       Boolean(existingModel.schema.path('items.widgetId')) &&
-      Boolean(existingModel.schema.path('items.sizePreset'));
+      Boolean(existingModel.schema.path('items.sizePreset')) &&
+      Boolean(existingModel.schema.path('items.tone'));
 
     if (hasLatestSchemaFields || process.env.NODE_ENV === 'production') {
       return existingModel;

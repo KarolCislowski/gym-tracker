@@ -11,10 +11,12 @@ import {
   getHealthyHabitsWaterLabel,
 } from '@/features/healthy-habits/application/healthy-habits-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
 import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardHealthyHabitsWidgetProps {
   healthyHabits: NonNullable<AuthenticatedUserSnapshot['healthyHabits']>;
+  tone?: DashboardWidgetTone;
   translations: TranslationDictionary;
   unitSystem: NonNullable<AuthenticatedUserSnapshot['settings']>['unitSystem'];
 }
@@ -29,6 +31,7 @@ interface DashboardHealthyHabitsWidgetProps {
  */
 export function DashboardHealthyHabitsWidget({
   healthyHabits,
+  tone = 'accent',
   translations,
   unitSystem,
 }: DashboardHealthyHabitsWidgetProps) {
@@ -40,6 +43,7 @@ export function DashboardHealthyHabitsWidget({
       density='feature'
       height='regular'
       onboardingId='dashboard-healthy-habits'
+      tone={tone}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
@@ -167,18 +171,27 @@ function HealthyHabitsDataTile({
     <Stack
       spacing={0.35}
       sx={{
-        p: 1.25,
+        p: 1.4,
         border: 1,
-        borderColor: 'divider',
-        borderRadius: 3,
+        borderColor: 'rgba(125, 211, 252, 0.16)',
+        borderRadius: 3.5,
         minWidth: 0,
-        bgcolor: 'background.default',
+        bgcolor: 'rgba(255, 255, 255, 0.04)',
+        backgroundImage:
+          'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
       }}
     >
-      <Typography color='text.secondary' variant='caption'>
+      <Typography
+        color='text.secondary'
+        sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        variant='caption'
+      >
         {label}
       </Typography>
-      <Typography sx={{ wordBreak: 'break-word' }} variant='body2'>
+      <Typography
+        sx={{ wordBreak: 'break-word', lineHeight: 1.3 }}
+        variant='subtitle2'
+      >
         {value}
       </Typography>
     </Stack>

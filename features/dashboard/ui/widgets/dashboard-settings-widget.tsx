@@ -3,10 +3,12 @@ import { Stack, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
 import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardSettingsWidgetProps {
   settings: NonNullable<AuthenticatedUserSnapshot['settings']>;
+  tone?: DashboardWidgetTone;
   translations: TranslationDictionary['dashboard'];
 }
 
@@ -19,10 +21,11 @@ interface DashboardSettingsWidgetProps {
  */
 export function DashboardSettingsWidget({
   settings,
+  tone = 'glass',
   translations,
 }: DashboardSettingsWidgetProps) {
   return (
-    <DashboardWidgetShell density='dense' height='compact'>
+    <DashboardWidgetShell density='dense' height='compact' tone={tone}>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <SettingsRoundedIcon color='primary' fontSize='small' />
@@ -30,24 +33,59 @@ export function DashboardSettingsWidget({
             {translations.settings}
           </Typography>
         </Stack>
-        <Typography color='text.secondary'>
-          {translations.settingsLanguage}: <strong>{settings.language}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {translations.settingsUnitSystem}:{' '}
-          <strong>
-            {settings.unitSystem === 'metric'
-              ? translations.unitSystemMetric
-              : settings.unitSystem === 'imperial_us'
-                ? translations.unitSystemImperialUs
-                : translations.unitSystemImperialUk}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {translations.settingsTheme}:{' '}
-          <strong>{settings.isDarkMode ? translations.themeDark : translations.themeLight}</strong>
-        </Typography>
+        <Stack spacing={1}>
+          <SettingsRow
+            label={translations.settingsLanguage}
+            value={settings.language}
+          />
+          <SettingsRow
+            label={translations.settingsUnitSystem}
+            value={
+              settings.unitSystem === 'metric'
+                ? translations.unitSystemMetric
+                : settings.unitSystem === 'imperial_us'
+                  ? translations.unitSystemImperialUs
+                  : translations.unitSystemImperialUk
+            }
+          />
+          <SettingsRow
+            label={translations.settingsTheme}
+            value={
+              settings.isDarkMode ? translations.themeDark : translations.themeLight
+            }
+          />
+        </Stack>
       </Stack>
     </DashboardWidgetShell>
+  );
+}
+
+function SettingsRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Stack
+      direction='row'
+      alignItems='center'
+      justifyContent='space-between'
+      spacing={2}
+      sx={{
+        px: 1.25,
+        py: 1,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'rgba(148, 163, 184, 0.16)',
+        bgcolor: 'rgba(255, 255, 255, 0.04)',
+      }}
+    >
+      <Typography color='text.secondary' variant='body2'>
+        {label}
+      </Typography>
+      <Typography variant='subtitle2'>{value}</Typography>
+    </Stack>
   );
 }

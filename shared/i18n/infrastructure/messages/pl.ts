@@ -172,6 +172,10 @@ export const plMessages: TranslationDictionaryOverrides = {
     tallSizeLabel: 'Wysoki',
     heroSizeLabel: 'Hero',
     summarySizeLabel: 'Podsumowanie',
+    neutralToneLabel: 'Neutralny',
+    softToneLabel: 'Miękki',
+    accentToneLabel: 'Akcentowy',
+    glassToneLabel: 'Szklany',
     dashboardLayoutUpdated: 'Układ dashboardu został zapisany.',
     dashboardLayoutReset: 'Przywrócono domyślny układ dashboardu.',
     dashboardLayoutErrorGeneric:

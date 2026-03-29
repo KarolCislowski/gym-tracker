@@ -56,6 +56,7 @@ export function DashboardLayoutCustomizer({
           visible: item.visible,
           order: index,
           sizePreset: item.sizePreset,
+          tone: item.tone,
         })),
       ),
     [draftItems],
@@ -152,6 +153,31 @@ export function DashboardLayoutCustomizer({
                     {item.allowedSizePresets.map((sizePreset) => (
                       <MenuItem key={sizePreset} value={sizePreset}>
                         {getSizePresetLabel(sizePreset, translations)}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl size='small' sx={{ minWidth: 160 }}>
+                  <Select
+                    displayEmpty
+                    onChange={(event) => {
+                      setDraftItems((currentItems) =>
+                        currentItems.map((currentItem) =>
+                          currentItem.widgetId === item.widgetId
+                            ? {
+                                ...currentItem,
+                                tone: String(event.target.value) as typeof currentItem.tone,
+                              }
+                            : currentItem,
+                        ),
+                      );
+                    }}
+                    value={item.tone}
+                  >
+                    {item.allowedTones.map((tone) => (
+                      <MenuItem key={tone} value={tone}>
+                        {getToneLabel(tone, translations)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -257,5 +283,21 @@ function getSizePresetLabel(
       return t.heroSizeLabel;
     case 'summary':
       return t.summarySizeLabel;
+  }
+}
+
+function getToneLabel(
+  tone: ResolvedDashboardLayoutItem['tone'],
+  t: TranslationDictionary['dashboard'],
+) {
+  switch (tone) {
+    case 'accent':
+      return t.accentToneLabel;
+    case 'glass':
+      return t.glassToneLabel;
+    case 'soft':
+      return t.softToneLabel;
+    case 'neutral':
+      return t.neutralToneLabel;
   }
 }

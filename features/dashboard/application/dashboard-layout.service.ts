@@ -1,8 +1,8 @@
 import {
   dashboardWidgetIds,
   dashboardWidgetRegistry,
-  type DashboardWidgetId,
   type DashboardWidgetSizePreset,
+  type DashboardWidgetTone,
 } from './dashboard-widget-registry';
 import { saveDashboardLayoutSchema } from '../domain/dashboard-layout.validation';
 import type {
@@ -65,7 +65,10 @@ export async function resetDashboardLayout(
  */
 export function resolveDashboardLayout(
   savedItems: Array<
-    Pick<DashboardLayoutRecordItem, 'order' | 'sizePreset' | 'visible' | 'widgetId'>
+    Pick<
+      DashboardLayoutRecordItem,
+      'order' | 'sizePreset' | 'tone' | 'visible' | 'widgetId'
+    >
   >,
 ): ResolvedDashboardLayoutItem[] {
   const savedById = new Map(savedItems.map((item) => [item.widgetId, item]));
@@ -76,9 +79,13 @@ export function resolveDashboardLayout(
     const allowedSizePresets = Object.keys(
       definition.sizePresets,
     ) as DashboardWidgetSizePreset[];
+    const allowedTones = [...definition.allowedTones] as DashboardWidgetTone[];
     const sizePreset = allowedSizePresets.includes(saved?.sizePreset as DashboardWidgetSizePreset)
       ? (saved?.sizePreset as DashboardWidgetSizePreset)
       : (allowedSizePresets[0] as DashboardWidgetSizePreset);
+    const tone = allowedTones.includes(saved?.tone as DashboardWidgetTone)
+      ? (saved?.tone as DashboardWidgetTone)
+      : (definition.defaultTone as DashboardWidgetTone);
     const preset = definition.sizePresets[
       sizePreset as keyof typeof definition.sizePresets
     ] as { cols: number; rows: number };
@@ -88,9 +95,11 @@ export function resolveDashboardLayout(
       visible: definition.pinned ? true : saved?.visible ?? definition.defaultVisible,
       order: saved?.order ?? definition.defaultOrder,
       sizePreset,
+      tone,
       cols: { xs: 1, md: definition.mdCols, xl: preset.cols },
       rows: { xs: 1, md: definition.mdRows, xl: preset.rows },
       allowedSizePresets,
+      allowedTones,
       pinned: definition.pinned,
       removable: definition.removable,
     };
@@ -118,6 +127,7 @@ function normalizeDashboardLayoutPreferences(
     visible: item.visible,
     order: item.order,
     sizePreset: item.sizePreset,
+    tone: item.tone,
     cols: item.cols.xl,
     rows: item.rows.xl,
   }));

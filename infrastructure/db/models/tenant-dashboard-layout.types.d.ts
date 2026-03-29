@@ -3,6 +3,7 @@ import type { Types } from 'mongoose';
 import type {
   DashboardWidgetId,
   DashboardWidgetSizePreset,
+  DashboardWidgetTone,
 } from '@/features/dashboard/application/dashboard-widget-registry';
 
 export interface TenantDashboardLayoutItem {
@@ -10,6 +11,7 @@ export interface TenantDashboardLayoutItem {
   order: number;
   rows: number;
   sizePreset: DashboardWidgetSizePreset;
+  tone: DashboardWidgetTone;
   visible: boolean;
   widgetId: DashboardWidgetId;
 }

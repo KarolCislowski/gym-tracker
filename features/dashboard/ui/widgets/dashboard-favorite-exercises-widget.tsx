@@ -16,10 +16,12 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
 import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardFavoriteExercisesWidgetProps {
   exercises: Exercise[];
+  tone?: DashboardWidgetTone;
   translations: TranslationDictionary;
 }
 
@@ -32,13 +34,14 @@ interface DashboardFavoriteExercisesWidgetProps {
  */
 export function DashboardFavoriteExercisesWidget({
   exercises,
+  tone = 'soft',
   translations,
 }: DashboardFavoriteExercisesWidgetProps) {
   const dashboardTranslations = translations.dashboard;
   const exerciseTranslations = translations.exercises;
 
   return (
-    <DashboardWidgetShell density='dense' height='compact'>
+    <DashboardWidgetShell density='dense' height='compact' tone={tone}>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <FavoriteRoundedIcon color='primary' fontSize='small' />
@@ -47,7 +50,16 @@ export function DashboardFavoriteExercisesWidget({
           </Typography>
         </Stack>
         {exercises.length ? (
-          <TableContainer sx={{ width: '100%', overflowX: 'auto' }}>
+          <TableContainer
+            sx={{
+              width: '100%',
+              overflowX: 'auto',
+              borderRadius: 3,
+              border: 1,
+              borderColor: 'rgba(148, 163, 184, 0.14)',
+              bgcolor: 'rgba(255, 255, 255, 0.03)',
+            }}
+          >
             <Table aria-label={dashboardTranslations.favoriteExercises} size='small'>
               <TableHead>
                 <TableRow>

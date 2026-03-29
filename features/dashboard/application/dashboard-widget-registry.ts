@@ -1,6 +1,17 @@
+export const dashboardWidgetTones = [
+  'accent',
+  'glass',
+  'neutral',
+  'soft',
+] as const;
+
+export type DashboardWidgetTone = (typeof dashboardWidgetTones)[number];
+
 export const dashboardWidgetRegistry = {
   overview: {
+    allowedTones: ['neutral'] as const,
     defaultOrder: 0,
+    defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,
     mdRows: 1,
@@ -11,7 +22,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   next_action: {
+    allowedTones: ['neutral'] as const,
     defaultOrder: 1,
+    defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,
     mdRows: 1,
@@ -22,7 +35,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   profile: {
+    allowedTones: ['soft', 'accent', 'neutral'] as const,
     defaultOrder: 2,
+    defaultTone: 'soft' as const,
     defaultVisible: true,
     mdCols: 3,
     mdRows: 1,
@@ -34,7 +49,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   healthy_habits: {
+    allowedTones: ['accent', 'soft', 'neutral'] as const,
     defaultOrder: 3,
+    defaultTone: 'accent' as const,
     defaultVisible: true,
     mdCols: 3,
     mdRows: 1,
@@ -46,7 +63,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   favorite_exercises: {
+    allowedTones: ['soft', 'neutral', 'glass'] as const,
     defaultOrder: 4,
+    defaultTone: 'soft' as const,
     defaultVisible: true,
     mdCols: 4,
     mdRows: 1,
@@ -58,7 +77,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   settings: {
+    allowedTones: ['glass', 'neutral', 'soft'] as const,
     defaultOrder: 5,
+    defaultTone: 'glass' as const,
     defaultVisible: true,
     mdCols: 2,
     mdRows: 1,
@@ -69,7 +90,9 @@ export const dashboardWidgetRegistry = {
     },
   },
   analytics: {
+    allowedTones: ['neutral'] as const,
     defaultOrder: 6,
+    defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,
     mdRows: 1,
@@ -86,6 +109,10 @@ export type DashboardWidgetId = keyof typeof dashboardWidgetRegistry;
 
 export type DashboardWidgetSizePreset = {
   [K in DashboardWidgetId]: keyof (typeof dashboardWidgetRegistry)[K]['sizePresets'];
+}[DashboardWidgetId];
+
+export type DashboardWidgetAllowedTone = {
+  [K in DashboardWidgetId]: (typeof dashboardWidgetRegistry)[K]['allowedTones'][number];
 }[DashboardWidgetId];
 
 export const dashboardWidgetIds = Object.keys(
