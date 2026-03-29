@@ -10,6 +10,7 @@ import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import type { UnitSystem } from '@/shared/units/domain/unit-system.types';
 
 import type { DashboardAnalytics } from '../../application/dashboard-analytics';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 import { DashboardAnalyticsMobileSummaryWidget } from './dashboard-analytics-mobile-summary-widget';
 
 const DashboardAnalyticsWidget = dynamic(
@@ -31,19 +32,17 @@ interface DashboardAnalyticsLazyWidgetProps {
 
 function AnalyticsWidgetPlaceholder() {
   return (
-    <Box
-      sx={{
-        minHeight: { xs: 640, md: 520 },
-        display: 'grid',
-        placeItems: 'center',
-        borderRadius: 4,
-        border: 1,
-        borderColor: 'divider',
-        bgcolor: 'background.paper',
-      }}
-    >
-      <CircularProgress size={28} />
-    </Box>
+    <DashboardAnalyticsCard height='hero'>
+      <Box
+        sx={{
+          minHeight: { xs: 580, md: 460 },
+          display: 'grid',
+          placeItems: 'center',
+        }}
+      >
+        <CircularProgress size={28} />
+      </Box>
+    </DashboardAnalyticsCard>
   );
 }
 

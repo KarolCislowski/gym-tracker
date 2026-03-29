@@ -6,6 +6,7 @@ import { Alert, Box, Button, Stack } from '@mui/material';
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 import { buildDashboardAnalytics } from '@/features/dashboard/application/dashboard-analytics';
+import { getResolvedDashboardLayout } from '@/features/dashboard/application/dashboard-layout.service';
 import { listDailyReports } from '@/features/daily-reports/application/daily-report.service';
 import {
   listExerciseAtlas,
@@ -19,8 +20,16 @@ import { DashboardHome } from '@/features/dashboard/ui/dashboard-home';
 import { resolveDashboardNextAction } from '@/features/dashboard/application/dashboard-next-action';
 import { getTranslations } from '@/shared/i18n/application/i18n.service';
 
-export default async function Page() {
+interface HomePageProps {
+  searchParams?: Promise<{
+    error?: string;
+    status?: string;
+  }>;
+}
+
+export default async function Page({ searchParams }: HomePageProps) {
   const session = await auth();
+  const resolvedSearchParams = await searchParams;
   const userSnapshot =
     session?.user?.id && session.user.tenantDbName
       ? await getAuthenticatedUserSnapshot(
@@ -32,7 +41,13 @@ export default async function Page() {
   const favoriteExercises = userSnapshot
     ? await listFavoriteExercises(userSnapshot.favoriteExerciseSlugs)
     : [];
-  const [dailyReports, workoutSessions, workoutSessionsForAnalytics, exerciseAtlas] =
+  const [
+    dailyReports,
+    workoutSessions,
+    workoutSessionsForAnalytics,
+    exerciseAtlas,
+    dashboardLayout,
+  ] =
     session?.user?.id && session.user.tenantDbName
       ? await Promise.all([
           listDailyReports(session.user.tenantDbName, session.user.id),
@@ -42,8 +57,12 @@ export default async function Page() {
             session.user.id,
           ),
           listExerciseAtlas(),
+          getResolvedDashboardLayout(
+            session.user.tenantDbName,
+            session.user.id,
+          ),
         ])
-      : [[], [], [], []];
+      : [[], [], [], [], []];
   const analytics = buildDashboardAnalytics(
     dailyReports,
     workoutSessions,
@@ -60,10 +79,15 @@ export default async function Page() {
     return (
       <DashboardHome
         analytics={analytics}
+        dailyReportCount={dailyReports.length}
+        error={resolvedSearchParams?.error}
         favoriteExercises={favoriteExercises}
+        layout={dashboardLayout}
         nextAction={nextAction}
+        status={resolvedSearchParams?.status}
         translations={t}
         userSnapshot={userSnapshot}
+        workoutReportCount={workoutSessions.length}
       />
     );
   }

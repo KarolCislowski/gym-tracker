@@ -11,7 +11,6 @@ import {
   FormControlLabel,
   IconButton,
   MenuItem,
-  Paper,
   Stack,
   TextField,
   Tooltip,
@@ -21,6 +20,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import type {
   EquipmentType,
@@ -343,15 +343,7 @@ export function ExerciseAtlasGrid({
           {translations.clearFilters}
         </Button>
       </Stack>
-      <Paper
-        elevation={0}
-        sx={{
-          p: 1.5,
-          border: 1,
-          borderColor: 'divider',
-          borderRadius: 6,
-        }}
-      >
+      <AppCard padding='sm' radius='lg' tone='standard'>
         <DataGrid
           aria-label={translations.title}
           autoHeight
@@ -382,7 +374,7 @@ export function ExerciseAtlasGrid({
             ),
           }}
         />
-      </Paper>
+      </AppCard>
     </Stack>
   );
 }
@@ -395,33 +387,15 @@ function AtlasMobileNotice({
   description: string;
 }) {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: { xs: 3, md: 4 },
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack spacing={1}>
         <Typography variant='h6'>{title}</Typography>
         <Typography color='text.secondary'>{description}</Typography>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 
 function AtlasGridPlaceholder() {
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        minHeight: 240,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    />
-  );
+  return <AppCard minHeight={240} padding='sm' radius='lg' tone='standard' />;
 }

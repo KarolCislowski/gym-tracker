@@ -8,7 +8,6 @@ import { BarChart, LineChart } from '@mui/x-charts';
 import {
   Box,
   Button,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -34,6 +33,7 @@ import {
   resolveWellbeingState,
   resolveWorkoutVolumeState,
 } from '../../application/dashboard-analytics-state';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 
 interface DashboardAnalyticsExpandedChartsProps {
   analytics: DashboardAnalytics;
@@ -292,6 +292,11 @@ export function DashboardAnalyticsExpandedCharts({
                 label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
               }))}
               skipAnimation
+              sx={{
+                '& .MuiChartsSurface-root': {
+                  backgroundColor: 'transparent',
+                },
+              }}
               xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
             />
           ) : (
@@ -416,18 +421,7 @@ function MeasuredChartCard({
   }, [activeView, minChartHeight]);
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        height: '100%',
-        display: 'flex',
-        minWidth: 0,
-      }}
-    >
+    <DashboardAnalyticsCard>
       <Stack ref={contentRef} spacing={2} sx={{ flex: 1, minHeight: 0, minWidth: 0 }}>
         <Stack
           alignItems={{ xs: 'flex-start', sm: 'center' }}
@@ -435,7 +429,11 @@ function MeasuredChartCard({
           justifyContent='space-between'
           spacing={1}
         >
-          <Typography component='h2' variant='h6'>
+          <Typography
+            color='text.secondary'
+            sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+            variant='overline'
+          >
             {title}
           </Typography>
           {renderTable && !shouldForceTable ? (
@@ -443,6 +441,7 @@ function MeasuredChartCard({
               <Button
                 onClick={() => setPreferredView('chart')}
                 size='small'
+                sx={{ borderRadius: 999, px: 1.6 }}
                 variant={activeView === 'chart' ? 'contained' : 'outlined'}
               >
                 {chartViewLabel}
@@ -450,6 +449,7 @@ function MeasuredChartCard({
               <Button
                 onClick={() => setPreferredView('table')}
                 size='small'
+                sx={{ borderRadius: 999, px: 1.6 }}
                 variant={activeView === 'table' ? 'contained' : 'outlined'}
               >
                 {tableViewLabel}
@@ -467,6 +467,7 @@ function MeasuredChartCard({
               flex: 1,
               minHeight: minChartHeight,
               overflow: 'visible',
+              borderRadius: 4,
             }}
           >
             <Box
@@ -481,7 +482,7 @@ function MeasuredChartCard({
           </Box>
         )}
       </Stack>
-    </Paper>
+    </DashboardAnalyticsCard>
   );
 }
 
@@ -627,6 +628,7 @@ function AnalyticsDataGrid({
         overflow: 'hidden',
         minWidth: 0,
         width: '100%',
+        bgcolor: 'rgba(255,255,255,0.04)',
       }}
     >
       {rows.length ? (
@@ -637,7 +639,7 @@ function AnalyticsDataGrid({
                 <TableCell
                   key={column.field}
                   sx={{
-                    backgroundColor: 'background.default',
+                    backgroundColor: 'action.hover',
                     minWidth: column.minWidth,
                     whiteSpace: 'nowrap',
                   }}
@@ -686,8 +688,19 @@ function AnalyticsDataGrid({
 
 function EmptyChartState({ message }: { message: string }) {
   return (
-    <Typography color='text.secondary' variant='body2'>
-      {message}
-    </Typography>
+    <Box
+      sx={{
+        px: 2,
+        py: 2.5,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider',
+        bgcolor: 'rgba(255,255,255,0.04)',
+      }}
+    >
+      <Typography color='text.secondary' variant='body2'>
+        {message}
+      </Typography>
+    </Box>
   );
 }

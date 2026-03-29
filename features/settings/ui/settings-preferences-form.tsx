@@ -2,7 +2,6 @@ import {
   Button,
   FormControlLabel,
   MenuItem,
-  Paper,
   Stack,
   Switch,
   TextField,
@@ -11,6 +10,7 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import { updateSettingsAction } from '../infrastructure/settings.actions';
 
@@ -35,10 +35,7 @@ export function SettingsPreferencesForm({
   const activeSettings = userSnapshot?.settings;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{ p: { xs: 3, md: 4 }, border: 1, borderColor: 'divider', borderRadius: 6 }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack component='form' action={updateSettingsAction} spacing={2}>
         <Stack spacing={0.5}>
           <Typography variant='h6'>{t.preferencesTitle}</Typography>
@@ -107,6 +104,6 @@ export function SettingsPreferencesForm({
           {t.savePreferences}
         </Button>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }

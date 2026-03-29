@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
+import { alpha } from '@mui/material/styles';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -28,15 +31,32 @@ export function DashboardNextActionWidget({
   return (
     <Paper
       elevation={0}
-      sx={{
+      sx={(theme) => ({
+        display: 'flex',
+        height: '100%',
         p: 3,
         border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? alpha(theme.palette.common.white, 0.08)
+            : alpha(theme.palette.primary.main, 0.16),
+        borderRadius: 8,
         minWidth: 0,
-      }}
+        minHeight: { xs: 300, md: 340 },
+        background:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(180deg, ${alpha(theme.palette.primary.dark, 0.3)} 0%, ${alpha(theme.palette.background.paper, 0.98)} 100%)`
+            : `linear-gradient(180deg, ${alpha(theme.palette.primary.light, 0.18)} 0%, ${alpha('#f8fbff', 0.98)} 100%)`,
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.04)}`
+            : `0 16px 34px ${alpha(theme.palette.primary.main, 0.08)}, inset 0 1px 0 ${alpha(theme.palette.common.white, 0.7)}`,
+      })}
     >
-      <Stack spacing={2}>
+      <Stack
+        spacing={2.5}
+        sx={{ width: '100%', height: '100%', justifyContent: 'space-between' }}
+      >
         <Stack direction='row' spacing={1} alignItems='center'>
           <FlagRoundedIcon color='primary' fontSize='small' />
           <Typography component='h2' variant='h6'>
@@ -44,16 +64,32 @@ export function DashboardNextActionWidget({
           </Typography>
         </Stack>
 
-        <Stack spacing={0.75}>
-          <Typography variant='subtitle1'>{content.title}</Typography>
+        <Stack spacing={1}>
+          <Typography sx={{ maxWidth: 28 + 'ch' }} variant='h5'>
+            {content.title}
+          </Typography>
           <Typography color='text.secondary'>{content.description}</Typography>
         </Stack>
 
         <Link href={action.href}>
-          <Button endIcon={<ArrowForwardRoundedIcon />} variant='contained'>
+          <Button
+            endIcon={<ArrowForwardRoundedIcon />}
+            sx={{
+              alignSelf: 'flex-start',
+              px: 2,
+              py: 1.1,
+              borderRadius: 999,
+              boxShadow: 'none',
+              '&:hover': {
+                boxShadow: 'none',
+              },
+            }}
+            variant='contained'
+          >
             {content.cta}
           </Button>
         </Link>
+
       </Stack>
     </Paper>
   );

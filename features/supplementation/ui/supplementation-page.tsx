@@ -2,8 +2,8 @@ import Link from 'next/link';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   Alert,
+  Box,
   IconButton,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -18,6 +18,7 @@ import {
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { Supplement } from '@/features/supplements/domain/supplement.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
@@ -98,23 +99,22 @@ export function SupplementationPage({
           <SupplementStackComposer supplements={supplements} translations={translations} />
         </Stack>
 
-        <Paper
-          elevation={0}
-          sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6, flex: 1, width: '100%' }}
-        >
-          <Stack spacing={1}>
-            <Typography component='h2' variant='h6'>
-              {t.modelTitle}
-            </Typography>
-            <Typography color='text.secondary'>{t.modelDescription}</Typography>
-            <Typography color='text.secondary' variant='body2'>
-              <Link href='/supplements'>{translations.supplements.backToAtlas}</Link>
-            </Typography>
-          </Stack>
-        </Paper>
+        <Box sx={{ width: { xs: '100%', xl: 360 }, flexShrink: 0 }}>
+          <AppCard padding='md' radius='lg' tone='standard'>
+            <Stack spacing={1}>
+              <Typography component='h2' variant='h6'>
+                {t.modelTitle}
+              </Typography>
+              <Typography color='text.secondary'>{t.modelDescription}</Typography>
+              <Typography color='text.secondary' variant='body2'>
+                <Link href='/supplements'>{translations.supplements.backToAtlas}</Link>
+              </Typography>
+            </Stack>
+          </AppCard>
+        </Box>
       </Stack>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <AppCard padding='md' radius='lg' tone='standard'>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
             {t.stacksSectionTitle}
@@ -173,9 +173,9 @@ export function SupplementationPage({
             <Typography color='text.secondary'>{t.emptyStacks}</Typography>
           )}
         </Stack>
-      </Paper>
+      </AppCard>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 6 }}>
+      <AppCard padding='md' radius='lg' tone='standard'>
         <Stack spacing={2}>
           <Typography component='h2' variant='h6'>
             {t.reportsSectionTitle}
@@ -236,7 +236,7 @@ export function SupplementationPage({
             <Typography color='text.secondary'>{t.emptyReports}</Typography>
           )}
         </Stack>
-      </Paper>
+      </AppCard>
     </Stack>
   );
 }

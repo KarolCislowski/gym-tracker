@@ -1,6 +1,7 @@
-import { Alert, Button, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import { deleteAccountAction } from '../infrastructure/settings.actions';
 
@@ -24,15 +25,7 @@ export function SettingsDeleteAccountForm({
   const t = translations.settings;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: { xs: 3, md: 4 },
-        border: 1,
-        borderColor: 'error.light',
-        borderRadius: 6,
-      }}
-    >
+    <AppCard padding='lg' radius='lg' tone='standard'>
       <Stack component='form' action={deleteAccountAction} spacing={2}>
         <Stack spacing={0.5}>
           <Typography color='error.main' variant='h6'>
@@ -62,6 +55,6 @@ export function SettingsDeleteAccountForm({
           {email}
         </Typography>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }

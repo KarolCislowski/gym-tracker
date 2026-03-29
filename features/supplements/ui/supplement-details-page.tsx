@@ -2,7 +2,6 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import {
   Button,
   Chip,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import {
 } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 
 import type { Supplement } from '../domain/supplement.types';
 import { formatSupplementToken } from '../application/supplement-atlas-grid';
@@ -56,7 +56,7 @@ export function SupplementDetailsPage({
         </Typography>
       </Stack>
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
+      <AppCard padding='md' radius='lg' tone='standard'>
         <Stack spacing={2}>
           <Typography variant='h5'>{t.sectionOverview}</Typography>
           <Stack
@@ -87,10 +87,10 @@ export function SupplementDetailsPage({
             />
           )}
         </Stack>
-      </Paper>
+      </AppCard>
 
-          {!!supplement.benefits?.length && (
-            <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
+      {!!supplement.benefits?.length && (
+            <AppCard padding='md' radius='lg' tone='standard'>
               <Stack spacing={1.5}>
                 <Typography variant='h5'>{t.benefitsLabel}</Typography>
                 <Stack component='ul' spacing={1} sx={{ pl: 3, m: 0 }}>
@@ -101,11 +101,11 @@ export function SupplementDetailsPage({
                   ))}
                 </Stack>
               </Stack>
-            </Paper>
+            </AppCard>
           )}
 
       {!!supplement.cautions?.length && (
-        <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
+        <AppCard padding='md' radius='lg' tone='standard'>
           <Stack spacing={1.5}>
             <Typography variant='h5'>{t.cautionsLabel}</Typography>
             <Stack component='ul' spacing={1} sx={{ pl: 3, m: 0 }}>
@@ -116,10 +116,10 @@ export function SupplementDetailsPage({
               ))}
             </Stack>
           </Stack>
-        </Paper>
+        </AppCard>
       )}
 
-      <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'divider', borderRadius: 4 }}>
+      <AppCard padding='md' radius='lg' tone='standard'>
         <Stack spacing={1.5}>
           <Typography variant='h5'>{t.sectionVariants}</Typography>
           <TableContainer>
@@ -151,7 +151,7 @@ export function SupplementDetailsPage({
             </Table>
           </TableContainer>
         </Stack>
-      </Paper>
+      </AppCard>
     </Stack>
   );
 }

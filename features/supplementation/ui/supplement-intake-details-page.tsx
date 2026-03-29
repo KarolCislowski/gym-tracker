@@ -2,6 +2,7 @@ import { Alert, Paper, Stack, Typography } from '@mui/material';
 
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
@@ -111,7 +112,7 @@ export function SupplementIntakeDetailsPage({
           title={t.summaryTitle}
         />
 
-        <Paper elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 6, p: 3 }}>
+        <AppCard padding='md' radius='lg' tone='standard'>
           <Stack spacing={2}>
             <Typography component='h2' variant='h6'>
               {t.stackItemsTitle}
@@ -135,7 +136,7 @@ export function SupplementIntakeDetailsPage({
               </Paper>
             ))}
           </Stack>
-        </Paper>
+        </AppCard>
       </Stack>
     </Stack>
   );
@@ -149,7 +150,7 @@ function DetailsSection({
   title: string;
 }) {
   return (
-    <Paper elevation={0} sx={{ border: 1, borderColor: 'divider', borderRadius: 6, p: 3 }}>
+    <AppCard padding='md' radius='lg' tone='standard'>
       <Stack spacing={1.5}>
         <Typography component='h2' variant='h6'>
           {title}
@@ -171,6 +172,6 @@ function DetailsSection({
           </Stack>
         ))}
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }

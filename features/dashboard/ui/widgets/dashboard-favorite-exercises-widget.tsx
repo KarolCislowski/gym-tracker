@@ -1,8 +1,9 @@
+'use client';
+
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
   IconButton,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -17,9 +18,12 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardFavoriteExercisesWidgetProps {
   exercises: Exercise[];
+  tone?: DashboardWidgetTone;
   translations: TranslationDictionary;
 }
 
@@ -32,22 +36,14 @@ interface DashboardFavoriteExercisesWidgetProps {
  */
 export function DashboardFavoriteExercisesWidget({
   exercises,
+  tone = 'soft',
   translations,
 }: DashboardFavoriteExercisesWidgetProps) {
   const dashboardTranslations = translations.dashboard;
   const exerciseTranslations = translations.exercises;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-      }}
-    >
+    <DashboardWidgetShell density='dense' height='compact' tone={tone}>
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack direction='row' spacing={1} alignItems='center'>
           <FavoriteRoundedIcon color='primary' fontSize='small' />
@@ -56,7 +52,26 @@ export function DashboardFavoriteExercisesWidget({
           </Typography>
         </Stack>
         {exercises.length ? (
-          <TableContainer sx={{ width: '100%', overflowX: 'auto' }}>
+          <TableContainer
+            sx={(theme) => ({
+              width: '100%',
+              overflowX: 'auto',
+              borderRadius: 3,
+              border: 1,
+              borderColor:
+                theme.palette.mode === 'dark'
+                  ? 'rgba(148, 163, 184, 0.14)'
+                  : 'rgba(148, 163, 184, 0.16)',
+              bgcolor:
+                theme.palette.mode === 'dark'
+                  ? 'rgba(255, 255, 255, 0.03)'
+                  : 'rgba(255, 255, 255, 0.72)',
+              boxShadow:
+                theme.palette.mode === 'dark'
+                  ? 'none'
+                  : '0 8px 20px rgba(148, 163, 184, 0.06)',
+            })}
+          >
             <Table aria-label={dashboardTranslations.favoriteExercises} size='small'>
               <TableHead>
                 <TableRow>
@@ -96,6 +111,6 @@ export function DashboardFavoriteExercisesWidget({
           </Typography>
         )}
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }

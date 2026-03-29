@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -11,9 +13,12 @@ import {
   getHealthyHabitsWaterLabel,
 } from '@/features/healthy-habits/application/healthy-habits-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardHealthyHabitsWidgetProps {
   healthyHabits: NonNullable<AuthenticatedUserSnapshot['healthyHabits']>;
+  tone?: DashboardWidgetTone;
   translations: TranslationDictionary;
   unitSystem: NonNullable<AuthenticatedUserSnapshot['settings']>['unitSystem'];
 }
@@ -28,6 +33,7 @@ interface DashboardHealthyHabitsWidgetProps {
  */
 export function DashboardHealthyHabitsWidget({
   healthyHabits,
+  tone = 'accent',
   translations,
   unitSystem,
 }: DashboardHealthyHabitsWidgetProps) {
@@ -35,16 +41,11 @@ export function DashboardHealthyHabitsWidget({
   const habitsTranslations = translations.healthyHabits;
 
   return (
-    <Paper
-      data-onboarding='dashboard-healthy-habits'
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-      }}
+    <DashboardWidgetShell
+      density='feature'
+      height='regular'
+      onboardingId='dashboard-healthy-habits'
+      tone={tone}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
@@ -67,91 +68,146 @@ export function DashboardHealthyHabitsWidget({
             </Link>
           </Tooltip>
         </Stack>
-        <Typography color='text.secondary'>
-          {habitsTranslations.averageSleepHoursPerDayLabel}:{' '}
-          <strong>
-            {healthyHabits.averageSleepHoursPerDay != null
-              ? `${healthyHabits.averageSleepHoursPerDay} h`
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.regularSleepScheduleLabel}:{' '}
-          <strong>
-            {healthyHabits.regularSleepSchedule
-              ? habitsTranslations.regularSleepScheduleEnabled
-              : habitsTranslations.regularSleepScheduleDisabled}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.stepsPerDayLabel}:{' '}
-          <strong>
-            {healthyHabits.stepsPerDay != null
-              ? String(healthyHabits.stepsPerDay)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.waterPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsWaterLabel(
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, minmax(0, 1fr))',
+              xl: 'repeat(3, minmax(0, 1fr))',
+            },
+            gap: 1.25,
+          }}
+        >
+          <HealthyHabitsDataTile
+            label={habitsTranslations.averageSleepHoursPerDayLabel}
+            value={
+              healthyHabits.averageSleepHoursPerDay != null
+                ? `${healthyHabits.averageSleepHoursPerDay} h`
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.regularSleepScheduleLabel}
+            value={
+              healthyHabits.regularSleepSchedule
+                ? habitsTranslations.regularSleepScheduleEnabled
+                : habitsTranslations.regularSleepScheduleDisabled
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.stepsPerDayLabel}
+            value={
+              healthyHabits.stepsPerDay != null
+                ? String(healthyHabits.stepsPerDay)
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.waterPerDayLabel}
+            value={getHealthyHabitsWaterLabel(
               habitsTranslations,
               healthyHabits.waterLitersPerDay,
               unitSystem,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.caloriesPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsCaloriesLabel(habitsTranslations, healthyHabits)}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.carbsPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsMacroLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.caloriesPerDayLabel}
+            value={getHealthyHabitsCaloriesLabel(
+              habitsTranslations,
+              healthyHabits,
+            )}
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.carbsPerDayLabel}
+            value={getHealthyHabitsMacroLabel(
               habitsTranslations,
               healthyHabits.carbsGramsPerDay ?? null,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.proteinPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsProteinLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.proteinPerDayLabel}
+            value={getHealthyHabitsProteinLabel(
               habitsTranslations,
               healthyHabits.proteinGramsPerDay,
               unitSystem,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.fatPerDayLabel}:{' '}
-          <strong>
-            {getHealthyHabitsMacroLabel(
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.fatPerDayLabel}
+            value={getHealthyHabitsMacroLabel(
               habitsTranslations,
               healthyHabits.fatGramsPerDay ?? null,
             )}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.strengthWorkoutsPerWeekLabel}:{' '}
-          <strong>
-            {healthyHabits.strengthWorkoutsPerWeek != null
-              ? String(healthyHabits.strengthWorkoutsPerWeek)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {habitsTranslations.cardioMinutesPerWeekLabel}:{' '}
-          <strong>
-            {healthyHabits.cardioMinutesPerWeek != null
-              ? String(healthyHabits.cardioMinutesPerWeek)
-              : habitsTranslations.emptyValue}
-          </strong>
-        </Typography>
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.strengthWorkoutsPerWeekLabel}
+            value={
+              healthyHabits.strengthWorkoutsPerWeek != null
+                ? String(healthyHabits.strengthWorkoutsPerWeek)
+                : habitsTranslations.emptyValue
+            }
+          />
+          <HealthyHabitsDataTile
+            label={habitsTranslations.cardioMinutesPerWeekLabel}
+            value={
+              healthyHabits.cardioMinutesPerWeek != null
+                ? String(healthyHabits.cardioMinutesPerWeek)
+                : habitsTranslations.emptyValue
+            }
+          />
+        </Box>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
+  );
+}
+
+function HealthyHabitsDataTile({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Stack
+      spacing={0.35}
+      sx={(theme) => ({
+        p: 1.4,
+        border: 1,
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(125, 211, 252, 0.16)'
+            : 'rgba(148, 163, 184, 0.16)',
+        borderRadius: 3.5,
+        minWidth: 0,
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.04)'
+            : 'rgba(255, 255, 255, 0.72)',
+        backgroundImage:
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,252,0.9))',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? 'none'
+            : '0 8px 20px rgba(148, 163, 184, 0.06)',
+      })}
+    >
+      <Typography
+        color='text.secondary'
+        sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        variant='caption'
+      >
+        {label}
+      </Typography>
+      <Typography
+        sx={{ wordBreak: 'break-word', lineHeight: 1.3 }}
+        variant='subtitle2'
+      >
+        {value}
+      </Typography>
+    </Stack>
   );
 }

@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import {
   Box,
   Button,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -30,6 +29,7 @@ import {
   resolveAnalyticsStateMessage,
   resolveGoalComplianceState,
 } from '../../application/dashboard-analytics-state';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 
 interface DashboardAnalyticsWidgetProps {
   analytics: DashboardAnalytics;
@@ -169,7 +169,7 @@ function GoalComplianceHeatmap({
                   position: 'sticky',
                   left: 0,
                   zIndex: 2,
-                  backgroundColor: 'background.paper',
+                  backgroundColor: 'action.hover',
                   minWidth: stickyColumnWidth,
                 }}
               >
@@ -198,7 +198,7 @@ function GoalComplianceHeatmap({
                     position: 'sticky',
                     left: 0,
                     zIndex: 1,
-                    backgroundColor: 'background.paper',
+                    backgroundColor: 'action.hover',
                     minWidth: stickyColumnWidth,
                   }}
                 >
@@ -291,30 +291,36 @@ function ChartCard({
   title: string;
 }) {
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-      }}
-    >
+    <DashboardAnalyticsCard>
       <Stack spacing={2} sx={{ minWidth: 0 }}>
-        <Typography component='h2' variant='h6'>
+        <Typography
+          color='text.secondary'
+          sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+          variant='overline'
+        >
           {title}
         </Typography>
         {children}
       </Stack>
-    </Paper>
+    </DashboardAnalyticsCard>
   );
 }
 
 function EmptyChartState({ message }: { message: string }) {
   return (
-    <Typography color='text.secondary' variant='body2'>
-      {message}
-    </Typography>
+    <Box
+      sx={{
+        px: 2,
+        py: 2.5,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider',
+        bgcolor: 'rgba(255,255,255,0.04)',
+      }}
+    >
+      <Typography color='text.secondary' variant='body2'>
+        {message}
+      </Typography>
+    </Box>
   );
 }

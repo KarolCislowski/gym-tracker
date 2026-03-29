@@ -1,7 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import {
@@ -12,9 +14,12 @@ import {
   getProfileSexLabel,
 } from '@/features/profile/application/profile-view';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { DashboardWidgetTone } from '../../application/dashboard-widget-registry';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardProfileWidgetProps {
   profile: NonNullable<AuthenticatedUserSnapshot['profile']>;
+  tone?: DashboardWidgetTone;
   unitSystem: NonNullable<AuthenticatedUserSnapshot['settings']>['unitSystem'];
   translations: TranslationDictionary;
 }
@@ -28,6 +33,7 @@ interface DashboardProfileWidgetProps {
  */
 export function DashboardProfileWidget({
   profile,
+  tone = 'soft',
   unitSystem,
   translations,
 }: DashboardProfileWidgetProps) {
@@ -35,16 +41,11 @@ export function DashboardProfileWidget({
   const profileTranslations = translations.profile;
 
   return (
-    <Paper
-      data-onboarding='dashboard-profile'
-      elevation={0}
-      sx={{
-        p: 3,
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-        minWidth: 0,
-      }}
+    <DashboardWidgetShell
+      density='feature'
+      height='tall'
+      onboardingId='dashboard-profile'
+      tone={tone}
     >
       <Stack spacing={1.5} sx={{ minWidth: 0 }}>
         <Stack
@@ -67,36 +68,105 @@ export function DashboardProfileWidget({
             </Link>
           </Tooltip>
         </Stack>
-        <Typography color='text.secondary'>
-          {dashboardTranslations.profileName}: <strong>{profile.firstName} {profile.lastName}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {dashboardTranslations.profileEmail}: <strong>{profile.email}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.locationLabel}:{' '}
-          <strong>{getProfileLocationLabel(profileTranslations, profile.location)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.ageLabel}:{' '}
-          <strong>
-            {calculateAgeFromBirthDate(profile.birthDate) ??
-              profileTranslations.emptyValue}
-          </strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.heightLabel}:{' '}
-          <strong>{getProfileHeightLabel(profileTranslations, profile.heightCm, unitSystem)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.biologicalSexLabel}:{' '}
-          <strong>{getProfileSexLabel(profileTranslations, profile.gender)}</strong>
-        </Typography>
-        <Typography color='text.secondary'>
-          {profileTranslations.activityLevelLabel}:{' '}
-          <strong>{getProfileActivityLabel(profileTranslations, profile.activityLevel)}</strong>
-        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+            gap: 1.25,
+          }}
+        >
+          <ProfileDataTile
+            label={dashboardTranslations.profileName}
+            value={`${profile.firstName} ${profile.lastName}`}
+          />
+          <ProfileDataTile
+            label={dashboardTranslations.profileEmail}
+            value={profile.email}
+          />
+          <ProfileDataTile
+            label={profileTranslations.locationLabel}
+            value={getProfileLocationLabel(profileTranslations, profile.location)}
+          />
+          <ProfileDataTile
+            label={profileTranslations.ageLabel}
+            value={String(
+              calculateAgeFromBirthDate(profile.birthDate) ??
+                profileTranslations.emptyValue,
+            )}
+          />
+          <ProfileDataTile
+            label={profileTranslations.heightLabel}
+            value={getProfileHeightLabel(
+              profileTranslations,
+              profile.heightCm,
+              unitSystem,
+            )}
+          />
+          <ProfileDataTile
+            label={profileTranslations.biologicalSexLabel}
+            value={getProfileSexLabel(profileTranslations, profile.gender)}
+          />
+          <Box sx={{ gridColumn: { sm: '1 / -1' } }}>
+            <ProfileDataTile
+              label={profileTranslations.activityLevelLabel}
+              value={getProfileActivityLabel(
+                profileTranslations,
+                profile.activityLevel,
+              )}
+            />
+          </Box>
+        </Box>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
+  );
+}
+
+function ProfileDataTile({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <Stack
+      spacing={0.35}
+      sx={(theme) => ({
+        p: 1.5,
+        border: 1,
+        borderColor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(148, 163, 184, 0.18)'
+            : 'rgba(148, 163, 184, 0.16)',
+        borderRadius: 3.5,
+        minWidth: 0,
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.04)'
+            : 'rgba(255, 255, 255, 0.72)',
+        backgroundImage:
+          theme.palette.mode === 'dark'
+            ? 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.9))',
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? 'none'
+            : '0 8px 20px rgba(148, 163, 184, 0.06)',
+      })}
+    >
+      <Typography
+        color='text.secondary'
+        sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        variant='caption'
+      >
+        {label}
+      </Typography>
+      <Typography
+        sx={{ wordBreak: 'break-word', lineHeight: 1.3 }}
+        variant='subtitle2'
+      >
+        {value}
+      </Typography>
+    </Stack>
   );
 }
