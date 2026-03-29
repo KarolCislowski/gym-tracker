@@ -348,6 +348,7 @@ function MeasuredChartCard({
   const shouldForceTable =
     Boolean(renderTable) && contentWidth > 0 && contentWidth < minChartWidth;
   const activeView = shouldForceTable ? 'table' : preferredView;
+  const renderKey = `${title}-${activeView}-${shouldForceTable ? 'forced' : 'free'}`;
 
   useEffect(() => {
     const contentElement = contentRef.current;
@@ -458,9 +459,12 @@ function MeasuredChartCard({
           ) : null}
         </Stack>
         {activeView === 'table' && renderTable ? (
-          renderTable()
+          <Box key={renderKey}>
+            {renderTable()}
+          </Box>
         ) : (
           <Box
+            key={renderKey}
             ref={chartFrameRef}
             sx={{
               position: 'relative',

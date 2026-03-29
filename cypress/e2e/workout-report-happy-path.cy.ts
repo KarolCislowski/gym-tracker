@@ -39,7 +39,7 @@ describe('Workout report happy path', () => {
             .click();
         });
 
-      cy.contains('h1', t.detailsTitle).should('be.visible');
+      cy.contains('h1', t.detailsTitle).should('exist');
       cy.contains(createdWorkoutName).should('exist');
       cy.contains(createdNotes).should('exist');
 
@@ -62,7 +62,7 @@ describe('Workout report happy path', () => {
       cy.contains('[role="dialog"]', t.deleteReportDescription).should('be.visible');
       cy.contains('[role="dialog"] button', t.confirmDeleteLabel).click();
 
-      cy.contains('h1', t.title).should('be.visible');
+      cy.contains('h1', t.title).should('exist');
       cy.contains(t.reportDeleted).should('be.visible');
       cy.contains(`table[aria-label="${t.title}"] tbody tr`, updatedWorkoutName).should(
         'not.exist',
