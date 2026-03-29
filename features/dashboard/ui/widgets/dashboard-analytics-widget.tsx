@@ -29,7 +29,7 @@ import {
   resolveAnalyticsStateMessage,
   resolveGoalComplianceState,
 } from '../../application/dashboard-analytics-state';
-import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 
 interface DashboardAnalyticsWidgetProps {
   analytics: DashboardAnalytics;
@@ -291,7 +291,7 @@ function ChartCard({
   title: string;
 }) {
   return (
-    <DashboardWidgetShell density='feature' height='regular' tone='soft'>
+    <DashboardAnalyticsCard>
       <Stack spacing={2} sx={{ minWidth: 0 }}>
         <Typography
           color='text.secondary'
@@ -302,7 +302,7 @@ function ChartCard({
         </Typography>
         {children}
       </Stack>
-    </DashboardWidgetShell>
+    </DashboardAnalyticsCard>
   );
 }
 

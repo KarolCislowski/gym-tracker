@@ -33,7 +33,7 @@ import {
   resolveWellbeingState,
   resolveWorkoutVolumeState,
 } from '../../application/dashboard-analytics-state';
-import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 
 interface DashboardAnalyticsExpandedChartsProps {
   analytics: DashboardAnalytics;
@@ -416,7 +416,7 @@ function MeasuredChartCard({
   }, [activeView, minChartHeight]);
 
   return (
-    <DashboardWidgetShell density='feature' height='regular' tone='neutral'>
+    <DashboardAnalyticsCard>
       <Stack ref={contentRef} spacing={2} sx={{ flex: 1, minHeight: 0, minWidth: 0 }}>
         <Stack
           alignItems={{ xs: 'flex-start', sm: 'center' }}
@@ -477,7 +477,7 @@ function MeasuredChartCard({
           </Box>
         )}
       </Stack>
-    </DashboardWidgetShell>
+    </DashboardAnalyticsCard>
   );
 }
 

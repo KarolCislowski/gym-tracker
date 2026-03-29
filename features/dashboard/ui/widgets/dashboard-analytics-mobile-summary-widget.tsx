@@ -23,7 +23,7 @@ import {
   resolveWellbeingState,
   resolveWorkoutVolumeState,
 } from '../../application/dashboard-analytics-state';
-import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
+import { DashboardAnalyticsCard } from './dashboard-analytics-card';
 
 interface DashboardAnalyticsMobileSummaryWidgetProps {
   analytics: DashboardAnalytics;
@@ -66,7 +66,7 @@ export function DashboardAnalyticsMobileSummaryWidget({
       : t.analysisDesktopOnly;
 
   return (
-    <DashboardWidgetShell density='feature' height='regular' tone='glass'>
+    <DashboardAnalyticsCard>
       <Stack spacing={2.5}>
         <Stack spacing={0.75}>
           <Typography
@@ -134,7 +134,7 @@ export function DashboardAnalyticsMobileSummaryWidget({
           />
         </Stack>
       </Stack>
-    </DashboardWidgetShell>
+    </DashboardAnalyticsCard>
   );
 }
 
