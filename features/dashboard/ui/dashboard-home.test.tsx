@@ -6,8 +6,13 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
 
+import { resolveDashboardLayout } from '../application/dashboard-layout.service';
 import { resolveDashboardNextAction } from '../application/dashboard-next-action';
 import { DashboardHome } from './dashboard-home';
+
+vi.mock('./dashboard-layout-customizer', () => ({
+  DashboardLayoutCustomizer: () => <button type='button'>Customize dashboard</button>,
+}));
 
 describe('DashboardHome', () => {
   beforeEach(() => {
@@ -66,6 +71,7 @@ describe('DashboardHome', () => {
           },
         }}
         dailyReportCount={1}
+        layout={resolveDashboardLayout([])}
         favoriteExercises={[
           {
             id: 'exercise-1',
@@ -192,6 +198,9 @@ describe('DashboardHome', () => {
 
     expect(
       screen.getByRole('heading', { name: 'Welcome back' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Customize dashboard' }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Next action' }),
