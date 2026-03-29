@@ -1,6 +1,6 @@
 'use client';
 
-import { Paper, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { convertBodyMassFromMetric } from '@/shared/units/application/unit-conversion';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -23,6 +23,7 @@ import {
   resolveWellbeingState,
   resolveWorkoutVolumeState,
 } from '../../application/dashboard-analytics-state';
+import { DashboardWidgetShell } from '../layout/dashboard-widget-shell';
 
 interface DashboardAnalyticsMobileSummaryWidgetProps {
   analytics: DashboardAnalytics;
@@ -65,18 +66,14 @@ export function DashboardAnalyticsMobileSummaryWidget({
       : t.analysisDesktopOnly;
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: { xs: 3, md: 4 },
-        border: 1,
-        borderColor: 'divider',
-        borderRadius: 6,
-      }}
-    >
+    <DashboardWidgetShell density='feature' height='regular' tone='glass'>
       <Stack spacing={2.5}>
         <Stack spacing={0.75}>
-          <Typography variant='overline' color='text.secondary'>
+          <Typography
+            color='text.secondary'
+            sx={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+            variant='overline'
+          >
             {t.quickStatusTitle}
           </Typography>
           <Typography color='text.secondary' variant='body2'>
@@ -137,7 +134,7 @@ export function DashboardAnalyticsMobileSummaryWidget({
           />
         </Stack>
       </Stack>
-    </Paper>
+    </DashboardWidgetShell>
   );
 }
 
