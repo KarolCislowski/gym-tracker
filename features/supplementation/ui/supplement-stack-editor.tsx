@@ -65,6 +65,7 @@ export function SupplementStackEditor({
         <SupplementStackForm
           formAction={updateSupplementStackAction}
           initialStack={initialStack}
+          onCancel={() => setIsOpen(false)}
           stackId={initialStack.id}
           submitLabel={t.updateStackLabel}
           supplements={supplements}

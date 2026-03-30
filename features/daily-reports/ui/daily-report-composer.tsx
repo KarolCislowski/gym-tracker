@@ -58,7 +58,11 @@ export function DailyReportComposer({
         timeout='auto'
         unmountOnExit
       >
-        <DailyReportForm translations={translations} userSnapshot={userSnapshot} />
+        <DailyReportForm
+          onCancel={() => setIsOpen(false)}
+          translations={translations}
+          userSnapshot={userSnapshot}
+        />
       </Collapse>
     </Stack>
   );

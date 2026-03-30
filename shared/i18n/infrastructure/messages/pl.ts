@@ -4,6 +4,8 @@ export const plMessages: TranslationDictionaryOverrides = {
   common: {
     unsavedChangesWarning:
       'Masz niezapisane zmiany. Czy chcesz opuścić tę stronę?',
+    clearForm: 'Wyczyść formularz',
+    discardForm: 'Odrzuć formularz',
   },
   auth: {
     homeTitle: 'Strona główna',

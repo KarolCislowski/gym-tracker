@@ -17,6 +17,7 @@ import {
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { Supplement } from '@/features/supplements/domain/supplement.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type {
@@ -29,6 +30,7 @@ import { createSupplementStackAction } from '../infrastructure/supplementation.a
 interface SupplementStackFormProps {
   formAction?: (formData: FormData) => void | Promise<void>;
   initialStack?: SupplementStackSummary | null;
+  onCancel?: () => void;
   stackId?: string;
   supplements: Supplement[];
   submitLabel?: string;
@@ -77,6 +79,7 @@ const supplementStackContexts: SupplementStackContext[] = [
 export function SupplementStackForm({
   formAction = createSupplementStackAction,
   initialStack = null,
+  onCancel,
   stackId,
   supplements,
   submitLabel,
@@ -97,6 +100,17 @@ export function SupplementStackForm({
       ? mapStackItemsToDrafts(initialStack, supplements)
       : [createStackItemDraft(supplements)],
   );
+  function resetFormDraft() {
+    setName(initialStack?.name ?? '');
+    setContext(initialStack?.context ?? 'pre_workout');
+    setNotes(initialStack?.notes ?? '');
+    setIsFavorite(initialStack?.isFavorite ?? true);
+    setItems(
+      initialStack
+        ? mapStackItemsToDrafts(initialStack, supplements)
+        : [createStackItemDraft(supplements)],
+    );
+  }
 
   const payload = useMemo(
     () =>
@@ -351,14 +365,14 @@ export function SupplementStackForm({
       {stackId ? <input hidden name='stackId' readOnly value={stackId} /> : null}
       <input hidden name='stackPayload' readOnly value={payload} />
 
-      <Button
-        size='large'
-        startIcon={<SaveRoundedIcon />}
-        type='submit'
-        variant='contained'
-      >
-        {submitLabel ?? t.saveStackLabel}
-      </Button>
+      <FormActionButtons
+        clearLabel={translations.common.clearForm}
+        discardLabel={onCancel ? translations.common.discardForm : undefined}
+        onClear={resetFormDraft}
+        onDiscard={onCancel}
+        submitIcon={<SaveRoundedIcon />}
+        submitLabel={submitLabel ?? t.saveStackLabel}
+      />
     </Stack>
   );
 }

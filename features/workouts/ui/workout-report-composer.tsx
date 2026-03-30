@@ -113,6 +113,10 @@ export function WorkoutReportComposer({
           favoriteExerciseSlugs={favoriteExerciseSlugs}
           initialDuplicateDraft={selectedTemplate ? null : initialDuplicateDraft}
           initialTemplate={selectedTemplate}
+          onCancel={() => {
+            setSelectedTemplateId(null);
+            setIsOpen(false);
+          }}
           key={selectedTemplate?.id ?? (initialDuplicateDraft ? 'duplicate-workout' : 'blank-workout')}
           translations={translations}
         />

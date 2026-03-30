@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import LockResetRoundedIcon from '@mui/icons-material/LockResetRounded';
-import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import { resetPasswordAction } from '../../infrastructure/auth.actions';
 
@@ -52,9 +53,11 @@ export function ResetPasswordForm({
           slotProps={{ htmlInput: { minLength: 8 } }}
           type='password'
         />
-        <Button startIcon={<LockResetRoundedIcon />} type='submit' variant='contained'>
-          {t.resetPasswordButton}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitIcon={<LockResetRoundedIcon />}
+          submitLabel={t.resetPasswordButton}
+        />
       </Stack>
       <Typography color='text.secondary'>
         <Link href={`/login?lang=${activeLanguage}`}>{t.signInLink}</Link>

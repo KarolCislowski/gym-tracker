@@ -17,6 +17,7 @@ import {
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 import {
   convertHydrationFromMetricLiters,
@@ -33,6 +34,7 @@ import { createDailyReportAction } from '../infrastructure/daily-report.actions'
 interface DailyReportFormProps {
   formAction?: (formData: FormData) => Promise<void>;
   initialReport?: DailyReportDetails | null;
+  onCancel?: () => void;
   reportId?: string;
   submitLabel?: string;
   translations: TranslationDictionary;
@@ -61,6 +63,7 @@ interface DailyWellbeingDraft {
 export function DailyReportForm({
   formAction = createDailyReportAction,
   initialReport,
+  onCancel,
   reportId,
   submitLabel,
   translations,
@@ -149,6 +152,35 @@ export function DailyReportForm({
     [carbsGrams, fatGrams, proteinGrams],
   );
   const reportDateIso = useMemo(() => resolveReportDateIso(reportDate), [reportDate]);
+
+  function resetFormDraft() {
+    setReportDate(
+      initialReport ? formatDateInput(new Date(initialReport.reportDate)) : formatDateInput(new Date()),
+    );
+    setSleepHours(formatInitialNumber(initialReport?.actuals.sleepHours));
+    setSleepScheduleKept(initialReport?.actuals.sleepScheduleKept ?? false);
+    setSteps(formatInitialNumber(initialReport?.actuals.steps));
+    setWaterAmount(formatInitialHydration(initialReport?.actuals.waterLiters, unitSystem));
+    setCarbsGrams(formatInitialNumber(initialReport?.actuals.carbsGrams));
+    setProteinGrams(formatInitialNumber(initialReport?.actuals.proteinGrams));
+    setFatGrams(formatInitialNumber(initialReport?.actuals.fatGrams));
+    setStrengthWorkoutDone(initialReport?.actuals.strengthWorkoutDone ?? false);
+    setCardioMinutes(formatInitialNumber(initialReport?.actuals.cardioMinutes));
+    setBodyWeightKg(formatInitialNumber(initialReport?.body.bodyWeightKg));
+    setRestingHeartRate(formatInitialNumber(initialReport?.body.restingHeartRate));
+    setMenstruationPhase(initialReport?.dayContext.menstruationPhase ?? '');
+    setIllness(initialReport?.dayContext.illness ?? false);
+    setNotes(initialReport?.dayContext.notes ?? '');
+    setWellbeing({
+      mood: formatInitialScore(initialReport?.wellbeing.mood),
+      energy: formatInitialScore(initialReport?.wellbeing.energy),
+      stress: formatInitialScore(initialReport?.wellbeing.stress),
+      soreness: formatInitialScore(initialReport?.wellbeing.soreness),
+      libido: formatInitialScore(initialReport?.wellbeing.libido),
+      motivation: formatInitialScore(initialReport?.wellbeing.motivation),
+      recovery: formatInitialScore(initialReport?.wellbeing.recovery),
+    });
+  }
 
   const completion = useMemo(
     () => ({
@@ -513,26 +545,35 @@ export function DailyReportForm({
 
       <Paper
         elevation={8}
-        sx={{
+        sx={(theme) => ({
           position: 'sticky',
           bottom: 0,
+          zIndex: theme.zIndex.appBar,
           p: 1.5,
           borderRadius: 4,
           border: 1,
           borderColor: 'divider',
-          bgcolor: 'background.paper',
-        }}
+          bgcolor: theme.palette.mode === 'dark' ? '#111827' : '#ffffff',
+          backgroundImage:
+            theme.palette.mode === 'dark'
+              ? 'linear-gradient(180deg, #111827, #0f172a)'
+              : 'linear-gradient(180deg, #ffffff, #f8fafc)',
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0 16px 34px rgba(2, 6, 23, 0.42)'
+              : '0 14px 28px rgba(148, 163, 184, 0.14)',
+        })}
       >
-        <Button
-          disabled={!reportDateIso}
-          fullWidth
-          size='large'
-          startIcon={<SaveRoundedIcon />}
-          type='submit'
-          variant='contained'
-        >
-          {submitLabel ?? t.saveReport}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          discardLabel={onCancel ? translations.common.discardForm : undefined}
+          onClear={resetFormDraft}
+          onDiscard={onCancel}
+          submitDisabled={!reportDateIso}
+          submitFullWidth
+          submitIcon={<SaveRoundedIcon />}
+          submitLabel={submitLabel ?? t.saveReport}
+        />
       </Paper>
     </Stack>
   );

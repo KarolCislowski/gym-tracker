@@ -57,7 +57,11 @@ export function WorkoutTemplateComposer({
         timeout='auto'
         unmountOnExit
       >
-        <WorkoutTemplateForm exercises={exercises} translations={translations} />
+        <WorkoutTemplateForm
+          exercises={exercises}
+          onCancel={() => setIsOpen(false)}
+          translations={translations}
+        />
       </Collapse>
     </Stack>
   );

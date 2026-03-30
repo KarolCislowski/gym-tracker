@@ -25,6 +25,7 @@ interface GooglePlaceSuggestion {
 
 interface ProfileLocationFieldProps {
   defaultLocation: ProfileLocation | null;
+  resetKey?: number;
   translations: TranslationDictionary['profile'];
 }
 
@@ -37,6 +38,7 @@ interface ProfileLocationFieldProps {
  */
 export function ProfileLocationField({
   defaultLocation,
+  resetKey = 0,
   translations,
 }: ProfileLocationFieldProps) {
   const [inputValue, setInputValue] = useState(
@@ -48,6 +50,12 @@ export function ProfileLocationField({
   const [options, setOptions] = useState<GooglePlaceSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const deferredInputValue = useDeferredValue(inputValue);
+
+  useEffect(() => {
+    setInputValue(defaultLocation?.formattedAddress ?? '');
+    setSelectedLocation(defaultLocation);
+    setOptions([]);
+  }, [defaultLocation, resetKey]);
 
   useEffect(() => {
     const query = deferredInputValue.trim();

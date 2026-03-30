@@ -1,5 +1,4 @@
 import {
-  Button,
   FormControlLabel,
   MenuItem,
   Stack,
@@ -11,6 +10,7 @@ import {
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { AppCard } from '@/shared/ui/app-card';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import { updateSettingsAction } from '../infrastructure/settings.actions';
 
@@ -100,9 +100,10 @@ export function SettingsPreferencesForm({
             {t.trackLibidoHelper}
           </Typography>
         </Stack>
-        <Button type='submit' variant='contained'>
-          {t.savePreferences}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitLabel={t.savePreferences}
+        />
       </Stack>
     </AppCard>
   );

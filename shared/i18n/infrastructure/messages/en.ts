@@ -4,6 +4,8 @@ export const enMessages: TranslationDictionary = {
   common: {
     unsavedChangesWarning:
       'You have unsaved changes. Do you want to leave this page?',
+    clearForm: 'Clear form',
+    discardForm: 'Discard form',
   },
   auth: {
     appName: 'Gym Tracker',

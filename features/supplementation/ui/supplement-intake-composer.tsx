@@ -57,7 +57,11 @@ export function SupplementIntakeComposer({
         timeout='auto'
         unmountOnExit
       >
-        <SupplementIntakeForm stacks={stacks} translations={translations} />
+        <SupplementIntakeForm
+          onCancel={() => setIsOpen(false)}
+          stacks={stacks}
+          translations={translations}
+        />
       </Collapse>
     </Stack>
   );

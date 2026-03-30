@@ -16,6 +16,7 @@ import {
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type { WorkoutTemplateSummary } from '../domain/workout.types';
@@ -25,6 +26,7 @@ interface WorkoutTemplateFormProps {
   formAction?: (formData: FormData) => void | Promise<void>;
   exercises: Exercise[];
   initialTemplate?: WorkoutTemplateSummary | null;
+  onCancel?: () => void;
   submitLabel?: string;
   templateId?: string;
   translations: TranslationDictionary;
@@ -63,6 +65,7 @@ export function WorkoutTemplateForm({
   formAction = createWorkoutTemplateAction,
   exercises,
   initialTemplate = null,
+  onCancel,
   submitLabel,
   templateId,
   translations,
@@ -78,6 +81,16 @@ export function WorkoutTemplateForm({
       ? mapTemplateBlocksToDrafts(initialTemplate, exercises)
       : [createTemplateBlockDraft(exercises)],
   );
+
+  function resetFormDraft() {
+    setName(initialTemplate?.name ?? '');
+    setNotes(initialTemplate?.notes ?? '');
+    setBlocks(
+      initialTemplate
+        ? mapTemplateBlocksToDrafts(initialTemplate, exercises)
+        : [createTemplateBlockDraft(exercises)],
+    );
+  }
 
   const payload = useMemo(
     () =>
@@ -390,9 +403,15 @@ export function WorkoutTemplateForm({
       {templateId ? <input name='templateId' type='hidden' value={templateId} /> : null}
       <input name='templatePayload' type='hidden' value={payload} />
 
-      <Button fullWidth size='large' startIcon={<SaveRoundedIcon />} type='submit' variant='contained'>
-        {submitLabel ?? t.saveTemplate}
-      </Button>
+      <FormActionButtons
+        clearLabel={translations.common.clearForm}
+        discardLabel={onCancel ? translations.common.discardForm : undefined}
+        onClear={resetFormDraft}
+        onDiscard={onCancel}
+        submitFullWidth
+        submitIcon={<SaveRoundedIcon />}
+        submitLabel={submitLabel ?? t.saveTemplate}
+      />
     </Stack>
   );
 

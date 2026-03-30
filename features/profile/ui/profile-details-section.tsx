@@ -93,6 +93,7 @@ export function ProfileDetailsSection({
           />
         ) : (
           <ProfileEditForm
+            onCancel={() => setMode('view')}
             translations={translations}
             userSnapshot={userSnapshot}
           />

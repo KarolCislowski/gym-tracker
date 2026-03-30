@@ -65,6 +65,7 @@ export function DailyReportEditor({
         <DailyReportForm
           formAction={updateDailyReportAction}
           initialReport={initialReport}
+          onCancel={() => setIsOpen(false)}
           reportId={initialReport.id}
           submitLabel={t.updateReport}
           translations={translations}

@@ -66,6 +66,7 @@ export function WorkoutReportEditor({
           formAction={updateWorkoutReportAction}
           initialReport={initialReport}
           initialTemplate={templates.find((template) => template.name === initialReport.workoutName) ?? null}
+          onCancel={() => setIsOpen(false)}
           reportId={initialReport.id}
           submitLabel={t.updateReport}
           translations={translations}

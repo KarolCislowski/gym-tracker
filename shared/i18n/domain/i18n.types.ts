@@ -5,6 +5,8 @@ export type SupportedLanguage = (typeof supportedLanguages)[number];
 export interface TranslationDictionary {
   common: {
     unsavedChangesWarning: string;
+    clearForm: string;
+    discardForm: string;
   };
   auth: {
     appName: string;

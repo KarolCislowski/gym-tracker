@@ -19,6 +19,7 @@ import {
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type {
@@ -35,6 +36,7 @@ interface WorkoutReportFormProps {
   initialDuplicateDraft?: WorkoutSessionDuplicateDraft | null;
   initialReport?: WorkoutSessionDetails | null;
   initialTemplate?: WorkoutTemplateSummary | null;
+  onCancel?: () => void;
   reportId?: string;
   submitLabel?: string;
   translations: TranslationDictionary;
@@ -93,6 +95,7 @@ export function WorkoutReportForm({
   initialDuplicateDraft = null,
   initialReport = null,
   initialTemplate = null,
+  onCancel,
   reportId,
   submitLabel,
   translations,
@@ -156,6 +159,50 @@ export function WorkoutReportForm({
       initialDuplicateDraft,
     ),
   );
+
+  function resetFormDraft() {
+    setWorkoutName(
+      initialReport?.workoutName
+        ?? initialDuplicateDraft?.workoutName
+        ?? initialTemplate?.name
+        ?? '',
+    );
+    setPerformedAt(
+      initialReport?.performedAt
+        ? formatDateTimeLocal(new Date(initialReport.performedAt))
+        : initialDuplicateDraft?.performedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.performedAt))
+          : formatDateTimeLocal(new Date()),
+    );
+    setStartedAt(
+      initialReport?.startedAt
+        ? formatDateTimeLocal(new Date(initialReport.startedAt))
+        : initialDuplicateDraft?.startedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.startedAt))
+          : '',
+    );
+    setEndedAt(
+      initialReport?.endedAt
+        ? formatDateTimeLocal(new Date(initialReport.endedAt))
+        : initialDuplicateDraft?.endedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.endedAt))
+          : '',
+    );
+    setNotes(
+      initialReport?.notes
+        ?? initialDuplicateDraft?.notes
+        ?? initialTemplate?.notes
+        ?? '',
+    );
+    setBlocks(
+      createBlocksFromSource(
+        exercises,
+        initialTemplate,
+        initialReport,
+        initialDuplicateDraft,
+      ),
+    );
+  }
 
   useEffect(() => {
     setWorkoutName(initialReport?.workoutName ?? initialTemplate?.name ?? '');
@@ -670,19 +717,34 @@ export function WorkoutReportForm({
 
       <Paper
         elevation={8}
-        sx={{
+        sx={(theme) => ({
           position: 'sticky',
           bottom: 0,
+          zIndex: theme.zIndex.appBar,
           p: 1.5,
           borderRadius: 4,
           border: 1,
           borderColor: 'divider',
-          bgcolor: 'background.paper',
-        }}
+          bgcolor: theme.palette.mode === 'dark' ? '#111827' : '#ffffff',
+          backgroundImage:
+            theme.palette.mode === 'dark'
+              ? 'linear-gradient(180deg, #111827, #0f172a)'
+              : 'linear-gradient(180deg, #ffffff, #f8fafc)',
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0 16px 34px rgba(2, 6, 23, 0.42)'
+              : '0 14px 28px rgba(148, 163, 184, 0.14)',
+        })}
       >
-        <Button fullWidth size='large' startIcon={<SaveRoundedIcon />} type='submit' variant='contained'>
-          {submitLabel ?? t.saveReport}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          discardLabel={onCancel ? translations.common.discardForm : undefined}
+          onClear={resetFormDraft}
+          onDiscard={onCancel}
+          submitFullWidth
+          submitIcon={<SaveRoundedIcon />}
+          submitLabel={submitLabel ?? t.saveReport}
+        />
       </Paper>
     </Stack>
   );

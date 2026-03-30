@@ -4,6 +4,8 @@ export const svMessages: TranslationDictionaryOverrides = {
   common: {
     unsavedChangesWarning:
       'Du har osparade ändringar. Vill du lämna sidan?',
+    clearForm: 'Rensa formuläret',
+    discardForm: 'Kasta formuläret',
   },
   auth: {
     homeTitle: 'Hem',

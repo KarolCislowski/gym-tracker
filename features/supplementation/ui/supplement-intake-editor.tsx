@@ -58,6 +58,7 @@ export function SupplementIntakeEditor({
         <SupplementIntakeForm
           formAction={updateSupplementIntakeReportAction}
           initialReport={initialReport}
+          onCancel={() => setIsOpen(false)}
           reportId={initialReport.id}
           stacks={stacks}
           submitLabel={t.updateReportLabel}

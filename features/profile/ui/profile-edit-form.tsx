@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
   Box,
@@ -11,6 +12,7 @@ import {
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 import { convertHeightFromMetric } from '@/shared/units/application/unit-conversion';
 
@@ -19,6 +21,7 @@ import { updateProfileAction } from '../infrastructure/profile.actions';
 import { ProfileLocationField } from './profile-location-field';
 
 interface ProfileEditFormProps {
+  onCancel?: () => void;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
 }
@@ -32,6 +35,7 @@ interface ProfileEditFormProps {
  * @remarks The form posts to a server action and preserves optional profile values when left blank.
  */
 export function ProfileEditForm({
+  onCancel,
   translations,
   userSnapshot,
 }: ProfileEditFormProps) {
@@ -46,6 +50,7 @@ export function ProfileEditForm({
     profile?.heightCm != null
       ? convertHeightFromMetric(profile.heightCm, unitSystem)
       : null;
+  const [locationResetKey, setLocationResetKey] = useState(0);
 
   return (
     <Stack
@@ -87,6 +92,7 @@ export function ProfileEditForm({
         />
         <ProfileLocationField
           defaultLocation={profile?.location ?? null}
+          resetKey={locationResetKey}
           translations={t}
         />
         <input type='hidden' name='unitSystem' value={unitSystem} />
@@ -162,13 +168,17 @@ export function ProfileEditForm({
         </TextField>
       </Box>
 
-      <Button
-        startIcon={<SaveRoundedIcon />}
-        type='submit'
-        variant='contained'
-      >
-        {t.saveChanges}
-      </Button>
+      <FormActionButtons
+        clearLabel={translations.common.clearForm}
+        discardLabel={onCancel ? translations.common.discardForm : undefined}
+        onClear={() => {
+          formRef.current?.reset();
+          setLocationResetKey((current) => current + 1);
+        }}
+        onDiscard={onCancel}
+        submitIcon={<SaveRoundedIcon />}
+        submitLabel={t.saveChanges}
+      />
     </Stack>
   );
 }

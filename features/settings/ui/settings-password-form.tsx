@@ -1,7 +1,8 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { AppCard } from '@/shared/ui/app-card';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import { changePasswordAction } from '../infrastructure/settings.actions';
 
@@ -49,9 +50,10 @@ export function SettingsPasswordForm({
           slotProps={{ htmlInput: { minLength: 8 } }}
           type='password'
         />
-        <Button type='submit' variant='contained'>
-          {t.changePassword}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitLabel={t.changePassword}
+        />
       </Stack>
     </AppCard>
   );

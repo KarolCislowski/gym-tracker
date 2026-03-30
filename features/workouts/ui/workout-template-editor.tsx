@@ -57,6 +57,7 @@ export function WorkoutTemplateEditor({
           exercises={exercises}
           formAction={updateWorkoutTemplateAction}
           initialTemplate={initialTemplate}
+          onCancel={() => setIsOpen(false)}
           submitLabel={t.updateTemplate}
           templateId={initialTemplate.id}
           translations={translations}

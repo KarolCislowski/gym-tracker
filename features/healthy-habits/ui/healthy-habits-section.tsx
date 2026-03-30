@@ -90,6 +90,7 @@ export function HealthyHabitsSection({
           />
         ) : (
           <HealthyHabitsEditForm
+            onCancel={() => setMode('view')}
             translations={translations}
             userSnapshot={userSnapshot}
           />

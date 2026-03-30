@@ -18,6 +18,7 @@ import {
 
 import { formatSupplementToken } from '@/features/supplements/application/supplement-atlas-grid';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import type {
@@ -29,6 +30,7 @@ import { createSupplementIntakeReportAction } from '../infrastructure/supplement
 interface SupplementIntakeFormProps {
   formAction?: (formData: FormData) => void | Promise<void>;
   initialReport?: SupplementIntakeReportSummary | null;
+  onCancel?: () => void;
   reportId?: string;
   submitLabel?: string;
   stacks: SupplementStackSummary[];
@@ -45,6 +47,7 @@ interface SupplementIntakeFormProps {
 export function SupplementIntakeForm({
   formAction = createSupplementIntakeReportAction,
   initialReport = null,
+  onCancel,
   reportId,
   submitLabel,
   stacks,
@@ -74,6 +77,15 @@ export function SupplementIntakeForm({
       : formatDateTimeLocal(new Date()),
   );
   const [notes, setNotes] = useState(initialReport?.notes ?? '');
+  function resetFormDraft() {
+    setStackId(initialReport?.stackId ?? sortedStacks[0]?.id ?? '');
+    setTakenAt(
+      initialReport
+        ? formatDateTimeLocal(new Date(initialReport.takenAt))
+        : formatDateTimeLocal(new Date()),
+    );
+    setNotes(initialReport?.notes ?? '');
+  }
   const selectedStack =
     sortedStacks.find((stack) => stack.id === stackId) ??
     (initialReport
@@ -187,15 +199,15 @@ export function SupplementIntakeForm({
       {reportId ? <input hidden name='reportId' readOnly value={reportId} /> : null}
       <input hidden name='reportPayload' readOnly value={payload} />
 
-      <Button
-        disabled={!selectedStack}
-        size='large'
-        startIcon={<SaveRoundedIcon />}
-        type='submit'
-        variant='contained'
-      >
-        {submitLabel ?? t.saveReportLabel}
-      </Button>
+      <FormActionButtons
+        clearLabel={translations.common.clearForm}
+        discardLabel={onCancel ? translations.common.discardForm : undefined}
+        onClear={resetFormDraft}
+        onDiscard={onCancel}
+        submitDisabled={!selectedStack}
+        submitIcon={<SaveRoundedIcon />}
+        submitLabel={submitLabel ?? t.saveReportLabel}
+      />
     </Stack>
   );
 }

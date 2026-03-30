@@ -2,7 +2,6 @@ import Link from 'next/link';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import {
   Alert,
-  Button,
   Checkbox,
   FormControlLabel,
   MenuItem,
@@ -12,6 +11,7 @@ import {
 } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import { registerAction } from '../../infrastructure/auth.actions';
 
@@ -89,12 +89,11 @@ export function RegisterForm({
           label={t.darkModeLabel}
           sx={{ color: 'text.secondary' }}
         />
-        <Button
-          startIcon={<AppRegistrationRoundedIcon />}
-          type='submit'
-          variant='contained'>
-          {t.registerButton}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitIcon={<AppRegistrationRoundedIcon />}
+          submitLabel={t.registerButton}
+        />
       </Stack>
       <Typography color='text.secondary'>
         {t.alreadyHaveAccount}{' '}

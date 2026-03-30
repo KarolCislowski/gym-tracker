@@ -3,6 +3,7 @@ import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import {
   loginAction,
@@ -108,12 +109,11 @@ export function LoginForm({
           slotProps={{ htmlInput: { minLength: 8 } }}
           type='password'
         />
-        <Button
-          startIcon={<LoginRoundedIcon />}
-          type='submit'
-          variant='contained'>
-          {t.signInButton}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitIcon={<LoginRoundedIcon />}
+          submitLabel={t.signInButton}
+        />
       </Stack>
       <Typography color='text.secondary'>
         <Link href={`/forgot-password?lang=${activeLanguage}`}>

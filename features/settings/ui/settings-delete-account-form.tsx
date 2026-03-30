@@ -1,7 +1,8 @@
-import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Stack, TextField, Typography } from '@mui/material';
 
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { AppCard } from '@/shared/ui/app-card';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 
 import { deleteAccountAction } from '../infrastructure/settings.actions';
 
@@ -48,9 +49,11 @@ export function SettingsDeleteAccountForm({
           slotProps={{ htmlInput: { minLength: 8 } }}
           type='password'
         />
-        <Button color='error' type='submit' variant='contained'>
-          {t.deleteAccount}
-        </Button>
+        <FormActionButtons
+          clearLabel={translations.common.clearForm}
+          submitColor='error'
+          submitLabel={t.deleteAccount}
+        />
         <Typography color='text.secondary' variant='body2'>
           {email}
         </Typography>

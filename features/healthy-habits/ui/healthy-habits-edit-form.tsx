@@ -17,11 +17,13 @@ import {
 } from '@/shared/units/application/unit-conversion';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 import { calculateCaloriesFromMacros } from '@/shared/nutrition/application/macro-calculations';
+import { FormActionButtons } from '@/shared/ui/form-action-buttons';
 import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warning';
 
 import { updateHealthyHabitsAction } from '../infrastructure/healthy-habits.actions';
 
 interface HealthyHabitsEditFormProps {
+  onCancel?: () => void;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
 }
@@ -34,6 +36,7 @@ interface HealthyHabitsEditFormProps {
  * @returns A React element rendering the editable healthy habits form.
  */
 export function HealthyHabitsEditForm({
+  onCancel,
   translations,
   userSnapshot,
 }: HealthyHabitsEditFormProps) {
@@ -47,14 +50,20 @@ export function HealthyHabitsEditForm({
     habits?.waterLitersPerDay != null
       ? convertHydrationFromMetricLiters(habits.waterLitersPerDay, unitSystem)
       : null;
+  const initialCarbsGramsPerDay =
+    habits?.carbsGramsPerDay != null ? String(habits.carbsGramsPerDay) : '';
+  const initialProteinGramsPerDay =
+    habits?.proteinGramsPerDay != null ? String(habits.proteinGramsPerDay) : '';
+  const initialFatGramsPerDay =
+    habits?.fatGramsPerDay != null ? String(habits.fatGramsPerDay) : '';
   const [carbsGramsPerDay, setCarbsGramsPerDay] = useState(
-    habits?.carbsGramsPerDay != null ? String(habits.carbsGramsPerDay) : '',
+    initialCarbsGramsPerDay,
   );
   const [proteinGramsPerDay, setProteinGramsPerDay] = useState(
-    habits?.proteinGramsPerDay != null ? String(habits.proteinGramsPerDay) : '',
+    initialProteinGramsPerDay,
   );
   const [fatGramsPerDay, setFatGramsPerDay] = useState(
-    habits?.fatGramsPerDay != null ? String(habits.fatGramsPerDay) : '',
+    initialFatGramsPerDay,
   );
   const calculatedCaloriesPerDay = useMemo(
     () =>
@@ -179,9 +188,19 @@ export function HealthyHabitsEditForm({
         />
       </Box>
 
-      <Button startIcon={<SaveRoundedIcon />} type='submit' variant='contained'>
-        {t.saveChanges}
-      </Button>
+      <FormActionButtons
+        clearLabel={translations.common.clearForm}
+        discardLabel={onCancel ? translations.common.discardForm : undefined}
+        onClear={() => {
+          formRef.current?.reset();
+          setCarbsGramsPerDay(initialCarbsGramsPerDay);
+          setProteinGramsPerDay(initialProteinGramsPerDay);
+          setFatGramsPerDay(initialFatGramsPerDay);
+        }}
+        onDiscard={onCancel}
+        submitIcon={<SaveRoundedIcon />}
+        submitLabel={t.saveChanges}
+      />
     </Stack>
   );
 }

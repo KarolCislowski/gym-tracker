@@ -57,7 +57,11 @@ export function SupplementStackComposer({
         timeout='auto'
         unmountOnExit
       >
-        <SupplementStackForm supplements={supplements} translations={translations} />
+        <SupplementStackForm
+          onCancel={() => setIsOpen(false)}
+          supplements={supplements}
+          translations={translations}
+        />
       </Collapse>
     </Stack>
   );
