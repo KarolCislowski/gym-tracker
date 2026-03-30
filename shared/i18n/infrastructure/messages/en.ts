@@ -598,6 +598,7 @@ export const enMessages: TranslationDictionary = {
     columnNotes: 'Notes',
     columnActions: 'Actions',
     viewDetailsLabel: 'View details',
+    duplicateReportLabel: 'Duplicate workout report',
     templateViewDetailsLabel: 'View template details',
     detailsTitle: 'Workout report details',
     detailsDescription:

@@ -1,4 +1,5 @@
-import { Alert, Paper, Stack, Typography } from '@mui/material';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+import { Alert, IconButton, Paper, Stack, Typography } from '@mui/material';
 
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
@@ -74,16 +75,25 @@ export function WorkoutReportDetailsPage({
           <Typography component='h1' variant='h3'>
             {t.detailsTitle}
           </Typography>
-          <DeleteConfirmationButton
-            action={deleteWorkoutReportAction}
-            ariaLabel={`${t.deleteReportLabel}: ${report.workoutName}`}
-            cancelLabel={translations.profile.cancelEditing}
-            confirmLabel={t.confirmDeleteLabel}
-            description={t.deleteReportDescription}
-            hiddenFields={{ reportId: report.id }}
-            title={t.deleteReportTitle}
-            tooltipLabel={t.deleteReportLabel}
-          />
+          <Stack direction='row' spacing={0.5}>
+            <DeleteConfirmationButton
+              action={deleteWorkoutReportAction}
+              ariaLabel={`${t.deleteReportLabel}: ${report.workoutName}`}
+              cancelLabel={translations.profile.cancelEditing}
+              confirmLabel={t.confirmDeleteLabel}
+              description={t.deleteReportDescription}
+              hiddenFields={{ reportId: report.id }}
+              title={t.deleteReportTitle}
+              tooltipLabel={t.deleteReportLabel}
+            />
+            <IconButton
+              aria-label={`${t.duplicateReportLabel}: ${report.workoutName}`}
+              href={`/workouts?duplicateReportId=${encodeURIComponent(report.id)}`}
+              size='small'
+            >
+              <ContentCopyRoundedIcon fontSize='small' />
+            </IconButton>
+          </Stack>
         </Stack>
         <Typography color='text.secondary'>{report.workoutName}</Typography>
         <Typography color='text.secondary'>

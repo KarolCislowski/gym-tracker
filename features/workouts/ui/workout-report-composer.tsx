@@ -8,12 +8,16 @@ import { Button, Chip, Collapse, Stack, Typography } from '@mui/material';
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
 
-import type { WorkoutTemplateSummary } from '../domain/workout.types';
+import type {
+  WorkoutSessionDuplicateDraft,
+  WorkoutTemplateSummary,
+} from '../domain/workout.types';
 import { WorkoutReportForm } from './workout-report-form';
 
 interface WorkoutReportComposerProps {
   exercises: Exercise[];
   favoriteExerciseSlugs: string[];
+  initialDuplicateDraft?: WorkoutSessionDuplicateDraft | null;
   initiallyOpen?: boolean;
   templates: WorkoutTemplateSummary[];
   translations: TranslationDictionary;
@@ -30,11 +34,12 @@ interface WorkoutReportComposerProps {
 export function WorkoutReportComposer({
   exercises,
   favoriteExerciseSlugs,
+  initialDuplicateDraft = null,
   initiallyOpen = false,
   templates,
   translations,
 }: WorkoutReportComposerProps) {
-  const [isOpen, setIsOpen] = useState(initiallyOpen);
+  const [isOpen, setIsOpen] = useState(initiallyOpen || Boolean(initialDuplicateDraft));
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const t = translations.workouts;
   const buttonId = useId();
@@ -106,8 +111,9 @@ export function WorkoutReportComposer({
         <WorkoutReportForm
           exercises={exercises}
           favoriteExerciseSlugs={favoriteExerciseSlugs}
+          initialDuplicateDraft={selectedTemplate ? null : initialDuplicateDraft}
           initialTemplate={selectedTemplate}
-          key={selectedTemplate?.id ?? 'blank-workout'}
+          key={selectedTemplate?.id ?? (initialDuplicateDraft ? 'duplicate-workout' : 'blank-workout')}
           translations={translations}
         />
       </Collapse>

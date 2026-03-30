@@ -23,6 +23,7 @@ import { useUnsavedChangesWarning } from '@/shared/ui/use-unsaved-changes-warnin
 
 import type {
   WorkoutSessionDetails,
+  WorkoutSessionDuplicateDraft,
   WorkoutTemplateSummary,
 } from '../domain/workout.types';
 import { createWorkoutReportAction } from '../infrastructure/workout.actions';
@@ -31,6 +32,7 @@ interface WorkoutReportFormProps {
   exercises: Exercise[];
   favoriteExerciseSlugs: string[];
   formAction?: (formData: FormData) => Promise<void>;
+  initialDuplicateDraft?: WorkoutSessionDuplicateDraft | null;
   initialReport?: WorkoutSessionDetails | null;
   initialTemplate?: WorkoutTemplateSummary | null;
   reportId?: string;
@@ -88,6 +90,7 @@ export function WorkoutReportForm({
   exercises,
   favoriteExerciseSlugs,
   formAction = createWorkoutReportAction,
+  initialDuplicateDraft = null,
   initialReport = null,
   initialTemplate = null,
   reportId,
@@ -113,26 +116,45 @@ export function WorkoutReportForm({
     [exercises, favoriteExerciseSlugs],
   );
   const [workoutName, setWorkoutName] = useState(
-    initialReport?.workoutName ?? initialTemplate?.name ?? '',
+    initialReport?.workoutName
+      ?? initialDuplicateDraft?.workoutName
+      ?? initialTemplate?.name
+      ?? '',
   );
   const [performedAt, setPerformedAt] = useState(
     initialReport?.performedAt
       ? formatDateTimeLocal(new Date(initialReport.performedAt))
+      : initialDuplicateDraft?.performedAt
+        ? formatDateTimeLocal(new Date(initialDuplicateDraft.performedAt))
       : formatDateTimeLocal(new Date()),
   );
   const [startedAt, setStartedAt] = useState(
     initialReport?.startedAt
       ? formatDateTimeLocal(new Date(initialReport.startedAt))
+      : initialDuplicateDraft?.startedAt
+        ? formatDateTimeLocal(new Date(initialDuplicateDraft.startedAt))
       : '',
   );
   const [endedAt, setEndedAt] = useState(
-    initialReport?.endedAt ? formatDateTimeLocal(new Date(initialReport.endedAt)) : '',
+    initialReport?.endedAt
+      ? formatDateTimeLocal(new Date(initialReport.endedAt))
+      : initialDuplicateDraft?.endedAt
+        ? formatDateTimeLocal(new Date(initialDuplicateDraft.endedAt))
+        : '',
   );
   const [notes, setNotes] = useState(
-    initialReport?.notes ?? initialTemplate?.notes ?? '',
+    initialReport?.notes
+      ?? initialDuplicateDraft?.notes
+      ?? initialTemplate?.notes
+      ?? '',
   );
   const [blocks, setBlocks] = useState<WorkoutBlockDraft[]>(
-    createBlocksFromSource(exercises, initialTemplate, initialReport),
+    createBlocksFromSource(
+      exercises,
+      initialTemplate,
+      initialReport,
+      initialDuplicateDraft,
+    ),
   );
 
   useEffect(() => {
@@ -140,19 +162,45 @@ export function WorkoutReportForm({
     setPerformedAt(
       initialReport?.performedAt
         ? formatDateTimeLocal(new Date(initialReport.performedAt))
+        : initialDuplicateDraft?.performedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.performedAt))
         : formatDateTimeLocal(new Date()),
     );
     setStartedAt(
       initialReport?.startedAt
         ? formatDateTimeLocal(new Date(initialReport.startedAt))
+        : initialDuplicateDraft?.startedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.startedAt))
         : '',
     );
     setEndedAt(
-      initialReport?.endedAt ? formatDateTimeLocal(new Date(initialReport.endedAt)) : '',
+      initialReport?.endedAt
+        ? formatDateTimeLocal(new Date(initialReport.endedAt))
+        : initialDuplicateDraft?.endedAt
+          ? formatDateTimeLocal(new Date(initialDuplicateDraft.endedAt))
+          : '',
     );
-    setNotes(initialReport?.notes ?? initialTemplate?.notes ?? '');
-    setBlocks(createBlocksFromSource(exercises, initialTemplate, initialReport));
-  }, [exercises, initialReport, initialTemplate]);
+    setWorkoutName(
+      initialReport?.workoutName
+        ?? initialDuplicateDraft?.workoutName
+        ?? initialTemplate?.name
+        ?? '',
+    );
+    setNotes(
+      initialReport?.notes
+        ?? initialDuplicateDraft?.notes
+        ?? initialTemplate?.notes
+        ?? '',
+    );
+    setBlocks(
+      createBlocksFromSource(
+        exercises,
+        initialTemplate,
+        initialReport,
+        initialDuplicateDraft,
+      ),
+    );
+  }, [exercises, initialDuplicateDraft, initialReport, initialTemplate]);
 
   const payload = useMemo(() => {
     return JSON.stringify({
@@ -849,9 +897,50 @@ function createBlocksFromSource(
   exercises: Exercise[],
   template?: WorkoutTemplateSummary | null,
   report?: WorkoutSessionDetails | null,
+  duplicateDraft?: WorkoutSessionDuplicateDraft | null,
 ): WorkoutBlockDraft[] {
   if (report?.blocks.length) {
     return report.blocks.map((block) => ({
+      id: crypto.randomUUID(),
+      type: block.type,
+      name: block.name ?? '',
+      rounds: block.rounds != null ? String(block.rounds) : '',
+      restAfterBlockSec:
+        block.restAfterBlockSec != null ? String(block.restAfterBlockSec) : '',
+      entries: block.entries.map((entry) => ({
+        id: crypto.randomUUID(),
+        exerciseSlug: entry.exerciseSlug,
+        variantId: entry.variantId ?? resolveVariantId(exercises, entry.exerciseSlug),
+        selectedGrip: entry.selectedGrip ?? '',
+        selectedStance: entry.selectedStance ?? '',
+        selectedAttachment: entry.selectedAttachment ?? '',
+        notes: entry.notes ?? '',
+        restAfterEntrySec:
+          entry.restAfterEntrySec != null ? String(entry.restAfterEntrySec) : '',
+        sets: entry.sets.length
+          ? entry.sets.map((set) => ({
+              id: crypto.randomUUID(),
+              reps: set.reps != null ? String(set.reps) : '',
+              weight: set.weight != null ? String(set.weight) : '',
+              durationSec: set.durationSec != null ? String(set.durationSec) : '',
+              distanceMeters:
+                set.distanceMeters != null ? String(set.distanceMeters) : '',
+              calories: set.calories != null ? String(set.calories) : '',
+              rpe: set.rpe != null ? String(set.rpe) : '',
+              rir: set.rir != null ? String(set.rir) : '',
+              isWarmup: set.isWarmup,
+              isFailure: set.isFailure,
+              setKind: set.setKind,
+              parentSetOrder:
+                set.parentSetOrder != null ? String(set.parentSetOrder) : '',
+            }))
+          : [createSetDraft()],
+      })),
+    }));
+  }
+
+  if (duplicateDraft?.blocks.length) {
+    return duplicateDraft.blocks.map((block) => ({
       id: crypto.randomUUID(),
       type: block.type,
       name: block.name ?? '',

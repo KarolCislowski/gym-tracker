@@ -1,4 +1,5 @@
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
+import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import {
   Alert,
   IconButton,
@@ -20,6 +21,7 @@ import { AppCard } from '@/shared/ui/app-card';
 import { DeleteConfirmationButton } from '@/shared/ui/delete-confirmation-button';
 
 import type {
+  WorkoutSessionDuplicateDraft,
   WorkoutSessionSummary,
   WorkoutTemplateSummary,
 } from '../domain/workout.types';
@@ -34,6 +36,7 @@ interface WorkoutReportsPageProps {
   error?: string;
   exercises: Exercise[];
   favoriteExerciseSlugs: string[];
+  initialDuplicateDraft?: WorkoutSessionDuplicateDraft | null;
   reports: WorkoutSessionSummary[];
   status?: string;
   templates: WorkoutTemplateSummary[];
@@ -51,6 +54,7 @@ export function WorkoutReportsPage({
   error,
   exercises,
   favoriteExerciseSlugs,
+  initialDuplicateDraft = null,
   reports,
   status,
   templates,
@@ -96,7 +100,8 @@ export function WorkoutReportsPage({
       <WorkoutReportComposer
         exercises={exercises}
         favoriteExerciseSlugs={favoriteExerciseSlugs}
-        initiallyOpen={Boolean(error)}
+        initialDuplicateDraft={initialDuplicateDraft}
+        initiallyOpen={Boolean(error) || Boolean(initialDuplicateDraft)}
         templates={templates}
         translations={translations}
       />
@@ -210,6 +215,15 @@ export function WorkoutReportsPage({
                             size='small'
                           >
                             <VisibilityRoundedIcon fontSize='small' />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={t.duplicateReportLabel}>
+                          <IconButton
+                            aria-label={`${t.duplicateReportLabel}: ${report.workoutName}`}
+                            href={`/workouts?duplicateReportId=${encodeURIComponent(report.id)}`}
+                            size='small'
+                          >
+                            <ContentCopyRoundedIcon fontSize='small' />
                           </IconButton>
                         </Tooltip>
                         <DeleteConfirmationButton

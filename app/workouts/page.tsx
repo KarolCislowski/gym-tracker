@@ -1,9 +1,11 @@
+import { buildWorkoutDuplicateDraft } from '@/features/workouts/application/workout-duplicate';
 import { redirect } from 'next/navigation';
 
 import { auth } from '@/auth';
 import { getAuthenticatedUserSnapshot } from '@/features/auth/application/auth.service';
 import { listExerciseAtlas } from '@/features/exercises/application/exercise-atlas.service';
 import {
+  getWorkoutSessionDetails,
   listWorkoutSessions,
   listWorkoutTemplates,
 } from '@/features/workouts/application/workout.service';
@@ -14,6 +16,7 @@ interface WorkoutReportsRoutePageProps {
   searchParams?: Promise<{
     error?: string;
     status?: string;
+    duplicateReportId?: string;
   }>;
 }
 
@@ -33,9 +36,16 @@ export default async function WorkoutReportsRoutePage({
   );
   const translations = getTranslations(userSnapshot.settings?.language);
   const exercises = await listExerciseAtlas();
-  const [reports, templates] = await Promise.all([
+  const [reports, templates, duplicateSourceReport] = await Promise.all([
     listWorkoutSessions(session.user.tenantDbName, session.user.id),
     listWorkoutTemplates(session.user.tenantDbName, session.user.id),
+    params?.duplicateReportId
+      ? getWorkoutSessionDetails(
+          session.user.tenantDbName,
+          session.user.id,
+          params.duplicateReportId,
+        )
+      : Promise.resolve(null),
   ]);
 
   return (
@@ -43,6 +53,9 @@ export default async function WorkoutReportsRoutePage({
       error={params?.error}
       exercises={exercises}
       favoriteExerciseSlugs={userSnapshot.favoriteExerciseSlugs}
+      initialDuplicateDraft={
+        duplicateSourceReport ? buildWorkoutDuplicateDraft(duplicateSourceReport) : null
+      }
       reports={reports}
       status={params?.status}
       templates={templates}

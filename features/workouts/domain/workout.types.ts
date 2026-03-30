@@ -153,6 +153,17 @@ export interface WorkoutSessionDetails {
   blocks: WorkoutBlockInput[];
 }
 
+export interface WorkoutSessionDuplicateDraft {
+  workoutName: string;
+  startedAt: string | null;
+  endedAt: string | null;
+  durationMinutes: number | null;
+  performedAt: string;
+  notes: string | null;
+  weatherSnapshot: WorkoutWeatherSnapshotInput | null;
+  blocks: WorkoutBlockInput[];
+}
+
 export interface WorkoutSessionAnalyticsEntry {
   exerciseSlug: string;
   variantId: string | null;

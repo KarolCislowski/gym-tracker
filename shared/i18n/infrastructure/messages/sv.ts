@@ -599,6 +599,7 @@ export const svMessages: TranslationDictionaryOverrides = {
     columnNotes: 'Anteckningar',
     columnActions: 'Åtgärder',
     viewDetailsLabel: 'Visa detaljer',
+    duplicateReportLabel: 'Duplicera träningsrapport',
     templateViewDetailsLabel: 'Visa malldetaljer',
     detailsTitle: 'Detaljer för träningsrapport',
     detailsDescription:

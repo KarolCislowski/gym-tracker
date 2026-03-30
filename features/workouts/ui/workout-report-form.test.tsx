@@ -211,4 +211,105 @@ describe('WorkoutReportForm', () => {
 
     expect(payloadField?.value).toContain('"exerciseSlug":"bench-press"');
   });
+
+  test('prefills a duplicated workout draft with cleared set values', () => {
+    render(
+      <WorkoutReportForm
+        exercises={[
+          {
+            id: 'exercise-1',
+            name: 'Bench Press',
+            slug: 'bench-press',
+            type: 'compound',
+            movementPattern: 'push',
+            difficulty: 'beginner',
+            muscles: [
+              {
+                muscleGroupId: 'pectorals',
+                role: 'primary',
+                activationLevel: 0.95,
+              },
+            ],
+            variants: [
+              {
+                id: 'variant-1',
+                name: 'Barbell Bench Press',
+                slug: 'barbell-bench-press',
+                equipment: ['barbell', 'bench'],
+                gripOptions: ['pronated'],
+                trackableMetrics: ['weight', 'reps', 'rpe'],
+                isDefault: true,
+              },
+            ],
+            isActive: true,
+          },
+        ]}
+        favoriteExerciseSlugs={[]}
+        initialDuplicateDraft={{
+          workoutName: 'Push Day',
+          startedAt: null,
+          endedAt: null,
+          durationMinutes: null,
+          performedAt: '2026-03-30T08:30:00.000Z',
+          notes: 'Heavy bench focus',
+          weatherSnapshot: null,
+          blocks: [
+            {
+              order: 1,
+              type: 'single',
+              name: 'Main lift',
+              rounds: null,
+              restAfterBlockSec: 180,
+              entries: [
+                {
+                  order: 1,
+                  exerciseId: 'exercise-1',
+                  exerciseSlug: 'bench-press',
+                  variantId: 'variant-1',
+                  trackableMetrics: ['weight', 'reps', 'rpe'],
+                  selectedEquipment: ['barbell', 'bench'],
+                  selectedGrip: 'pronated',
+                  selectedStance: null,
+                  selectedAttachment: null,
+                  notes: 'Paused',
+                  restAfterEntrySec: 180,
+                  sets: [
+                    {
+                      order: 1,
+                      reps: null,
+                      weight: null,
+                      durationSec: null,
+                      distanceMeters: null,
+                      calories: null,
+                      rpe: null,
+                      rir: null,
+                      isWarmup: false,
+                      isFailure: false,
+                      setKind: 'top',
+                      parentSetOrder: null,
+                      completedAt: null,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        }}
+        translations={enMessages}
+      />,
+    );
+
+    expect(screen.getByDisplayValue('Push Day')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Heavy bench focus')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Main lift')).toBeInTheDocument();
+
+    const payloadField = document.querySelector(
+      'input[name="reportPayload"]',
+    ) as HTMLInputElement | null;
+
+    expect(payloadField?.value).toContain('"exerciseSlug":"bench-press"');
+    expect(payloadField?.value).toContain('"reps":null');
+    expect(payloadField?.value).toContain('"weight":null');
+    expect(payloadField?.value).toContain('"completedAt":"2026-03-30T08:30:00.000Z"');
+  });
 });

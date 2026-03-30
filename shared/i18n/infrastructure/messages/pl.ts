@@ -599,6 +599,7 @@ export const plMessages: TranslationDictionaryOverrides = {
     columnNotes: 'Notatki',
     columnActions: 'Akcje',
     viewDetailsLabel: 'Pokaż szczegóły',
+    duplicateReportLabel: 'Duplikuj raport treningu',
     templateViewDetailsLabel: 'Pokaż szczegóły templateki',
     detailsTitle: 'Szczegóły raportu treningowego',
     detailsDescription: 'Przejrzyj zapisane bloki, ćwiczenia i serie oraz w razie potrzeby popraw log treningu.',

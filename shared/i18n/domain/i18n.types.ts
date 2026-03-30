@@ -531,6 +531,7 @@ export interface TranslationDictionary {
     columnNotes: string;
     columnActions: string;
     viewDetailsLabel: string;
+    duplicateReportLabel: string;
     templateViewDetailsLabel: string;
     detailsTitle: string;
     detailsDescription: string;
