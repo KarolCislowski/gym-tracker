@@ -9,7 +9,15 @@ import type { ResolvedDashboardLayoutItem } from '../domain/dashboard-layout.typ
 import type { DashboardNextAction } from '../application/dashboard-next-action';
 import { DashboardLayoutCustomizer } from './dashboard-layout-customizer';
 import { DashboardLayoutFeedbackAlert } from './dashboard-layout-feedback-alert';
-import { DashboardAnalyticsLazyWidget } from './widgets/dashboard-analytics-lazy-widget';
+import {
+  DashboardGoalComplianceAnalyticsCard,
+  DashboardSummaryMetricsAnalyticsCard,
+} from './widgets/dashboard-analytics-widget';
+import {
+  DashboardBodyMetricsAnalyticsCard,
+  DashboardWellbeingAnalyticsCard,
+  DashboardWorkoutVolumeAnalyticsCard,
+} from './widgets/dashboard-analytics-expanded-charts';
 import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardNextActionWidget } from './widgets/dashboard-next-action-widget';
@@ -158,12 +166,40 @@ function renderDashboardWidget({
           translations={translations.dashboard}
         />
       ) : null;
-    case 'analytics':
+    case 'analytics_goal_compliance':
       return (
-        <DashboardAnalyticsLazyWidget
+        <DashboardGoalComplianceAnalyticsCard
+          analytics={analytics}
+          translations={translations}
+        />
+      );
+    case 'analytics_summary_metrics':
+      return (
+        <DashboardSummaryMetricsAnalyticsCard
+          analytics={analytics}
+          translations={translations}
+        />
+      );
+    case 'analytics_wellbeing':
+      return (
+        <DashboardWellbeingAnalyticsCard
+          analytics={analytics}
+          translations={translations}
+        />
+      );
+    case 'analytics_body_metrics':
+      return (
+        <DashboardBodyMetricsAnalyticsCard
           analytics={analytics}
           translations={translations}
           unitSystem={userSnapshot?.settings?.unitSystem ?? 'metric'}
+        />
+      );
+    case 'analytics_workout_volume':
+      return (
+        <DashboardWorkoutVolumeAnalyticsCard
+          analytics={analytics}
+          translations={translations}
         />
       );
   }

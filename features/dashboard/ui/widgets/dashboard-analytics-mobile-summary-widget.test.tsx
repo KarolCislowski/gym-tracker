@@ -68,6 +68,13 @@ describe('DashboardAnalyticsMobileSummaryWidget', () => {
             pectorals: 'Pectorals',
             lats: 'Lats',
           },
+          summaryMetrics: {
+            bmi: { value: 24.8, category: 'normal' },
+            proteinPerKgBodyWeight: { value: 2.1 },
+            hydrationAdherenceTrend: { currentRate: 71, previousRate: 57 },
+            sleepConsistency: { currentRate: 86, previousRate: 71 },
+            macroAdherenceScore: { currentRate: 78, previousRate: 64 },
+          },
         }}
         translations={enMessages}
         unitSystem='metric'
@@ -84,6 +91,9 @@ describe('DashboardAnalyticsMobileSummaryWidget', () => {
     expect(screen.getByText('+0.7 vs previous')).toBeInTheDocument();
     expect(screen.getByText('+1.5 kg vs previous')).toBeInTheDocument();
     expect(screen.getByText('+4 sets vs previous')).toBeInTheDocument();
+    expect(screen.getByText('24.8 · Normal')).toBeInTheDocument();
+    expect(screen.getByText('2.1 g/kg')).toBeInTheDocument();
+    expect(screen.getByText('71% (+14% vs previous)')).toBeInTheDocument();
   });
 
   test('renders onboarding-style empty states when analytics have no entries yet', () => {
@@ -96,6 +106,13 @@ describe('DashboardAnalyticsMobileSummaryWidget', () => {
           workoutVolume: [],
           workoutVolumeMuscleGroups: [],
           workoutVolumeMuscleGroupLabels: {},
+          summaryMetrics: {
+            bmi: { value: null, category: null },
+            proteinPerKgBodyWeight: { value: null },
+            hydrationAdherenceTrend: { currentRate: null, previousRate: null },
+            sleepConsistency: { currentRate: null, previousRate: null },
+            macroAdherenceScore: { currentRate: null, previousRate: null },
+          },
         }}
         translations={enMessages}
         unitSystem='metric'

@@ -68,6 +68,7 @@ export default async function Page({ searchParams }: HomePageProps) {
     workoutSessions,
     workoutSessionsForAnalytics,
     exerciseAtlas,
+    userSnapshot,
   );
   const nextAction = resolveDashboardNextAction({
     dailyReports,

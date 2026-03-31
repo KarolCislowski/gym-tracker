@@ -28,6 +28,13 @@ describe('DashboardAnalyticsWidget', () => {
           workoutVolume: [],
           workoutVolumeMuscleGroups: [],
           workoutVolumeMuscleGroupLabels: {},
+          summaryMetrics: {
+            bmi: { value: 24.8, category: 'normal' },
+            proteinPerKgBodyWeight: { value: 2.1 },
+            hydrationAdherenceTrend: { currentRate: 71, previousRate: 57 },
+            sleepConsistency: { currentRate: 86, previousRate: 71 },
+            macroAdherenceScore: { currentRate: 78, previousRate: 64 },
+          },
         }}
         translations={enMessages}
         unitSystem='metric'
@@ -43,6 +50,7 @@ describe('DashboardAnalyticsWidget', () => {
     expect(
       screen.getByText('Steps per day, 03/21: No'),
     ).toBeInTheDocument();
+    expect(screen.getByText('24.8 · Normal')).toBeInTheDocument();
   });
 
   test('renders body weight chart label in imperial units when requested', async () => {
@@ -66,6 +74,13 @@ describe('DashboardAnalyticsWidget', () => {
           workoutVolume: [],
           workoutVolumeMuscleGroups: [],
           workoutVolumeMuscleGroupLabels: {},
+          summaryMetrics: {
+            bmi: { value: null, category: null },
+            proteinPerKgBodyWeight: { value: null },
+            hydrationAdherenceTrend: { currentRate: null, previousRate: null },
+            sleepConsistency: { currentRate: null, previousRate: null },
+            macroAdherenceScore: { currentRate: null, previousRate: null },
+          },
         }}
         translations={enMessages}
         unitSystem='imperial_us'
@@ -102,6 +117,13 @@ describe('DashboardAnalyticsWidget', () => {
           workoutVolume: [],
           workoutVolumeMuscleGroups: [],
           workoutVolumeMuscleGroupLabels: {},
+          summaryMetrics: {
+            bmi: { value: null, category: null },
+            proteinPerKgBodyWeight: { value: null },
+            hydrationAdherenceTrend: { currentRate: null, previousRate: null },
+            sleepConsistency: { currentRate: null, previousRate: null },
+            macroAdherenceScore: { currentRate: null, previousRate: null },
+          },
         }}
         translations={enMessages}
         unitSystem='imperial_uk'
@@ -141,6 +163,13 @@ describe('DashboardAnalyticsWidget', () => {
           workoutVolume: [],
           workoutVolumeMuscleGroups: [],
           workoutVolumeMuscleGroupLabels: {},
+          summaryMetrics: {
+            bmi: { value: null, category: null },
+            proteinPerKgBodyWeight: { value: null },
+            hydrationAdherenceTrend: { currentRate: null, previousRate: null },
+            sleepConsistency: { currentRate: null, previousRate: null },
+            macroAdherenceScore: { currentRate: null, previousRate: null },
+          },
         }}
         translations={enMessages}
         unitSystem='metric'

@@ -243,8 +243,16 @@ function getDashboardWidgetLabel(
       return t.favoriteExercises;
     case 'settings':
       return t.settings;
-    case 'analytics':
-      return t.analyticsTitle;
+    case 'analytics_goal_compliance':
+      return t.goalComplianceChart;
+    case 'analytics_summary_metrics':
+      return t.summaryMetricsTitle;
+    case 'analytics_wellbeing':
+      return t.wellbeingChart;
+    case 'analytics_body_metrics':
+      return t.bodyMetricsChart;
+    case 'analytics_workout_volume':
+      return t.workoutVolumeChart;
   }
 }
 

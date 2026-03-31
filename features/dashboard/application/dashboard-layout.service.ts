@@ -64,14 +64,16 @@ export async function resetDashboardLayout(
  * @returns A sanitized, fully populated dashboard layout.
  */
 export function resolveDashboardLayout(
-  savedItems: Array<
-    Pick<
-      DashboardLayoutRecordItem,
-      'order' | 'sizePreset' | 'tone' | 'visible' | 'widgetId'
-    >
-  >,
+  savedItems: Array<{
+    order: number;
+    sizePreset: string;
+    tone: string;
+    visible: boolean;
+    widgetId: string;
+  }>,
 ): ResolvedDashboardLayoutItem[] {
-  const savedById = new Map(savedItems.map((item) => [item.widgetId, item]));
+  const migratedSavedItems = migrateLegacyAnalyticsWidget(savedItems);
+  const savedById = new Map(migratedSavedItems.map((item) => [item.widgetId, item]));
 
   const resolved = dashboardWidgetIds.map((widgetId) => {
     const definition = dashboardWidgetRegistry[widgetId];
@@ -131,4 +133,67 @@ function normalizeDashboardLayoutPreferences(
     cols: item.cols.xl,
     rows: item.rows.xl,
   }));
+}
+
+function migrateLegacyAnalyticsWidget(
+  savedItems: Array<{
+    order: number;
+    sizePreset: string;
+    tone: string;
+    visible: boolean;
+    widgetId: string;
+  }>,
+) {
+  const hasModernAnalyticsWidgets = savedItems.some((item) =>
+    item.widgetId.startsWith('analytics_'),
+  );
+
+  if (hasModernAnalyticsWidgets) {
+    return savedItems.filter((item) => item.widgetId !== 'analytics');
+  }
+
+  const legacyAnalytics = savedItems.find((item) => item.widgetId === 'analytics');
+
+  if (!legacyAnalytics) {
+    return savedItems;
+  }
+
+  return [
+    ...savedItems.filter((item) => item.widgetId !== 'analytics'),
+    {
+      widgetId: 'analytics_goal_compliance',
+      visible: legacyAnalytics.visible,
+      order: legacyAnalytics.order,
+      sizePreset: 'regular',
+      tone: 'neutral',
+    },
+    {
+      widgetId: 'analytics_summary_metrics',
+      visible: legacyAnalytics.visible,
+      order: legacyAnalytics.order + 1,
+      sizePreset: 'regular',
+      tone: 'neutral',
+    },
+    {
+      widgetId: 'analytics_wellbeing',
+      visible: legacyAnalytics.visible,
+      order: legacyAnalytics.order + 2,
+      sizePreset: 'wide',
+      tone: 'neutral',
+    },
+    {
+      widgetId: 'analytics_body_metrics',
+      visible: legacyAnalytics.visible,
+      order: legacyAnalytics.order + 3,
+      sizePreset: 'wide',
+      tone: 'neutral',
+    },
+    {
+      widgetId: 'analytics_workout_volume',
+      visible: legacyAnalytics.visible,
+      order: legacyAnalytics.order + 4,
+      sizePreset: 'wide',
+      tone: 'neutral',
+    },
+  ];
 }

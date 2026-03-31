@@ -93,6 +93,9 @@ export function DashboardAnalyticsWidget({
           <EmptyChartState message={resolveAnalyticsStateMessage(goalComplianceState, t)} />
         )}
       </ChartCard>
+      <ChartCard title={t.summaryMetricsTitle}>
+        <SummaryMetricsList analytics={analytics} translations={translations} />
+      </ChartCard>
       {showExpandedCharts ? (
         <DashboardAnalyticsExpandedCharts
           analytics={analytics}
@@ -114,6 +117,50 @@ export function DashboardAnalyticsWidget({
         </ChartCard>
       )}
     </Stack>
+  );
+}
+
+export function DashboardGoalComplianceAnalyticsCard({
+  analytics,
+  translations,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+}) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { noSsr: true });
+  const t = translations.dashboard;
+  const goalCompliancePoints = isMobile
+    ? analytics.goalCompliance.slice(-MOBILE_GOAL_COMPLIANCE_DAYS)
+    : analytics.goalCompliance;
+  const goalComplianceState = resolveGoalComplianceState(goalCompliancePoints);
+
+  return (
+    <ChartCard title={t.goalComplianceChart}>
+      {goalComplianceState === 'ready' ? (
+        <GoalComplianceHeatmap
+          compact={isMobile}
+          points={goalCompliancePoints}
+          translations={translations}
+        />
+      ) : (
+        <EmptyChartState message={resolveAnalyticsStateMessage(goalComplianceState, t)} />
+      )}
+    </ChartCard>
+  );
+}
+
+export function DashboardSummaryMetricsAnalyticsCard({
+  analytics,
+  translations,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+}) {
+  return (
+    <ChartCard title={translations.dashboard.summaryMetricsTitle}>
+      <SummaryMetricsList analytics={analytics} translations={translations} />
+    </ChartCard>
   );
 }
 
@@ -254,6 +301,130 @@ function GoalComplianceHeatmap({
       </TableContainer>
     </Stack>
   );
+}
+
+function SummaryMetricsList({
+  analytics,
+  translations,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+}) {
+  const t = translations.dashboard;
+  const rows = [
+    [t.bodyMassIndexLabel, formatBmiMetric(analytics, translations)],
+    [
+      t.proteinPerKgBodyWeightLabel,
+      formatScalarMetric(
+        analytics.summaryMetrics.proteinPerKgBodyWeight.value,
+        ' g/kg',
+        t.noChartData,
+      ),
+    ],
+    [
+      t.hydrationAdherenceTrendLabel,
+      formatRateTrendMetric(
+        analytics.summaryMetrics.hydrationAdherenceTrend.currentRate,
+        analytics.summaryMetrics.hydrationAdherenceTrend.previousRate,
+        translations,
+      ),
+    ],
+    [
+      t.sleepConsistencyLabel,
+      formatRateTrendMetric(
+        analytics.summaryMetrics.sleepConsistency.currentRate,
+        analytics.summaryMetrics.sleepConsistency.previousRate,
+        translations,
+      ),
+    ],
+    [
+      t.macroAdherenceScoreLabel,
+      formatRateTrendMetric(
+        analytics.summaryMetrics.macroAdherenceScore.currentRate,
+        analytics.summaryMetrics.macroAdherenceScore.previousRate,
+        translations,
+      ),
+    ],
+  ] as const;
+
+  return (
+    <Stack spacing={1.25}>
+      {rows.map(([label, value]) => (
+        <Stack
+          alignItems='baseline'
+          direction='row'
+          justifyContent='space-between'
+          key={label}
+          spacing={2}
+        >
+          <Typography variant='body2'>{label}</Typography>
+          <Typography fontWeight={600} textAlign='right' variant='body2'>
+            {value}
+          </Typography>
+        </Stack>
+      ))}
+    </Stack>
+  );
+}
+
+function formatBmiMetric(
+  analytics: DashboardAnalytics,
+  translations: TranslationDictionary,
+): string {
+  const bmi = analytics.summaryMetrics.bmi;
+
+  if (bmi.value == null || bmi.category == null) {
+    return translations.dashboard.noChartData;
+  }
+
+  return `${bmi.value} · ${resolveBmiCategoryLabel(bmi.category, translations)}`;
+}
+
+function resolveBmiCategoryLabel(
+  category: NonNullable<DashboardAnalytics['summaryMetrics']['bmi']['category']>,
+  translations: TranslationDictionary,
+): string {
+  switch (category) {
+    case 'underweight':
+      return translations.dashboard.bmiCategoryUnderweight;
+    case 'normal':
+      return translations.dashboard.bmiCategoryNormal;
+    case 'overweight':
+      return translations.dashboard.bmiCategoryOverweight;
+    case 'obesity':
+      return translations.dashboard.bmiCategoryObesity;
+  }
+}
+
+function formatScalarMetric(
+  value: number | null,
+  unitSuffix: string,
+  emptyLabel: string,
+): string {
+  if (value == null) {
+    return emptyLabel;
+  }
+
+  return `${value}${unitSuffix}`.trim();
+}
+
+function formatRateTrendMetric(
+  current: number | null,
+  previous: number | null,
+  translations: TranslationDictionary,
+): string {
+  if (current == null) {
+    return translations.dashboard.noChartData;
+  }
+
+  if (previous == null) {
+    return `${current}%`;
+  }
+
+  const delta = current - previous;
+  const formattedDelta = delta === 0 ? '0' : `${delta > 0 ? '+' : ''}${delta}`;
+
+  return `${current}% (${formattedDelta}% ${translations.dashboard.versusPreviousLabel})`;
 }
 
 function HeatmapLegendItem({

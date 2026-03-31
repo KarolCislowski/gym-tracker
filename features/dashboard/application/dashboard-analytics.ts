@@ -1,3 +1,4 @@
+import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
 import type { DailyReportSummary } from '@/features/daily-reports/domain/daily-report.types';
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
 import { formatAtlasToken } from '@/features/exercises/application/exercise-atlas-grid';
@@ -42,6 +43,29 @@ export interface DashboardAnalytics {
   workoutVolume: WorkoutVolumeChartPoint[];
   workoutVolumeMuscleGroups: string[];
   workoutVolumeMuscleGroupLabels: Record<string, string>;
+  summaryMetrics: DashboardSummaryMetrics;
+}
+
+export interface DashboardSummaryMetrics {
+  bmi: {
+    category: 'underweight' | 'normal' | 'overweight' | 'obesity' | null;
+    value: number | null;
+  };
+  hydrationAdherenceTrend: {
+    currentRate: number | null;
+    previousRate: number | null;
+  };
+  macroAdherenceScore: {
+    currentRate: number | null;
+    previousRate: number | null;
+  };
+  proteinPerKgBodyWeight: {
+    value: number | null;
+  };
+  sleepConsistency: {
+    currentRate: number | null;
+    previousRate: number | null;
+  };
 }
 
 /**
@@ -55,13 +79,153 @@ export function buildDashboardAnalytics(
   workoutSessions: WorkoutSessionSummary[],
   workoutSessionsForAnalytics: WorkoutSessionAnalytics[],
   exercises: Exercise[],
+  userSnapshot: AuthenticatedUserSnapshot | null,
 ): DashboardAnalytics {
   return {
     goalCompliance: buildGoalComplianceSeries(dailyReports),
     wellbeing: buildWellbeingSeries(dailyReports),
     bodyMetrics: buildBodyMetricsSeries(dailyReports),
+    summaryMetrics: buildSummaryMetrics(dailyReports, userSnapshot),
     ...buildWorkoutVolumeSeries(workoutSessions, workoutSessionsForAnalytics, exercises),
   };
+}
+
+function buildSummaryMetrics(
+  dailyReports: DailyReportSummary[],
+  userSnapshot: AuthenticatedUserSnapshot | null,
+): DashboardSummaryMetrics {
+  const latestBodyWeightReport = dailyReports.find(
+    (report) => report.body.bodyWeightKg != null,
+  );
+  const latestProteinPerBodyWeightReport = dailyReports.find(
+    (report) =>
+      report.actuals.proteinGrams != null &&
+      report.body.bodyWeightKg != null &&
+      report.body.bodyWeightKg > 0,
+  );
+
+  return {
+    bmi: buildBmiMetric(
+      userSnapshot?.profile?.heightCm ?? null,
+      latestBodyWeightReport?.body.bodyWeightKg ?? null,
+    ),
+    proteinPerKgBodyWeight: {
+      value:
+        latestProteinPerBodyWeightReport?.actuals.proteinGrams != null &&
+        latestProteinPerBodyWeightReport.body.bodyWeightKg != null
+          ? Number(
+              (
+                latestProteinPerBodyWeightReport.actuals.proteinGrams /
+                latestProteinPerBodyWeightReport.body.bodyWeightKg
+              ).toFixed(1),
+            )
+          : null,
+    },
+    hydrationAdherenceTrend: buildBooleanTrendMetric(
+      dailyReports,
+      (report) => report.completion.waterGoalMet,
+    ),
+    sleepConsistency: buildBooleanTrendMetric(
+      dailyReports,
+      (report) => report.actuals.sleepScheduleKept,
+    ),
+    macroAdherenceScore: buildMacroAdherenceMetric(dailyReports),
+  };
+}
+
+function buildBmiMetric(
+  heightCm: number | null,
+  bodyWeightKg: number | null,
+): DashboardSummaryMetrics['bmi'] {
+  if (heightCm == null || bodyWeightKg == null || heightCm <= 0) {
+    return { value: null, category: null };
+  }
+
+  const heightMeters = heightCm / 100;
+  const bmi = Number((bodyWeightKg / (heightMeters * heightMeters)).toFixed(1));
+
+  if (bmi < 18.5) {
+    return { value: bmi, category: 'underweight' };
+  }
+
+  if (bmi < 25) {
+    return { value: bmi, category: 'normal' };
+  }
+
+  if (bmi < 30) {
+    return { value: bmi, category: 'overweight' };
+  }
+
+  return { value: bmi, category: 'obesity' };
+}
+
+function buildBooleanTrendMetric(
+  dailyReports: DailyReportSummary[],
+  selector: (report: DailyReportSummary) => boolean | null | undefined,
+): {
+  currentRate: number | null;
+  previousRate: number | null;
+} {
+  const currentWindow = dailyReports.slice(0, 7);
+  const previousWindow = dailyReports.slice(7, 14);
+
+  return {
+    currentRate: calculateBooleanRate(currentWindow, selector),
+    previousRate: calculateBooleanRate(previousWindow, selector),
+  };
+}
+
+function buildMacroAdherenceMetric(
+  dailyReports: DailyReportSummary[],
+): {
+  currentRate: number | null;
+  previousRate: number | null;
+} {
+  const currentWindow = dailyReports.slice(0, 7);
+  const previousWindow = dailyReports.slice(7, 14);
+
+  return {
+    currentRate: calculateMacroAdherenceRate(currentWindow),
+    previousRate: calculateMacroAdherenceRate(previousWindow),
+  };
+}
+
+function calculateBooleanRate(
+  reports: DailyReportSummary[],
+  selector: (report: DailyReportSummary) => boolean | null | undefined,
+): number | null {
+  const values = reports
+    .map(selector)
+    .filter((value): value is boolean => value != null);
+
+  if (!values.length) {
+    return null;
+  }
+
+  const trueCount = values.filter(Boolean).length;
+
+  return Math.round((trueCount / values.length) * 100);
+}
+
+function calculateMacroAdherenceRate(
+  reports: DailyReportSummary[],
+): number | null {
+  const evaluations = reports.flatMap((report) => [
+    report.completion.carbsGoalMet,
+    report.completion.proteinGoalMet,
+    report.completion.fatGoalMet,
+  ]);
+  const meaningfulEvaluations = evaluations.filter(
+    (value): value is boolean => value != null,
+  );
+
+  if (!meaningfulEvaluations.length) {
+    return null;
+  }
+
+  const passedEvaluations = meaningfulEvaluations.filter(Boolean).length;
+
+  return Math.round((passedEvaluations / meaningfulEvaluations.length) * 100);
 }
 
 function buildGoalComplianceSeries(

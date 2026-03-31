@@ -16,6 +16,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -314,6 +315,285 @@ export function DashboardAnalyticsExpandedCharts({
         }
       </MeasuredChartCard>
     </>
+  );
+}
+
+export function DashboardWellbeingAnalyticsCard({
+  analytics,
+  translations,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+}) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { noSsr: true });
+  const t = translations.dashboard;
+  const dailyT = translations.dailyReports;
+  const wellbeingDataset = isMobile
+    ? analytics.wellbeing.slice(-MOBILE_WELLBEING_DAYS)
+    : analytics.wellbeing;
+  const wellbeingState = resolveWellbeingState(wellbeingDataset);
+  const wellbeingSeries = [
+    {
+      id: 'mood',
+      dataKey: 'mood',
+      label: dailyT.columnMood,
+      showMark: true,
+      shape: 'circle' as const,
+      color: alpha(theme.palette.primary.main, 0.6),
+      colorGetter: () => theme.palette.primary.main,
+    },
+    {
+      id: 'energy',
+      dataKey: 'energy',
+      label: dailyT.columnEnergy,
+      showMark: true,
+      shape: 'diamond' as const,
+      color: alpha(theme.palette.success.main, 0.6),
+      colorGetter: () => theme.palette.success.main,
+    },
+    {
+      id: 'stress',
+      dataKey: 'stress',
+      label: dailyT.columnStress,
+      showMark: true,
+      shape: 'square' as const,
+      color: alpha(theme.palette.error.main, 0.6),
+      colorGetter: () => theme.palette.error.main,
+    },
+    {
+      id: 'recovery',
+      dataKey: 'recovery',
+      label: dailyT.columnRecovery,
+      showMark: true,
+      shape: 'triangle' as const,
+      color: alpha(theme.palette.secondary.main, 0.6),
+      colorGetter: () => theme.palette.secondary.main,
+    },
+  ];
+  const mobilePrimaryWellbeingSeries = wellbeingSeries.slice(0, 2);
+  const mobileSecondaryWellbeingSeries = wellbeingSeries.slice(2);
+
+  return (
+    <MeasuredChartCard
+      chartViewLabel={t.chartViewLabel}
+      minChartHeight={isMobile ? 400 : 280}
+      minChartWidth={WELLBEING_MIN_CHART_WIDTH_PX}
+      renderTable={() => (
+        <AnalyticsDataGrid
+          columns={buildWellbeingColumns(dailyT, t)}
+          emptyMessage={t.noChartData}
+          rows={buildWellbeingRows(wellbeingDataset)}
+          title={t.wellbeingChart}
+        />
+      )}
+      tableViewLabel={t.tableViewLabel}
+      title={t.wellbeingChart}
+    >
+      {(chartHeight) =>
+        wellbeingState === 'ready' ? (
+          isMobile ? (
+            <Stack spacing={2}>
+              <LineChart
+                dataset={wellbeingDataset}
+                grid={{ horizontal: true }}
+                height={Math.max(180, Math.floor((chartHeight - 16) / 2))}
+                series={mobilePrimaryWellbeingSeries}
+                skipAnimation
+                slots={{ mark: OffsetWellbeingMark }}
+                xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+                yAxis={[{ min: 0, max: 5 }]}
+              />
+              <LineChart
+                dataset={wellbeingDataset}
+                grid={{ horizontal: true }}
+                height={Math.max(180, Math.floor((chartHeight - 16) / 2))}
+                series={mobileSecondaryWellbeingSeries}
+                skipAnimation
+                slots={{ mark: OffsetWellbeingMark }}
+                xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+                yAxis={[{ min: 0, max: 5 }]}
+              />
+            </Stack>
+          ) : (
+            <LineChart
+              dataset={wellbeingDataset}
+              grid={{ horizontal: true }}
+              height={chartHeight}
+              series={wellbeingSeries}
+              skipAnimation
+              slots={{ mark: OffsetWellbeingMark }}
+              xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+              yAxis={[{ min: 0, max: 5 }]}
+            />
+          )
+        ) : (
+          <EmptyChartState message={resolveAnalyticsStateMessage(wellbeingState, t)} />
+        )
+      }
+    </MeasuredChartCard>
+  );
+}
+
+export function DashboardBodyMetricsAnalyticsCard({
+  analytics,
+  translations,
+  unitSystem,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+  unitSystem: UnitSystem;
+}) {
+  const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'), { noSsr: true });
+  const t = translations.dashboard;
+  const dailyT = translations.dailyReports;
+  const bodyMetricsSource = isMobile
+    ? analytics.bodyMetrics.slice(-MOBILE_BODY_METRICS_DAYS)
+    : analytics.bodyMetrics;
+  const bodyMetricsState = resolveBodyMetricsState(bodyMetricsSource);
+  const bodyMetricsDataset = bodyMetricsSource.map((point) => ({
+    ...point,
+    bodyWeightKg:
+      point.bodyWeightKg == null
+        ? null
+        : convertBodyWeightForChart(point.bodyWeightKg, unitSystem).value,
+  }));
+  const bodyWeightUnit = resolveBodyWeightChartUnit(unitSystem);
+  const bodyWeightLabel = buildChartUnitLabel(
+    dailyT.bodyWeightLabel,
+    bodyWeightUnit,
+  );
+
+  return (
+    <MeasuredChartCard
+      chartViewLabel={t.chartViewLabel}
+      minChartHeight={isMobile ? 400 : 456}
+      minChartWidth={BODY_METRICS_MIN_CHART_WIDTH_PX}
+      renderTable={() => (
+        <AnalyticsDataGrid
+          columns={buildBodyMetricsColumns(dailyT, t, bodyWeightLabel)}
+          emptyMessage={t.noChartData}
+          rows={buildBodyMetricsRows(bodyMetricsDataset)}
+          title={t.bodyMetricsChart}
+        />
+      )}
+      tableViewLabel={t.tableViewLabel}
+      title={t.bodyMetricsChart}
+    >
+      {(chartHeight) =>
+        bodyMetricsState === 'ready' ? (
+          <Stack spacing={2}>
+            <LineChart
+              dataset={bodyMetricsDataset}
+              height={resolveBodyMetricsChartHeight(chartHeight)}
+              series={[{ dataKey: 'bodyWeightKg', label: bodyWeightLabel }]}
+              skipAnimation
+              xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+            />
+            <LineChart
+              dataset={bodyMetricsDataset}
+              height={resolveBodyMetricsChartHeight(chartHeight)}
+              series={[
+                {
+                  dataKey: 'restingHeartRate',
+                  label: dailyT.restingHeartRateLabel,
+                },
+              ]}
+              skipAnimation
+              xAxis={[{ dataKey: 'label', scaleType: 'point' }]}
+            />
+          </Stack>
+        ) : (
+          <EmptyChartState message={resolveAnalyticsStateMessage(bodyMetricsState, t)} />
+        )
+      }
+    </MeasuredChartCard>
+  );
+}
+
+export function DashboardWorkoutVolumeAnalyticsCard({
+  analytics,
+  translations,
+}: {
+  analytics: DashboardAnalytics;
+  translations: TranslationDictionary;
+}) {
+  const isMobile = useMediaQuery(useTheme().breakpoints.down('sm'), { noSsr: true });
+  const t = translations.dashboard;
+  const workoutVolumeDataset = isMobile
+    ? analytics.workoutVolume.slice(-MOBILE_WORKOUT_VOLUME_WEEKS)
+    : analytics.workoutVolume;
+  const defaultWorkoutVolumeMuscleGroups = isMobile
+    ? analytics.workoutVolumeMuscleGroups.slice(0, MOBILE_WORKOUT_VOLUME_SERIES)
+    : analytics.workoutVolumeMuscleGroups.slice(0, 6);
+  const [showAllWorkoutVolumeGroups, setShowAllWorkoutVolumeGroups] = useState(false);
+  const workoutVolumeChartMuscleGroups = defaultWorkoutVolumeMuscleGroups;
+  const workoutVolumeMuscleGroups = showAllWorkoutVolumeGroups
+    ? analytics.workoutVolumeMuscleGroups
+    : defaultWorkoutVolumeMuscleGroups;
+  const workoutVolumeState = resolveWorkoutVolumeState(
+    workoutVolumeDataset,
+    workoutVolumeChartMuscleGroups,
+  );
+
+  return (
+    <MeasuredChartCard
+      chartViewLabel={t.chartViewLabel}
+      minChartHeight={isMobile ? 232 : 280}
+      minChartWidth={WORKOUT_VOLUME_MIN_CHART_WIDTH_PX}
+      renderTable={() => (
+        <Stack spacing={1.5}>
+          {analytics.workoutVolumeMuscleGroups.length >
+          defaultWorkoutVolumeMuscleGroups.length ? (
+            <Button
+              onClick={() => setShowAllWorkoutVolumeGroups((current) => !current)}
+              size='small'
+              sx={{ alignSelf: 'flex-start' }}
+              variant='outlined'
+            >
+              {showAllWorkoutVolumeGroups ? t.showLessLabel : t.showAllLabel}
+            </Button>
+          ) : null}
+          <AnalyticsDataGrid
+            columns={buildWorkoutVolumeColumns(
+              workoutVolumeMuscleGroups,
+              analytics.workoutVolumeMuscleGroupLabels,
+              t,
+            )}
+            emptyMessage={t.noChartData}
+            rows={buildWorkoutVolumeRows(
+              workoutVolumeDataset,
+              workoutVolumeMuscleGroups,
+            )}
+            title={t.workoutVolumeChart}
+          />
+        </Stack>
+      )}
+      tableViewLabel={t.tableViewLabel}
+      title={t.workoutVolumeChart}
+    >
+      {(chartHeight) =>
+        workoutVolumeState === 'ready' ? (
+          <BarChart
+            dataset={workoutVolumeDataset}
+            height={chartHeight}
+            series={workoutVolumeChartMuscleGroups.map((muscleGroup) => ({
+              dataKey: muscleGroup,
+              label: analytics.workoutVolumeMuscleGroupLabels[muscleGroup],
+            }))}
+            skipAnimation
+            sx={{
+              '& .MuiChartsSurface-root': {
+                backgroundColor: 'transparent',
+              },
+            }}
+            xAxis={[{ dataKey: 'label', scaleType: 'band' }]}
+          />
+        ) : (
+          <EmptyChartState message={resolveAnalyticsStateMessage(workoutVolumeState, t)} />
+        )
+      }
+    </MeasuredChartCard>
   );
 }
 

@@ -69,6 +69,13 @@ describe('DashboardHome', () => {
             pectorals: 'Pectorals',
             lats: 'Lats',
           },
+          summaryMetrics: {
+            bmi: { value: 24.8, category: 'normal' },
+            proteinPerKgBodyWeight: { value: 2.1 },
+            hydrationAdherenceTrend: { currentRate: 71, previousRate: 57 },
+            sleepConsistency: { currentRate: 86, previousRate: 71 },
+            macroAdherenceScore: { currentRate: 78, previousRate: 64 },
+          },
         }}
         dailyReportCount={1}
         layout={resolveDashboardLayout([])}

@@ -109,6 +109,16 @@ export interface TranslationDictionary {
     periodLabel: string;
     quickStatusTitle: string;
     analysisDesktopOnly: string;
+    summaryMetricsTitle: string;
+    bodyMassIndexLabel: string;
+    proteinPerKgBodyWeightLabel: string;
+    hydrationAdherenceTrendLabel: string;
+    sleepConsistencyLabel: string;
+    macroAdherenceScoreLabel: string;
+    bmiCategoryUnderweight: string;
+    bmiCategoryNormal: string;
+    bmiCategoryOverweight: string;
+    bmiCategoryObesity: string;
     versusPreviousLabel: string;
     showAllLabel: string;
     showLessLabel: string;

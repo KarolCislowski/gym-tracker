@@ -187,6 +187,23 @@ describe('dashboard-analytics', () => {
           isActive: true,
         },
       ],
+      {
+        profile: {
+          email: 'user@test.com',
+          firstName: 'John',
+          lastName: 'Doe',
+          birthDate: null,
+          age: null,
+          favoriteExerciseSlugs: [],
+          location: null,
+          heightCm: 180,
+          gender: null,
+          activityLevel: null,
+        },
+        settings: null,
+        healthyHabits: null,
+        favoriteExerciseSlugs: [],
+      },
     );
 
     expect(analytics.goalCompliance).toHaveLength(2);
@@ -202,5 +219,13 @@ describe('dashboard-analytics', () => {
     ]);
     expect(analytics.workoutVolume[0]?.quadriceps).toBe(10);
     expect(analytics.workoutVolume[0]?.pectorals).toBe(8);
+    expect(analytics.summaryMetrics.bmi).toEqual({
+      value: 25.3,
+      category: 'overweight',
+    });
+    expect(analytics.summaryMetrics.proteinPerKgBodyWeight.value).toBe(2);
+    expect(analytics.summaryMetrics.hydrationAdherenceTrend.currentRate).toBe(100);
+    expect(analytics.summaryMetrics.sleepConsistency.currentRate).toBe(100);
+    expect(analytics.summaryMetrics.macroAdherenceScore.currentRate).toBe(100);
   });
 });

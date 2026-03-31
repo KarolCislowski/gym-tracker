@@ -132,6 +132,42 @@ export function DashboardAnalyticsMobileSummaryWidget({
                 : resolveAnalyticsStateMessage(workoutVolumeState, t)
             }
           />
+          <SummaryRow
+            label={t.bodyMassIndexLabel}
+            value={formatBmiMetric(analytics, translations)}
+          />
+          <SummaryRow
+            label={t.proteinPerKgBodyWeightLabel}
+            value={formatScalarMetric(
+              analytics.summaryMetrics.proteinPerKgBodyWeight.value,
+              ' g/kg',
+              t.noChartData,
+            )}
+          />
+          <SummaryRow
+            label={t.hydrationAdherenceTrendLabel}
+            value={formatRateTrendMetric(
+              analytics.summaryMetrics.hydrationAdherenceTrend.currentRate,
+              analytics.summaryMetrics.hydrationAdherenceTrend.previousRate,
+              translations,
+            )}
+          />
+          <SummaryRow
+            label={t.sleepConsistencyLabel}
+            value={formatRateTrendMetric(
+              analytics.summaryMetrics.sleepConsistency.currentRate,
+              analytics.summaryMetrics.sleepConsistency.previousRate,
+              translations,
+            )}
+          />
+          <SummaryRow
+            label={t.macroAdherenceScoreLabel}
+            value={formatRateTrendMetric(
+              analytics.summaryMetrics.macroAdherenceScore.currentRate,
+              analytics.summaryMetrics.macroAdherenceScore.previousRate,
+              translations,
+            )}
+          />
         </Stack>
       </Stack>
     </DashboardAnalyticsCard>
@@ -172,6 +208,66 @@ function formatGoalCompliance(
     .filter((value) => value === 1).length;
 
   return `${totalMet}/5`;
+}
+
+function formatBmiMetric(
+  analytics: DashboardAnalytics,
+  translations: TranslationDictionary,
+): string {
+  const bmi = analytics.summaryMetrics.bmi;
+
+  if (bmi.value == null || bmi.category == null) {
+    return translations.dashboard.noChartData;
+  }
+
+  return `${bmi.value} · ${resolveBmiCategoryLabel(bmi.category, translations)}`;
+}
+
+function resolveBmiCategoryLabel(
+  category: NonNullable<DashboardAnalytics['summaryMetrics']['bmi']['category']>,
+  translations: TranslationDictionary,
+): string {
+  switch (category) {
+    case 'underweight':
+      return translations.dashboard.bmiCategoryUnderweight;
+    case 'normal':
+      return translations.dashboard.bmiCategoryNormal;
+    case 'overweight':
+      return translations.dashboard.bmiCategoryOverweight;
+    case 'obesity':
+      return translations.dashboard.bmiCategoryObesity;
+  }
+}
+
+function formatScalarMetric(
+  value: number | null,
+  unitSuffix: string,
+  emptyLabel: string,
+): string {
+  if (value == null) {
+    return emptyLabel;
+  }
+
+  return `${value}${unitSuffix}`.trim();
+}
+
+function formatRateTrendMetric(
+  current: number | null,
+  previous: number | null,
+  translations: TranslationDictionary,
+): string {
+  if (current == null) {
+    return translations.dashboard.noChartData;
+  }
+
+  if (previous == null) {
+    return `${current}%`;
+  }
+
+  const delta = current - previous;
+  const formattedDelta = delta === 0 ? '0' : `${delta > 0 ? '+' : ''}${delta}`;
+
+  return `${current}% (${formattedDelta}% ${translations.dashboard.versusPreviousLabel})`;
 }
 
 function computeWellbeingAverage(

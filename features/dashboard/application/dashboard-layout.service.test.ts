@@ -13,13 +13,19 @@ describe('resolveDashboardLayout', () => {
       'healthy_habits',
       'favorite_exercises',
       'settings',
-      'analytics',
+      'analytics_goal_compliance',
+      'analytics_summary_metrics',
+      'analytics_wellbeing',
+      'analytics_body_metrics',
+      'analytics_workout_volume',
     ]);
-    expect(result.find((item) => item.widgetId === 'analytics')).toMatchObject({
-      sizePreset: 'wide',
+    expect(
+      result.find((item) => item.widgetId === 'analytics_goal_compliance'),
+    ).toMatchObject({
+      sizePreset: 'regular',
       tone: 'neutral',
-      cols: { xs: 1, md: 6, xl: 12 },
-      rows: { xs: 1, md: 1, xl: 2 },
+      cols: { xs: 1, md: 3, xl: 6 },
+      rows: { xs: 1, md: 1, xl: 1 },
     });
   });
 
@@ -52,6 +58,44 @@ describe('resolveDashboardLayout', () => {
       tone: 'accent',
       cols: { xs: 1, md: 3, xl: 4 },
       rows: { xs: 1, md: 1, xl: 2 },
+    });
+  });
+
+  test('migrates the legacy analytics widget into separate analytics cards', () => {
+    const result = resolveDashboardLayout([
+      {
+        widgetId: 'analytics',
+        visible: true,
+        order: 6,
+        sizePreset: 'hero',
+        tone: 'neutral',
+      },
+    ]);
+
+    expect(result.map((item) => item.widgetId)).toEqual([
+      'overview',
+      'next_action',
+      'profile',
+      'healthy_habits',
+      'favorite_exercises',
+      'settings',
+      'analytics_goal_compliance',
+      'analytics_summary_metrics',
+      'analytics_wellbeing',
+      'analytics_body_metrics',
+      'analytics_workout_volume',
+    ]);
+    expect(
+      result.find((item) => item.widgetId === 'analytics_goal_compliance'),
+    ).toMatchObject({
+      visible: true,
+      order: 6,
+    });
+    expect(
+      result.find((item) => item.widgetId === 'analytics_workout_volume'),
+    ).toMatchObject({
+      visible: true,
+      order: 10,
     });
   });
 });
