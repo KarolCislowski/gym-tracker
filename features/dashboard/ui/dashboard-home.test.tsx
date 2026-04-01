@@ -77,6 +77,41 @@ describe('DashboardHome', () => {
             macroAdherenceScore: { currentRate: 78, previousRate: 64 },
           },
         }}
+        dailyReports={[
+          {
+            id: 'daily-report-1',
+            reportDate: '2026-03-21T00:00:00.000Z',
+            actuals: {
+              sleepHours: 7.5,
+              sleepScheduleKept: true,
+              steps: 9000,
+              waterLiters: 2,
+              proteinGrams: 150,
+              strengthWorkoutDone: true,
+              cardioMinutes: 15,
+            },
+            body: {
+              bodyWeightKg: 81.5,
+              restingHeartRate: 54,
+            },
+            completion: {
+              sleepGoalMet: true,
+              stepsGoalMet: true,
+              waterGoalMet: true,
+              proteinGoalMet: true,
+              cardioGoalMet: false,
+            },
+            wellbeing: {
+              mood: 4,
+              energy: 4,
+              stress: 2,
+              soreness: 2,
+              libido: null,
+              motivation: 4,
+              recovery: 4,
+            },
+          },
+        ]}
         dailyReportCount={1}
         layout={resolveDashboardLayout([])}
         favoriteExercises={[
@@ -199,6 +234,18 @@ describe('DashboardHome', () => {
           },
           favoriteExerciseSlugs: [],
         }}
+        workoutSessions={[
+          {
+            id: 'workout-1',
+            workoutName: 'Upper body',
+            performedAt: '2026-03-21T16:00:00.000Z',
+            durationMinutes: 75,
+            notes: null,
+            blockCount: 2,
+            exerciseCount: 6,
+            setCount: 18,
+          },
+        ]}
         workoutReportCount={1}
       />,
     );
@@ -217,7 +264,7 @@ describe('DashboardHome', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
     expect(screen.getByText('Stockholm, Sweden')).toBeInTheDocument();
-    expect(screen.getByText('31')).toBeInTheDocument();
+    expect(screen.getAllByText('31').length).toBeGreaterThan(0);
     expect(screen.getByText('5 ft 11 in')).toBeInTheDocument();
     expect(screen.getByText('Male')).toBeInTheDocument();
     expect(screen.getByText('Moderately active')).toBeInTheDocument();
@@ -232,6 +279,7 @@ describe('DashboardHome', () => {
     expect(screen.getByRole('heading', { name: 'My favorite exercises' })).toBeInTheDocument();
     expect(screen.getByText('Bench Press')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'View details: Bench Press' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Activity calendar' })).toBeInTheDocument();
     expect(
       screen.getAllByRole('link', { name: 'Go to profile' }),
     ).toHaveLength(2);

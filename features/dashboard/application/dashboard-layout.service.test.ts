@@ -13,6 +13,7 @@ describe('resolveDashboardLayout', () => {
       'healthy_habits',
       'favorite_exercises',
       'settings',
+      'activity_calendar',
       'analytics_goal_compliance',
       'analytics_summary_metrics',
       'analytics_wellbeing',
@@ -79,6 +80,7 @@ describe('resolveDashboardLayout', () => {
       'healthy_habits',
       'favorite_exercises',
       'settings',
+      'activity_calendar',
       'analytics_goal_compliance',
       'analytics_summary_metrics',
       'analytics_wellbeing',
@@ -89,13 +91,13 @@ describe('resolveDashboardLayout', () => {
       result.find((item) => item.widgetId === 'analytics_goal_compliance'),
     ).toMatchObject({
       visible: true,
-      order: 6,
+      order: 7,
     });
     expect(
       result.find((item) => item.widgetId === 'analytics_workout_volume'),
     ).toMatchObject({
       visible: true,
-      order: 10,
+      order: 11,
     });
   });
 });

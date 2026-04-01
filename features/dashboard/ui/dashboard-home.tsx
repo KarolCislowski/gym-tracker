@@ -1,8 +1,13 @@
 import { Stack } from '@mui/material';
 
 import type { AuthenticatedUserSnapshot } from '@/features/auth/domain/auth.types';
+import type { DailyReportSummary } from '@/features/daily-reports/domain/daily-report.types';
 import type { Exercise } from '@/features/exercises/domain/exercise.types';
-import type { TranslationDictionary } from '@/shared/i18n/domain/i18n.types';
+import type { WorkoutSessionSummary } from '@/features/workouts/domain/workout.types';
+import type {
+  SupportedLanguage,
+  TranslationDictionary,
+} from '@/shared/i18n/domain/i18n.types';
 
 import type { DashboardAnalytics } from '../application/dashboard-analytics';
 import type { ResolvedDashboardLayoutItem } from '../domain/dashboard-layout.types';
@@ -19,6 +24,7 @@ import {
   DashboardWorkoutVolumeAnalyticsCard,
 } from './widgets/dashboard-analytics-expanded-charts';
 import { DashboardFavoriteExercisesWidget } from './widgets/dashboard-favorite-exercises-widget';
+import { DashboardActivityCalendarWidget } from './widgets/dashboard-activity-calendar-widget';
 import { DashboardHealthyHabitsWidget } from './widgets/dashboard-healthy-habits-widget';
 import { DashboardNextActionWidget } from './widgets/dashboard-next-action-widget';
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
@@ -28,6 +34,7 @@ import { DashboardGrid, DashboardGridItem } from './layout/dashboard-grid';
 
 interface DashboardHomeProps {
   analytics: DashboardAnalytics;
+  dailyReports: DailyReportSummary[];
   dailyReportCount: number;
   error?: string;
   favoriteExercises: Exercise[];
@@ -36,6 +43,7 @@ interface DashboardHomeProps {
   status?: string;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
+  workoutSessions: WorkoutSessionSummary[];
   workoutReportCount: number;
 }
 
@@ -44,6 +52,7 @@ interface DashboardHomeProps {
  */
 export function DashboardHome({
   analytics,
+  dailyReports,
   dailyReportCount,
   error,
   favoriteExercises,
@@ -52,6 +61,7 @@ export function DashboardHome({
   status,
   translations,
   userSnapshot,
+  workoutSessions,
   workoutReportCount,
 }: DashboardHomeProps) {
   const visibleLayout = layout.filter((item) => item.visible);
@@ -68,12 +78,14 @@ export function DashboardHome({
         {visibleLayout.map((item) => {
           const widget = renderDashboardWidget({
             analytics,
+            dailyReports,
             dailyReportCount,
             favoriteExercises,
             item,
             nextAction,
             translations,
             userSnapshot,
+            workoutSessions,
             workoutReportCount,
           });
 
@@ -94,23 +106,27 @@ export function DashboardHome({
 
 interface RenderDashboardWidgetArgs {
   analytics: DashboardAnalytics;
+  dailyReports: DailyReportSummary[];
   dailyReportCount: number;
   favoriteExercises: Exercise[];
   item: ResolvedDashboardLayoutItem;
   nextAction: DashboardNextAction;
   translations: TranslationDictionary;
   userSnapshot: AuthenticatedUserSnapshot | null;
+  workoutSessions: WorkoutSessionSummary[];
   workoutReportCount: number;
 }
 
 function renderDashboardWidget({
   analytics,
+  dailyReports,
   dailyReportCount,
   favoriteExercises,
   item,
   nextAction,
   translations,
   userSnapshot,
+  workoutSessions,
   workoutReportCount,
 }: RenderDashboardWidgetArgs) {
   switch (item.widgetId) {
@@ -166,6 +182,15 @@ function renderDashboardWidget({
           translations={translations.dashboard}
         />
       ) : null;
+    case 'activity_calendar':
+      return (
+        <DashboardActivityCalendarWidget
+          dailyReports={dailyReports}
+          language={(userSnapshot?.settings?.language as SupportedLanguage) ?? 'en'}
+          translations={translations.dashboard}
+          workoutSessions={workoutSessions}
+        />
+      );
     case 'analytics_goal_compliance':
       return (
         <DashboardGoalComplianceAnalyticsCard

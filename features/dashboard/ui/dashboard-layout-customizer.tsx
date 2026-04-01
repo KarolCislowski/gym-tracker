@@ -243,6 +243,8 @@ function getDashboardWidgetLabel(
       return t.favoriteExercises;
     case 'settings':
       return t.settings;
+    case 'activity_calendar':
+      return t.activityCalendarTitle;
     case 'analytics_goal_compliance':
       return t.goalComplianceChart;
     case 'analytics_summary_metrics':

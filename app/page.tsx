@@ -80,6 +80,7 @@ export default async function Page({ searchParams }: HomePageProps) {
     return (
       <DashboardHome
         analytics={analytics}
+        dailyReports={dailyReports}
         dailyReportCount={dailyReports.length}
         error={resolvedSearchParams?.error}
         favoriteExercises={favoriteExercises}
@@ -88,6 +89,7 @@ export default async function Page({ searchParams }: HomePageProps) {
         status={resolvedSearchParams?.status}
         translations={t}
         userSnapshot={userSnapshot}
+        workoutSessions={workoutSessions}
         workoutReportCount={workoutSessions.length}
       />
     );

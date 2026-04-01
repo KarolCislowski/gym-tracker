@@ -89,9 +89,24 @@ export const dashboardWidgetRegistry = {
       compact: { cols: 3, rows: 1 },
     },
   },
-  analytics_goal_compliance: {
+  activity_calendar: {
     allowedTones: ['neutral'] as const,
     defaultOrder: 6,
+    defaultTone: 'neutral' as const,
+    defaultVisible: true,
+    mdCols: 4,
+    mdRows: 1,
+    pinned: false,
+    removable: true,
+    sizePresets: {
+      regular: { cols: 5, rows: 1 },
+      wide: { cols: 6, rows: 1 },
+      tall: { cols: 5, rows: 2 },
+    },
+  },
+  analytics_goal_compliance: {
+    allowedTones: ['neutral'] as const,
+    defaultOrder: 7,
     defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 3,
@@ -105,7 +120,7 @@ export const dashboardWidgetRegistry = {
   },
   analytics_summary_metrics: {
     allowedTones: ['neutral'] as const,
-    defaultOrder: 7,
+    defaultOrder: 8,
     defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 3,
@@ -119,7 +134,7 @@ export const dashboardWidgetRegistry = {
   },
   analytics_wellbeing: {
     allowedTones: ['neutral'] as const,
-    defaultOrder: 8,
+    defaultOrder: 9,
     defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,
@@ -133,7 +148,7 @@ export const dashboardWidgetRegistry = {
   },
   analytics_body_metrics: {
     allowedTones: ['neutral'] as const,
-    defaultOrder: 9,
+    defaultOrder: 10,
     defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,
@@ -147,7 +162,7 @@ export const dashboardWidgetRegistry = {
   },
   analytics_workout_volume: {
     allowedTones: ['neutral'] as const,
-    defaultOrder: 10,
+    defaultOrder: 11,
     defaultTone: 'neutral' as const,
     defaultVisible: true,
     mdCols: 6,

@@ -92,6 +92,16 @@ export interface TranslationDictionary {
     settingsUnitSystem: string;
     settingsTheme: string;
     healthyHabits: string;
+    activityCalendarTitle: string;
+    activityCalendarDescription: string;
+    activityCalendarEmptyDay: string;
+    activityCalendarNoEntries: string;
+    activityCalendarDailyReportLabel: string;
+    activityCalendarWorkoutReportsLabel: string;
+    activityCalendarOpenDailyReport: string;
+    activityCalendarOpenWorkout: string;
+    activityCalendarPreviousMonth: string;
+    activityCalendarNextMonth: string;
     themeDark: string;
     themeLight: string;
     unitSystemMetric: string;
