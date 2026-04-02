@@ -18,17 +18,10 @@ interface DashboardAnalyticsCardProps {
  */
 export function DashboardAnalyticsCard({
   children,
-  height = 'regular',
+  height: _height = 'regular',
 }: DashboardAnalyticsCardProps) {
   return (
     <AppCard
-      minHeight={
-        height === 'hero'
-          ? { xs: 300, md: 340 }
-          : height === 'regular'
-            ? { xs: 220, md: 240 }
-            : undefined
-      }
       padding='md'
       radius='lg'
       tone='standard'

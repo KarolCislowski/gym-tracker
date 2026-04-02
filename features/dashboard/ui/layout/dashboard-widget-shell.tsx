@@ -29,13 +29,12 @@ interface DashboardWidgetShellProps {
 export function DashboardWidgetShell({
   children,
   density = 'feature',
-  height = 'auto',
+  height: _height = 'auto',
   onboardingId,
   tone: _tone = 'neutral',
 }: DashboardWidgetShellProps) {
   return (
     <AppCard
-      minHeight={getWidgetMinHeight(height, density)}
       onboardingId={onboardingId}
       padding={getDensityPadding(density)}
       radius={getDensityRadius(density)}
@@ -70,38 +69,5 @@ function getDensityRadius(density: DashboardWidgetDensity) {
     case 'feature':
     default:
       return 'lg';
-  }
-}
-
-function getDensityMinHeight(density: DashboardWidgetDensity) {
-  switch (density) {
-    case 'hero':
-      return { xs: 280, md: 320 };
-    case 'summary':
-      return 280;
-    case 'dense':
-      return 180;
-    case 'feature':
-    default:
-      return 240;
-  }
-}
-
-function getWidgetMinHeight(
-  height: DashboardWidgetHeight,
-  density: DashboardWidgetDensity,
-) {
-  switch (height) {
-    case 'compact':
-      return 180;
-    case 'regular':
-      return { xs: 220, md: 240 };
-    case 'tall':
-      return { xs: 260, md: 320 };
-    case 'hero':
-      return { xs: 300, md: 340 };
-    case 'auto':
-    default:
-      return getDensityMinHeight(density);
   }
 }

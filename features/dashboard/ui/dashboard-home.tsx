@@ -30,7 +30,7 @@ import { DashboardNextActionWidget } from './widgets/dashboard-next-action-widge
 import { DashboardOverviewWidget } from './widgets/dashboard-overview-widget';
 import { DashboardProfileWidget } from './widgets/dashboard-profile-widget';
 import { DashboardSettingsWidget } from './widgets/dashboard-settings-widget';
-import { DashboardGrid, DashboardGridItem } from './layout/dashboard-grid';
+import { DashboardMasonryLayout } from './layout/dashboard-masonry-layout';
 
 interface DashboardHomeProps {
   analytics: DashboardAnalytics;
@@ -65,6 +65,48 @@ export function DashboardHome({
   workoutReportCount,
 }: DashboardHomeProps) {
   const visibleLayout = layout.filter((item) => item.visible);
+  const featuredItems = visibleLayout
+    .filter((item) => item.pinned)
+    .map((item) =>
+      renderDashboardWidget({
+        analytics,
+        dailyReports,
+        dailyReportCount,
+        favoriteExercises,
+        item,
+        nextAction,
+        translations,
+        userSnapshot,
+        workoutSessions,
+        workoutReportCount,
+      }),
+    )
+    .filter((widget): widget is NonNullable<typeof widget> => widget != null);
+  const masonryItems = visibleLayout
+    .filter((item) => !item.pinned)
+    .map((item) => ({
+      id: item.widgetId,
+      content: renderDashboardWidget({
+        analytics,
+        dailyReports,
+        dailyReportCount,
+        favoriteExercises,
+        item,
+        nextAction,
+        translations,
+        userSnapshot,
+        workoutSessions,
+        workoutReportCount,
+      }),
+    }))
+    .filter(
+      (
+        item,
+      ): item is {
+        content: NonNullable<typeof item.content>;
+        id: typeof item.id;
+      } => item.content != null,
+    );
 
   return (
     <Stack spacing={3}>
@@ -74,32 +116,7 @@ export function DashboardHome({
         status={status}
         translations={translations}
       />
-      <DashboardGrid>
-        {visibleLayout.map((item) => {
-          const widget = renderDashboardWidget({
-            analytics,
-            dailyReports,
-            dailyReportCount,
-            favoriteExercises,
-            item,
-            nextAction,
-            translations,
-            userSnapshot,
-            workoutSessions,
-            workoutReportCount,
-          });
-
-          if (!widget) {
-            return null;
-          }
-
-          return (
-            <DashboardGridItem key={item.widgetId} cols={item.cols} rows={item.rows}>
-              {widget}
-            </DashboardGridItem>
-          );
-        })}
-      </DashboardGrid>
+      <DashboardMasonryLayout featuredItems={featuredItems} items={masonryItems} />
     </Stack>
   );
 }

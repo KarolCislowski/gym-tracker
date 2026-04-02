@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { enMessages } from '@/shared/i18n/infrastructure/messages/en';
@@ -12,6 +13,26 @@ import { DashboardHome } from './dashboard-home';
 
 vi.mock('./dashboard-layout-customizer', () => ({
   DashboardLayoutCustomizer: () => <button type='button'>Customize dashboard</button>,
+}));
+
+vi.mock('masonic', () => ({
+  Masonry: ({
+    items,
+    render: RenderItem,
+  }: {
+    items: Array<{ content: ReactNode; id: string }>;
+    render: (props: {
+      data: { content: ReactNode; id: string };
+      index: number;
+      width: number;
+    }) => ReactNode;
+  }) => (
+    <div data-testid='dashboard-masonry'>
+      {items.map((item, index) => (
+        <div key={item.id}>{RenderItem({ data: item, index, width: 360 })}</div>
+      ))}
+    </div>
+  ),
 }));
 
 describe('DashboardHome', () => {
