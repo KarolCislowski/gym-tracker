@@ -1,3 +1,6 @@
+/**
+ * Visual tone tokens available to dashboard widgets that opt into theme differentiation.
+ */
 export const dashboardWidgetTones = [
   'accent',
   'glass',
@@ -5,8 +8,14 @@ export const dashboardWidgetTones = [
   'soft',
 ] as const;
 
+/**
+ * Union of allowed dashboard widget tone values.
+ */
 export type DashboardWidgetTone = (typeof dashboardWidgetTones)[number];
 
+/**
+ * Registry describing the supported dashboard widgets, their default order, and available size presets.
+ */
 export const dashboardWidgetRegistry = {
   overview: {
     allowedTones: ['neutral'] as const,
@@ -176,20 +185,35 @@ export const dashboardWidgetRegistry = {
   },
 } as const;
 
+/**
+ * Identifier union for every widget currently supported by the dashboard registry.
+ */
 export type DashboardWidgetId = keyof typeof dashboardWidgetRegistry;
 
+/**
+ * Union of all size preset names used across the dashboard widget registry.
+ */
 export type DashboardWidgetSizePreset = {
   [K in DashboardWidgetId]: keyof (typeof dashboardWidgetRegistry)[K]['sizePresets'];
 }[DashboardWidgetId];
 
+/**
+ * Union of all tone values allowed by at least one dashboard widget.
+ */
 export type DashboardWidgetAllowedTone = {
   [K in DashboardWidgetId]: (typeof dashboardWidgetRegistry)[K]['allowedTones'][number];
 }[DashboardWidgetId];
 
+/**
+ * Ordered list of dashboard widget identifiers derived from the registry object.
+ */
 export const dashboardWidgetIds = Object.keys(
   dashboardWidgetRegistry,
 ) as DashboardWidgetId[];
 
+/**
+ * Ordered union-backed list of every distinct widget size preset available in the dashboard.
+ */
 export const dashboardWidgetSizePresets = Array.from(
   new Set(
     dashboardWidgetIds.flatMap((widgetId) =>

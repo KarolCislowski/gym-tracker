@@ -7,6 +7,9 @@ import type {
 } from '@/features/exercises/domain/exercise.types';
 import type { ProfileLocationInput } from '@/features/profile/domain/profile.types';
 
+/**
+ * Weather context captured for a workout session when outdoor or contextual data is available.
+ */
 export interface WorkoutWeatherSnapshotInput {
   provider: string;
   temperatureC: number | null;
@@ -18,6 +21,9 @@ export interface WorkoutWeatherSnapshotInput {
   capturedAt: Date;
 }
 
+/**
+ * Logged set data for a single exercise entry inside a workout report.
+ */
 export interface ExerciseSetInput {
   order: number;
   reps: number | null;
@@ -34,6 +40,9 @@ export interface ExerciseSetInput {
   completedAt: Date | null;
 }
 
+/**
+ * Logged exercise entry carrying variant choices, notes, rest, and performed sets.
+ */
 export interface ExerciseEntryInput {
   order: number;
   exerciseId: string;
@@ -49,6 +58,9 @@ export interface ExerciseEntryInput {
   sets: ExerciseSetInput[];
 }
 
+/**
+ * Structured workout block grouping one or more exercise entries.
+ */
 export interface WorkoutBlockInput {
   order: number;
   type: 'single' | 'superset' | 'circuit' | 'dropset';
@@ -58,6 +70,9 @@ export interface WorkoutBlockInput {
   entries: ExerciseEntryInput[];
 }
 
+/**
+ * Template-level exercise entry without performed set data.
+ */
 export interface WorkoutTemplateEntryInput {
   order: number;
   exerciseId: string;
@@ -70,6 +85,9 @@ export interface WorkoutTemplateEntryInput {
   restAfterEntrySec: number | null;
 }
 
+/**
+ * Template-level workout block used when saving reusable workout structures.
+ */
 export interface WorkoutTemplateBlockInput {
   order: number;
   type: 'single' | 'superset' | 'circuit' | 'dropset';
@@ -79,6 +97,9 @@ export interface WorkoutTemplateBlockInput {
   entries: WorkoutTemplateEntryInput[];
 }
 
+/**
+ * Full payload used when creating a persisted workout session.
+ */
 export interface CreateWorkoutSessionInput {
   tenantDbName: string;
   userId: string;
@@ -93,10 +114,16 @@ export interface CreateWorkoutSessionInput {
   blocks: WorkoutBlockInput[];
 }
 
+/**
+ * Update payload for an existing workout session.
+ */
 export interface UpdateWorkoutSessionInput extends CreateWorkoutSessionInput {
   reportId: string;
 }
 
+/**
+ * Full payload used when creating a reusable workout template.
+ */
 export interface CreateWorkoutTemplateInput {
   tenantDbName: string;
   userId: string;
@@ -105,10 +132,16 @@ export interface CreateWorkoutTemplateInput {
   blocks: WorkoutTemplateBlockInput[];
 }
 
+/**
+ * Update payload for an existing workout template.
+ */
 export interface UpdateWorkoutTemplateInput extends CreateWorkoutTemplateInput {
   templateId: string;
 }
 
+/**
+ * Persistence-facing workout template payload without tenant metadata.
+ */
 export interface CreateWorkoutTemplateRecordInput {
   userId: string;
   name: string;
@@ -116,6 +149,9 @@ export interface CreateWorkoutTemplateRecordInput {
   blocks: WorkoutTemplateBlockInput[];
 }
 
+/**
+ * Persistence-facing workout session payload without tenant metadata.
+ */
 export interface CreateWorkoutSessionRecordInput {
   userId: string;
   workoutName: string;
@@ -129,6 +165,9 @@ export interface CreateWorkoutSessionRecordInput {
   blocks: WorkoutBlockInput[];
 }
 
+/**
+ * Lightweight workout-session projection used in history lists and dashboard context.
+ */
 export interface WorkoutSessionSummary {
   id: string;
   workoutName: string;
@@ -140,6 +179,9 @@ export interface WorkoutSessionSummary {
   setCount: number;
 }
 
+/**
+ * Fully expanded workout-session projection used by report details and editing flows.
+ */
 export interface WorkoutSessionDetails {
   id: string;
   workoutName: string;
@@ -153,6 +195,9 @@ export interface WorkoutSessionDetails {
   blocks: WorkoutBlockInput[];
 }
 
+/**
+ * Prefilled workout draft produced when duplicating an existing report into a new create flow.
+ */
 export interface WorkoutSessionDuplicateDraft {
   workoutName: string;
   startedAt: string | null;
@@ -164,18 +209,27 @@ export interface WorkoutSessionDuplicateDraft {
   blocks: WorkoutBlockInput[];
 }
 
+/**
+ * Aggregated analytics entry representing one exercised movement inside a session.
+ */
 export interface WorkoutSessionAnalyticsEntry {
   exerciseSlug: string;
   variantId: string | null;
   setCount: number;
 }
 
+/**
+ * Analytics-oriented workout-session projection used to build dashboard volume trends.
+ */
 export interface WorkoutSessionAnalytics {
   id: string;
   performedAt: string;
   entries: WorkoutSessionAnalyticsEntry[];
 }
 
+/**
+ * Lightweight workout-template projection used in lists and quick-start flows.
+ */
 export interface WorkoutTemplateSummary {
   id: string;
   name: string;

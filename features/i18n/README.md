@@ -26,4 +26,4 @@ Provides localized strings and language resolution for the whole application.
 - `infrastructure/messages/sv.ts`
 
 ## Notes
-New cross-feature UI should prefer adding copy here instead of hardcoding strings in components.
+New cross-feature UI should prefer adding copy here instead of hardcoding strings in components. This is especially important for dashboard widgets and form actions that now appear across multiple features.

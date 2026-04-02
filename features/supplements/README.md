@@ -26,4 +26,4 @@ Provides the supplement atlas used as the shared source of supplement definition
 - `infrastructure/supplement-atlas.seed.ts`
 
 ## Notes
-Like the exercise atlas, this is primarily a reference feature and should remain easy to scan rather than interaction-heavy.
+Like the exercise atlas, this is primarily a reference feature and should remain easy to scan rather than interaction-heavy. Its main product value is improving the quality and consistency of supplementation logging.

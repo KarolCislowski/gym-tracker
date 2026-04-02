@@ -24,4 +24,4 @@ Provides the shared application shell: header, side navigation, and top-level la
 - `ui/app-side-drawer.tsx`
 
 ## Notes
-This feature should stay thin. Business logic belongs in the feature that owns the underlying data.
+This feature should stay thin. Business logic belongs in the feature that owns the underlying data, even when the shell hosts cross-feature affordances such as onboarding replay and dashboard entry points.

@@ -1,3 +1,6 @@
+/**
+ * Supported menstrual-cycle phases captured in daily context when cycle tracking is enabled.
+ */
 export type MenstruationPhase =
   | 'menstruation'
   | 'follicular'
@@ -5,6 +8,9 @@ export type MenstruationPhase =
   | 'luteal'
   | 'unknown';
 
+/**
+ * Snapshot of the user's saved daily goals embedded into a report at creation time.
+ */
 export interface DailyGoalsSnapshotInput {
   averageSleepHoursPerDay: number | null;
   regularSleepSchedule: boolean | null;
@@ -18,6 +24,9 @@ export interface DailyGoalsSnapshotInput {
   cardioMinutesPerWeek: number | null;
 }
 
+/**
+ * Measured or reported daily execution values captured by the check-in form.
+ */
 export interface DailyActualsInput {
   sleepHours: number | null;
   sleepScheduleKept: boolean | null;
@@ -31,6 +40,9 @@ export interface DailyActualsInput {
   cardioMinutes: number | null;
 }
 
+/**
+ * Subjective daily wellbeing ratings recorded on a five-point scale.
+ */
 export interface DailyWellbeingInput {
   mood: 1 | 2 | 3 | 4 | 5 | null;
   energy: 1 | 2 | 3 | 4 | 5 | null;
@@ -41,11 +53,17 @@ export interface DailyWellbeingInput {
   recovery: 1 | 2 | 3 | 4 | 5 | null;
 }
 
+/**
+ * Daily body-state metrics captured alongside wellbeing and habit execution.
+ */
 export interface DailyBodySnapshotInput {
   bodyWeightKg: number | null;
   restingHeartRate: number | null;
 }
 
+/**
+ * Weather context captured for the report day when available.
+ */
 export interface DailyWeatherSnapshotInput {
   provider: string;
   temperatureC: number | null;
@@ -57,6 +75,9 @@ export interface DailyWeatherSnapshotInput {
   capturedAt: Date;
 }
 
+/**
+ * Qualitative daily context not covered by goals, actuals, or body metrics.
+ */
 export interface DailyContextInput {
   weatherSnapshot: DailyWeatherSnapshotInput | null;
   menstruationPhase: MenstruationPhase | null;
@@ -64,6 +85,9 @@ export interface DailyContextInput {
   notes: string | null;
 }
 
+/**
+ * Goal-completion flags derived at report creation or update time.
+ */
 export interface DailyCompletionInput {
   sleepGoalMet: boolean | null;
   stepsGoalMet: boolean | null;
@@ -75,6 +99,9 @@ export interface DailyCompletionInput {
   cardioGoalMet: boolean | null;
 }
 
+/**
+ * Full input used when creating a persisted daily report.
+ */
 export interface CreateDailyReportInput {
   tenantDbName: string;
   userId: string;
@@ -87,10 +114,16 @@ export interface CreateDailyReportInput {
   completion: DailyCompletionInput;
 }
 
+/**
+ * Update payload for an existing daily report.
+ */
 export interface UpdateDailyReportInput extends CreateDailyReportInput {
   reportId: string;
 }
 
+/**
+ * Lightweight daily report projection used in history lists, dashboard widgets, and analytics.
+ */
 export interface DailyReportSummary {
   id: string;
   reportDate: string;
@@ -100,6 +133,9 @@ export interface DailyReportSummary {
   actuals: DailyActualsInput;
 }
 
+/**
+ * Fully expanded daily report projection used by the details and editor flows.
+ */
 export interface DailyReportDetails {
   id: string;
   reportDate: string;

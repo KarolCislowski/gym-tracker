@@ -26,4 +26,4 @@ Stores the user’s target goals for recovery, hydration, nutrition, and trainin
 - `application/healthy-habits-view.ts`
 
 ## Notes
-This feature is a setup dependency for better analytics and better daily-report guidance.
+This feature is a setup dependency for better analytics, better daily-report guidance, and more useful next-action resolution on the dashboard.

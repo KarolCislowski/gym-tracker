@@ -18,6 +18,7 @@ Tracks reusable supplement stacks and the history of supplement intake reports.
 ## Main Flows
 - Build a reusable supplement stack.
 - Log a supplement intake report from a saved stack.
+- Continue, clear, or discard an in-progress stack or intake form.
 - Open stack and report details.
 - Edit or delete existing stacks and reports with confirmation.
 

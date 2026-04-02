@@ -17,6 +17,7 @@ Captures daily recovery, habits, body metrics, and context in a single structure
 
 ## Main Flows
 - Add a daily report from the mobile-first form.
+- Start a fresh report from the main composer and continue or discard an in-progress form.
 - Edit an existing report from its detail screen.
 - Review history and open report details.
 - Delete a mistaken report with confirmation.
@@ -28,4 +29,4 @@ Captures daily recovery, habits, body metrics, and context in a single structure
 - `application/daily-report.service.ts`
 
 ## Notes
-This feature is one of the core data-entry paths of the product and should remain fast and low-friction on mobile.
+This feature is one of the core data-entry paths of the product and should remain fast and low-friction on mobile. It also feeds several dashboard analytics and the activity-calendar widget, so report-date semantics and snapshot correctness matter.

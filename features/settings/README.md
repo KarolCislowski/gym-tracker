@@ -28,4 +28,4 @@ Owns user preferences, password management, and account deletion flows.
 - `application/settings.service.ts`
 
 ## Notes
-This feature is preference-heavy and should remain explicit about destructive actions and validation feedback.
+This feature is preference-heavy and should remain explicit about destructive actions and validation feedback. Settings also influence dashboard presentation, i18n, and optional reporting fields, so feature toggles need to stay predictable.

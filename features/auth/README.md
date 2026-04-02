@@ -27,4 +27,4 @@ Owns authentication, account lifecycle, and authenticated user snapshots used ac
 - `domain/auth.types.ts`
 
 ## Notes
-Other features should consume the authenticated snapshot instead of duplicating user-resolution logic.
+Other features should consume the authenticated snapshot instead of duplicating user-resolution logic. The snapshot is especially important for dashboard analytics, language resolution, and feature toggles used by reporting flows.

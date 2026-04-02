@@ -28,6 +28,11 @@ interface AppThemeModeContextValue {
 
 const AppThemeModeContext = createContext<AppThemeModeContextValue | null>(null);
 
+/**
+ * Returns the current theme mode context used by the app shell and theme-related controls.
+ * @returns The active theme mode plus its setter.
+ * @throws When called outside the app theme provider tree.
+ */
 export function useAppThemeMode(): AppThemeModeContextValue {
   const context = useContext(AppThemeModeContext);
 
@@ -38,6 +43,13 @@ export function useAppThemeMode(): AppThemeModeContextValue {
   return context;
 }
 
+/**
+ * Wraps the app with Material UI theme infrastructure and exposes a mutable color-mode context.
+ * @param props - Component props for the app theme provider.
+ * @param props.children - Descendant UI that should receive the current theme and localization providers.
+ * @param props.mode - Initial color mode resolved from the current user or guest preference.
+ * @returns A React element rendering the shared theme providers for the app.
+ */
 export function AppThemeProvider({
   children,
   mode,

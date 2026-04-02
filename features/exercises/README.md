@@ -26,4 +26,4 @@ Provides the exercise atlas and exercise-detail experience used to browse traini
 - `application/exercise-favorites.service.ts`
 
 ## Notes
-This feature is primarily reference-oriented. It should stay easy to scan on larger screens and intentionally lighter on mobile portrait.
+This feature is primarily reference-oriented. It should stay easy to scan on larger screens and intentionally lighter on mobile portrait, while still supporting favorites that flow into dashboard context.

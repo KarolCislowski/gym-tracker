@@ -26,4 +26,4 @@ Manages editable personal context used by analytics, reports, and settings-aware
 - `application/profile-view.ts`
 
 ## Notes
-This feature now includes unsaved-changes protection because losing edits here is high-friction for users.
+This feature now includes unsaved-changes protection plus clear/discard controls because losing edits here is high-friction for users.

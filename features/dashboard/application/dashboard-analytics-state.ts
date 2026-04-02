@@ -5,12 +5,21 @@ import type {
   WorkoutVolumeChartPoint,
 } from './dashboard-analytics';
 
+/**
+ * Product-facing state describing whether an analytics view is ready, empty, or under-populated.
+ */
 export type DashboardAnalyticsState =
   | 'ready'
   | 'start'
   | 'empty-period'
   | 'insufficient';
 
+/**
+ * Maps an analytics state to the localized empty-state copy shown in dashboard widgets.
+ * @param state - Resolved analytics state for the current widget.
+ * @param translations - Translation subset containing the supported analytics-state messages.
+ * @returns The message that should be displayed for the given state.
+ */
 export function resolveAnalyticsStateMessage(
   state: DashboardAnalyticsState,
   translations: {
@@ -32,12 +41,22 @@ export function resolveAnalyticsStateMessage(
   }
 }
 
+/**
+ * Resolves the goal-compliance widget state from the available chart points.
+ * @param points - Goal-compliance points prepared for chart rendering.
+ * @returns The analytics state for the goal-compliance widget.
+ */
 export function resolveGoalComplianceState(
   points: GoalComplianceChartPoint[],
 ): DashboardAnalyticsState {
   return points.length ? 'ready' : 'start';
 }
 
+/**
+ * Resolves the wellbeing widget state based on the presence of meaningful wellbeing values.
+ * @param points - Wellbeing points prepared for chart rendering.
+ * @returns The analytics state for the wellbeing widget.
+ */
 export function resolveWellbeingState(
   points: WellbeingChartPoint[],
 ): DashboardAnalyticsState {
@@ -51,6 +70,11 @@ export function resolveWellbeingState(
   );
 }
 
+/**
+ * Resolves the body-metrics widget state from body-weight and resting-heart-rate availability.
+ * @param points - Body-metrics points prepared for chart rendering.
+ * @returns The analytics state for the body-metrics widget.
+ */
 export function resolveBodyMetricsState(
   points: BodyMetricsChartPoint[],
 ): DashboardAnalyticsState {
@@ -72,6 +96,12 @@ export function resolveBodyMetricsState(
   return 'ready';
 }
 
+/**
+ * Resolves the workout-volume widget state from populated points and muscle-group coverage.
+ * @param points - Workout-volume points prepared for chart rendering.
+ * @param muscleGroups - Muscle groups currently represented in the dataset.
+ * @returns The analytics state for the workout-volume widget.
+ */
 export function resolveWorkoutVolumeState(
   points: WorkoutVolumeChartPoint[],
   muscleGroups: string[],
@@ -91,6 +121,11 @@ export function resolveWorkoutVolumeState(
   return 'ready';
 }
 
+/**
+ * Returns the latest two wellbeing points containing at least one meaningful value.
+ * @param points - Wellbeing points prepared for chart rendering.
+ * @returns A tuple containing the latest point and the previous meaningful point when available.
+ */
 export function getLatestWellbeingTrendPoints(
   points: WellbeingChartPoint[],
 ): [WellbeingChartPoint | undefined, WellbeingChartPoint | undefined] {
@@ -104,12 +139,22 @@ export function getLatestWellbeingTrendPoints(
   );
 }
 
+/**
+ * Returns the latest two body-weight points containing a measured body weight.
+ * @param points - Body-metrics points prepared for chart rendering.
+ * @returns A tuple containing the latest point and the previous meaningful point when available.
+ */
 export function getLatestBodyWeightTrendPoints(
   points: BodyMetricsChartPoint[],
 ): [BodyMetricsChartPoint | undefined, BodyMetricsChartPoint | undefined] {
   return getLastTwoMeaningfulPoints(points, (point) => point.bodyWeightKg != null);
 }
 
+/**
+ * Returns the latest two workout-volume points with a non-zero computed total.
+ * @param points - Workout-volume points prepared for chart rendering.
+ * @returns A tuple containing the latest point and the previous meaningful point when available.
+ */
 export function getLatestWorkoutVolumeTrendPoints(
   points: WorkoutVolumeChartPoint[],
 ): [WorkoutVolumeChartPoint | undefined, WorkoutVolumeChartPoint | undefined] {

@@ -115,13 +115,15 @@ This is a deliberately shaped MVP. Its goal is not to “cover everything,” bu
 Already implemented:
 
 - structured workout reports and workout templates,
+- quick workout duplication into a prefilled draft for repeated session structures,
 - daily reporting,
 - healthy habit goals,
 - supplementation logging and supplement stacks,
-- a dashboard with lighter mobile UX and deeper analysis on larger screens,
+- a dashboard with lighter mobile UX, configurable widgets, calendar context, and deeper analysis on larger screens,
 - onboarding,
 - clear feedback for save, edit, and delete operations,
-- basic protection against accidental loss of unsaved changes.
+- basic protection against accidental loss of unsaved changes,
+- clear/discard controls across started forms.
 
 ## Tech Stack
 
@@ -129,6 +131,7 @@ Already implemented:
 - React
 - TypeScript
 - Material UI
+- masonic
 - MongoDB
 - Vitest
 - Cypress

@@ -20,4 +20,4 @@ Introduces first-time users to the most important screens and lets them replay p
 - `ui/onboarding-replay-button.tsx`
 
 ## Notes
-The onboarding should stay short and task-oriented. It should help users start using the product, not explain every feature exhaustively.
+The onboarding should stay short and task-oriented. It should help users start using the product, not explain every feature exhaustively, and it should remain compatible with the evolving dashboard widget layout.
