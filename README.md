@@ -151,6 +151,15 @@ If you want to run the database in Docker, start it with:
 docker compose up -d
 ```
 
+If you prefer to run the app locally against your own MongoDB Atlas environment instead of Docker:
+
+1. Copy `example.env.local` to `.env.local`.
+2. Replace `MONGODB_URI` in `.env.local` with your own Atlas connection string, for example `mongodb+srv://<username>:<password>@<cluster-url>/?appName=GymTracker`.
+3. Keep real credentials only in `.env.local` or your own secret manager. Do not commit them to `example.env.local`.
+4. If your Atlas project uses network access controls, allow your current IP address before running the app or seed scripts.
+
+When `MONGODB_URI` is present, the app uses it directly. The legacy `MONGODB_HOST`, `MONGODB_PORT`, `MONGODB_USERNAME`, and `MONGODB_PASSWORD` values are mainly there for local Docker-style setups.
+
 Start the development server:
 
 ```bash
@@ -177,6 +186,8 @@ These scripts use:
 ```text
 example.env.local
 ```
+
+If you want to seed your own Atlas environment, either update `example.env.local` locally with your own non-shared values or run the scripts against a prepared `.env.local` file after aligning the npm script you want to use. Keep in mind that any real Atlas credentials should stay out of tracked example files.
 
 If you also want a ready-to-use demo account with sample tenant data, create your local environment file and then run:
 
