@@ -527,6 +527,43 @@ describe('auth.service', () => {
   });
 
   /**
+   * Verifies that resendVerificationEmail tolerates host env vars without a protocol.
+   */
+  test('resendVerificationEmail normalizes base URLs before generating links', async () => {
+    vi.stubEnv('APP_BASE_URL', 'gymtracker.netlify.app');
+    mockedFindCoreUserForVerificationResend.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
+    } satisfies CoreUserVerificationResendDto);
+    mockedFindTenantProfileByUserId.mockResolvedValueOnce({
+      email: 'john@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      birthDate: null,
+      age: null,
+      favoriteExerciseSlugs: [],
+      location: null,
+      heightCm: null,
+      gender: null,
+      activityLevel: null,
+    } satisfies TenantProfileSnapshot);
+
+    await resendVerificationEmail('john@example.com', 'en');
+
+    expect(mockedSendVerificationEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      firstName: 'John',
+      language: 'en',
+      verificationUrl: expect.stringContaining(
+        'https://gymtracker.netlify.app/verify-email?',
+      ),
+    });
+  });
+
+  /**
    * Verifies that resendVerificationEmail stays silent for unknown accounts.
    */
   test('resendVerificationEmail does nothing when the account does not exist', async () => {

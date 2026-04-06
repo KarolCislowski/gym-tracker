@@ -423,13 +423,43 @@ function buildPasswordResetUrl(token: string, language: string): string {
 }
 
 function resolveAppBaseUrl(): string {
-  const configuredBaseUrl =
-    process.env.APP_BASE_URL ??
-    process.env.NEXTAUTH_URL ??
-    process.env.AUTH_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+  const candidates = [
+    process.env.APP_BASE_URL,
+    process.env.NEXTAUTH_URL,
+    process.env.AUTH_URL,
+    process.env.URL,
+    process.env.DEPLOY_PRIME_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  ];
 
-  return configuredBaseUrl ?? 'http://localhost:3000';
+  for (const candidate of candidates) {
+    const normalized = normalizeAbsoluteUrl(candidate);
+
+    if (normalized) {
+      return normalized;
+    }
+  }
+
+  return 'http://localhost:3000';
+}
+
+function normalizeAbsoluteUrl(value: string | undefined): string | null {
+  const trimmed = value?.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  const withProtocol =
+    trimmed.startsWith('http://') || trimmed.startsWith('https://')
+      ? trimmed
+      : `https://${trimmed}`;
+
+  try {
+    return new URL(withProtocol).toString();
+  } catch {
+    return null;
+  }
 }
 
 function isEmailVerificationRequired(): boolean {
