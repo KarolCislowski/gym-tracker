@@ -43,11 +43,26 @@ export function LoginForm({
       : error === 'verification_invalid'
         ? t.verificationLinkInvalid
         : error;
+  const resendVerificationAction = email ? (
+    <Stack
+      action={resendVerificationEmailAction}
+      component='form'
+      sx={{ alignItems: 'center' }}
+    >
+      <input name='uiLanguage' type='hidden' value={activeLanguage} />
+      <input name='email' type='hidden' value={email} />
+      <Button color='inherit' size='small' type='submit' variant='text'>
+        {t.resendVerificationButton}
+      </Button>
+    </Stack>
+  ) : undefined;
 
   return (
     <>
       {registered === '1' ? (
-        <Alert severity='success'>{t.registrationSuccess}</Alert>
+        <Alert severity='success' action={resendVerificationAction}>
+          {t.registrationSuccess}
+        </Alert>
       ) : null}
       {verified === '1' ? (
         <Alert severity='success'>{t.emailVerificationSuccess}</Alert>
@@ -62,24 +77,7 @@ export function LoginForm({
         <Alert severity='success'>{t.accountDeleted}</Alert>
       ) : null}
       {error === 'email_not_verified' ? (
-        <Alert
-          severity='error'
-          action={
-            email ? (
-              <Stack
-                action={resendVerificationEmailAction}
-                component='form'
-                sx={{ alignItems: 'center' }}
-              >
-                <input name='uiLanguage' type='hidden' value={activeLanguage} />
-                <input name='email' type='hidden' value={email} />
-                <Button color='inherit' size='small' type='submit' variant='text'>
-                  {t.resendVerificationButton}
-                </Button>
-              </Stack>
-            ) : undefined
-          }
-        >
+        <Alert severity='error' action={resendVerificationAction}>
           {t.emailVerificationRequired}
         </Alert>
       ) : resolvedErrorMessage ? (

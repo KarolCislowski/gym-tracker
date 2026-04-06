@@ -160,6 +160,8 @@ If you prefer to run the app locally against your own MongoDB Atlas environment 
 
 When `MONGODB_URI` is present, the app uses it directly. The legacy `MONGODB_HOST`, `MONGODB_PORT`, `MONGODB_USERNAME`, and `MONGODB_PASSWORD` values are mainly there for local Docker-style setups.
 
+If you want to test the real email-verification flow locally, set `AUTH_REQUIRE_EMAIL_VERIFICATION=true` in `.env.local`. In development, the app normally auto-verifies new accounts unless that override is enabled.
+
 Start the development server:
 
 ```bash

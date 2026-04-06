@@ -9,6 +9,7 @@ import type {
   CoreUserLookupDto,
   CoreUserPasswordResetLookupDto,
   CoreUserPasswordResetRequestDto,
+  CoreUserSessionStatusDto,
   CoreUserVerificationResendDto,
   CreateCoreUserRecordInput,
   CreateTenantDatabaseInput,
@@ -105,6 +106,31 @@ export async function findCoreUserWithPasswordByEmail(
     id: user.id,
     email: user.email,
     password: user.password,
+    isActive: user.isActive,
+    tenantDbName: user.tenantDbName,
+    emailVerifiedAt:
+      user.emailVerifiedAt instanceof Date
+        ? user.emailVerifiedAt.toISOString()
+        : null,
+  };
+}
+
+/**
+ * Finds the current Core user status used to validate an existing authenticated session.
+ */
+export async function findCoreUserSessionStatusById(
+  userId: string,
+): Promise<CoreUserSessionStatusDto | null> {
+  const CoreUserModel = await getCoreUserModel();
+  const user = await CoreUserModel.findById(userId).lean();
+
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user._id.toString(),
+    email: user.email,
     isActive: user.isActive,
     tenantDbName: user.tenantDbName,
     emailVerifiedAt:

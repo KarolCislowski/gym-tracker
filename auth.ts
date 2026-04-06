@@ -1,8 +1,14 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
-import { authenticateUser } from '@/features/auth/application/auth.service';
-import { findTenantSettings } from '@/features/auth/infrastructure/auth.db';
+import {
+  authenticateUser,
+  isUserAllowedToAccessApp,
+} from '@/features/auth/application/auth.service';
+import {
+  findCoreUserSessionStatusById,
+  findTenantSettings,
+} from '@/features/auth/infrastructure/auth.db';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
@@ -43,17 +49,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;
         token.tenantDbName = user.tenantDbName;
         token.isActive = user.isActive;
         token.language = user.language;
+        token.authInvalidated = false;
       }
+
+      if (!token.userId) {
+        return token;
+      }
+
+      const currentUser = await findCoreUserSessionStatusById(String(token.userId));
+
+      if (!currentUser || !isUserAllowedToAccessApp(currentUser)) {
+        token.authInvalidated = true;
+        delete token.userId;
+        delete token.tenantDbName;
+        delete token.isActive;
+        delete token.language;
+
+        return token;
+      }
+
+      token.authInvalidated = false;
+      token.userId = currentUser.id;
+      token.tenantDbName = currentUser.tenantDbName;
+      token.isActive = currentUser.isActive;
 
       return token;
     },
     session({ session, token }) {
+      if (token.authInvalidated || !token.userId) {
+        return null as never;
+      }
+
       if (session.user) {
         session.user.id = String(token.userId ?? token.sub ?? '');
         session.user.tenantDbName = String(token.tenantDbName ?? '');

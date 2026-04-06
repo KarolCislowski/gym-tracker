@@ -82,6 +82,14 @@ export interface CoreUserAuthDto {
   emailVerifiedAt: string | null;
 }
 
+export interface CoreUserSessionStatusDto {
+  id: string;
+  email: string;
+  isActive: boolean;
+  tenantDbName: string;
+  emailVerifiedAt: string | null;
+}
+
 export interface CreatedCoreUserDto {
   id: string;
   email: string;

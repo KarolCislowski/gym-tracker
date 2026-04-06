@@ -40,7 +40,9 @@ export async function registerAction(formData: FormData): Promise<void> {
     );
   }
 
-  redirect(`/login?lang=${encodeURIComponent(uiLanguage)}&registered=1`);
+  redirect(
+    `/login?lang=${encodeURIComponent(uiLanguage)}&registered=1&email=${encodeURIComponent(email)}`,
+  );
 }
 
 /**

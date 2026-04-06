@@ -164,6 +164,24 @@ export async function authenticateUser(
 }
 
 /**
+ * Decides whether a Core user is currently allowed to access authenticated pages.
+ */
+export function isUserAllowedToAccessApp(input: {
+  isActive: boolean;
+  emailVerifiedAt: string | null;
+}): boolean {
+  if (!input.isActive) {
+    return false;
+  }
+
+  if (isEmailVerificationRequired() && !input.emailVerifiedAt) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Verifies a one-time email verification token issued at registration time.
  */
 export async function verifyEmailAddress(rawToken: string): Promise<void> {
@@ -415,6 +433,16 @@ function resolveAppBaseUrl(): string {
 }
 
 function isEmailVerificationRequired(): boolean {
+  const override = process.env.AUTH_REQUIRE_EMAIL_VERIFICATION?.trim();
+
+  if (override === 'true') {
+    return true;
+  }
+
+  if (override === 'false') {
+    return false;
+  }
+
   return process.env.NODE_ENV === 'production';
 }
 

@@ -188,7 +188,7 @@ describe('auth.service', () => {
   });
 
   /**
-   * Verifies that non-production registrations are auto-verified and skip verification email delivery.
+   * Verifies that registrations are auto-verified when email verification is not required.
    */
   test('registerUser auto-verifies accounts outside production', async () => {
     vi.stubEnv('NODE_ENV', 'development');
@@ -220,6 +220,47 @@ describe('auth.service', () => {
       emailVerifiedAt: expect.any(Date),
     });
     expect(mockedSendVerificationEmail).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Verifies that local environments can opt into email verification explicitly.
+   */
+  test('registerUser sends a verification email when AUTH_REQUIRE_EMAIL_VERIFICATION=true', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    vi.stubEnv('AUTH_REQUIRE_EMAIL_VERIFICATION', 'true');
+    mockedFindCoreUserByEmail.mockResolvedValueOnce(null);
+    mockedHash.mockResolvedValueOnce('hashed-password');
+    mockedCreateCoreUserRecord.mockResolvedValueOnce({
+      id: 'user-1',
+      email: 'john@example.com',
+      isActive: true,
+      tenantDbName: 'tenant_john_123456789abc',
+      emailVerifiedAt: null,
+    } satisfies CreatedCoreUserDto);
+
+    await registerUser({
+      email: 'john@example.com',
+      password: 'VeryStrong123',
+      firstName: 'John',
+      lastName: 'Doe',
+      language: 'sv',
+      isDarkMode: true,
+    });
+
+    expect(mockedCreateCoreUserRecord).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      password: 'hashed-password',
+      tenantDbName: expect.stringMatching(/^tenant_john_/),
+      emailVerificationTokenHash: expect.any(String),
+      emailVerificationTokenExpiresAt: expect.any(Date),
+      emailVerifiedAt: null,
+    });
+    expect(mockedSendVerificationEmail).toHaveBeenCalledWith({
+      email: 'john@example.com',
+      firstName: 'John',
+      language: 'sv',
+      verificationUrl: expect.stringContaining('/verify-email?'),
+    });
   });
 
   /**

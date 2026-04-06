@@ -1,0 +1,40 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 3000
+  port = 8888
+  framework = "next"
+
+[context.production.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[context.deploy-preview.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[context.branch-deploy.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Keep runtime app variables such as APP_BASE_URL, NEXTAUTH_URL, AUTH_SECRET,
+# MONGODB_URI, SMTP_* and GOOGLE_PLACES_API_KEY in the Netlify UI.
+# For Next.js on Netlify, environment variables declared only in netlify.toml
+# are not the right place for server runtime secrets/config consumed by functions.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(self)"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

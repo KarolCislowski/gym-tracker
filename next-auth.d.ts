@@ -20,6 +20,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT {
+    authInvalidated?: boolean;
     userId?: string;
     isActive?: boolean;
     language?: string;
