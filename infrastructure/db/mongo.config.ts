@@ -9,6 +9,14 @@ import type {
  * Reads and validates the shared MongoDB settings used by Mongoose.
  */
 export function getMongooseConnectionConfig(): MongooseConnectionConfig {
+  const uri = process.env.MONGODB_URI?.trim();
+
+  if (uri) {
+    return {
+      uri,
+    };
+  }
+
   const host = getRequiredEnv('MONGODB_HOST');
   const port = Number.parseInt(getRequiredEnv('MONGODB_PORT'), 10);
   const username = getRequiredEnv('MONGODB_USERNAME');
@@ -22,6 +30,13 @@ export function getMongooseConnectionConfig(): MongooseConnectionConfig {
   }
 
   return {
+    uri: buildStandardMongoUri({
+      host,
+      port,
+      username,
+      password,
+      authSource,
+    }),
     host,
     port,
     username,
@@ -75,6 +90,35 @@ function createMongooseDatabaseConfig(
 function buildMongooseServerUri(
   config: MongooseConnectionConfig,
 ): string {
+  if (config.uri) {
+    return config.uri;
+  }
+
+  if (
+    !config.host ||
+    typeof config.port !== 'number' ||
+    !config.username ||
+    !config.password
+  ) {
+    throw new Error('MongoDB connection config is incomplete.');
+  }
+
+  return buildStandardMongoUri({
+    host: config.host,
+    port: config.port,
+    username: config.username,
+    password: config.password,
+    authSource: config.authSource || 'admin',
+  });
+}
+
+function buildStandardMongoUri(config: {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  authSource: string;
+}): string {
   const username = encodeURIComponent(config.username);
   const password = encodeURIComponent(config.password);
   const authSource = encodeURIComponent(config.authSource);

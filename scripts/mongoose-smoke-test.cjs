@@ -62,6 +62,12 @@ function getRequiredEnv(name) {
 }
 
 function getServerUri() {
+  const uri = process.env.MONGODB_URI?.trim();
+
+  if (uri) {
+    return uri;
+  }
+
   const username = encodeURIComponent(getRequiredEnv('MONGODB_USERNAME'));
   const password = encodeURIComponent(getRequiredEnv('MONGODB_PASSWORD'));
   const host = getRequiredEnv('MONGODB_HOST');
