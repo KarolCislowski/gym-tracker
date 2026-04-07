@@ -7,6 +7,7 @@ import type {
   AuthenticationAttemptResult,
   AuthenticatedUser,
   CredentialsInput,
+  ResendVerificationEmailResult,
   RegisterUserInput,
   ResetPasswordInput,
 } from '../domain/auth.types';
@@ -221,17 +222,17 @@ export async function verifyEmailAddress(rawToken: string): Promise<void> {
 export async function resendVerificationEmail(
   email: string,
   language: string,
-): Promise<void> {
+): Promise<ResendVerificationEmailResult> {
   if (!isEmailVerificationRequired()) {
     console.info('[auth] resend verification skipped: verification disabled');
-    return;
+    return 'verification_disabled';
   }
 
   const normalizedEmail = email.trim().toLowerCase();
 
   if (!normalizedEmail) {
     console.warn('[auth] resend verification skipped: empty email');
-    return;
+    return 'invalid_email';
   }
 
   const user = await findCoreUserForVerificationResend(normalizedEmail);
@@ -240,14 +241,14 @@ export async function resendVerificationEmail(
     console.info('[auth] resend verification skipped: account not found', {
       email: normalizedEmail,
     });
-    return;
+    return 'not_found';
   }
 
   if (!user.isActive) {
     console.info('[auth] resend verification skipped: inactive account', {
       email: normalizedEmail,
     });
-    return;
+    return 'inactive';
   }
 
   if (user.emailVerifiedAt) {
@@ -255,7 +256,7 @@ export async function resendVerificationEmail(
       email: normalizedEmail,
       emailVerifiedAt: user.emailVerifiedAt,
     });
-    return;
+    return 'already_verified';
   }
 
   const profile = await findTenantProfileByUserId(user.tenantDbName, user.id);
@@ -281,6 +282,8 @@ export async function resendVerificationEmail(
     email: user.email,
     messageId: result?.messageId ?? null,
   });
+
+  return 'sent';
 }
 
 /**

@@ -44,7 +44,17 @@ export const plMessages: TranslationDictionaryOverrides = {
     emailVerificationSuccess:
       'Twój adres email został zweryfikowany. Możesz się teraz zalogować.',
     verificationEmailResent:
-      'Jeśli dla tego adresu istnieje nieweryfikowane konto, wysłaliśmy nowy link weryfikacyjny.',
+      'Wysłaliśmy nowy link weryfikacyjny na Twój adres email.',
+    verificationEmailNotFound:
+      'Nie znaleźliśmy konta oczekującego na weryfikację dla tego adresu email.',
+    verificationEmailAlreadyVerified:
+      'To konto jest już zweryfikowane. Możesz się teraz zalogować.',
+    verificationEmailInactive:
+      'To konto jest nieaktywne i nie może teraz otrzymać maila weryfikacyjnego.',
+    verificationEmailDisabled:
+      'Weryfikacja email jest obecnie wyłączona w tym środowisku.',
+    verificationEmailInvalidRequest:
+      'Nie udało się ponownie wysłać maila weryfikacyjnego, ponieważ żądanie było niekompletne.',
     passwordResetRequested:
       'Jeśli dla tego adresu istnieje zweryfikowane konto, wysłaliśmy link do resetu hasła.',
     passwordResetSuccess:

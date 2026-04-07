@@ -228,7 +228,7 @@ describe('auth.actions', () => {
    * Verifies that resending a verification email preserves the localized login page.
    */
   test('resendVerificationEmailAction redirects back to login with a resent status', async () => {
-    mockedResendVerificationEmail.mockResolvedValueOnce(undefined);
+    mockedResendVerificationEmail.mockResolvedValueOnce('sent');
 
     const { resendVerificationEmailAction } = await import('./auth.actions');
 
@@ -239,7 +239,9 @@ describe('auth.actions', () => {
           uiLanguage: 'sv',
         }),
       ),
-    ).rejects.toThrow('NEXT_REDIRECT:/login?lang=sv&resent=1');
+    ).rejects.toThrow(
+      'NEXT_REDIRECT:/login?lang=sv&email=john%40example.com&resent=sent',
+    );
 
     expect(mockedResendVerificationEmail).toHaveBeenCalledWith(
       'john@example.com',

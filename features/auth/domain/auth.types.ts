@@ -7,6 +7,14 @@ export interface AuthenticatedUser {
   tenantDbName: string;
 }
 
+export type ResendVerificationEmailResult =
+  | 'sent'
+  | 'not_found'
+  | 'inactive'
+  | 'already_verified'
+  | 'verification_disabled'
+  | 'invalid_email';
+
 export type AuthenticationFailureReason =
   | 'invalid_credentials'
   | 'inactive_account'

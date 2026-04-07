@@ -39,6 +39,11 @@ export interface TranslationDictionary {
     registrationSuccess: string;
     emailVerificationSuccess: string;
     verificationEmailResent: string;
+    verificationEmailNotFound: string;
+    verificationEmailAlreadyVerified: string;
+    verificationEmailInactive: string;
+    verificationEmailDisabled: string;
+    verificationEmailInvalidRequest: string;
     passwordResetRequested: string;
     passwordResetSuccess: string;
     emailVerificationRequired: string;

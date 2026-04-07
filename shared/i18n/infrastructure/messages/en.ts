@@ -45,7 +45,17 @@ export const enMessages: TranslationDictionary = {
     emailVerificationSuccess:
       'Your email address has been verified. You can sign in now.',
     verificationEmailResent:
-      'If an unverified account exists for this email address, a fresh verification link has been sent.',
+      'A fresh verification link has been sent to your email address.',
+    verificationEmailNotFound:
+      'We could not find an account waiting for verification for this email address.',
+    verificationEmailAlreadyVerified:
+      'This account is already verified. You can sign in now.',
+    verificationEmailInactive:
+      'This account is inactive and cannot receive a verification email right now.',
+    verificationEmailDisabled:
+      'Email verification is currently disabled in this environment.',
+    verificationEmailInvalidRequest:
+      'We could not resend the verification email because the request was incomplete.',
     passwordResetRequested:
       'If a verified account exists for this email address, a password reset link has been sent.',
     passwordResetSuccess:

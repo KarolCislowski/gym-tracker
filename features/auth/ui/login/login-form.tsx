@@ -43,6 +43,28 @@ export function LoginForm({
       : error === 'verification_invalid'
         ? t.verificationLinkInvalid
         : error;
+  const resendStatusMessage =
+    resent === 'sent'
+      ? t.verificationEmailResent
+      : resent === 'not_found'
+        ? t.verificationEmailNotFound
+        : resent === 'already_verified'
+          ? t.verificationEmailAlreadyVerified
+          : resent === 'inactive'
+            ? t.verificationEmailInactive
+            : resent === 'verification_disabled'
+              ? t.verificationEmailDisabled
+              : resent === 'invalid_email'
+                ? t.verificationEmailInvalidRequest
+                : null;
+  const resendSeverity =
+    resent === 'sent'
+      ? 'success'
+      : resent === 'already_verified'
+        ? 'info'
+        : resent
+          ? 'warning'
+          : null;
   const resendVerificationAction = email ? (
     <Stack
       action={resendVerificationEmailAction}
@@ -67,8 +89,8 @@ export function LoginForm({
       {verified === '1' ? (
         <Alert severity='success'>{t.emailVerificationSuccess}</Alert>
       ) : null}
-      {resent === '1' ? (
-        <Alert severity='success'>{t.verificationEmailResent}</Alert>
+      {resendStatusMessage && resendSeverity ? (
+        <Alert severity={resendSeverity}>{resendStatusMessage}</Alert>
       ) : null}
       {passwordReset === '1' ? (
         <Alert severity='success'>{t.passwordResetSuccess}</Alert>

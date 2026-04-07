@@ -44,7 +44,17 @@ export const svMessages: TranslationDictionaryOverrides = {
     emailVerificationSuccess:
       'Din e-postadress har verifierats. Du kan logga in nu.',
     verificationEmailResent:
-      'Om det finns ett overifierat konto för den här e-postadressen har en ny verifieringslänk skickats.',
+      'En ny verifieringslänk har skickats till din e-postadress.',
+    verificationEmailNotFound:
+      'Vi kunde inte hitta något konto som väntar på verifiering för den här e-postadressen.',
+    verificationEmailAlreadyVerified:
+      'Det här kontot är redan verifierat. Du kan logga in nu.',
+    verificationEmailInactive:
+      'Det här kontot är inaktivt och kan inte ta emot ett verifieringsmail just nu.',
+    verificationEmailDisabled:
+      'E-postverifiering är för närvarande inaktiverad i den här miljön.',
+    verificationEmailInvalidRequest:
+      'Vi kunde inte skicka verifieringsmailet igen eftersom begäran var ofullständig.',
     passwordResetRequested:
       'Om det finns ett verifierat konto för den här e-postadressen har en återställningslänk skickats.',
     passwordResetSuccess:

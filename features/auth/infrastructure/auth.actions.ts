@@ -94,16 +94,19 @@ export async function resendVerificationEmailAction(
 ): Promise<void> {
   const email = String(formData.get('email') ?? '');
   const uiLanguage = String(formData.get('uiLanguage') ?? 'en');
+  let result: Awaited<ReturnType<typeof resendVerificationEmail>>;
 
   try {
-    await resendVerificationEmail(email, uiLanguage);
+    result = await resendVerificationEmail(email, uiLanguage);
   } catch (error) {
     redirect(
       `/login?lang=${encodeURIComponent(uiLanguage)}&error=${encodeURIComponent(getActionErrorMessage(error))}`,
     );
   }
 
-  redirect(`/login?lang=${encodeURIComponent(uiLanguage)}&resent=1`);
+  redirect(
+    `/login?lang=${encodeURIComponent(uiLanguage)}&email=${encodeURIComponent(email)}&resent=${encodeURIComponent(result)}`,
+  );
 }
 
 /**
