@@ -95,7 +95,7 @@ export async function findCoreUserWithPasswordByEmail(
 ): Promise<CoreUserAuthDto | null> {
   const CoreUserModel = await getCoreUserModel();
   const user = await CoreUserModel.findOne({ email }).select(
-    '+password isActive tenantDbName email',
+    '+password isActive tenantDbName email emailVerifiedAt',
   );
 
   if (!user) {
