@@ -29,6 +29,12 @@ export const svMessages: TranslationDictionaryOverrides = {
     forgotPasswordTitle: 'Glömt lösenord',
     forgotPasswordDescription:
       'Ange din e-postadress så skickar vi en återställningslänk om kontot kan återställas.',
+    verifyEmailTitle: 'Verifiera e-postadress',
+    verifyEmailDescription:
+      'Bekräfta verifieringen av din e-postadress på den säkra sidan nedan för att aktivera ditt konto.',
+    verifyEmailButton: 'Verifiera e-postadress',
+    verifyEmailInvalidDescription:
+      'Den här verifieringslänken saknar nödvändig information eller är inte längre giltig.',
     resetPasswordTitle: 'Välj nytt lösenord',
     resetPasswordDescription:
       'Välj ett nytt lösenord för kontot med den säkra länken från ditt e-postmeddelande.',

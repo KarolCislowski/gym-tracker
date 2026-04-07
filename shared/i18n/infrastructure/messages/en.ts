@@ -30,6 +30,12 @@ export const enMessages: TranslationDictionary = {
     forgotPasswordTitle: 'Forgot password',
     forgotPasswordDescription:
       'Enter your email address and we will send a reset link if the account is eligible for password recovery.',
+    verifyEmailTitle: 'Verify email address',
+    verifyEmailDescription:
+      'Confirm your email verification on the secure page below to finish activating your account.',
+    verifyEmailButton: 'Verify email address',
+    verifyEmailInvalidDescription:
+      'This verification link is missing required details or is no longer valid.',
     resetPasswordTitle: 'Choose a new password',
     resetPasswordDescription:
       'Set a new password for your account using the secure link from your email.',

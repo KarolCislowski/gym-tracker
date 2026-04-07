@@ -29,6 +29,12 @@ export const plMessages: TranslationDictionaryOverrides = {
     forgotPasswordTitle: 'Nie pamiętasz hasła',
     forgotPasswordDescription:
       'Wpisz swój adres email, a wyślemy link do resetu hasła, jeśli konto kwalifikuje się do odzyskania dostępu.',
+    verifyEmailTitle: 'Zweryfikuj adres email',
+    verifyEmailDescription:
+      'Potwierdź weryfikację adresu email na bezpiecznej stronie poniżej, aby aktywować konto.',
+    verifyEmailButton: 'Zweryfikuj adres email',
+    verifyEmailInvalidDescription:
+      'W tym linku weryfikacyjnym brakuje wymaganych danych albo link nie jest już ważny.',
     resetPasswordTitle: 'Ustaw nowe hasło',
     resetPasswordDescription:
       'Ustaw nowe hasło do konta, korzystając z bezpiecznego linku z wiadomości email.',

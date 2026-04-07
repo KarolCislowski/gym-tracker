@@ -21,6 +21,7 @@ vi.mock('../application/auth.service', () => ({
   requestPasswordReset: vi.fn(),
   resetPasswordWithToken: vi.fn(),
   resendVerificationEmail: vi.fn(),
+  verifyEmailAddress: vi.fn(),
 }));
 
 import { signIn, signOut } from '@/auth';
@@ -32,14 +33,21 @@ import {
   registerUser,
   resetPasswordWithToken,
   resendVerificationEmail,
+  verifyEmailAddress,
 } from '../application/auth.service';
-import { loginAction, logoutAction, registerAction } from './auth.actions';
+import {
+  loginAction,
+  logoutAction,
+  registerAction,
+  verifyEmailAction,
+} from './auth.actions';
 
 const mockedAuthenticateUserAttempt = vi.mocked(authenticateUserAttempt);
 const mockedRequestPasswordReset = vi.mocked(requestPasswordReset);
 const mockedRegisterUser = vi.mocked(registerUser);
 const mockedResetPasswordWithToken = vi.mocked(resetPasswordWithToken);
 const mockedResendVerificationEmail = vi.mocked(resendVerificationEmail);
+const mockedVerifyEmailAddress = vi.mocked(verifyEmailAddress);
 const mockedSignIn = vi.mocked(signIn);
 const mockedSignOut = vi.mocked(signOut);
 
@@ -98,7 +106,9 @@ describe('auth.actions', () => {
           isDarkMode: true,
         }),
       ),
-    ).rejects.toThrow('NEXT_REDIRECT:/login?lang=pl&registered=1');
+    ).rejects.toThrow(
+      'NEXT_REDIRECT:/login?lang=pl&registered=1&email=john%40example.com',
+    );
 
     expect(mockedRegisterUser).toHaveBeenCalledWith({
       email: 'john@example.com',
@@ -284,6 +294,42 @@ describe('auth.actions', () => {
       newPassword: 'NewPassword123',
       confirmPassword: 'NewPassword123',
     });
+  });
+
+  /**
+   * Verifies that email verification is completed only after the explicit confirm action.
+   */
+  test('verifyEmailAction verifies the token and redirects to login success', async () => {
+    mockedVerifyEmailAddress.mockResolvedValueOnce(undefined);
+
+    await expect(
+      verifyEmailAction(
+        createFormData({
+          token: 'token-123',
+          uiLanguage: 'en',
+        }),
+      ),
+    ).rejects.toThrow('NEXT_REDIRECT:/login?lang=en&verified=1');
+
+    expect(mockedVerifyEmailAddress).toHaveBeenCalledWith('token-123');
+  });
+
+  /**
+   * Verifies that failed email verification redirects back with the invalid-link state.
+   */
+  test('verifyEmailAction redirects to login with verification_invalid on failure', async () => {
+    mockedVerifyEmailAddress.mockRejectedValueOnce(new Error('bad token'));
+
+    await expect(
+      verifyEmailAction(
+        createFormData({
+          token: 'token-123',
+          uiLanguage: 'sv',
+        }),
+      ),
+    ).rejects.toThrow(
+      'NEXT_REDIRECT:/login?lang=sv&error=verification_invalid',
+    );
   });
 
   /**

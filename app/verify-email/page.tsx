@@ -1,7 +1,17 @@
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
-import { verifyEmailAddress } from '@/features/auth/application/auth.service';
-import { resolveLanguage } from '@/shared/i18n/application/i18n.service';
+import { auth } from '@/auth';
+import { VerifyEmailForm } from '@/features/auth/ui/verify-email/verify-email-form';
+import { AuthPageShell } from '@/features/auth/ui/shared/auth-page-shell';
+import {
+  getTranslations,
+  resolveLanguage,
+} from '@/shared/i18n/application/i18n.service';
+import {
+  COLOR_MODE_COOKIE_NAME,
+  resolveAppColorMode,
+} from '@/shared/theme/application/theme-mode';
 
 interface VerifyEmailPageProps {
   searchParams?: Promise<{
@@ -13,14 +23,38 @@ interface VerifyEmailPageProps {
 export default async function VerifyEmailPage({
   searchParams,
 }: VerifyEmailPageProps) {
+  const session = await auth();
+  const cookieStore = await cookies();
   const params = searchParams ? await searchParams : undefined;
   const activeLanguage = resolveLanguage(params?.lang);
+  const activeColorMode = resolveAppColorMode(
+    cookieStore.get(COLOR_MODE_COOKIE_NAME)?.value,
+  );
+  const t = getTranslations(activeLanguage);
   const rawToken = String(params?.token ?? '');
 
-  try {
-    await verifyEmailAddress(rawToken);
-    redirect(`/login?lang=${activeLanguage}&verified=1`);
-  } catch {
-    redirect(`/login?lang=${activeLanguage}&error=verification_invalid`);
+  if (session?.user) {
+    redirect('/');
   }
+
+  return (
+    <AuthPageShell
+      activeColorMode={activeColorMode}
+      activeLanguage={activeLanguage}
+      pathname='/verify-email'
+      query={{
+        lang: activeLanguage,
+        token: rawToken,
+      }}
+      subtitle={t.auth.verifyEmailDescription}
+      title={t.auth.verifyEmailTitle}
+      translations={t}
+      width='min(100%, 520px)'>
+      <VerifyEmailForm
+        activeLanguage={activeLanguage}
+        token={rawToken}
+        translations={t}
+      />
+    </AuthPageShell>
+  );
 }

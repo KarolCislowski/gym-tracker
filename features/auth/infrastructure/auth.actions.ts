@@ -11,6 +11,7 @@ import {
   requestPasswordReset,
   resetPasswordWithToken,
   resendVerificationEmail,
+  verifyEmailAddress,
 } from '../application/auth.service';
 
 /**
@@ -103,6 +104,24 @@ export async function resendVerificationEmailAction(
   }
 
   redirect(`/login?lang=${encodeURIComponent(uiLanguage)}&resent=1`);
+}
+
+/**
+ * Completes email verification after the user explicitly confirms the action on the page.
+ */
+export async function verifyEmailAction(formData: FormData): Promise<void> {
+  const token = String(formData.get('token') ?? '');
+  const uiLanguage = String(formData.get('uiLanguage') ?? 'en');
+
+  try {
+    await verifyEmailAddress(token);
+  } catch {
+    redirect(
+      `/login?lang=${encodeURIComponent(uiLanguage)}&error=verification_invalid`,
+    );
+  }
+
+  redirect(`/login?lang=${encodeURIComponent(uiLanguage)}&verified=1`);
 }
 
 /**

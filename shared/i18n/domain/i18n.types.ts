@@ -29,6 +29,10 @@ export interface TranslationDictionary {
     signInDescription: string;
     forgotPasswordTitle: string;
     forgotPasswordDescription: string;
+    verifyEmailTitle: string;
+    verifyEmailDescription: string;
+    verifyEmailButton: string;
+    verifyEmailInvalidDescription: string;
     resetPasswordTitle: string;
     resetPasswordDescription: string;
     accountDeleted: string;
