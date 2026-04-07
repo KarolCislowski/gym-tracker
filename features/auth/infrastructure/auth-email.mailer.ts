@@ -13,7 +13,7 @@ export async function sendVerificationEmail({
   firstName,
   language,
   verificationUrl,
-}: SendVerificationEmailInput): Promise<void> {
+}: SendVerificationEmailInput): Promise<{ messageId: string }> {
   const transporter = createSmtpTransport();
   const fromAddress = getFromAddress();
 
@@ -23,13 +23,22 @@ export async function sendVerificationEmail({
     verificationUrl,
   });
 
-  await transporter.sendMail({
+  const result = await transporter.sendMail({
     from: fromAddress,
     to: email,
     subject: content.subject,
     text: content.text,
     html: content.html,
   });
+
+  console.info('[auth] verification email sent', {
+    email,
+    messageId: result.messageId,
+  });
+
+  return {
+    messageId: result.messageId,
+  };
 }
 
 /**
@@ -40,7 +49,7 @@ export async function sendPasswordResetEmail({
   firstName,
   language,
   resetUrl,
-}: SendPasswordResetEmailInput): Promise<void> {
+}: SendPasswordResetEmailInput): Promise<{ messageId: string }> {
   const transporter = createSmtpTransport();
   const fromAddress = getFromAddress();
   const content = buildPasswordResetEmailContent({
@@ -49,13 +58,22 @@ export async function sendPasswordResetEmail({
     resetUrl,
   });
 
-  await transporter.sendMail({
+  const result = await transporter.sendMail({
     from: fromAddress,
     to: email,
     subject: content.subject,
     text: content.text,
     html: content.html,
   });
+
+  console.info('[auth] password reset email sent', {
+    email,
+    messageId: result.messageId,
+  });
+
+  return {
+    messageId: result.messageId,
+  };
 }
 
 function buildVerificationEmailContent({

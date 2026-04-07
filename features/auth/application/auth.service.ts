@@ -223,18 +223,38 @@ export async function resendVerificationEmail(
   language: string,
 ): Promise<void> {
   if (!isEmailVerificationRequired()) {
+    console.info('[auth] resend verification skipped: verification disabled');
     return;
   }
 
   const normalizedEmail = email.trim().toLowerCase();
 
   if (!normalizedEmail) {
+    console.warn('[auth] resend verification skipped: empty email');
     return;
   }
 
   const user = await findCoreUserForVerificationResend(normalizedEmail);
 
-  if (!user || !user.isActive || user.emailVerifiedAt) {
+  if (!user) {
+    console.info('[auth] resend verification skipped: account not found', {
+      email: normalizedEmail,
+    });
+    return;
+  }
+
+  if (!user.isActive) {
+    console.info('[auth] resend verification skipped: inactive account', {
+      email: normalizedEmail,
+    });
+    return;
+  }
+
+  if (user.emailVerifiedAt) {
+    console.info('[auth] resend verification skipped: already verified', {
+      email: normalizedEmail,
+      emailVerifiedAt: user.emailVerifiedAt,
+    });
     return;
   }
 
@@ -250,11 +270,16 @@ export async function resendVerificationEmail(
     emailVerificationTokenHash,
     emailVerificationTokenExpiresAt,
   );
-  await sendVerificationEmail({
+  const result = await sendVerificationEmail({
     email: user.email,
     firstName: profile?.firstName ?? fallbackFirstNameFromEmail(user.email),
     language,
     verificationUrl: buildEmailVerificationUrl(verificationToken, language),
+  });
+
+  console.info('[auth] resend verification completed', {
+    email: user.email,
+    messageId: result?.messageId ?? null,
   });
 }
 
