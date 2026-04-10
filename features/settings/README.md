@@ -4,7 +4,7 @@
 Owns user preferences, password management, and account deletion flows.
 
 ## Responsibilities
-- Update language, unit system, and feature toggles.
+- Update language, unit system, appearance mode, and reporting preferences.
 - Change the current password.
 - Handle destructive account deletion with confirmation.
 - Surface clear success and error feedback for settings operations.

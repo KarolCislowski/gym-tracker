@@ -6,10 +6,11 @@ Aggregates user context, next actions, history entry points, and analytics into 
 ## Responsibilities
 - Render the main landing experience after sign-in.
 - Show high-priority context such as profile and healthy habits.
+- Surface favorite exercises and key settings context as lightweight reference widgets.
 - Surface the next most useful action when data is sparse.
 - Show a calendar-based history entry point for daily reports and workouts.
 - Present analytics, charts, and summary states.
-- Support a customizable widget layout.
+- Support a customizable widget layout, including visibility, order, size, and tone.
 - Explain missing-data conditions clearly, including first-entry and insufficient-data states.
 
 ## Structure
@@ -21,7 +22,7 @@ Aggregates user context, next actions, history entry points, and analytics into 
 - Keep pinned widgets stable while packing the remaining widgets with `masonic`.
 - Render richer analytics on larger screens.
 - Render mobile-friendly status summaries on smaller screens.
-- Let the user reorder, show, hide, and resize supported widgets.
+- Let the user reorder, show, hide, resize, and retone supported widgets.
 - Let the user inspect a selected day from the activity calendar and jump to report details.
 - Communicate missing analytics states in a product-friendly way.
 
@@ -37,4 +38,4 @@ Aggregates user context, next actions, history entry points, and analytics into 
 - `application/dashboard-layout.service.ts`
 
 ## Notes
-The dashboard is a read-heavy feature. It should guide the user toward the next useful action when data is sparse, while still feeling configurable and dense enough to reward returning on larger screens.
+The dashboard is a read-heavy feature. It should guide the user toward the next useful action when data is sparse, while still feeling configurable and dense enough to reward returning on larger screens. Its widget registry is also the contract for what kinds of personalization the layout editor can safely expose.

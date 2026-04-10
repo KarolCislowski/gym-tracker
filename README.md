@@ -91,6 +91,7 @@ That makes it possible to build a more meaningful picture of progress than a sin
 
 The system currently consists of several major areas:
 
+- `app` – shared authenticated shell, navigation, and top-level page composition,
 - `auth` – sign in, registration, password reset, authenticated user snapshot,
 - `profile` – personal context needed to interpret results,
 - `healthy-habits` – goals for sleep, steps, hydration, macros, and activity,
@@ -98,8 +99,10 @@ The system currently consists of several major areas:
 - `workouts` – templates and logged workout sessions,
 - `supplementation` – stacks and supplementation history,
 - `dashboard` – context, summaries, and analytics,
+- `settings` – language, unit system, appearance, and reporting preferences,
 - `exercises` and `supplements` – reference atlases,
-- `onboarding` – guided introductions to key screens.
+- `onboarding` – guided introductions to key screens,
+- `i18n` – shared translations and language resolution used across features.
 
 Each of these areas is documented further in its own `README.md` under `features/*`.
 
@@ -242,8 +245,9 @@ Password: cypress123
 
 ```bash
 npx tsc --noEmit
-npm test
+npm test -- --run
 npm run build
+npm run lint
 ```
 
 An example environment file is available here:

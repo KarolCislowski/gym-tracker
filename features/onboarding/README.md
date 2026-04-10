@@ -13,11 +13,11 @@ Introduces first-time users to the most important screens and lets them replay p
 
 ## Main Flows
 - Auto-run the tour on supported pages when appropriate.
-- Replay the guide from the current page’s title panel.
+- Replay the guide from supported page headers and dashboard entry points.
 
 ## Key Files
 - `ui/app-onboarding.tsx`
 - `ui/onboarding-replay-button.tsx`
 
 ## Notes
-The onboarding should stay short and task-oriented. It should help users start using the product, not explain every feature exhaustively, and it should remain compatible with the evolving dashboard widget layout.
+The onboarding should stay short and task-oriented. It should help users start using the product, not explain every feature exhaustively, and it should remain compatible with the evolving dashboard widget layout plus replay triggers reused across multiple features.
